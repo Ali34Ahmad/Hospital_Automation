@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "Hospital_Automation"
 include(":app")
 include(":feature:signup")
+include(":core:ui-components")
