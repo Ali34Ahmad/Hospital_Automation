@@ -68,6 +68,7 @@ fun HospitalAutomationTopBarWithSearchBar(
                     trailingIcon = trailingIcon,
                 )
             }
+
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color(0xffEFF1FC)

@@ -64,6 +64,7 @@ fun EmployeeDrawer(
                     )
                     buttons.forEachIndexed {currentIndex , item ->
                         NavigationDrawerItem(
+                            modifier = Modifier.padding(bottom = 8.dp),
                             selected = currentIndex == selectedIndex,
                             onClick = {
                                 item.onClick
