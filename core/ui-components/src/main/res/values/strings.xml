@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="signup">Sign up</string>
+    <string name="login">Login</string>
+    <string name="upload_file">Upload File</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="first_name">First Name</string>
+    <string name="supporting_text">Supporting text here</string>
+    <string name="I_agree">I agree</string>
+    <string name="medical_data_purpose">These data will be used for medical purposes only.</string>
+    <string name="uploading">Uploading</string>
+    <string name="profile">Profile</string>
+    <string name="requests">Requests</string>
+    <string name="add_children">Add Children</string>
+    <string name="mail">Mail</string>
+    <string name="uploaded">uploaded</string>
+    <string name="medicare">Medicare</string>
+    <string name="search_for_guardians">search for guardians</string>
 </resources>
