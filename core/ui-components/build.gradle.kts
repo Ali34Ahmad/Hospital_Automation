@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.android
+
 plugins {
     alias(libs.plugins.common.android.library)
     alias(libs.plugins.common.android.library.compose)
@@ -19,11 +21,21 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    defaultConfig {
+        minSdk = 27
+    }
+    lint {
+        targetSdk = 35
+    }
+    compileSdk = 35
+
 }
+
 
 dependencies {
 
     implementation(libs.coil.compose)
+    implementation (libs.composepininput)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -31,4 +43,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

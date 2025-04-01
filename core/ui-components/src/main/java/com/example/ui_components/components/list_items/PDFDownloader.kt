@@ -11,14 +11,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,9 +29,6 @@ import com.example.ui_components.R
 import com.example.ui_components.theme.Hospital_AutomationTheme
 import com.example.ui_components.theme.onBackgroundVariantLight
 import com.example.ui_components.theme.primaryText
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 @Composable

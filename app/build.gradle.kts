@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.hospital_automation"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.hospital_automation"
-        minSdk = 23
-        targetSdk = 34
+        minSdk = 27
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

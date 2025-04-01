@@ -27,6 +27,7 @@ private fun ApplicationExtension.configureDefaultConfig() {
         applicationId = "com.example.hospital_automation"
         targetSdk = 34
         versionCode = 1
+        minSdk = 27
         versionName = "1.0"
     }
 }
