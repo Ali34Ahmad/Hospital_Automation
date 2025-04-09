@@ -1,18 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-
+//    alias(libs.plugins.android.application)
+//    alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.common.android.application.compose)
+    alias(libs.plugins.common.android.application)
 }
 
 android {
     namespace = "com.example.hospital_automation"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.hospital_automation"
-        minSdk = 23
-        targetSdk = 34
+        minSdk = 27
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -45,14 +46,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-
-    //Android Compose
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

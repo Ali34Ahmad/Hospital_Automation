@@ -5,16 +5,16 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="ClickableDescriptionDetailsItemPreview - DarkAndLightModePreview 1">
+      <SelectionState runConfigName="HospitalAutomationOutlinedButtonPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TagItemPreview - DarkAndLightModePreview 1">
+      <SelectionState runConfigName="OtpInputFieldPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TagItemPreview - DarkAndLightModePreview 2">
+      <SelectionState runConfigName="OtpInputRowPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SystemStateIconPreview - DarkAndLightModePreview 1">
+      <SelectionState runConfigName="TestPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -17,9 +17,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://jitpack.io")
     }
 }
 
 rootProject.name = "Hospital_Automation"
 include(":app")
 include(":feature:signup")
+include(":core:ui-components")
