@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import com.example.network.NetworkConstants
 
 @Composable
 fun SignUpScreen(modifier: Modifier = Modifier) {
@@ -21,5 +23,6 @@ fun Preview() {
         modifier = Modifier.size(40.dp)
             .padding(12.dp)
             .background(Color.Blue)
-    )
+    ){
+    }
 }

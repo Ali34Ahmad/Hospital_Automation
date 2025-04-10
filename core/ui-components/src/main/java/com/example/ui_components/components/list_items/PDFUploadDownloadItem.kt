@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,12 +32,16 @@ import com.example.ui_components.theme.onBackgroundVariantLight
 import com.example.ui_components.theme.primaryText
 import kotlin.math.roundToInt
 
+
 @Composable
-fun PDFDownloader(
+fun PDFUploadDownloadItem(
     name: String,
     currentSize: Float,
     progress: Int,
-    onClick: () -> Unit,
+    onPause: () -> Unit,
+    onResume: () -> Unit,
+    onOpen: () -> Unit,
+    state:FileUploadingState,
     modifier: Modifier = Modifier,
     @DrawableRes image: Int = R.drawable.pdf,
 ) {
@@ -49,10 +54,16 @@ fun PDFDownloader(
         label = ""
     )
     val dots = ".".repeat(dotsAnimation.value.roundToInt())
+
     Row(
         modifier = modifier
             .clickable{
-                onClick()
+                when(state){
+                    FileUploadingState.UPLOADING -> onPause()
+                    FileUploadingState.PAUSED -> onResume()
+                    FileUploadingState.DOWNLOADING -> onPause()
+                    FileUploadingState.COMPLETE -> onOpen()
+                }
             },
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top,
@@ -83,9 +94,13 @@ fun PDFDownloader(
                     style = MaterialTheme.typography.bodySmall,
                     color = onBackgroundVariantLight
                 )
-                val text = if(progress!= 100 ) stringResource(R.string.uploading) + dots else stringResource(R.string.uploaded)
+                val text = when(state){
+                    FileUploadingState.UPLOADING -> stringResource(R.string.uploading) + dots
+                    FileUploadingState.PAUSED -> stringResource(R.string.paused)
+                    FileUploadingState.DOWNLOADING -> stringResource(R.string.downloading) + dots
+                    FileUploadingState.COMPLETE -> stringResource( R.string.open)
+                }
                 Text(
-                    modifier = Modifier.width(72.dp),
                     text = text,
                     style = MaterialTheme.typography.bodySmall,
                     color = primaryText,
@@ -93,19 +108,22 @@ fun PDFDownloader(
                     overflow = TextOverflow.Visible
                 )
             }
-            if(progress!= 100){
+            // Linear progress indicator with percentage
+            //when the state of the pdf file is not complete show the linear progress indicator
+            if(state != FileUploadingState.COMPLETE){
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    val color = if(state == FileUploadingState.PAUSED) Color(0xffBCC7D2) else primaryText
                     LinearProgressIndicator(
                         progress = {
                             progress.toFloat().div(100)
                         },
                         modifier = Modifier.weight(1f),
                         strokeCap = StrokeCap.Round,
-                        color = primaryText,
+                        color = color,
                     )
                     Text(
                         text = "$progress%",
@@ -121,28 +139,70 @@ fun PDFDownloader(
 
 @Preview(showBackground = true)
 @Composable
-fun PDFDownloaderPreview() {
+fun PDFDownloaderDownloadingPreview() {
     Hospital_AutomationTheme {
-        PDFDownloader(
+        PDFUploadDownloadItem(
             modifier = Modifier.width(348.dp),
             name = "Cam-Scanner-152314",
             currentSize = 1.7f,
             progress = 70,
-            onClick = {}
+            state = FileUploadingState.DOWNLOADING,
+            onPause = {},
+            onOpen = {},
+            onResume = {}
+        )
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun PDFDownloaderUploadingPreview() {
+    Hospital_AutomationTheme {
+        PDFUploadDownloadItem(
+            modifier = Modifier.width(348.dp),
+            name = "Cam-Scanner-152314",
+            currentSize = 1.7f,
+            progress = 70,
+            state = FileUploadingState.UPLOADING,
+            onPause = {},
+            onOpen = {},
+            onResume = {}
+        )
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun PDFDownloaderPausedPreview() {
+    Hospital_AutomationTheme {
+        PDFUploadDownloadItem(
+            modifier = Modifier.width(348.dp),
+            name = "Cam-Scanner-152314",
+            currentSize = 1.7f,
+            progress = 70,
+            state = FileUploadingState.PAUSED,
+            onPause = {},
+            onOpen = {},
+            onResume = {}
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun PDFDownloadedPreview() {
+fun PDFDownloadedCompletePreview() {
     Hospital_AutomationTheme {
-        PDFDownloader(
+        PDFUploadDownloadItem(
             modifier = Modifier.width(348.dp),
             name = "Cam-Scanner-152314",
             currentSize = 21f,
             progress = 100,
-            onClick = {}
+            state = FileUploadingState.COMPLETE,
+            onPause = {},
+            onOpen = {},
+            onResume = {}
         )
     }
+}
+
+enum class FileUploadingState {
+    UPLOADING,PAUSED,DOWNLOADING,COMPLETE
 }
