@@ -1,4 +1,4 @@
-package com.example.network.model
+package com.example.network.utility
 
 sealed class Resource<T>(val data: T? = null, message : String? = null) {
     class Success<T>(data: T) : Resource<T>()

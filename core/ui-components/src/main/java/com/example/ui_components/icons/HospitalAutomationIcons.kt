@@ -25,3 +25,5 @@ object HospitalAutomationIcons {
     val notification = R.drawable.notifications
     val search2 = R.drawable.search2
 }
+
+

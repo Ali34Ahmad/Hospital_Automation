@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.common.android.library)
-    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -15,16 +15,13 @@ android {
             )
         }
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
-
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.bundles.ktor.android)
 
     implementation(libs.koin.android)
+
 }
