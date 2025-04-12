@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,6 +67,7 @@ fun CheckBoxWithDetails(
 @Preview(showBackground = true)
 @Composable
 fun CheckBoxWithDetailsPreview() {
+
     Hospital_AutomationTheme {
         var checked by remember{
             mutableStateOf(false)
@@ -82,5 +84,5 @@ fun CheckBoxWithDetailsPreview() {
 }
 
 /*
-
+    LocalInspectionMode.current
  */

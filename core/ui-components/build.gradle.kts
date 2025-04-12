@@ -24,9 +24,6 @@ android {
     defaultConfig {
         minSdk = 27
     }
-    lint {
-        targetSdk = 35
-    }
     compileSdk = 35
 
 }

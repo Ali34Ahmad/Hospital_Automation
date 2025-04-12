@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.common.android.library)
     alias(libs.plugins.common.android.library.compose)
+    alias(libs.plugins.common.android.feature)
 }
 
 android {
@@ -29,4 +30,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }

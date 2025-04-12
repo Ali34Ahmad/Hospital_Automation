@@ -26,3 +26,5 @@ object HospitalAutomationIcons {
     val search2 = R.drawable.search2
     val file = R.drawable.ic_file
 }
+
+

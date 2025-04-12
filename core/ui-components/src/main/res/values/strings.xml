@@ -18,6 +18,9 @@
     <string name="uploaded">uploaded</string>
     <string name="medicare">Medicare</string>
     <string name="search_for_guardians">search for guardians</string>
+    <string name="paused">Paused</string>
+    <string name="downloading">Downloading</string>
+    <string name="open">Open</string>
     <string name="blank" />
     <string name="residential_address">Residential address</string>
     <string name="guardians">Guardians</string>
