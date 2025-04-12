@@ -23,7 +23,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ui_components.components.texts.OtpValidatorText
-import com.example.ui_components.theme.Hospital_AutomationTheme
+import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

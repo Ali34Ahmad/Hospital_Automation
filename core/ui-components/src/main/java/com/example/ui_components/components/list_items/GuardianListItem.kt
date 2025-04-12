@@ -25,8 +25,8 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.ui_components.R
-import com.example.ui_components.theme.Hospital_AutomationTheme
-import com.example.ui_components.theme.backgroundLight
+import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.backgroundLight
 
 @Composable
 fun GuardianListItem(

@@ -25,10 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.constants.enums.FileUploadingState
 import com.example.ui_components.R
-import com.example.ui_components.theme.Hospital_AutomationTheme
-import com.example.ui_components.theme.onBackgroundVariantLight
-import com.example.ui_components.theme.primaryText
+import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.additionalColorScheme
 import kotlin.math.roundToInt
 
 @Composable
@@ -37,6 +37,7 @@ fun PDFDownloader(
     currentSize: Float,
     progress: Int,
     onClick: () -> Unit,
+    uploadingState:FileUploadingState,
     modifier: Modifier = Modifier,
     @DrawableRes image: Int = R.drawable.pdf,
 ) {
@@ -81,14 +82,14 @@ fun PDFDownloader(
                 Text(
                     text = "$currentSize MB",
                     style = MaterialTheme.typography.bodySmall,
-                    color = onBackgroundVariantLight
+                    color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
                 )
                 val text = if(progress!= 100 ) stringResource(R.string.uploading) + dots else stringResource(R.string.uploaded)
                 Text(
                     modifier = Modifier.width(72.dp),
                     text = text,
                     style = MaterialTheme.typography.bodySmall,
-                    color = primaryText,
+                    color = MaterialTheme.colorScheme.primary,
                     maxLines = 1,
                     overflow = TextOverflow.Visible
                 )
@@ -105,12 +106,12 @@ fun PDFDownloader(
                         },
                         modifier = Modifier.weight(1f),
                         strokeCap = StrokeCap.Round,
-                        color = primaryText,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = "$progress%",
                         style = MaterialTheme.typography.bodySmall,
-                        color = onBackgroundVariantLight
+                        color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
                     )
                 }
             }
@@ -128,7 +129,8 @@ fun PDFDownloaderPreview() {
             name = "Cam-Scanner-152314",
             currentSize = 1.7f,
             progress = 70,
-            onClick = {}
+            onClick = {},
+            uploadingState = FileUploadingState.UPLOADING,
         )
     }
 }
@@ -142,7 +144,8 @@ fun PDFDownloadedPreview() {
             name = "Cam-Scanner-152314",
             currentSize = 21f,
             progress = 100,
-            onClick = {}
+            onClick = {},
+            uploadingState = FileUploadingState.UPLOADING,
         )
     }
 }
