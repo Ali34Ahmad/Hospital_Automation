@@ -2,6 +2,8 @@ package com.example.network.di
 
 import com.example.network.remote.child.ChildApiService
 import com.example.network.remote.child.ChildApiServiceImpl
+import com.example.network.remote.user.UserApiServiceImpl
+import com.example.network.remote.user.UserApiService
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -32,7 +34,9 @@ val networkModule = module{
         }
     }
 
-    //child api service impl
+    //child api service
     single<ChildApiService> { ChildApiServiceImpl(get()) }
 
+    //user api service
+    single<UserApiService>{ UserApiServiceImpl(get()) }
 }
