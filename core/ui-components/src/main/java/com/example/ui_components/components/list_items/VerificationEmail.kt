@@ -21,7 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.ui_components.theme.Hospital_AutomationTheme
+import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 @Composable
 fun VerificationEmailItem(

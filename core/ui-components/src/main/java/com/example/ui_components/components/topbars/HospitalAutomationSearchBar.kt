@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui_components.theme.Hospital_AutomationTheme
+import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
 

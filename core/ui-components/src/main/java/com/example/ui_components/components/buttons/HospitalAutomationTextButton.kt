@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.ui_components.theme.Hospital_AutomationTheme
+import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 
 @Composable
