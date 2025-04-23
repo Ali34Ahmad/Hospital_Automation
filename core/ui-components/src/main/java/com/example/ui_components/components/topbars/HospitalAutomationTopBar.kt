@@ -2,6 +2,7 @@ package com.example.ui_components.components.topbars
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -20,16 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.ui.helper.DarkAndLightModePreview
+import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
-import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui_components.model.ActionIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +42,8 @@ fun HospitalAutomationTopBar(
     onNavigationIconClick: () -> Unit,
     modifier: Modifier = Modifier,
     imageUrl: String?,
-) {
+    actionIcons: List<ActionIcon> = emptyList()
+    ) {
     TopAppBar(
         modifier = modifier,
         title = {
@@ -55,18 +59,31 @@ fun HospitalAutomationTopBar(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    AsyncImage(
-                        modifier = Modifier
-                            .size(44.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.onSecondaryContainer),
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageUrl)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                    )
+                    if(!LocalInspectionMode.current){
+                        AsyncImage(
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.onSecondaryContainer),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(imageUrl)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                        )
+                    }else{
+                        Image(
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.onSecondaryContainer),
+                            painter = painterResource(R.drawable.doctor2),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
+
                     Text(
                         text = stringResource(title),
                         style = MaterialTheme.typography.titleMedium,
@@ -83,11 +100,23 @@ fun HospitalAutomationTopBar(
                     contentDescription = null
                 )
             }
+        },
+        actions = {
+            actionIcons.forEach { action->
+                IconButton(
+                    onClick = action.onCLick
+                ) {
+                    Icon(
+                        painter = painterResource(action.icon),
+                        contentDescription = null,
+                    )
+                }
+            }
         }
     )
 }
 
-@Preview(showBackground = true)
+@DarkAndLightModePreview
 @Composable
 fun HospitalAutomationTopBarPreview() {
     Hospital_AutomationTheme {
@@ -100,7 +129,7 @@ fun HospitalAutomationTopBarPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@DarkAndLightModePreview
 @Composable
 fun HospitalAutomationTopBarWithImagePreview() {
     Hospital_AutomationTheme {
@@ -109,6 +138,28 @@ fun HospitalAutomationTopBarWithImagePreview() {
             navigationIcon = HospitalAutomationIcons.menu,
             onNavigationIconClick = {},
             imageUrl ="example"
+        )
+    }
+}
+@DarkAndLightModePreview
+@Composable
+fun HospitalAutomationTopBarActionsPreview() {
+    Hospital_AutomationTheme {
+        HospitalAutomationTopBar(
+            title = R.string.mail,
+            navigationIcon = HospitalAutomationIcons.menu,
+            onNavigationIconClick = {},
+            imageUrl = null,
+            actionIcons = listOf(
+                ActionIcon(
+                    icon = HospitalAutomationIcons.calender,
+                    onCLick = {}
+                ),
+                ActionIcon(
+                    icon = HospitalAutomationIcons.search,
+                    onCLick = {}
+                )
+            )
         )
     }
 }

@@ -10,19 +10,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.FileUploadingState
 import com.example.constants.icons.AppIcons
-import com.example.ui.helper.DarkAndLightModePreview
 import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.model.File
+import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
-import com.example.ui_components.components.buttons.HospitalAutomationOutlinedButtonPreview
-import com.example.ui_components.components.list_items.PDFDownloader
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.ui_components.components.list_items.PDFUploadDownloadItem
 
 @Composable
 fun FileUploadingCard(
@@ -50,12 +47,15 @@ fun FileUploadingCard(
                 )
             }
             file?.let {
-                PDFDownloader(
+                PDFUploadDownloadItem(
                     name = file.fileName,
                     currentSize = file.fileSize,
                     progress = file.uploadingProgress,
-                    uploadingState = FileUploadingState.UPLOADING,
-                    onClick = onFileClick
+                    onPause = TODO(),
+                    onResume = TODO(),
+                    onOpen = TODO(),
+                    state = TODO(),
+                    image = TODO()
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
                 Row(modifier = Modifier.fillMaxWidth()) {
@@ -76,6 +76,7 @@ fun FileUploadingCard(
         }
     )
 }
+
 
 @DarkAndLightModePreview
 @Composable

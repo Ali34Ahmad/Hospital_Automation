@@ -3,7 +3,6 @@ package com.example.ui_components.components.text_field
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,10 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.example.ui.helper.DarkAndLightModePreview
+import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.additionalColorScheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
-import com.example.ui.theme.Hospital_AutomationTheme
 
 @Composable
 fun HospitalAutomationTextFiled(
@@ -31,17 +31,19 @@ fun HospitalAutomationTextFiled(
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
     isRequired: Boolean = false,
-    @StringRes label : Int?,
-    @DrawableRes icon: Int?,
-    @StringRes supportingText: Int?,
-    maxLines: Int = 1
+    @StringRes label : Int? = null,
+    @StringRes placeholder : Int? = null,
+    @DrawableRes icon: Int? = null,
+    @StringRes supportingText: Int? = null,
+    minLines: Int = 1,
+    maxLines: Int = minLines,
+    enabled: Boolean = true
 ) {
 
         TextField(
-            modifier = modifier.fillMaxWidth(1f),
-            shape = MaterialTheme.shapes.small,
+            modifier = modifier,
+            shape = MaterialTheme.shapes.extraSmall,
             value = value,
-            maxLines = maxLines,
             onValueChange = onValueChange,
             label = {
                 label?.let {
@@ -50,48 +52,66 @@ fun HospitalAutomationTextFiled(
                         if(isRequired)
                             append("*")
                     }
-                    Text(text)
+                    Text(
+                        text,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
+                    )
                 }
             },
             trailingIcon = {
                 if (icon != null)
                     Icon(painter = painterResource(icon), null)
             },
+            placeholder = {
+                placeholder?.let {
+                    Text(
+                        text =  stringResource(it)
+                    )
+                }
+
+            },
             isError = isError,
             colors = TextFieldDefaults.colors(
-                disabledContainerColor = Color(0xff99999F),
+                focusedContainerColor = MaterialTheme.colorScheme.background,
+                unfocusedContainerColor = MaterialTheme.colorScheme.background,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
+
             ),
             supportingText = {
                 if(supportingText!=null){
                     Text(stringResource(supportingText))
                 }
             },
+            minLines = minLines,
+            maxLines = maxLines,
+            enabled = enabled
         )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun HospitalAutomationTextFiledPreview() {
     Hospital_AutomationTheme {
         var value by remember {
-            mutableStateOf(value = "")
+            mutableStateOf(value = "Ali Mansoura")
         }
         HospitalAutomationTextFiled(
             value = value,
             onValueChange = {
                 value = it
             },
-            modifier = Modifier.width(380.dp),
+            modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
             icon = null,
             isRequired = false,
             supportingText = null,
+            enabled = false
         )
     }
 }
-@Preview(showBackground = true)
+@DarkAndLightModePreview
 @Composable
 fun HospitalAutomationTextFiled2Preview() {
     Hospital_AutomationTheme {
@@ -103,7 +123,7 @@ fun HospitalAutomationTextFiled2Preview() {
             onValueChange = {
                 value = it
             },
-            modifier = Modifier.width(380.dp),
+            modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
             icon = HospitalAutomationIcons.calender,
             isRequired = true,
@@ -111,10 +131,6 @@ fun HospitalAutomationTextFiled2Preview() {
         )
     }
 }
-
-
-
-
 
 
 
