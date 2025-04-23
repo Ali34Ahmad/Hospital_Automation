@@ -23,8 +23,21 @@ object HospitalAutomationIcons {
     val chevronRight = R.drawable.chevron_right
     val woman = R.drawable.ic_female
     val notification = R.drawable.notifications
+    val search = R.drawable.search
     val search2 = R.drawable.search2
     val file = R.drawable.ic_file
+    val prescription = R.drawable.prescriptions
+    val employment_history = R.drawable.ic_employement_history
+    val north_east_arrow = R.drawable.north_east_arrow
+    val delete = R.drawable.delete
+    val problem = R.drawable.problem
+    val edit = R.drawable.edit
+    val fromAge =  R.drawable.line_start_circle
+    val toAge =  R.drawable.line_end_circle
+    val vaccines = R.drawable.vaccines
+    val pending = R.drawable.pending
+    val bloodType = R.drawable.bloodtype
+    val date = R.drawable.update
 }
 
 

@@ -26,10 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.additionalColorScheme
 import com.example.ui_components.R
-import com.example.ui_components.theme.Hospital_AutomationTheme
-import com.example.ui_components.theme.onBackgroundVariantLight
-import com.example.ui_components.theme.primaryText
 import kotlin.math.roundToInt
 
 
@@ -92,7 +91,7 @@ fun PDFUploadDownloadItem(
                 Text(
                     text = "$currentSize MB",
                     style = MaterialTheme.typography.bodySmall,
-                    color = onBackgroundVariantLight
+                    color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
                 )
                 val text = when(state){
                     FileUploadingState.UPLOADING -> stringResource(R.string.uploading) + dots
@@ -103,7 +102,7 @@ fun PDFUploadDownloadItem(
                 Text(
                     text = text,
                     style = MaterialTheme.typography.bodySmall,
-                    color = primaryText,
+                    color = MaterialTheme.additionalColorScheme.primaryText,
                     maxLines = 1,
                     overflow = TextOverflow.Visible
                 )
@@ -116,7 +115,7 @@ fun PDFUploadDownloadItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    val color = if(state == FileUploadingState.PAUSED) Color(0xffBCC7D2) else primaryText
+                    val color = if(state == FileUploadingState.PAUSED) Color(0xffBCC7D2) else MaterialTheme.additionalColorScheme.primaryText
                     LinearProgressIndicator(
                         progress = {
                             progress.toFloat().div(100)
@@ -128,7 +127,7 @@ fun PDFUploadDownloadItem(
                     Text(
                         text = "$progress%",
                         style = MaterialTheme.typography.bodySmall,
-                        color = onBackgroundVariantLight
+                        color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
                     )
                 }
             }

@@ -57,4 +57,25 @@
     <string name="date_of_birth">Date of Birth</string>
     <string name="birth_certificatie">Birth Certificate</string>
     <string name="uploaded_by">Uploaded by %s</string>
+    <string name="add_medical_dignosis">Add medical diagnosis</string>
+    <string name="add_medical_dignosis_description">This diagnosis will be visible to the patient and the administrator.</string>
+    <string name="date_and_time"><![CDATA[Date & Time]]></string>
+    <string name="pharmacies">Pharmacies</string>
+    <string name="add_to_prescription">Add to prescription</string>
+    <string name="appointments">Appointments</string>
+    <string name="medical_records">Medical Records</string>
+    <string name="interactions">Interactions</string>
+    <string name="interaction_name">Interaction Name</string>
+    <string name="interaction_description">Interaction Description</string>
+    <string name="note_is_added_here">Note is added here</string>
+    <string name="description">Description</string>
+    <string name="from_age">From age</string>
+    <string name="to_age">To age</string>
+    <string name="quantity">Quantity</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="passed">Passed</string>
+    <string name="messed">Messed</string>
+    <string name="description_not_added">Description not added</string>
+    <string name="write_here">Write your description here</string>
+    <string name="prescriptions">Prescriptions</string>
 </resources>

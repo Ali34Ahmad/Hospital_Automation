@@ -11,6 +11,7 @@ import androidx.core.graphics.ColorUtils
 
 
 data class AdditionalColor(
+    val primaryText: Color = Color(0xff8188F0),
     val onPrimaryContainerBlueLight:Color = Color(0xFF333783),
     val onPrimaryContainerVariantLight:Color = Color(0xFFB2B3C3),
     val primaryDimmedLight:Color = Color(0xFFBCC7D2),
@@ -24,6 +25,9 @@ data class AdditionalColor(
     val fileFoldDark:Color = Color(0xC4443838),
     val fileLight:Color = Color(0xFFF74B4B),
     val fileDark:Color = Color(0xFFCB2B2B),
+    val warningLight: Color = Color(0xffD3BF12),
+    val warningContainer: Color = Color(0x43FFEB3A),
+    val primaryContainerVariant : Color = Color(0xffB2B3C3)
 )
 
 val LocalAdditionalColor = compositionLocalOf { AdditionalColor() }
