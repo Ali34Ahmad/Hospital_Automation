@@ -3,6 +3,7 @@ package com.example.ui_components.components.items
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,23 +40,27 @@ fun DetailsItem(
     iconColor: Color = MaterialTheme.colorScheme.primary,
     title: String,
     description: String,
-    isClickable: Boolean = false,
-    onClick: () -> Unit = {},
-    isDescriptionClickable:Boolean=false,
-    onDescriptionClick:()->Unit={},
-    descriptionClickableTextRange: IntRange=0..0,
-    isMultipleLines:Boolean=false,
+    onClick: (() -> Unit)? = null,
+    onDescriptionClick: (() -> Unit)? = null,
+    descriptionColor: Color = MaterialTheme.colorScheme.onBackground,
+    descriptionClickableTextRange: IntRange = 0..0,
+    isMultipleLines: Boolean = false,
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = MaterialTheme.spacing.medium16,
+        vertical = MaterialTheme.spacing.small12
+    )
 ) {
-    val rowModifier = if (isClickable) {
-        Modifier
+    val rowModifier = if (onClick != null) {
+        modifier
             .clickable { onClick() }
-            .then(modifier)
+            .padding(contentPadding)
     } else {
         modifier
+            .padding(contentPadding)
     }
-    val maxDescriptionLines=if(isMultipleLines){
+    val maxDescriptionLines = if (isMultipleLines) {
         Int.MAX_VALUE
-    }else{
+    } else {
         1
     }
 
@@ -70,31 +75,33 @@ fun DetailsItem(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight,
+                color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraSmall4))
-            if (!isDescriptionClickable){
+            if (onDescriptionClick == null) {
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = descriptionColor,
                 )
-            }else{
+            } else {
                 ClickableText(
                     text = description,
                     clickableTextRange = descriptionClickableTextRange,
                     onClick = onDescriptionClick,
                     maxLines = maxDescriptionLines,
+                    normalTextColor = descriptionColor,
+                    clickableTextColor = descriptionColor,
                 )
             }
         }
-        if (isClickable) {
+        if (onClick != null) {
             Icon(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = "",
-                tint = MaterialTheme.additionalColorScheme.onBackgroundVariantLight,
+                tint = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 modifier = Modifier
                     .size(MaterialTheme.sizing.small18)
                     .align(alignment = Alignment.CenterVertically),
@@ -138,7 +145,6 @@ fun ClickableDetailsItemPreview() {
                 iconColor = MaterialTheme.colorScheme.primary,
                 title = stringResource(id = R.string.residential_address),
                 description = "Lattakia - Masaya Street",
-                isClickable = true,
                 onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -162,7 +168,6 @@ fun ClickableDescriptionDetailsItemPreview() {
                 iconColor = MaterialTheme.colorScheme.primary,
                 title = stringResource(id = R.string.residential_address),
                 description = "Uploaded by Zaid Ahmad",
-                isClickable = true,
                 onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -170,7 +175,6 @@ fun ClickableDescriptionDetailsItemPreview() {
                         horizontal = MaterialTheme.spacing.medium16,
                         vertical = MaterialTheme.spacing.small12
                     ),
-                isDescriptionClickable = true,
                 descriptionClickableTextRange = "Uploaded by Zaid Ahmad".clickableTextRange("Zaid Ahmad"),
                 onDescriptionClick = {},
             )

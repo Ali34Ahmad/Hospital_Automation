@@ -1,24 +1,16 @@
 package com.example.ui_components.components.card
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.enums.Gender
 import com.example.constants.icons.AppIcons
@@ -29,11 +21,8 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
 import com.example.ui_components.components.items.DetailsItem
-import com.example.ui_components.components.items.TagItem
-import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.items.SubDetailsItem
 import java.time.Instant
 import java.util.Date
 
@@ -52,10 +41,8 @@ fun ChildProfileCard(
 ) {
     val detailsItemModifier = Modifier
         .fillMaxWidth()
-        .padding(
-            horizontal = MaterialTheme.spacing.medium16,
-            vertical = MaterialTheme.spacing.small12
-        )
+    val genderIcon=if(gender==Gender.MALE)AppIcons.Outlined.male else AppIcons.Outlined.female
+    val birthCertificateDescription=stringResource(R.string.uploaded_by,employeeName)
 
     Column(
         modifier = modifier
@@ -78,33 +65,29 @@ fun ChildProfileCard(
             description = motherName,
             modifier =detailsItemModifier,
         )
-        val genderIcon=if(gender==Gender.MALE)AppIcons.Outlined.male else AppIcons.Outlined.female
         DetailsItem(
             iconRes = genderIcon,
             title = stringResource(id = R.string.gender),
-            description = "gender".toCapitalizedString(),
+            description = gender.name.toCapitalizedString(),
             modifier = detailsItemModifier,
         )
         DetailsItem(
-            iconRes = AppIcons.Outlined.SpecificDate,
+            iconRes = AppIcons.Outlined.specificDate,
             title = stringResource(id = R.string.date_of_birth),
             description = dateOfBirth.toAppropriateFormat(),
             modifier = detailsItemModifier,
         )
-        val birthCertificateDescription=stringResource(R.string.uploaded_by,employeeName)
         DetailsItem(
             iconRes = AppIcons.Outlined.certificate,
-            title = stringResource(id = R.string.birth_certificatie),
+            title = stringResource(id = R.string.birth_certificate),
             description = birthCertificateDescription,
-            isClickable = true,
             onClick = onBirthCertificateItemClick,
             modifier = detailsItemModifier,
-            isDescriptionClickable = true,
             descriptionClickableTextRange = birthCertificateDescription.clickableTextRange(employeeName),
             onDescriptionClick = onBirthCertificateItemDescriptionClick,
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
-        TagItem(
+        SubDetailsItem(
             title = stringResource(R.string.guardians),
             description = stringResource(R.string.guardians_number,guardiansNumber),
             onClick = onGuardianTagItemClick,

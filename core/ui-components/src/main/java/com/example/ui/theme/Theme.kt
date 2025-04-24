@@ -1,6 +1,5 @@
 package com.example.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -91,24 +90,34 @@ private val darkScheme = darkColorScheme(
 
 @Composable
 fun Hospital_AutomationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean?=null,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val darkThemeResult= darkTheme ?: isSystemInDarkTheme()
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkThemeResult) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> darkScheme
+        darkThemeResult -> darkScheme
         else -> lightScheme
     }
 
+    val additionalColors = if (darkThemeResult) {
+        AdditionalColorDark()
+    } else {
+        AdditionalColorLight()
+    }
     CompositionLocalProvider(
         LocalSizing provides Sizing(),
         LocalSpacing provides Spacing(),
+        LocalAdditionalColors provides additionalColors,
+        LocalAdditionalTypography provides AdditionalTypography(),
+        LocalAdditionalShapes provides AdditionalShapes(),
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

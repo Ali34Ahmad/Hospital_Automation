@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
@@ -39,7 +40,7 @@ fun GuardianProfileCard(
     phoneNumber: String,
     email: String,
     profileImageUrl: String,
-    onNavigateUpButtonClick:()->Unit,
+    onNavigateUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -49,7 +50,10 @@ fun GuardianProfileCard(
             .padding(bottom = MaterialTheme.spacing.large24)
     ) {
         Box(modifier = Modifier) {
-            NetworkImage(imageUrl = profileImageUrl)
+            NetworkImage(
+                imageUrl = profileImageUrl,
+                contentScale = ContentScale.Fit,
+            )
             IconButton(
                 onClick = onNavigateUpButtonClick,
                 modifier = Modifier

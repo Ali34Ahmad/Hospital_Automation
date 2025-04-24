@@ -20,16 +20,16 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
-import com.example.ui_components.components.buttons.HospitalAutomationOutlinedButtonPreview
-import com.example.ui_components.components.list_items.PDFDownloader
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.ui_components.components.list_items.PDFUploadDownloadItem
 
 @Composable
 fun FileUploadingCard(
     title: String,
     description: String,
     file: File? = null,
-    onFileClick: () -> Unit,
+    onFileUploadingPause: () -> Unit,
+    onFileUploadingOpen: () -> Unit,
+    onFileUploadingResume: () -> Unit,
     onUploadFileButtonClick: () -> Unit,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
@@ -50,12 +50,14 @@ fun FileUploadingCard(
                 )
             }
             file?.let {
-                PDFDownloader(
+                PDFUploadDownloadItem(
                     name = file.fileName,
-                    currentSize = file.fileSize,
+                    fileSize = file.fileSize,
                     progress = file.uploadingProgress,
-                    uploadingState = FileUploadingState.UPLOADING,
-                    onClick = onFileClick
+                    state = FileUploadingState.UPLOADING,
+                    onPause = onFileUploadingPause,
+                    onOpen = onFileUploadingOpen,
+                    onResume = onFileUploadingResume,
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
                 Row(modifier = Modifier.fillMaxWidth()) {
@@ -90,9 +92,11 @@ fun FileUploadingCardPreview() {
                 fileSize = 1.7f,
                 fileName = "Cam-Scanner-152314",),
                 onUploadFileButtonClick = {},
-                onFileClick = {},
-                onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
+                onFileUploadingResume = {},
+                onFileUploadingPause = {},
+                onFileUploadingOpen = {},
+                onNextButtonClick = {},
             )
         }
     }
@@ -108,8 +112,9 @@ fun FileUploadingCardInit2Preview() {
                 title = stringResource(R.string.child_birth_certification_is_required),
                 description = stringResource(R.string.upload_file_description),
                 onUploadFileButtonClick = {},
-                onFileClick = {},
-                onNextButtonClick = {},
+                onFileUploadingResume = {},
+                onFileUploadingPause = {},
+                onFileUploadingOpen = {},                onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
             )
         }

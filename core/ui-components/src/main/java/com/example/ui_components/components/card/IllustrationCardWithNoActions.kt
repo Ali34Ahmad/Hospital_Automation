@@ -1,7 +1,9 @@
 package com.example.ui_components.components.card
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -9,18 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.constants.icons.AppIcons
 import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
+import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.components.icon.SystemStateIcon
 
 @Composable
-fun PermissionRequiredCard(
-    title: String,
-    description: String,
+fun IllustrationCardWithNoActions(
+    title:String,
+    description:String,
+    @DrawableRes imageRes:Int,
     modifier: Modifier = Modifier,
 ) {
     IllustrationCard(
@@ -29,9 +31,9 @@ fun PermissionRequiredCard(
         modifier = modifier,
         illustration = {
             Image(
-                painter = painterResource(R.drawable.ill_permission),
+                painter = painterResource(imageRes),
                 contentDescription = null,
-                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124),
+                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124)
             )
         }
     )
@@ -39,13 +41,16 @@ fun PermissionRequiredCard(
 
 @DarkAndLightModePreview
 @Composable
-fun PermissionRequiredCardPreview() {
+fun IllustrationCardWithNoActionsPreview() {
     Hospital_AutomationTheme {
         Surface {
-            PermissionRequiredCard(
-                title = stringResource(R.string.permission_required),
-                description = stringResource(R.string.permission_required_description),
-                modifier = Modifier.fillMaxWidth(),
+            IllustrationCardWithNoActions(
+                title = stringResource(R.string.not_found),
+                description = stringResource(R.string.medicine_not_found_description),
+                imageRes = R.drawable.ill_error,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium16)
             )
         }
     }

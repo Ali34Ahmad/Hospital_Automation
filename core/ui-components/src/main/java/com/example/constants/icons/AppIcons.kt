@@ -3,14 +3,15 @@ package com.example.constants.icons
 import com.example.ui_components.R
 
 sealed interface AppIcons {
-    data object Outlined: AppIcons {
+
+    data object Outlined : AppIcons {
         val add = R.drawable.add
         val man = R.drawable.ic_male
         val attachment = R.drawable.attachment
         val call = R.drawable.call
         val mail = R.drawable.mail
         val calender = R.drawable.calendar
-        val SpecificDate = R.drawable.ic_event_date
+        val specificDate = R.drawable.ic_event_date
         val location = R.drawable.location_on
         val father = R.drawable.face
         val mother = R.drawable.face_4
@@ -31,5 +32,22 @@ sealed interface AppIcons {
         val check = R.drawable.ic_check
         val email = R.drawable.ic_email
         val employmentHistory = R.drawable.ic_employement_history
+        val delete = R.drawable.ic_delete
+        val darkMode = R.drawable.ic_dark_mode
+        val lightMode = R.drawable.ic_light_mode
+        val syringe = R.drawable.ic_syringe
+        val edit = R.drawable.ic_edit
+        val department = R.drawable.ic_department
+        val checkWithBorder = R.drawable.ic_check_with_border
+        val upcomingEvent = R.drawable.ic_upcoming_event
+        val note = R.drawable.ic_note
+        val medicalDiagnosis = R.drawable.ic_medical_diagnosis
+        val clock = R.drawable.ic_clock
+        val error = R.drawable.ic_error
+        val workBriefcase = R.drawable.ic_work_brief_case
+        val admin = R.drawable.ic_admin
+        val finishLineFlag = R.drawable.ic_finish_line_flag
+        val availabilityStatus = R.drawable.ic_availability_status
+        val guardian = R.drawable.ic_guardian
     }
 }

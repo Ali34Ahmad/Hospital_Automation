@@ -26,14 +26,14 @@ fun IconWithBackground(
     @DrawableRes iconRes: Int,
     modifier: Modifier = Modifier,
     @StringRes contentDescription: Int?=null,
-    backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
     iconColor:Color=Color.Black,
 ) {
     Box(
         modifier = modifier
             .size(MaterialTheme.sizing.small24)
             .clip(CircleShape)
-            .background(backgroundColor.copy(alpha = 0.4f)),
+            .background(backgroundColor),
         contentAlignment = Alignment.Center,
     ) {
         Icon(

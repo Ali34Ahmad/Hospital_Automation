@@ -13,6 +13,7 @@ import com.example.ui_components.R
 @Composable
 fun NetworkImage(
     imageUrl: String,
+    contentScale:ContentScale=ContentScale.Fit,
     modifier: Modifier = Modifier
 ) {
     val isInPreview = LocalInspectionMode.current
@@ -22,7 +23,7 @@ fun NetworkImage(
             model = imageUrl,
             contentDescription = null,
             modifier = modifier,
-            contentScale = ContentScale.Fit,
+            contentScale = contentScale,
             placeholder = painterResource(R.drawable.doctor1),
         )
     } else {
@@ -30,7 +31,7 @@ fun NetworkImage(
             painter = painterResource(R.drawable.doctor2),
             contentDescription = null,
             modifier = modifier,
-            contentScale = ContentScale.Fit,
+            contentScale = contentScale,
         )
     }
 }
