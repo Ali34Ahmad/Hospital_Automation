@@ -1,6 +1,7 @@
 package com.example.ui_components.components.list
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,7 +17,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 @Composable
 fun ProfileActionsList(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier.clip(MaterialTheme.shapes.small)

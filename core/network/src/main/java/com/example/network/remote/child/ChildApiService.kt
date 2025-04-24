@@ -1,9 +1,12 @@
 package com.example.network.remote.child
 
+import com.example.network.model.request.AddChildRequest
 import com.example.network.model.request.NetworkFullName
 import com.example.network.model.response.ChildrenResponse
+import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.ShowChildProfileResponse
 import com.example.network.utility.Resource
+import java.io.File
 
 interface ChildApiService {
     /**
@@ -21,5 +24,19 @@ interface ChildApiService {
         token: String,
         name: String
     ) : Resource<ChildrenResponse>
+
+    suspend fun addChild(
+        token: String,
+        child: AddChildRequest
+    ) : Resource<NetworkMessage>
+
+    /**
+     * I use Id instead of full name
+     */
+    suspend fun uploadChildCertificate(
+        token: String,
+        id: String,
+        image: File,
+    ): Resource<NetworkMessage>
 
 }
