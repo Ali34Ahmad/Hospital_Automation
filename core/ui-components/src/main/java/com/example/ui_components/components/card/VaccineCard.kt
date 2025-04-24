@@ -1,6 +1,5 @@
 package com.example.ui_components.components.card
 
-import android.util.Range
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.core.util.toClosedRange
 import com.example.ext.toAppropriateFormat
 import com.example.model.VaccineWithDescription
 import com.example.ui.fake.createSampleVaccineList
@@ -30,8 +28,6 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
-import com.example.ui_components.model.Vaccine
-import kotlin.math.max
 
 @Composable
 fun VaccineCard(

@@ -1,10 +1,8 @@
 package com.example.network.remote.add_residential_address
 
 import com.example.network.model.request.AddressRequest
-import com.example.network.model.request.RegistrationRequest
 import com.example.network.model.response.AddressResponse
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.RegistrationResponse
 import com.example.network.utility.ApiRoutes
 import com.example.network.utility.Resource
 import io.ktor.client.HttpClient

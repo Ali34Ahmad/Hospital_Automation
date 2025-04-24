@@ -1,8 +1,6 @@
 package com.example.ui.fake
 
-import androidx.compose.ui.util.fastCbrt
 import com.example.model.Department
-import com.example.ui_components.components.list.DepartmentDoctorsLazyRow
 import java.time.LocalDate
 
 fun createSampleDepartmentData(): List<Department> {

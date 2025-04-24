@@ -1,8 +1,6 @@
 package com.example.ui_components.components.tag
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -14,8 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui.theme.additionalColorScheme
-import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 
 @Composable

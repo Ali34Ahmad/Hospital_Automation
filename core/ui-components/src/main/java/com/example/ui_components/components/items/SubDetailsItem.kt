@@ -2,7 +2,6 @@ package com.example.ui_components.components.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -19,7 +18,6 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.additionalTypography
-import com.example.ui.theme.getDarkThemeEquivalent
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 

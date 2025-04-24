@@ -1,9 +1,7 @@
 package com.example.ext
 
-import android.util.Range
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import kotlin.text.format
 
 fun LocalTime.toAppropriateFormat(): String {
     val formatter = DateTimeFormatter.ofPattern("hh:mm a")

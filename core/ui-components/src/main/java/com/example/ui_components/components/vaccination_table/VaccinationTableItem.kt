@@ -2,7 +2,6 @@ package com.example.ui_components.components.vaccination_table
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -16,11 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import com.example.constants.icons.AppIcons
-import com.example.ext.toOrdinalString
 import com.example.ui.fake.createFakeVaccinationData
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui.theme.additionalTypography
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground

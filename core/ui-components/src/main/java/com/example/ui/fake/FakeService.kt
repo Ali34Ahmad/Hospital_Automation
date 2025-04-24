@@ -3,8 +3,6 @@ package com.example.ui.fake
 import com.example.model.Service
 import java.time.Duration
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
-import java.util.concurrent.TimeUnit
 
 fun createSampleServiceData(): List<Service> {
     return listOf(

@@ -1,6 +1,5 @@
 package com.example.ui_components.components.card
 
-import android.util.Range
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
