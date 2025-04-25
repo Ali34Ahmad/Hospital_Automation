@@ -21,6 +21,9 @@ interface AdditionalColors {
     val fileFold:Color
     val file:Color
     val green: Color
+    val warning:Color
+    val warningContainer:Color
+
 }
 
 data class AdditionalColorLight(
@@ -36,6 +39,8 @@ data class AdditionalColorLight(
     override val fileFold:Color = Color(0xFFD9D9D9),
     override val file:Color = Color(0xFFF74B4B),
     override val green:Color = Color(0xFF33A439),
+    override val warning: Color=Color(0xFFD3BF12),
+    override val warningContainer: Color=Color(0xFFFFF8E1),
 ) : AdditionalColors
 
 data class AdditionalColorDark(
@@ -51,6 +56,8 @@ data class AdditionalColorDark(
     override val fileFold:Color = Color(0xC4443838),
     override val file:Color = Color(0xFFCB2B2B),
     override val green:Color = Color(0xFF33A439),
+    override val warning: Color = Color(0xFFE6C229),
+    override val warningContainer: Color = Color(0xFF403800),
 ) : AdditionalColors
 
 
@@ -65,15 +72,3 @@ val MaterialTheme.additionalColorScheme
     @ReadOnlyComposable
     get() = LocalAdditionalColors.current
 
-fun getDarkThemeEquivalent(lightColor: Color): Color {
-    val hsl = FloatArray(3)
-    ColorUtils.colorToHSL(lightColor.toArgb(), hsl)
-
-    // Adjust Value/Brightness (reduce by 60%)
-    hsl[2] *= 2.7f
-
-    // Adjust Saturation (increase by 15%, but clamp to 1.0)
-    hsl[1] = (hsl[1] * 1.15f).coerceAtMost(1.0f)
-
-    return Color(ColorUtils.HSLToColor(hsl))
-}

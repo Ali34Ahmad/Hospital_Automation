@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
@@ -118,7 +119,6 @@ fun MedicalRecordCard(
                     modifier = Modifier.weight(1f),
                     title = stringResource(R.string.appointments),
                     description = numberOfAppointments.toString(),
-                    isClickable = true,
                     onClick = onAppointmentsClick
                 )
                 DetailsItem(
@@ -126,7 +126,6 @@ fun MedicalRecordCard(
                     modifier = Modifier.weight(1f),
                     title = stringResource(R.string.prescriptions),
                     description = numberOfPrescriptions.toString(),
-                    isClickable = true,
                     onClick = onPrescriptionsClick
                 )
             }
@@ -135,9 +134,9 @@ fun MedicalRecordCard(
 }
 
 
-@Preview
+@DarkAndLightModePreview
 @Composable
-fun MedicalRecordCardPreview() {
+fun MedicalRecordCard2Preview() {
     Hospital_AutomationTheme {
         MedicalRecordCard(
             imgUrl = "",

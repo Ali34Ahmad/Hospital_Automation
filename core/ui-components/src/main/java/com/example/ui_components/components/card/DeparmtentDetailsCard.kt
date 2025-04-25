@@ -41,21 +41,24 @@ fun DepartmentDetailsCard(
     onVaccinesItemClick: () -> Unit,
     onDoctorItemClick: (Int) -> Unit,
     onServiceItemClick: (index: Int) -> Unit,
+    onLearnMoreClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val detailsItemModifier = Modifier.fillMaxWidth()
 
-    val (currentStatusItemDescriptionColor, availabilityStatus) = if (currentStatus == AvailabilityStatus.OPEN) {
-        Pair(
-            MaterialTheme.additionalColorScheme.green,
-            stringResource(R.string.open)
-        )
-    } else {
-        Pair(
-            MaterialTheme.colorScheme.error,
-            stringResource(R.string.closed)
-        )
-    }
+    val (currentStatusItemDescriptionColor, availabilityStatus) =
+
+        if (department.isDeactivated || currentStatus == AvailabilityStatus.CLOSED) {
+            Pair(
+                MaterialTheme.colorScheme.error,
+                stringResource(R.string.closed)
+            )
+        } else {
+            Pair(
+                MaterialTheme.additionalColorScheme.green,
+                stringResource(R.string.open)
+            )
+        }
     val sectionTitlePadding = PaddingValues(horizontal = MaterialTheme.spacing.medium16)
 
 
@@ -68,7 +71,7 @@ fun DepartmentDetailsCard(
 
         Row(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
         ) {
             OverlappingImagesTriangleBoxWithNumber(
                 imagesUrls = department.activeDoctors.take(3).map { it.imageUrl },
@@ -77,10 +80,23 @@ fun DepartmentDetailsCard(
             Text(
                 text = department.name,
                 style = MaterialTheme.typography.titleMedium,
-                modifier=Modifier.padding(top=MaterialTheme.spacing.small8)
+                modifier = Modifier.padding(top = MaterialTheme.spacing.small8)
             )
         }
-        // TODO: Add Suspended and Resigned states
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
+        if (department.isDeactivated) {
+            WarningCard(
+                text = stringResource(
+                    R.string.department_deactivation_reason,
+                    department.deactivatedBy?.name ?: ""
+                ),
+                clickableText = stringResource(R.string.learn_more),
+                onTextClick =onLearnMoreClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.medium16)
+            )
+        }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
 
         DetailsItem(
@@ -147,10 +163,29 @@ fun DepartmentDetailsCardPreview() {
             DepartmentDetailsCard(
                 department = createSampleDepartmentData()[0],
                 currentStatus = AvailabilityStatus.OPEN,
-                onVaccinesItemClick= {},
+                onVaccinesItemClick = {},
                 onDoctorItemClick = {},
                 onServiceItemClick = {},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                onLearnMoreClick={},
+            )
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun DepartmentDetailsCardDeactivatedPreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            DepartmentDetailsCard(
+                department = createSampleDepartmentData()[1],
+                currentStatus = AvailabilityStatus.OPEN,
+                onVaccinesItemClick = {},
+                onDoctorItemClick = {},
+                onServiceItemClick = {},
+                modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                onLearnMoreClick={},
             )
         }
     }

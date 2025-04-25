@@ -1,6 +1,7 @@
 package com.example.ui.fake
 
 import com.example.model.Department
+import com.example.model.User
 import java.time.LocalDate
 
 fun createSampleDepartmentData(): List<Department> {
@@ -14,6 +15,9 @@ fun createSampleDepartmentData(): List<Department> {
             providesVaccine=true,
             creatingDate=LocalDate.now(),
             isAvailableNow = true,
+            isDeactivated = false,
+            deactivationReason =null,
+            deactivatedBy = null,
         ),
         Department(
             id = 102,
@@ -24,6 +28,9 @@ fun createSampleDepartmentData(): List<Department> {
             providesVaccine=false,
             creatingDate=LocalDate.now(),
             isAvailableNow = false,
+            isDeactivated = true,
+            deactivationReason = "This is not working because of a damage. We will take care of this as soon as possible",
+            deactivatedBy = User(id = 1, name = "Ali Ahmad"),
         ),
         Department(
             id = 103,
@@ -34,6 +41,7 @@ fun createSampleDepartmentData(): List<Department> {
             providesVaccine=false,
             creatingDate=LocalDate.now(),
             isAvailableNow = true,
+            isDeactivated = false,
         )
     )
 }

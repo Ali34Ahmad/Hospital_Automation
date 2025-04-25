@@ -49,5 +49,6 @@ sealed interface AppIcons {
         val finishLineFlag = R.drawable.ic_finish_line_flag
         val availabilityStatus = R.drawable.ic_availability_status
         val guardian = R.drawable.ic_guardian
+        val errorMessage = R.drawable.problem
     }
 }

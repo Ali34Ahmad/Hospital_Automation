@@ -14,7 +14,6 @@ data class Sizing(
     val extraSmall8: Dp = 8.dp,
     val small1: Dp = 1.dp,
     val small8: Dp = 8.dp,
-    val small24: Dp = 24.dp,
     val small16: Dp = 16.dp,
     val small18: Dp = 18.dp,
     val small24: Dp = 24.dp,

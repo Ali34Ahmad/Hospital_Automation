@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
@@ -132,7 +133,7 @@ fun PatientInfoCard(
 }
 
 
-@Preview
+@DarkAndLightModePreview
 @Composable
 fun MedicalRecordCardPreview() {
     Hospital_AutomationTheme {
@@ -150,7 +151,7 @@ fun MedicalRecordCardPreview() {
         )
     }
 }
-@Preview
+@DarkAndLightModePreview
 @Composable
 fun PrescriptionCardCardPreview() {
     Hospital_AutomationTheme {

@@ -55,7 +55,7 @@ fun HospitalAutomationTextFiled(
                     Text(
                         text,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
+                        color = MaterialTheme.additionalColorScheme.onBackgroundVariant
                     )
                 }
             },

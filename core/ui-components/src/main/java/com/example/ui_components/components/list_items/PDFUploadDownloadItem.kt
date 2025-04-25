@@ -121,7 +121,6 @@ fun PDFUploadDownloadItem(
                         MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     else
                         MaterialTheme.colorScheme.primary
-                    val color = if(state == FileUploadingState.PAUSED) Color(0xffBCC7D2) else MaterialTheme.additionalColorScheme.primaryText
                     LinearProgressIndicator(
                         progress = {
                             progress.toFloat().div(100)

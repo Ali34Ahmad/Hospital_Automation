@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,7 +52,7 @@ fun EditableAppointmentTypeCard(
     onDescriptionChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes deleteIcon: Int = HospitalAutomationIcons.delete,
-    @StringRes warningMessage: Int = R.string.description_not_added,
+    warningMessage: String = stringResource(R.string.description_not_added),
     @DrawableRes noteLeadingIcon: Int = HospitalAutomationIcons.problem,
     @DrawableRes noteTrailingIcon : Int = HospitalAutomationIcons.add
 ) {
@@ -86,7 +87,7 @@ fun EditableAppointmentTypeCard(
                     Text(
                         text = "$index.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
+                        color = MaterialTheme.additionalColorScheme.onBackgroundVariant
                     )
                     //Medicine with drug or appointment type with time
                     Row(
