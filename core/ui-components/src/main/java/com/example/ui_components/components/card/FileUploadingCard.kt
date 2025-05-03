@@ -10,10 +10,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.example.constants.enums.FileUploadingState
 import com.example.constants.icons.AppIcons
+import com.example.ui.helper.DarkAndLightModePreview
 import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.model.File
-import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
@@ -26,7 +27,9 @@ fun FileUploadingCard(
     title: String,
     description: String,
     file: File? = null,
-    onFileClick: () -> Unit,
+    onFileUploadingPause: () -> Unit,
+    onFileUploadingOpen: () -> Unit,
+    onFileUploadingResume: () -> Unit,
     onUploadFileButtonClick: () -> Unit,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
@@ -49,13 +52,12 @@ fun FileUploadingCard(
             file?.let {
                 PDFUploadDownloadItem(
                     name = file.fileName,
-                    currentSize = file.fileSize,
+                    fileSize = file.fileSize,
                     progress = file.uploadingProgress,
-                    onPause = TODO(),
-                    onResume = TODO(),
-                    onOpen = TODO(),
-                    state = TODO(),
-                    image = TODO()
+                    state = FileUploadingState.UPLOADING,
+                    onPause = onFileUploadingPause,
+                    onOpen = onFileUploadingOpen,
+                    onResume = onFileUploadingResume,
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
                 Row(modifier = Modifier.fillMaxWidth()) {
@@ -77,7 +79,6 @@ fun FileUploadingCard(
     )
 }
 
-
 @DarkAndLightModePreview
 @Composable
 fun FileUploadingCardPreview() {
@@ -91,9 +92,11 @@ fun FileUploadingCardPreview() {
                 fileSize = 1.7f,
                 fileName = "Cam-Scanner-152314",),
                 onUploadFileButtonClick = {},
-                onFileClick = {},
-                onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
+                onFileUploadingResume = {},
+                onFileUploadingPause = {},
+                onFileUploadingOpen = {},
+                onNextButtonClick = {},
             )
         }
     }
@@ -109,8 +112,9 @@ fun FileUploadingCardInit2Preview() {
                 title = stringResource(R.string.child_birth_certification_is_required),
                 description = stringResource(R.string.upload_file_description),
                 onUploadFileButtonClick = {},
-                onFileClick = {},
-                onNextButtonClick = {},
+                onFileUploadingResume = {},
+                onFileUploadingPause = {},
+                onFileUploadingOpen = {},                onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
             )
         }

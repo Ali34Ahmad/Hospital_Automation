@@ -119,16 +119,16 @@ fun LabeledBadge(
     ) { target ->
         when(target){
             true->{MaterialTheme.colorScheme.onPrimaryContainer}
-            false ->{MaterialTheme.additionalColorScheme.onBackgroundVariantLight}
+            false ->{MaterialTheme.additionalColorScheme.onBackgroundVariant}
         }
     }
 
     val badgeColor by badgeColorAnimation.animateColor(
-        transitionSpec = {spring(stiffness = Spring.StiffnessLow)}
+        transitionSpec = {spring(stiffness = Spring.StiffnessLow)}, label = ""
     ) { target ->
         when(target){
             true->{MaterialTheme.colorScheme.onBackground}
-            false ->{MaterialTheme.additionalColorScheme.onBackgroundVariantLight}
+            false ->{MaterialTheme.additionalColorScheme.onBackgroundVariant}
         }
     }
 

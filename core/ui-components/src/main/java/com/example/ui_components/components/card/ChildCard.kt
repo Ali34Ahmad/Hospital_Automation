@@ -53,7 +53,7 @@ fun ChildCard(
             Text(
                 text = child.age.toAppropriateFormat(),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight,
+                color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

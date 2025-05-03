@@ -1,4 +1,4 @@
-package com.example.ui_components.custom_file
+package com.example.ui_components.components.custom_file
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

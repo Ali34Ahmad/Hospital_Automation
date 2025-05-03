@@ -15,4 +15,11 @@ object ApiRoutes {
     const val GUARDIAN_FOR_CHILD = "$EMPLOYEE/guardian-for-ex-child"
 
 
+    const val SIGNUP_EMPLOYEE = "$EMPLOYEE/sign-up"
+    const val LOGIN_EMPLOYEE = "$EMPLOYEE/login"
+    const val VERIFY_OTP = "$EMPLOYEE/verify-otp"
+    const val UPLOAD_EMPLOYEE_DOCUMENTS = "$EMPLOYEE/upload-license"
+    const val ADD_RESIDENTIAL_ADDRESS = "$EMPLOYEE/add-address"
+    const val EMPLOYEE_PROFILES = "$EMPLOYEE/show-profile"
+
 }

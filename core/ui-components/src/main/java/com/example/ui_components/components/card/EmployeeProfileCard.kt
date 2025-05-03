@@ -18,9 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.example.constants.enums.Gender
 import com.example.constants.icons.AppIcons
+import com.example.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -33,15 +36,19 @@ import com.example.ui_components.components.network_image.NetworkImage
 @Composable
 fun EmployeeProfileCard(
     name: String,
-    details: (@Composable () -> Unit)? = null,
     onPhoneNumberButtonClick: () -> Unit,
     onEmailButtonClick: () -> Unit,
     phoneNumber: String,
     email: String,
+    gender: Gender,
+    address: String,
     profileImageUrl: String,
-    onNavigateUpButtonClick:()->Unit,
+    onNavigateUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val genderIcon=if(gender==Gender.MALE)AppIcons.Outlined.male else AppIcons.Outlined.female
+
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
@@ -49,7 +56,10 @@ fun EmployeeProfileCard(
             .padding(bottom = MaterialTheme.spacing.large24)
     ) {
         Box(modifier = Modifier) {
-            NetworkImage(imageUrl = profileImageUrl)
+            NetworkImage(
+                imageUrl = profileImageUrl,
+                contentScale = ContentScale.Fit,
+            )
             IconButton(
                 onClick = onNavigateUpButtonClick,
                 modifier = Modifier
@@ -72,10 +82,27 @@ fun EmployeeProfileCard(
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16)
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
-        details?.let {
-            details()
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large32))
-        }
+        DetailsItem(
+            iconRes = AppIcons.Outlined.location,
+            iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+            iconColor = MaterialTheme.colorScheme.primary,
+            title = stringResource(id = R.string.residential_address),
+            description = address,
+            modifier = Modifier
+                .fillMaxWidth(),
+            isMultipleLines = true,
+        )
+        DetailsItem(
+            iconRes = genderIcon,
+            iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+            iconColor = MaterialTheme.colorScheme.primary,
+            title = stringResource(id = R.string.gender),
+            description = gender.name.toCapitalizedString(),
+            modifier = Modifier
+                .fillMaxWidth(),
+        )
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large32))
+
         Row(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16)) {
             HospitalAutomationButton(
                 onClick = onPhoneNumberButtonClick,
@@ -106,36 +133,10 @@ fun EmployeeProfileCardPreview() {
                 name = "Ali Ahmad",
                 onEmailButtonClick = {},
                 onPhoneNumberButtonClick = {},
-                details = {
-                    DetailsItem(
-                        iconRes = AppIcons.Outlined.location,
-                        iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                        iconColor = MaterialTheme.colorScheme.primary,
-                        title = stringResource(id = R.string.residential_address),
-                        description = "Uploaded by Zaid Ahmad",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium16,
-                                vertical = MaterialTheme.spacing.small12
-                            ),
-                    )
-                    DetailsItem(
-                        iconRes = AppIcons.Outlined.female,
-                        iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                        iconColor = MaterialTheme.colorScheme.primary,
-                        title = stringResource(id = R.string.gender),
-                        description = stringResource(R.string.female),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium16,
-                                vertical = MaterialTheme.spacing.small12
-                            ),
-                    )
-                },
                 onNavigateUpButtonClick = {},
-                profileImageUrl = "https://www.bing.com/images/search?q=doctor%20image&view=detailv2&FORM=IQFRBA&id=74928BEED5D0A38EE438C01E82948451C0F94FD6&selectedindex=0&&expw=1200&exph=1200&ccid=0Ttue7YQ&ck=A75C9DAA1BADE50716E013E4D286ECFF&simid=608009908073151178&thid=OIP.0Ttue7YQAsl2DKGwh4POzgHaHa&idpp=serp&idpbck=1&ajaxhist=0&ajaxserp=0"
+                profileImageUrl = "",
+                gender = Gender.FEMALE,
+                address = "Syria - Lattakia - Massaya Streen, opposite of Anbar Coffee"
             )
         }
     }

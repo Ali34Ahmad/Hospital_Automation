@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 data class AdditionalShapes(
     val default: Shape = RectangleShape,
     val small12: Shape = RoundedCornerShape(12.dp),
+    val large28: Shape = RoundedCornerShape(28.dp),
 )
 
 val LocalAdditionalShapes = compositionLocalOf { AdditionalShapes() }

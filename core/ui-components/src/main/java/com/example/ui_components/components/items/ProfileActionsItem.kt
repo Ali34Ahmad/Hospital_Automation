@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
@@ -30,17 +31,17 @@ import com.example.ui.theme.spacing
 fun ProfileActionsItem(
     @DrawableRes iconRes: Int,
     modifier: Modifier = Modifier,
-    iconBackgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+    iconBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
     iconColor: Color = MaterialTheme.colorScheme.primary,
     title: String,
     titleColor: Color = MaterialTheme.colorScheme.onBackground,
     showUnderline: Boolean = false,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?=null,
 ) {
     val underlineColor = MaterialTheme.colorScheme.outlineVariant
     val backgroundColor = MaterialTheme.colorScheme.background
     val columnModifier = if (showUnderline) {
-        Modifier
+        modifier
             .background(color = backgroundColor)
             .drawBehind {
                 val strokeWidth = 1.dp.toPx()
@@ -56,10 +57,14 @@ fun ProfileActionsItem(
         modifier
             .background(color = backgroundColor)
     }
+    val itemClickableModifier=if(onClick!=null){
+        columnModifier.clickable { onClick() }
+    }else{
+        columnModifier
+    }
 
     Column(
-        modifier = columnModifier
-            .clickable { onClick() }
+        modifier =itemClickableModifier,
     ) {
         Row(
             modifier = Modifier

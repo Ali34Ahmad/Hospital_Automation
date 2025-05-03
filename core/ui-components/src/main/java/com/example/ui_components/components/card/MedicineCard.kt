@@ -118,7 +118,7 @@ fun MedicineCard(
                 Text(
                     text = "( $drug )",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
+                    color = MaterialTheme.additionalColorScheme.onBackgroundVariant
                 )
             }
 
@@ -150,7 +150,7 @@ fun MedicineCard(
                 Spacer(Modifier.width(MaterialTheme.spacing.small8))
                 Text(
                     text = "$numberOfPharmacies "+ stringResource(R.string.pharmacies),
-                    color = MaterialTheme.additionalColorScheme.onBackgroundVariantLight,
+                    color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.width(MaterialTheme.spacing.large36))
@@ -158,7 +158,7 @@ fun MedicineCard(
                     modifier = Modifier.size(MaterialTheme.sizing.small18),
                     painter = painterResource(HospitalAutomationIcons.chevronRight),
                     contentDescription = null,
-                    tint = MaterialTheme.additionalColorScheme.onBackgroundVariantLight
+                    tint = MaterialTheme.additionalColorScheme.onBackgroundVariant
                 )
             }
             Spacer(Modifier.height(MaterialTheme.spacing.medium16))

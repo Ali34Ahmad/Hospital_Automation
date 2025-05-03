@@ -100,7 +100,6 @@ fun AppointmentCard(
             iconRes = HospitalAutomationIcons.calender,
             title = stringResource(dateTitle),
             description = date,
-            isDescriptionClickable = false,
         )
 
     }
