@@ -1,11 +1,11 @@
 package com.example.network.model.request
 
-import kotlinx.serialization.InternalSerializationApi
+import android.annotation.SuppressLint
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
-@OptIn(InternalSerializationApi::class)
+@SuppressLint("UnsafeOptInUsageError")
 @Serializable
 data class AddChildForGuardianRequest(
     @SerialName("child-id")

@@ -26,7 +26,7 @@ import io.ktor.http.parameters
 import kotlinx.serialization.json.buildJsonObject
 import java.io.File
 
-class ChildApiServiceImpl(
+internal class ChildApiServiceImpl(
     private val client: HttpClient
 ): ChildApiService {
 

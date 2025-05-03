@@ -19,7 +19,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 
-class UserApiServiceImpl(
+internal class UserApiServiceImpl(
     private val client: HttpClient
 ) : UserApiService{
     override suspend fun getUserProfile(token: String, fullName: NetworkFullName): Resource<NetworkUser> =
