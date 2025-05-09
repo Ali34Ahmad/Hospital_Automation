@@ -1,7 +1,7 @@
 package com.example.network.remote.user
 
 import com.example.network.model.request.AddChildForGuardianRequest
-import com.example.network.model.request.AddChildRequest
+import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.request.NetworkFullName
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.NetworkUser

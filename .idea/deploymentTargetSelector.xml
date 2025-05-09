@@ -8,9 +8,6 @@
       <SelectionState runConfigName="OtpInputRowPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PassedAppointmentDetailsCardPreview - DarkAndLightModePreview 1">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

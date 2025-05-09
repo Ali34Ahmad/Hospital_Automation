@@ -1,11 +1,14 @@
 package com.example.network.remote.child
 
-import com.example.network.model.request.AddChildRequest
+import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.request.NetworkFullName
 import com.example.network.model.response.ChildrenResponse
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.ShowChildProfileResponse
+import com.example.network.model.response.child.AddChildResponse
 import com.example.network.utility.Resource
+import com.example.network.utility.Result
+import com.example.network.utility.rootError
 import java.io.File
 
 interface ChildApiService {
@@ -28,7 +31,7 @@ interface ChildApiService {
     suspend fun addChild(
         token: String,
         child: AddChildRequest
-    ) : Resource<NetworkMessage>
+    ) : Result<AddChildResponse, rootError>
 
     /**
      * I use Id instead of full name

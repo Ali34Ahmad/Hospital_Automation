@@ -1,12 +1,16 @@
 package com.example.network.remote.child
 
-import com.example.network.model.request.AddChildRequest
+import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.request.NetworkFullName
 import com.example.network.model.response.ChildrenResponse
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.ShowChildProfileResponse
+import com.example.network.model.response.child.AddChildResponse
 import com.example.network.utility.ApiRoutes
+import com.example.network.utility.NetworkError
 import com.example.network.utility.Resource
+import com.example.network.utility.Result
+import com.example.network.utility.rootError
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -22,8 +26,6 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.http.parameters
-import kotlinx.serialization.json.buildJsonObject
 import java.io.File
 
 internal class ChildApiServiceImpl(
@@ -92,21 +94,20 @@ internal class ChildApiServiceImpl(
             Resource.Error(message = e.message?: "unknown error")
         }
 
-    override suspend fun addChild(token: String, child: AddChildRequest) : Resource<NetworkMessage> =
-        try {
-            val response = client.post(ApiRoutes.ADD_CHILD){
+    override suspend fun addChild(token: String, child: AddChildRequest) : Result<AddChildResponse, rootError>{
+        val response = try {
+            client.post(ApiRoutes.ADD_CHILD){
                 contentType(ContentType.Application.Json)
-
                 header(HttpHeaders.Authorization,"Bearer $token")
                 setBody(child)
             }
-
-            val message: NetworkMessage = response.body()
-            Resource.Success<NetworkMessage>(message)
-
-        }catch (e: Exception){
-            Resource.Error<NetworkMessage>(message = e.message?: "unknown error")
+        }catch (_: Exception){
+             return Result.Error<NetworkError>(error = NetworkError.UNKNOWN)
         }
+        val body : AddChildResponse = response.body()
+        return Result.Success<AddChildResponse>(data = body)
+    }
+
 
     override suspend fun uploadChildCertificate(
         token: String,

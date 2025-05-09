@@ -1,13 +1,13 @@
 package com.example.network.utility
 
 object ApiRoutes {
-    private const val BASE_URL = "FAKE_URL"
+    private const val BASE_URL = "https://dispensary-hkz3.onrender.com"
     private const val EMPLOYEE = "$BASE_URL/employee"
 
 
     const val SHOW_CHILD_PROFILE = "$EMPLOYEE/show-For-child"
     const val SEARCH_FOR_CHILD = "$EMPLOYEE/searchFor-child"
-    const val ADD_CHILD = "$EMPLOYEE/addChild"
+    const val ADD_CHILD = "$EMPLOYEE/addChild/2"
     const val UPLOAD_CHILD_CERTIFICATE = "$EMPLOYEE/upload-Child-Certificate"
 
     const val SHOW_USER_PROFILE = "$EMPLOYEE/show-For-user"
