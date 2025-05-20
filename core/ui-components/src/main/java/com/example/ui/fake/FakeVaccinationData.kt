@@ -1,6 +1,6 @@
 package com.example.ui.fake
 
-import com.example.ui_components.model.Vaccine
+import com.example.model.Vaccine
 
 fun createFakeVaccinationData(): List<Pair<Int, List<Vaccine>>> {
     return listOf(

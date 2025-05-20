@@ -1,6 +1,8 @@
+
 plugins {
     alias(libs.plugins.common.android.library)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -15,6 +17,17 @@ android {
             )
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+    defaultConfig {
+        minSdk = 27
+    }
+    compileSdk = 35
 }
 
 dependencies {
@@ -23,5 +36,7 @@ dependencies {
     implementation(libs.bundles.ktor.android)
 
     implementation(libs.koin.android)
+
+    api(project(":core:utility"))
 
 }

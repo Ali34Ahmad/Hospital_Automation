@@ -3,6 +3,7 @@ package com.example.ui_components.components.card
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -100,7 +101,9 @@ fun ChildProfileCard(
 @Composable
 fun ChildProfileCardPreview() {
     Hospital_AutomationTheme {
-        Surface {
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
             ChildProfileCard(
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.medium16)

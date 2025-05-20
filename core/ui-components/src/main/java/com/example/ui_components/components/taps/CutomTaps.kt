@@ -40,7 +40,7 @@ import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.model.LabeledBadgeData
+import com.example.model.LabeledBadgeData
 
 
 @Composable

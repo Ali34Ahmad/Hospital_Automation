@@ -10,5 +10,4 @@ interface UserPreferenceRepository {
 
     suspend fun updateToken(token:String)
 
-
 }

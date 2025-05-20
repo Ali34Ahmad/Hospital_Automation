@@ -15,7 +15,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.ProfileActionsItem
-import com.example.ui_components.model.Vaccine
+import com.example.model.Vaccine
 
 @Composable
 fun VaccinationTable(

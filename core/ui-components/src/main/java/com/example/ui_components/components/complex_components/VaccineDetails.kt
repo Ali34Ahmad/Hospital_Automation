@@ -26,7 +26,7 @@ import com.example.ui_components.icons.HospitalAutomationIcons
 import com.example.ui_components.R
 import com.example.ui_components.components.texts.IndexedText
 import com.example.ui_components.components.texts.TitleWithSubtitle
-import com.example.ui_components.model.InteractionData
+import com.example.model.InteractionData
 
 @Composable
 fun VaccineDetails(

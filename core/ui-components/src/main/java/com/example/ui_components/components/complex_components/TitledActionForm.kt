@@ -33,7 +33,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 import com.example.ui_components.icons.HospitalAutomationIcons
-import com.example.ui_components.model.TextFieldData
+import com.example.model.TextFieldData
 
 @Composable
 fun TitledActionForm(

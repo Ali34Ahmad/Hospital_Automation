@@ -33,6 +33,7 @@ fun HospitalAutomationTopBarWithSearchBar(
     onTrailingIconClick: () -> Unit,
     @StringRes placeholderText: Int,
     onNavigationIconCLick: () -> Unit,
+    onSearch: (String)-> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int = HospitalAutomationIcons.arrowBack,
     @DrawableRes trailingIcon: Int? = HospitalAutomationIcons.close,
@@ -55,13 +56,13 @@ fun HospitalAutomationTopBarWithSearchBar(
                     )
                 }
                 HospitalAutomationSearchBar(
-                    modifier = Modifier.fillMaxWidth(1f)
-                    ,
+                    modifier = Modifier.fillMaxWidth(1f),
                     query = query,
                     onQueryChange = onQueryChange,
                     onTrailingIconClick = onTrailingIconClick,
                     placeholderText = placeholderText,
                     trailingIcon = trailingIcon,
+                    onSearch = onSearch
                 )
             }
 
@@ -90,6 +91,7 @@ fun HospitalAutomationTopBarWithSearchBarPreview() {
             },
             placeholderText = R.string.search_for_guardians,
             onNavigationIconCLick = {  },
+            onSearch = {}
         )
     }
 }

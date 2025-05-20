@@ -4,6 +4,9 @@
     <bytecodeTargetLevel target="21">
       <module name="Hospital_Automation.core.android" target="21" />
       <module name="Hospital_Automation.core.network.test" target="11" />
+      <module name="Hospital_Automation.core.util" target="11" />
+      <module name="Hospital_Automation.core.util.main" target="11" />
+      <module name="Hospital_Automation.core.util.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -45,7 +45,7 @@ fun DatePickerDialog(
 @DarkAndLightModePreview
 @Composable
 fun DatePickerDialogPreview() {
-    val datePickerState: UseCaseState = rememberUseCaseState()
+    val datePickerState: UseCaseState = rememberUseCaseState(visible = true)
     var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
     Hospital_AutomationTheme {
         Surface {

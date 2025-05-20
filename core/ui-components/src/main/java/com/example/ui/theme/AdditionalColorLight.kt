@@ -23,7 +23,8 @@ interface AdditionalColors {
     val green: Color
     val warning:Color
     val warningContainer:Color
-
+    val surfaceError: Color
+    val onSurfaceError : Color
 }
 
 data class AdditionalColorLight(
@@ -41,6 +42,8 @@ data class AdditionalColorLight(
     override val green:Color = Color(0xFF33A439),
     override val warning: Color=Color(0xFFD3BF12),
     override val warningContainer: Color=Color(0xFFFFF8E1),
+    override val surfaceError: Color = Color(0xffFFEAEA),
+    override val onSurfaceError: Color =  Color(0xffB71C1C),
 ) : AdditionalColors
 
 data class AdditionalColorDark(
@@ -58,13 +61,15 @@ data class AdditionalColorDark(
     override val green:Color = Color(0xFF33A439),
     override val warning: Color = Color(0xFFE6C229),
     override val warningContainer: Color = Color(0xFF403800),
+    override val surfaceError: Color = Color(0xffFFEAEA),
+    override val onSurfaceError: Color =  Color(0xffB71C1C),
 ) : AdditionalColors
 
 
 
 
 val LocalAdditionalColors = compositionLocalOf<AdditionalColors> {
-    error("No AdditionalColors provided")
+    AdditionalColorLight()
 }
 
 val MaterialTheme.additionalColorScheme

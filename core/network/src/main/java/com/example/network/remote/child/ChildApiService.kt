@@ -1,45 +1,44 @@
 package com.example.network.remote.child
 
 import com.example.network.model.request.child.AddChildRequest
-import com.example.network.model.request.NetworkFullName
-import com.example.network.model.response.ChildrenResponse
-import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.ShowChildProfileResponse
 import com.example.network.model.response.child.AddChildResponse
-import com.example.network.utility.Resource
-import com.example.network.utility.Result
-import com.example.network.utility.rootError
+import com.example.network.model.response.child.ChildFullResponse
+import com.example.network.model.response.child.GetChildrenByGuardianIdResponse
+import com.example.network.model.response.child.GetChildrenByNameResponse
+import com.example.network.model.response.child.UploadCertificatedResponse
+import com.example.utility.network.NetworkError
+import com.example.utility.network.Result
 import java.io.File
 
 interface ChildApiService {
-    /**
-     * Show child profile by full name
-     * need update to use id instead of full name
-     */
-    suspend fun showChildProfile(
+
+    suspend fun getChildProfile(
         token: String,
-        fullName: NetworkFullName
-    ) : Resource<ShowChildProfileResponse>
+        id: Int
+    ) : Result<ChildFullResponse, NetworkError>
 
     suspend fun getChildrenByName(
         page: Int,
         limit: Int,
         token: String,
         name: String
-    ) : Resource<ChildrenResponse>
+    ) : Result<GetChildrenByNameResponse, NetworkError>
 
     suspend fun addChild(
         token: String,
+        guardianId: Int,
         child: AddChildRequest
-    ) : Result<AddChildResponse, rootError>
+    ) : Result<AddChildResponse, NetworkError>
 
-    /**
-     * I use Id instead of full name
-     */
     suspend fun uploadChildCertificate(
         token: String,
         id: String,
         image: File,
-    ): Resource<NetworkMessage>
+    ): Result<UploadCertificatedResponse, NetworkError>
 
+
+    suspend fun getChildrenByGuardianId(
+        token: String,
+        guardianId: String,
+    ): Result<GetChildrenByGuardianIdResponse, NetworkError>
 }

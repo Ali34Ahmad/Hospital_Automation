@@ -3,58 +3,28 @@ package com.example.hospital_automation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.example.add_child_screen.AddChildScreen
+import com.example.add_child_screen.AddChildViewModel
+import com.example.child_profile.ChildProfileScreen
+import com.example.child_profile.ChildProfileViewModel
+import com.example.children_search.ChildrenSearchScreen
+import com.example.children_search.ChildrenSearchViewModel
 import com.example.hospital_automation.ui.theme.Hospital_AutomationTheme
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             Hospital_AutomationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                            .fillMaxSize()
-                            .padding(24.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                shape = MaterialTheme.shapes.extraLarge
-                            )
-                    )
-                }
+                val viewModel = koinViewModel<AddChildViewModel>()
+                AddChildScreen(
+                    viewModel = viewModel,
+                    onAction = viewModel::onAction
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center){
-        Text(
-            "Hello World! I am $name",
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Hospital_AutomationTheme {
-        Greeting("Android")
     }
 }

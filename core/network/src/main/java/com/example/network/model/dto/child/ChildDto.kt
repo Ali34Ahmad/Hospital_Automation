@@ -1,10 +1,8 @@
 package com.example.network.model.dto.child
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@OptIn(InternalSerializationApi::class)
 @Serializable
 data class ChildDto(
     @SerialName("childId") val childId: Int,
@@ -18,5 +16,6 @@ data class ChildDto(
     val gender: String,
     @SerialName("employee_id") val employeeId: Int,
     val updatedAt: String,
-    val createdAt: String
+    val createdAt: String,
+    @SerialName("birth_certificate_img_url") val birthCertificateImgUrl: String? = null
 )

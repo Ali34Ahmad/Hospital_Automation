@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
 import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.spacing
 
 @Composable
 fun Option(
@@ -44,16 +46,34 @@ fun Option(
 ) {
     val transition = updateTransition(targetState = isSelected, label = "isSelectedTransition")
 
-    val color by transition.animateColor(label = "color") { isSelected ->
-        if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background
+    val color by transition.animateColor(
+        label = "color",
+        transitionSpec = {
+            tween(durationMillis = 400)
+        }
+        ) { isSelected ->
+        if (isSelected) MaterialTheme.colorScheme.primaryContainer
+        else MaterialTheme.colorScheme.background
     }
 
-    val borderColor by transition.animateColor(label = "borderColor") { isSelected ->
-        if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
+    val borderColor by transition.animateColor(
+        label = "borderColor",
+        transitionSpec = {
+            tween(durationMillis = 400)
+        }
+    ){ isSelected ->
+        if (isSelected) MaterialTheme.colorScheme.primary
+        else Color.Transparent
     }
 
-    val borderWidth by transition.animateDp(label = "borderWidth") { isSelected ->
-        if (isSelected) 1.dp else 0.dp
+    val borderWidth by transition.animateDp(
+        label = "borderWidth",
+        transitionSpec = {
+            tween(durationMillis = 300)
+        }
+    ) { isSelected ->
+        if (isSelected) 1.dp
+        else 0.dp
     }
 
     Surface(
@@ -67,7 +87,7 @@ fun Option(
     ) {
         Row(
             modifier = Modifier.padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall4),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(painter = painterResource(icon),null)

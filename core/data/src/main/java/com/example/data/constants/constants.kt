@@ -1,0 +1,3 @@
+package com.example.data.constants
+
+const val FAKE_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZha2UuZW1wbG95ZWVAZ21haWwuY29tIiwidXNlcklkIjo2NiwiaWF0IjoxNzQ3NjI2MDI2fQ.IXTu5qTEKupent0_JyNQV17aLA6LPBfh2aEfIN3O_Kc"

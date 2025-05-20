@@ -3,6 +3,7 @@ import org.gradle.kotlin.dsl.android
 plugins {
     alias(libs.plugins.common.android.library)
     alias(libs.plugins.common.android.library.compose)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {

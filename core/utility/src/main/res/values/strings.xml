@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="less_than_eight_chars">Less than 8 characters</string>
+    <string name="empty_field">Empty field</string>
+</resources>

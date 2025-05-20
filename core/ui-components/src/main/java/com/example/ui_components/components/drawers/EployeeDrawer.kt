@@ -26,14 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
-import com.example.ui_components.model.DrawerButton
+import com.example.model.DrawerButton
 
 @Composable
 fun EmployeeDrawer(

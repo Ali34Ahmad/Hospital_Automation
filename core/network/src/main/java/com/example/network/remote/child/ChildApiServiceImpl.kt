@@ -1,62 +1,100 @@
 package com.example.network.remote.child
 
+import android.util.Log
 import com.example.network.model.request.child.AddChildRequest
-import com.example.network.model.request.NetworkFullName
-import com.example.network.model.response.ChildrenResponse
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.ShowChildProfileResponse
 import com.example.network.model.response.child.AddChildResponse
+import com.example.network.model.response.child.ChildFullResponse
+import com.example.network.model.response.child.GetChildrenByGuardianIdResponse
+import com.example.network.model.response.child.GetChildrenByNameResponse
+import com.example.network.model.response.child.UploadCertificatedResponse
 import com.example.network.utility.ApiRoutes
-import com.example.network.utility.NetworkError
-import com.example.network.utility.Resource
-import com.example.network.utility.Result
-import com.example.network.utility.rootError
+import com.example.utility.network.NetworkError
+import com.example.utility.network.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
-import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import io.ktor.http.headers
+import io.ktor.http.parameters
+import io.ktor.util.network.UnresolvedAddressException
+import kotlinx.serialization.SerializationException
 import java.io.File
 
+
+private const val TAG = "child_api_service"
 internal class ChildApiServiceImpl(
     private val client: HttpClient
 ): ChildApiService {
 
-    override suspend fun showChildProfile(
+    override suspend fun getChildProfile(
         token: String,
-        fullName: NetworkFullName,
-    ): Resource<ShowChildProfileResponse> = try {
-            val response: HttpResponse = client.get(ApiRoutes.SHOW_CHILD_PROFILE) {
-                contentType(ContentType.Application.Json)
-                header(HttpHeaders.Authorization, "Bearer $token")
-                setBody(fullName)
+        id: Int,
+    ): Result<ChildFullResponse, NetworkError> {
+        val response = try {
+            Log.d(TAG,"start fetching data")
+            client.get(ApiRoutes.CHILD_BY_ID) {
+                bearerAuth(token)
+                parameter("id", id)
             }
-            when(response.status) {
-                HttpStatusCode.OK -> {
-                    val profile: ShowChildProfileResponse = response.body()
-                    Resource.Success<ShowChildProfileResponse>(data = profile)
-                }
-                HttpStatusCode.BadRequest -> {
-                    val message: NetworkMessage = response.body()
-                    Resource.Error<ShowChildProfileResponse>(message = message.message)
-                }
-                else -> {
-                    Resource.Error<ShowChildProfileResponse>(message = "unexpected error")
-                }
-            }
-            } catch (e: Exception){
-            Resource.Error(message = e.message?: "unknown error")
+
+        } catch (e: Exception){
+            Log.e(TAG, "getChildProfile: ${e.message}")
+            return Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
+        return when(response.status) {
+            HttpStatusCode.OK -> {
+                Log.d(TAG,"success")
+                val profile: ChildFullResponse = response.body()
+                Result.Success<ChildFullResponse>(profile)
+            }
+            HttpStatusCode.BadRequest -> {
+                val body: NetworkMessage = response.body()
+                Result.Error<NetworkError>(
+                    if(body.message.contains("Wrong Id!",ignoreCase = true))
+                        NetworkError.WRONG_ID
+                    else
+                        NetworkError.UNKNOWN
+                )
+            }
+            else -> {
+                Result.Error<NetworkError>(NetworkError.UNKNOWN)
+            }
+        }
+    }
+
+    override suspend fun getChildrenByGuardianId(
+        token: String,
+        guardianId: String,
+    ): Result<GetChildrenByGuardianIdResponse, NetworkError> {
+        val response = try {
+            client.get(ApiRoutes.CHILDREN_BY_GUARDIAN_ID + "/$guardianId") {
+                bearerAuth(token)
+            }
+        }catch (e: Exception){
+            Log.e(TAG, "getChildrenByGuardianId: ${e.message}")
+            return Result.Error<NetworkError>(NetworkError.UNKNOWN)
+        }
+        return when(response.status){
+            HttpStatusCode.OK -> {
+                val data: GetChildrenByGuardianIdResponse = response.body()
+                Result.Success<GetChildrenByGuardianIdResponse>(data)
+            }
+            else -> {
+                Result.Error<NetworkError>(NetworkError.UNKNOWN)
+            }
+        }
+    }
 
 
     /**
@@ -68,84 +106,118 @@ internal class ChildApiServiceImpl(
         limit: Int,
         token: String,
         name: String,
-    ): Resource<ChildrenResponse>  =
-        try {
-            val response: HttpResponse = client.get(ApiRoutes.SEARCH_FOR_CHILD) {
-                contentType(ContentType.Application.Json)
-
-                parameter("page",page)
-                parameter("limit",limit)
-
-                header(HttpHeaders.Authorization, "Bearer $token")
-
-                setBody(mapOf("name" to name))
-
-            }
-            when(response.status) {
-                HttpStatusCode.OK -> {
-                    val children: ChildrenResponse = response.body()
-                    Resource.Success<ChildrenResponse>(data = children)
+    ): Result<GetChildrenByNameResponse, NetworkError>  {
+        val response = try {
+            client.get(ApiRoutes.CHILDREN_BY_NAME) {
+                //query parameters
+                parameters {
+                    append("page", page.toString())
+                    append("limit", limit.toString())
+                    append("name",name)
                 }
-                else -> {
-                    Resource.Error<ChildrenResponse>(message = "unexpected error")
-                }
+                //auth token
+                bearerAuth(token)
+
             }
         } catch (e: Exception){
-            Resource.Error(message = e.message?: "unknown error")
+            Log.e(TAG, "uploadChildCertificate: ${e.message}")
+            return Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
-
-    override suspend fun addChild(token: String, child: AddChildRequest) : Result<AddChildResponse, rootError>{
-        val response = try {
-            client.post(ApiRoutes.ADD_CHILD){
-                contentType(ContentType.Application.Json)
-                header(HttpHeaders.Authorization,"Bearer $token")
-                setBody(child)
+        return when(response.status) {
+            HttpStatusCode.OK -> {
+                val children: GetChildrenByNameResponse = response.body()
+                Result.Success<GetChildrenByNameResponse>(children)
             }
-        }catch (_: Exception){
-             return Result.Error<NetworkError>(error = NetworkError.UNKNOWN)
+            else -> {
+                Result.Error<NetworkError>(NetworkError.UNKNOWN)
+            }
         }
-        val body : AddChildResponse = response.body()
-        return Result.Success<AddChildResponse>(data = body)
     }
 
 
+    /**
+     * add the child essential info to the database.
+     * @param guardianId the employee who add the child
+     * @author Ali Mansoura
+     */
+    override suspend fun addChild(
+        token: String,
+        guardianId: Int,
+        child: AddChildRequest
+    ) : Result<AddChildResponse, NetworkError>{
+
+        val response = try {
+            Log.d(TAG, "add child: fetching data")
+            client.post(ApiRoutes.ADD_CHILD+"/$guardianId"){
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
+                setBody(child)
+            }
+        }catch (e: Exception){
+            Log.e(TAG, "add child: ${e.message}")
+             return Result.Error<NetworkError>(error = NetworkError.UNKNOWN)
+        }
+        when(response.status){
+            HttpStatusCode.OK ->{
+                val body : AddChildResponse = response.body()
+                return Result.Success<AddChildResponse>(data = body)
+            }
+            else -> {
+                Log.e(TAG, "add child: unknown error")
+                return Result.Error<NetworkError>(error = NetworkError.UNKNOWN)
+            }
+        }
+    }
     override suspend fun uploadChildCertificate(
         token: String,
         id: String,
         image: File,
-    ): Resource<NetworkMessage> =
-        try {
-            val response: HttpResponse = client.post(ApiRoutes.UPLOAD_CHILD_CERTIFICATE) {
-                header(HttpHeaders.Authorization, "Bearer $token")
-                MultiPartFormDataContent(
-                    formData {
-                        append("id", id)
-                        append(
-                            key = "image",
-                            value = image.readBytes(),
-                            headers = Headers.build {
-                                append(HttpHeaders.ContentDisposition, "filename=\"${image.name}\"")
-                            }
-                        )
-                    }
+    ): Result<UploadCertificatedResponse, NetworkError> {
+        val response = try {
+            client.post(ApiRoutes.UPLOAD_CHILD_CERTIFICATE+"/$id") {
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer $token")
+                    append(HttpHeaders.ContentType, ContentType.Application.Pdf.contentType)
+                }
+
+                setBody(
+                    MultiPartFormDataContent(
+                        formData {
+                            append(
+                                key = "image",
+                                value = image.readBytes(),
+                                headers = Headers.build {
+                                    append(HttpHeaders.ContentDisposition, "filename=\"${image.name}\"")
+                                }
+                            )
+                        }
+                    )
                 )
             }
-            when(response.status){
-                HttpStatusCode.OK ->{
-                    val message: NetworkMessage = response.body()
-                    Resource.Success(message)
-                }
-                HttpStatusCode.UnprocessableEntity ->{
-                    val message: NetworkMessage = response.body()
-                    Resource.Error<NetworkMessage>(message.message)
-                }
-                else -> {
-                    Resource.Error<NetworkMessage>(message = "unexpected error")
-                }
-            }
-        }catch (e: Exception){
-            Resource.Error<NetworkMessage>(message = e.message?: "unknown error")
+
+        } catch(e: UnresolvedAddressException) {
+            Log.e(TAG, "uploadChildCertificate: ${e.message}")
+            return Result.Error(NetworkError.NO_INTERNET)
+        } catch(e: SerializationException) {
+            Log.e(TAG, "uploadChildCertificate: ${e.message}")
+            return Result.Error(NetworkError.SERIALIZATION)
+        }
+        catch (e: Exception){
+            Log.e(TAG, "uploadChildCertificate: ${e.message}")
+            return Result.Error<NetworkError>(error = NetworkError.UNKNOWN)
         }
 
-
+        return  when(response.status){
+            HttpStatusCode.OK ->{
+                val body: UploadCertificatedResponse  = response.body()
+                Result.Success<UploadCertificatedResponse>(body)
+            }
+            HttpStatusCode.UnprocessableEntity ->{
+                Result.Error<NetworkError>( error = NetworkError.UNPROCESSABLE_ENTITY)
+            }
+            else -> {
+                Result.Error<NetworkError>( error = NetworkError.UNKNOWN)
+            }
+        }
+    }
 }

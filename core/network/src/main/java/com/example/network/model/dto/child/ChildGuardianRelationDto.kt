@@ -1,10 +1,8 @@
 package com.example.network.model.dto.child
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@OptIn(InternalSerializationApi::class)
 @Serializable
 data class ChildGuardianRelationDto(
     @SerialName("Users_ChildrenId") val usersChildrenId: Int,

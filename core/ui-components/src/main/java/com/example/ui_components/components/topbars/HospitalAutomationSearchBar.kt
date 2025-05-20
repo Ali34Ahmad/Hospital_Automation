@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,13 +41,24 @@ fun HospitalAutomationSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onTrailingIconClick: () -> Unit,
+    onSearch: (String) -> Unit,
     @StringRes placeholderText: Int,
     @DrawableRes trailingIcon: Int?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    maxLines: Int = 1,
 ) {
     TextField(
         modifier = modifier,
         value = query,
+        maxLines = maxLines,
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch(query)
+            }
+        ),
         onValueChange = onQueryChange,
         colors = TextFieldDefaults.colors(
             focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -76,7 +90,7 @@ fun HospitalAutomationSearchBar(
                 }
         },
         shape = RoundedCornerShape(100),
-        textStyle = MaterialTheme.typography.bodyLarge
+        textStyle = MaterialTheme.typography.bodyLarge,
     )
 }
 
@@ -95,7 +109,8 @@ fun HospitalAutomationSearchBarPreview() {
             trailingIcon = HospitalAutomationIcons.close,
             onTrailingIconClick = {
                 query = ""
-            }
+            },
+            onSearch = {}
         )
     }
 }

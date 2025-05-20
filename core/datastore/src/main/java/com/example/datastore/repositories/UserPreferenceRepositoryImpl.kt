@@ -27,7 +27,7 @@ class UserPreferenceRepositoryImpl(
                 }
             }
             .map { preferences ->
-                val isDarkTheme = preferences[DataStoreKeys.IS_DARK_THEME] ?: false
+                val isDarkTheme = preferences[DataStoreKeys.IS_DARK_THEME] == true
 
                 val encrypted = preferences[DataStoreKeys.AUTH_TOKEN] ?: ""
                 val token = if (encrypted.isEmpty()) {

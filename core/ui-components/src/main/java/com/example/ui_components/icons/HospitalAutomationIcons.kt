@@ -38,6 +38,7 @@ object HospitalAutomationIcons {
     val pending = R.drawable.pending
     val bloodType = R.drawable.bloodtype
     val date = R.drawable.update
+    val wifi_off = R.drawable.wifi_off
 }
 
 

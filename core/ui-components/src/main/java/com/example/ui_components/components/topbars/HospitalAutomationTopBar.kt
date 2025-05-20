@@ -32,16 +32,17 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
-import com.example.ui_components.model.ActionIcon
+import com.example.model.ActionIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HospitalAutomationTopBar(
-    @StringRes title: Int,
-    @DrawableRes navigationIcon: Int,
-    onNavigationIconClick: () -> Unit,
+    title: String,
+    onNavigationIconClick: () -> Unit ,
     modifier: Modifier = Modifier,
-    imageUrl: String?,
+    @DrawableRes navigationIcon: Int? = null,
+    imageUrl: String? = null,
+    @DrawableRes imagePlaceholder: Int = HospitalAutomationIcons.child,
     actionIcons: List<ActionIcon> = emptyList()
     ) {
     TopAppBar(
@@ -49,7 +50,7 @@ fun HospitalAutomationTopBar(
         title = {
             if(imageUrl.isNullOrBlank()){
                 Text(
-                    text = stringResource(title),
+                    text = title,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -78,28 +79,30 @@ fun HospitalAutomationTopBar(
                                 .size(44.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onSecondaryContainer),
-                            painter = painterResource(R.drawable.doctor2),
+                            painter = painterResource(imagePlaceholder),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                         )
                     }
-
                     Text(
-                        text = stringResource(title),
+                        text = title,
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
             }
         },
         navigationIcon = {
-            IconButton(
-                onClick = onNavigationIconClick
-            ) {
-                Icon(
-                    painter = painterResource(navigationIcon),
-                    contentDescription = null
-                )
+            navigationIcon?.let {
+                IconButton(
+                    onClick = onNavigationIconClick
+                ) {
+                    Icon(
+                        painter = painterResource(it),
+                        contentDescription = null
+                    )
+                }
             }
+
         },
         actions = {
             actionIcons.forEach { action->
@@ -121,7 +124,7 @@ fun HospitalAutomationTopBar(
 fun HospitalAutomationTopBarPreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
-            title = R.string.mail,
+            title = "Mail",
             navigationIcon = HospitalAutomationIcons.menu,
             onNavigationIconClick = {},
             imageUrl = null
@@ -134,7 +137,7 @@ fun HospitalAutomationTopBarPreview() {
 fun HospitalAutomationTopBarWithImagePreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
-            title = R.string.mail,
+            title = "Mail",
             navigationIcon = HospitalAutomationIcons.menu,
             onNavigationIconClick = {},
             imageUrl ="example"
@@ -146,7 +149,7 @@ fun HospitalAutomationTopBarWithImagePreview() {
 fun HospitalAutomationTopBarActionsPreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
-            title = R.string.mail,
+            title ="Mail",
             navigationIcon = HospitalAutomationIcons.menu,
             onNavigationIconClick = {},
             imageUrl = null,

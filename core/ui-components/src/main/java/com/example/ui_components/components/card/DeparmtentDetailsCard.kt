@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -30,7 +29,6 @@ import com.example.ui_components.components.flow_row.TagsFlowRow
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.list.AvailabilityScheduleLazyRow
 import com.example.ui_components.components.list.DepartmentDoctorsLazyRow
-import com.example.ui_components.components.overlapping_image.OverlappingImagesTriangleBox
 import com.example.ui_components.components.overlapping_image.OverlappingImagesTriangleBoxWithNumber
 import com.example.ui_components.components.screen_section.SectionWithTitle
 

@@ -23,10 +23,13 @@ kotlinCompilerExtension = "1.5.15"
 ktor = "3.1.2"
 kotlinSerializationJson = "3.1.2"
 datastorePreferences = "1.1.4"
+pagingRuntime = "3.3.6"
 uiGraphicsAndroid = "1.6.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 calendar = { module = "com.maxkeppeler.sheets-compose-dialogs:calendar", version.ref = "core" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 composepininput = { module = "com.github.sharp-edge:ComposePinInput", version.ref = "composepininput" }
@@ -52,9 +55,7 @@ kotlinx-serialization-json = { group ="org.jetbrains.kotlinx", name= "kotlinx-se
 #Ktor
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 ktor-client-content-negotiation = {module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
 ktor-client-serialization-json = {module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "kotlinSerializationJson"}
 
@@ -101,8 +102,6 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 ktor-android = [
     "ktor-client-core",
     "ktor-client-android",
-    "ktor-client-logging",
-    "logback-classic",
     "ktor-client-serialization",
     "ktor-client-content-negotiation",
     "ktor-client-serialization-json"

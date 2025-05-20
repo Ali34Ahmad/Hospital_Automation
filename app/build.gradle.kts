@@ -1,7 +1,7 @@
 plugins {
 //    alias(libs.plugins.android.application)
-//    alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.common.android.application.compose)
     alias(libs.plugins.common.android.application)
 }
@@ -29,15 +29,16 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    buildFeatures {
+        compose = true
     }
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
+    packaging {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+        }
     }
 }
 
@@ -54,4 +55,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //features
+    implementation(project(":feature:guardians_search"))
+    implementation(project(":feature:children_search"))
+    implementation(project(":feature:child_profile"))
+    implementation(project(":feature:add_child_screen"))
+    //data
+    implementation(project(":core:data"))
+
+    //koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.navigation)
 }
