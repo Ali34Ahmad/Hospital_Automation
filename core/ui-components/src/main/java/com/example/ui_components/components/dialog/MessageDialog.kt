@@ -27,6 +27,7 @@ import com.example.ui_components.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageDialog(
+    showDialog:Boolean,
     title: String,
     description: String,
     modifier:Modifier = Modifier,
@@ -36,46 +37,48 @@ fun MessageDialog(
     dismissButtonText:String= stringResource(R.string.cancel),
     confirmButtonText:String= stringResource(R.string.ok),
 ) {
-    BasicAlertDialog(
-        onDismissRequest = onDismiss,
-        modifier = modifier
-            .clip(MaterialTheme.additionalShapes.large28)
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-    ) {
-        Column(
-            modifier = Modifier.padding(MaterialTheme.spacing.large24),
+    if(showDialog){
+        BasicAlertDialog(
+            onDismissRequest = onDismiss,
+            modifier = modifier
+                .clip(MaterialTheme.additionalShapes.large28)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+            Column(
+                modifier = Modifier.padding(MaterialTheme.spacing.large24),
             ) {
-                if (showCancelButton) {
-                    TextButton(
-                        onClick = onDismiss,
-                    ) {
-                        Text(text = dismissButtonText)
-                    }
-                }
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
-                TextButton(
-                    onClick = onConfirm,
-                ) {
-                    Text(text = confirmButtonText)
-                }
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
 
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    if (showCancelButton) {
+                        TextButton(
+                            onClick = onDismiss,
+                        ) {
+                            Text(text = dismissButtonText)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
+                    TextButton(
+                        onClick = onConfirm,
+                    ) {
+                        Text(text = confirmButtonText)
+                    }
+
+                }
             }
         }
     }
@@ -87,6 +90,7 @@ fun MessageDialogPreview() {
     Hospital_AutomationTheme {
         Surface {
             MessageDialog(
+                showDialog=true,
                 title = stringResource(R.string.doctor_request),
                 description = stringResource(R.string.doctor_request_description),
                 onConfirm = {},

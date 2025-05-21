@@ -8,6 +8,15 @@ plugins {
 android {
     namespace = "com.example.network"
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -37,6 +46,7 @@ dependencies {
 
     implementation(libs.koin.android)
 
+    implementation(project(":core:datastore"))
     api(project(":core:utility"))
 
 }

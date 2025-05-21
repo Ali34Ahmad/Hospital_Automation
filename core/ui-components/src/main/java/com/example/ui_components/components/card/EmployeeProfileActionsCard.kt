@@ -18,11 +18,27 @@ import com.example.ui_components.components.items.ProfileActionsItem
 
 @Composable
 fun EmployeeProfileActionsCard(
-    onAddedChildrenItemClick:()->Unit,
-    onEmploymentHistoryItemClick:()->Unit,
-    onDeactivateAccountItemClick:()->Unit,
+    onAddedChildrenItemClick: () -> Unit,
+    isAddedChildrenEnabled: Boolean,
+    onEmploymentHistoryItemClick: () -> Unit,
+    onDeactivateAccountItemClick: () -> Unit,
+    showDeactivateMyAccountItem: Boolean,
+    isAccountDeactivated: Boolean,
+    onLogoutItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val (activationActionText, activationActionIcon) = if (isAccountDeactivated) {
+        Pair(
+            stringResource(R.string.deactivate_account),
+            AppIcons.Outlined.deactivateAccount
+        )
+    } else {
+        Pair(
+            stringResource(R.string.activate_account),
+            AppIcons.Outlined.reactivateAccount
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -34,6 +50,7 @@ fun EmployeeProfileActionsCard(
             iconRes = AppIcons.Outlined.child,
             title = stringResource(R.string.added_children),
             showUnderline = true,
+            enabled = isAddedChildrenEnabled
         )
         ProfileActionsItem(
             onClick = onEmploymentHistoryItemClick,
@@ -42,13 +59,26 @@ fun EmployeeProfileActionsCard(
             title = stringResource(R.string.employment_history),
             showUnderline = true,
         )
+        if (showDeactivateMyAccountItem){
+            ProfileActionsItem(
+                onClick = onDeactivateAccountItemClick,
+                modifier = Modifier.fillMaxWidth(),
+                iconRes = activationActionIcon,
+                title = activationActionText,
+                showUnderline = true,
+                iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
+                iconColor = MaterialTheme.colorScheme.error,
+                titleColor = MaterialTheme.colorScheme.error,
+            )
+        }
+
         ProfileActionsItem(
-            onClick = onDeactivateAccountItemClick,
+            onClick = onLogoutItemClick,
             modifier = Modifier.fillMaxWidth(),
-            iconRes = AppIcons.Outlined.deactivateAccount,
-            title = stringResource(R.string.deactivate_account),
+            iconRes = AppIcons.Outlined.logout,
+            title = stringResource(R.string.logout),
             showUnderline = false,
-            iconBackgroundColor = MaterialTheme.colorScheme.errorContainer,
+            iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
             iconColor = MaterialTheme.colorScheme.error,
             titleColor = MaterialTheme.colorScheme.error
         )
@@ -61,12 +91,39 @@ fun EmployeeProfileActionsCard(
 fun EmployeeProfileActionsCardPreview() {
     Hospital_AutomationTheme {
         Surface {
-            EmployeeProfileActionsCard(
-                modifier = Modifier.padding(MaterialTheme.spacing.medium16),
-                onAddedChildrenItemClick = {},
-                onDeactivateAccountItemClick = {},
-                onEmploymentHistoryItemClick = {},
-            )
+            Column {
+                EmployeeProfileActionsCard(
+                    modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                    onAddedChildrenItemClick = {},
+                    onDeactivateAccountItemClick = {},
+                    onEmploymentHistoryItemClick = {},
+                    onLogoutItemClick = {},
+                    isAddedChildrenEnabled = true,
+                    showDeactivateMyAccountItem = false,
+                    isAccountDeactivated = false,
+                )
+            }
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun EmployeeProfileActionsCardDeactivatedAccountPreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            Column {
+                EmployeeProfileActionsCard(
+                    modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                    onAddedChildrenItemClick = {},
+                    onDeactivateAccountItemClick = {},
+                    onEmploymentHistoryItemClick = {},
+                    onLogoutItemClick = {},
+                    isAddedChildrenEnabled = true,
+                    showDeactivateMyAccountItem = false,
+                    isAccountDeactivated = true,
+                )
+            }
         }
     }
 }

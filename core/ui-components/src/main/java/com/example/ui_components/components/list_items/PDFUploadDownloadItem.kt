@@ -24,12 +24,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.constants.enums.FileUploadingState
+import com.example.ext.toFileSizeFormatReadable
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
-import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui.theme.additionalColorScheme
 import com.example.ui_components.R
 import com.example.ui_components.components.custom_file.PdfFileWithText
 import kotlin.math.roundToInt
@@ -38,7 +37,7 @@ import kotlin.math.roundToInt
 @Composable
 fun PDFUploadDownloadItem(
     name: String,
-    fileSize: Float,
+    fileSizeWithBytes: Long,
     progress: Int,
     onPause: () -> Unit,
     onResume: () -> Unit,
@@ -64,6 +63,7 @@ fun PDFUploadDownloadItem(
                     FileUploadingState.PAUSED -> onResume()
                     FileUploadingState.DOWNLOADING -> onPause()
                     FileUploadingState.COMPLETE -> onOpen()
+                    else -> {}
                 }
             },
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -91,7 +91,7 @@ fun PDFUploadDownloadItem(
                     maxLines = 1
                 )
                 Text(
-                    text = "$fileSize MB",
+                    text = fileSizeWithBytes.toFileSizeFormatReadable(),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.additionalColorScheme.onBackgroundVariant
                 )
@@ -100,6 +100,8 @@ fun PDFUploadDownloadItem(
                     FileUploadingState.PAUSED -> stringResource(R.string.paused)
                     FileUploadingState.DOWNLOADING -> stringResource(R.string.downloading) + dots
                     FileUploadingState.COMPLETE -> stringResource(R.string.open)
+                    FileUploadingState.FAILED -> stringResource(R.string.failed)
+                    FileUploadingState.Cancelled -> stringResource(R.string.cancelled)
                 }
                 Text(
                     text = text,
@@ -149,7 +151,7 @@ fun PDFDownloaderDownloadingPreview() {
             PDFUploadDownloadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
-                fileSize = 1.7f,
+                fileSizeWithBytes = 1000014,
                 progress = 70,
                 state = FileUploadingState.DOWNLOADING,
                 onPause = {},
@@ -168,7 +170,7 @@ fun PDFDownloaderUploadingPreview() {
             PDFUploadDownloadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
-                fileSize = 1.7f,
+                fileSizeWithBytes = 1014257,
                 progress = 70,
                 state = FileUploadingState.UPLOADING,
                 onPause = {},
@@ -187,7 +189,7 @@ fun PDFDownloaderPausedPreview() {
             PDFUploadDownloadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
-                fileSize = 1.7f,
+                fileSizeWithBytes = 104743037,
                 progress = 70,
                 state = FileUploadingState.PAUSED,
                 onPause = {},
@@ -206,7 +208,7 @@ fun PDFDownloadedCompletePreview() {
             PDFUploadDownloadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
-                fileSize = 21f,
+                fileSizeWithBytes = 21014525,
                 progress = 100,
                 state = FileUploadingState.COMPLETE,
                 onPause = {},

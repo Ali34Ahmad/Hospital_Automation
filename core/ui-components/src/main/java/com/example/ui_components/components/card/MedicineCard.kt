@@ -77,7 +77,7 @@ fun MedicineCard(
                 AsyncImage(
                     modifier = Modifier
                         .width(MaterialTheme.sizing.extraLarge164)
-                        .height(MaterialTheme.sizing.extraLarge124)
+                        .height(MaterialTheme.sizing.illustrationImageSize)
                         .clip(
                             MaterialTheme.shapes.small
                         )
@@ -93,7 +93,7 @@ fun MedicineCard(
                 Image(
                     modifier = Modifier
                         .width(MaterialTheme.sizing.extraLarge164)
-                        .height(MaterialTheme.sizing.extraLarge124)
+                        .height(MaterialTheme.sizing.illustrationImageSize)
                         .clip(
                             MaterialTheme.shapes.small
                         )

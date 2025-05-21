@@ -1,6 +1,7 @@
 package com.example.network.utility
 
 object ApiRoutes {
+
     private const val BASE_URL = "https://dispensary-hkz3.onrender.com"
     private const val EMPLOYEE = "$BASE_URL/employee"
 
@@ -21,9 +22,17 @@ object ApiRoutes {
 
     const val SIGNUP_EMPLOYEE = "$EMPLOYEE/sign-up"
     const val LOGIN_EMPLOYEE = "$EMPLOYEE/login"
+    const val LOGOUT_EMPLOYEE = "$EMPLOYEE/logout"
+    const val SEND_OTP = "$EMPLOYEE/send-otp"
     const val VERIFY_OTP = "$EMPLOYEE/verify-otp"
-    const val UPLOAD_EMPLOYEE_DOCUMENTS = "$EMPLOYEE/upload-license"
     const val ADD_RESIDENTIAL_ADDRESS = "$EMPLOYEE/add-address"
+
+    const val UPLOAD_EMPLOYEE_DOCUMENTS = "$EMPLOYEE/upload-file"
+    const val UPLOAD_EMPLOYEE_PROFILE_IMAGE ="$EMPLOYEE/add-image"
     const val EMPLOYEE_PROFILES = "$EMPLOYEE/show-profile"
+    const val RESET_PASSWORD ="$EMPLOYEE/reset-password"
+
+    const val CHECK_EMPLOYEE_PERMISSION ="$EMPLOYEE/show-permissions"
+    const val DEACTIVATE_MY_ACCOUNT = "$EMPLOYEE/deactivate-my-account"
 
 }

@@ -1,11 +1,12 @@
 package com.example.network.remote.add_residential_address
 
 import com.example.network.model.request.AddressRequest
-import com.example.network.model.response.AddressResponse
-import com.example.network.utility.Resource
+import com.example.network.model.response.AddAddressResponse
+import com.example.utility.network.Result
+import com.example.utility.network.rootError
 
 interface AddResidentialAddressApi {
     suspend fun addResidentialAddress(
         addressRequest: AddressRequest
-    ): Resource<AddressResponse>
+    ): Result<AddAddressResponse, rootError>
 }

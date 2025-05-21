@@ -7,6 +7,8 @@ import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,6 +27,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.helper.DarkAndLightModePreview
@@ -40,70 +43,73 @@ fun HospitalAutomationTextFiled(
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
     isRequired: Boolean = false,
-    @StringRes label : Int? = null,
-    @StringRes placeholder : Int? = null,
+    @StringRes label: Int? = null,
+    @StringRes placeholder: Int? = null,
     @DrawableRes icon: Int? = null,
     supportingText: String? = null,
     minLines: Int = 1,
     maxLines: Int = minLines,
     enabled: Boolean = true,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
+    val singleLine= maxLines <= 0
+    TextField(
+        modifier = modifier,
+        readOnly = readOnly,
+        keyboardOptions = keyboardOptions,
+        shape = MaterialTheme.shapes.extraSmall,
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            label?.let {
+                val text = buildString {
+                    append(stringResource(label))
+                    if (isRequired)
+                        append("*")
+                }
+                Text(
+                    text,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        },
+        trailingIcon = {
+            if (icon != null)
+                Icon(painter = painterResource(icon), null)
+        },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            errorIndicatorColor = Color.Transparent,
+            errorLabelColor = MaterialTheme.colorScheme.error,
+            errorCursorColor = MaterialTheme.colorScheme.error,
+            errorSupportingTextColor = MaterialTheme.colorScheme.error,
+            errorContainerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.12f),
+            errorTextColor = MaterialTheme.colorScheme.error,
+            errorPlaceholderColor = MaterialTheme.colorScheme.error,
+        ),
+        placeholder = {
+            placeholder?.let {
+                Text(
+                    text = stringResource(it)
+                )
+            }
 
-        TextField(
-            modifier = modifier,
-            readOnly = readOnly,
-            shape = MaterialTheme.shapes.extraSmall,
-            value = value,
-            onValueChange = onValueChange,
-            label = {
-                label?.let {
-                    val text = buildString {
-                        append(stringResource(label))
-                        if(isRequired)
-                            append("*")
-                    }
-                    Text(
-                        text,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-            },
-            trailingIcon = {
-                if (icon != null)
-                    Icon(painter = painterResource(icon), null)
-            },
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                errorIndicatorColor = Color.Transparent,
-                errorLabelColor = MaterialTheme.colorScheme.error,
-                errorCursorColor = MaterialTheme.colorScheme.error,
-                errorSupportingTextColor = MaterialTheme.colorScheme.error,
-                errorContainerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.12f),
-                errorTextColor =  MaterialTheme.colorScheme.error,
-                errorPlaceholderColor =  MaterialTheme.colorScheme.error,
-                ),
-            placeholder = {
-                placeholder?.let {
-                    Text(
-                        text =  stringResource(it)
-                    )
-                }
-
-            },
-            isError = isError,
-            supportingText = {
-                if(supportingText!=null){
-                    Text(supportingText)
-                }
-            },
-            minLines = minLines,
-            maxLines = maxLines,
-            enabled = enabled
-        )
+        },
+        isError = isError,
+        supportingText = {
+            if (supportingText != null) {
+                Text(supportingText)
+            }
+        },
+        minLines = minLines,
+        maxLines = maxLines,
+        singleLine=singleLine,
+        enabled = enabled,
+    )
 }
 
 @Preview
@@ -127,10 +133,6 @@ fun HospitalAutomationTextFiledPreview() {
         )
     }
 }
-
-
-
-
 
 
 @DarkAndLightModePreview

@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AddressRequest(
     @SerialName("address_governorate")
-    val addressGovernorate: String,
+    val governorate: String,
     @SerialName("address_city")
-    val addressCity: String,
+    val city: String,
     @SerialName("address_region")
-    val addressRegion: String,
+    val region: String,
     @SerialName("address_street")
-    val addressStreet: String,
+    val street: String,
     @SerialName("address_note")
-    val addressNote: String? = null
+    val note: String? = null
 )

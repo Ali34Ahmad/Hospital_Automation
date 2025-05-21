@@ -4,7 +4,7 @@ import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.child.toAddChildRequest
 import com.example.data.mapper.child.toChildData
 import com.example.data.mapper.child.toChildFullData
-import com.example.datastore.repositories.UserPreferenceRepository
+import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.domain.repositories.ChildRepository
 import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 class ChildRepositoryImp(
     private val childApiService: ChildApiService,
-    private val dataStore: UserPreferenceRepository
+    private val dataStore: UserPreferencesRepository
 ): ChildRepository {
     var token: String? = null
 

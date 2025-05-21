@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OtpInputRow(
     otp: List<Int?>,
-    onOtpChange: (Int, Int?) -> Unit,
+    onOtpChange: (index:Int,value: Int?) -> Unit,
     isValid: Boolean?,
     onValidate: (List<Int?>) -> Unit,
     @StringRes validText: Int,

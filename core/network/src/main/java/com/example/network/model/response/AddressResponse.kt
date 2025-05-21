@@ -1,5 +1,8 @@
 package com.example.network.model.response
 
-data class AddressResponse(
-    val message:String
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class AddAddressResponse (
+    val updatedData: List<Int>
 )

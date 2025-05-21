@@ -17,7 +17,7 @@ import com.example.ui_components.components.list_items.PDFUploadDownloadItem
 fun RequestSentNotification(
     notification: Notification,
     fileName: String,
-    fileSize: Float,
+    fileSizeWithBytes: Long,
     progress: Int,
     onPause: () -> Unit,
     onResume: () -> Unit,
@@ -30,7 +30,7 @@ fun RequestSentNotification(
         actions = {
             PDFUploadDownloadItem(
                 name = fileName,
-                fileSize = fileSize,
+                fileSizeWithBytes = fileSizeWithBytes,
                 progress = progress,
                 onResume = onResume,
                 onOpen = onOpen,
@@ -50,7 +50,7 @@ fun RequestNotificationPreview() {
             RequestSentNotification(
                 notification = createSampleNotifications()[0],
                 fileName = "Cam-Scanner-152314",
-                fileSize = 21f,
+                fileSizeWithBytes = 21455,
                 progress = 10,
                 state = FileUploadingState.COMPLETE,
                 onPause = {},
@@ -70,7 +70,7 @@ fun RequestNotificationExpiredPreview() {
             RequestSentNotification(
                 notification = createSampleNotifications()[1],
                 fileName = "Cam-Scanner-152314",
-                fileSize = 21f,
+                fileSizeWithBytes = 215847,
                 progress = 10,
                 state = FileUploadingState.UPLOADING,
                 onPause = {},

@@ -1,7 +1,7 @@
 package com.example.data.repositories.user
 
 import com.example.data.mapper.user.toGuardianData
-import com.example.datastore.repositories.UserPreferenceRepository
+import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.domain.repositories.UserRepository
 import com.example.model.guardian.GuardianData
 import com.example.model.guardian.PagedData
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 internal class UserRepositoryImp(
     private val userApiService: UserApiService,
-    private val dataStore: UserPreferenceRepository
+    private val dataStore: UserPreferencesRepository
 ): UserRepository  {
 
     override suspend fun getGuardiansByName(

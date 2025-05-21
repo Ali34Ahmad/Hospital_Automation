@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.common.android.library)
     alias(libs.plugins.common.android.library.compose)
@@ -30,6 +32,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(project(":core:ui-components"))
+
+    implementation(project(":core:network"))
 
     implementation(project(":core:network"))
 

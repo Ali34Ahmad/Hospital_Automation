@@ -18,6 +18,7 @@ sealed interface AppIcons {
         val child = R.drawable.child_care
         val certificate = R.drawable.ic_certificate
         val deactivateAccount = R.drawable.person_off
+        val reactivateAccount = R.drawable.ic_reactivate_account
         val send = R.drawable.send
         val accountCircle = R.drawable.account_circle
         val close = R.drawable.close
@@ -50,5 +51,10 @@ sealed interface AppIcons {
         val availabilityStatus = R.drawable.ic_availability_status
         val guardian = R.drawable.ic_guardian
         val errorMessage = R.drawable.problem
+        val openDrawer = R.drawable.menu
+        val logout = R.drawable.ic_logout
+        val download = R.drawable.ic_download
+        val pause=R.drawable.ic_pause
+
     }
 }

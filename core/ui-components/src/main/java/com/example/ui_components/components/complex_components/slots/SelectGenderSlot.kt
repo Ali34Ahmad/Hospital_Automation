@@ -24,7 +24,7 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.components.buttons.Option
+import com.example.ui_components.components.buttons.OptionButton
 import com.example.ui_components.icons.HospitalAutomationIcons
 
 @Composable
@@ -47,14 +47,14 @@ fun SelectGenderSlot(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16)
         ) {
-            Option(
+            OptionButton(
                 text = R.string.male,
                 isSelected = gender == Gender.MALE,
                 onClick = { onGenderChange(Gender.MALE) },
                 icon = HospitalAutomationIcons.man,
                 modifier = Modifier.weight(1f)
             )
-            Option(
+            OptionButton(
                 text = R.string.female,
                 isSelected = gender == Gender.FEMALE,
                 onClick = { onGenderChange(Gender.FEMALE) },

@@ -13,12 +13,14 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui_components.R
+import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.icon.SystemStateIcon
 
 @Composable
 fun VerifiedAccountCard(
     title:String,
     description:String,
+    onButtonClick:()->Unit,
     modifier: Modifier = Modifier,
 ) {
     IllustrationCard(
@@ -28,7 +30,14 @@ fun VerifiedAccountCard(
         illustration = {
             SystemStateIcon(
                 iconRes = AppIcons.Outlined.check,
-                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124)
+                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
+            )
+        },
+        actionButtonsSection = {
+            HospitalAutomationButton(
+                onClick = onButtonClick,
+                text = stringResource(R.string.next),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     )
@@ -41,6 +50,7 @@ fun VerifiedAccountCardPreview() {
         Surface {
             VerifiedAccountCard(
                 title = stringResource(R.string.verified),
+                onButtonClick={},
                 description = stringResource(R.string.email_verified_description),
                 modifier = Modifier.fillMaxWidth(),
             )

@@ -30,7 +30,7 @@ fun PermissionGrantedCard(
         illustration = {
             SystemStateIcon(
                 iconRes = AppIcons.Outlined.check,
-                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124)
+                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
             )
         },
         actionButtonsSection = {
@@ -50,7 +50,7 @@ fun PermissionGrantedCardPreview() {
         Surface {
             PermissionGrantedCard(
                 title = stringResource(R.string.permission_granted),
-                description = stringResource(R.string.permission_granted_description),
+                description = stringResource(R.string.employee_permission_granted_description),
                 modifier = Modifier.fillMaxWidth(),
                 onStartButtonClick = {},
             )

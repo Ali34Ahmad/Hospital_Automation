@@ -1,5 +1,6 @@
 [versions]
-agp = "8.7.3"
+accompanistSystemuicontroller = "0.34.0"
+agp = "8.9.2"
 coilCompose = "3.1.0"
 composepininput = "1.0.3"
 core = "1.2.0"
@@ -14,7 +15,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.8.2"
 composeBom = "2024.04.01"
 appcompat = "1.7.0"
-logbackClassic = "1.5.18"
+#logbackClassic = "1.5.18"
 material = "1.12.0"
 androidxNavigation = "2.8.9"
 kotlinxSerialization = "2.1.20"
@@ -27,6 +28,7 @@ pagingRuntime = "3.3.6"
 uiGraphicsAndroid = "1.6.6"
 
 [libraries]
+#accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
@@ -56,6 +58,8 @@ kotlinx-serialization-json = { group ="org.jetbrains.kotlinx", name= "kotlinx-se
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+#logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 ktor-client-content-negotiation = {module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor"}
 ktor-client-serialization-json = {module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "kotlinSerializationJson"}
 
@@ -102,7 +106,16 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 ktor-android = [
     "ktor-client-core",
     "ktor-client-android",
+    "ktor-client-logging",
+#    "logback-classic",
     "ktor-client-serialization",
     "ktor-client-content-negotiation",
     "ktor-client-serialization-json"
 ]
+
+koin-android = [
+    "koin-android",
+    "koin-androidx-compose",
+    "koin-androidx-navigation",
+]
+

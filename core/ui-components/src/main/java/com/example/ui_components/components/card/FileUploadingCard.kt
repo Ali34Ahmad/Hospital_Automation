@@ -33,6 +33,7 @@ fun FileUploadingCard(
     onUploadFileButtonClick: () -> Unit,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
+    loadingState: FileUploadingState,
     modifier: Modifier = Modifier,
 ) {
     IllustrationCard(
@@ -41,7 +42,7 @@ fun FileUploadingCard(
         titleColor = MaterialTheme.colorScheme.onBackground,
         description = description,
         actionButtonsSection = {
-            if (file==null) {
+            if (file == null) {
                 HospitalAutomationOutLinedButton(
                     onClick = onUploadFileButtonClick,
                     text = stringResource(R.string.upload_file),
@@ -52,9 +53,9 @@ fun FileUploadingCard(
             file?.let {
                 PDFUploadDownloadItem(
                     name = file.fileName,
-                    fileSize = file.fileSize,
+                    fileSizeWithBytes = file.fileSizeWithBytes,
                     progress = file.uploadingProgress,
-                    state = FileUploadingState.UPLOADING,
+                    state = loadingState,
                     onPause = onFileUploadingPause,
                     onOpen = onFileUploadingOpen,
                     onResume = onFileUploadingResume,
@@ -88,15 +89,18 @@ fun FileUploadingCardPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.child_birth_certification_is_required),
                 description = stringResource(R.string.upload_file_description),
-                file = File(uploadingProgress = 70,
-                fileSize = 1.7f,
-                fileName = "Cam-Scanner-152314",),
+                file = File(
+                    uploadingProgress = 70,
+                    fileSizeWithBytes = 17572444,
+                    fileName = "Cam-Scanner-152314",
+                ),
                 onUploadFileButtonClick = {},
                 onReplaceFileButtonClick = {},
                 onFileUploadingResume = {},
                 onFileUploadingPause = {},
                 onFileUploadingOpen = {},
                 onNextButtonClick = {},
+                loadingState = FileUploadingState.UPLOADING,
             )
         }
     }
@@ -114,8 +118,10 @@ fun FileUploadingCardInit2Preview() {
                 onUploadFileButtonClick = {},
                 onFileUploadingResume = {},
                 onFileUploadingPause = {},
-                onFileUploadingOpen = {},                onNextButtonClick = {},
+                onFileUploadingOpen = {},
+                onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
+                loadingState = FileUploadingState.UPLOADING,
             )
         }
     }

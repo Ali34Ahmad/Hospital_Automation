@@ -85,7 +85,9 @@ fun WarningCard(
                         text = totalText,
                         clickableTextRange = totalText.clickableTextRange(clickableText),
                         onClick = onTextClick,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        normalTextColor = MaterialTheme.additionalColorScheme.warning,
+                        clickableTextColor = MaterialTheme.additionalColorScheme.warning,
                     )
                 }
             }

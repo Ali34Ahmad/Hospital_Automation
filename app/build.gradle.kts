@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.common.android.application.compose)
     alias(libs.plugins.common.android.application)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -55,6 +56,29 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.bundles.koin.android)
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.compose)
+
+    implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
+
+    //Auth features
+    implementation(project(":feature:signup"))
+    implementation(project(":feature:email_verification"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:upload_employee_documents"))
+    implementation(project(":feature:add_residential_address"))
+    implementation(project(":feature:enter_email"))
+    implementation(project(":feature:reset_password"))
+    implementation(project(":feature:upload_employee_profile_image"))
+
+    //
+    implementation(project(":feature:home"))
+    implementation(project(":feature:employee_profile"))
+
 
     //features
     implementation(project(":feature:guardians_search"))

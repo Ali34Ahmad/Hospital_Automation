@@ -1,25 +1,30 @@
 package com.example.network.utility.file
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import java.io.File
 import java.util.UUID
 
 class FileReader(
     private val context: Context,
-    private val dispatcher: CoroutineDispatcher,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    suspend fun uriToFileInfo(uri: Uri): FileInfo {
-        return withContext(dispatcher) {
-            val bytes = context.contentResolver
-                .openInputStream(uri)
-                ?.use { inputStream ->
+    suspend fun uriToFileInfo(contentUri: Uri): FileInfo {
+        return withContext(ioDispatcher) {
+            val bytes = context
+                .contentResolver
+                .openInputStream(contentUri)?.use { inputStream ->
                     inputStream.readBytes()
                 } ?: byteArrayOf()
-            val fileName = UUID.randomUUID().toString()
-            val mimeType = context.contentResolver.getType(uri) ?: ""
-            FileInfo(fileName, mimeType, bytes)
+
+            val name = contentUri.lastPathSegment ?: ""
+            val mimeType = context.contentResolver.getType(contentUri) ?: ""
+            FileInfo(name, mimeType, bytes)
         }
     }
 }
@@ -27,5 +32,5 @@ class FileReader(
 class FileInfo(
     val name: String,
     val mimeType: String,
-    val bytes: ByteArray
+    val bytes: ByteArray,
 )

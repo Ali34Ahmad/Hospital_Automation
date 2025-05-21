@@ -33,7 +33,7 @@ fun IllustrationCardWithNoActions(
             Image(
                 painter = painterResource(imageRes),
                 contentDescription = null,
-                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124)
+                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
             )
         }
     )

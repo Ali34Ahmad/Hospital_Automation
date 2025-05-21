@@ -15,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -36,7 +37,8 @@ fun ProfileActionsItem(
     title: String,
     titleColor: Color = MaterialTheme.colorScheme.onBackground,
     showUnderline: Boolean = false,
-    onClick: (() -> Unit)?=null,
+    onClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
 ) {
     val underlineColor = MaterialTheme.colorScheme.outlineVariant
     val backgroundColor = MaterialTheme.colorScheme.background
@@ -57,14 +59,19 @@ fun ProfileActionsItem(
         modifier
             .background(color = backgroundColor)
     }
-    val itemClickableModifier=if(onClick!=null){
+    var itemClickableModifier = if (onClick != null) {
         columnModifier.clickable { onClick() }
-    }else{
+    } else{
         columnModifier
     }
 
+    if (!enabled){
+        itemClickableModifier= columnModifier
+            .alpha(0.5f)
+    }
+
     Column(
-        modifier =itemClickableModifier,
+        modifier = itemClickableModifier,
     ) {
         Row(
             modifier = Modifier
@@ -116,6 +123,36 @@ fun UnderlinedProfileActionsItemPreview() {
                     iconRes = R.drawable.ic_child,
                     title = stringResource(R.string.added_children),
                     showUnderline = true,
+                )
+                ProfileActionsItem(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                    iconRes = R.drawable.ic_deactivate_account,
+                    title = stringResource(R.string.deactivate_account),
+                    showUnderline = false,
+                    titleColor = MaterialTheme.colorScheme.error,
+                    iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
+                    iconColor = MaterialTheme.colorScheme.onErrorContainer,
+                )
+            }
+
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun UnderlinedProfileActionsItemDisabledPreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            Column {
+                ProfileActionsItem(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                    iconRes = R.drawable.ic_child,
+                    title = stringResource(R.string.added_children),
+                    showUnderline = true,
+                    enabled = false
                 )
                 ProfileActionsItem(
                     onClick = {},

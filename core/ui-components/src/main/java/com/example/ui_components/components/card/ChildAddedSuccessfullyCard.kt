@@ -36,7 +36,7 @@ fun ChildAddedSuccessfullyCard(
         illustration = {
             SystemStateIcon(
                 iconRes = AppIcons.Outlined.check,
-                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124)
+                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
             )
         },
         actionButtonsSection = {

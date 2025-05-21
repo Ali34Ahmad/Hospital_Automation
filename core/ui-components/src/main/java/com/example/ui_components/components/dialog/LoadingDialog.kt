@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -26,11 +25,11 @@ import com.example.ui.theme.additionalShapes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadingDialog(
-    isLoading: Boolean,
+    showDialog: Boolean,
     text: String? = null,
     modifier: Modifier = Modifier,
 ) {
-    if (isLoading) {
+    if (showDialog) {
         BasicAlertDialog(
             onDismissRequest = {},
             properties = DialogProperties(
@@ -69,7 +68,7 @@ fun LoadingDialogPreview() {
     Hospital_AutomationTheme {
         Surface {
             LoadingDialog(
-                isLoading = true,
+                showDialog = true,
                 text = "Loading..."
             )
         }

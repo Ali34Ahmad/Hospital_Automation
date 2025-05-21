@@ -40,7 +40,7 @@ fun EmployeeDrawer(
     modifier: Modifier = Modifier,
     @StringRes title: Int,
     buttons: List<DrawerButton>,
-    selectedIndex: Int,
+    selectedIndex: Int?,
     onItemSelected: (index: Int) -> Unit,
     onChangeThemeClick: () -> Unit,
     isDarkTheme: Boolean,
@@ -132,6 +132,7 @@ fun EmployeeDrawer(
                 }
             }
         },
+        gesturesEnabled = state.isOpen ,
         content = screen
     )
 }

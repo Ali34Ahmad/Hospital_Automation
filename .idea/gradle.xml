@@ -18,7 +18,8 @@
         </compositeConfiguration>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="22" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../Program Files/Gradle/gradle-7.3.3" />
+        <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -35,10 +36,20 @@
             <option value="$PROJECT_DIR$/core/utility" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/add_child_screen" />
+            <option value="$PROJECT_DIR$/feature/add_residential_address" />
             <option value="$PROJECT_DIR$/feature/child_profile" />
             <option value="$PROJECT_DIR$/feature/children_search" />
+            <option value="$PROJECT_DIR$/feature/email_verification" />
+            <option value="$PROJECT_DIR$/feature/employee_profile" />
+            <option value="$PROJECT_DIR$/feature/employment_history" />
+            <option value="$PROJECT_DIR$/feature/enter_email" />
             <option value="$PROJECT_DIR$/feature/guardians_search" />
+            <option value="$PROJECT_DIR$/feature/home" />
+            <option value="$PROJECT_DIR$/feature/login" />
+            <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
+            <option value="$PROJECT_DIR$/feature/upload_employee_documents" />
+            <option value="$PROJECT_DIR$/feature/upload_employee_profile_image" />
           </set>
         </option>
       </GradleProjectSettings>

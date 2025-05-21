@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
@@ -36,7 +37,7 @@ fun HospitalAutomationButton(
     onClick: () -> Unit,
     text: String,
     modifier: Modifier = Modifier,
-    @DrawableRes icon: Int?=null,
+    @DrawableRes icon: Int? = null,
     isLoading: Boolean = false,
     enabled: Boolean = true,
     hasError: Boolean = false
@@ -86,8 +87,8 @@ fun HospitalAutomationButton(
             }
             Text(
                 text,
-                modifier = Modifier.padding(vertical = MaterialTheme.spacing.small8),
-                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

@@ -36,7 +36,7 @@ import com.example.ui.theme.spacing
 fun DetailsItem(
     @DrawableRes iconRes: Int,
     modifier: Modifier = Modifier,
-    iconBackgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+    iconBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
     iconColor: Color = MaterialTheme.colorScheme.primary,
     title: String,
     description: String,

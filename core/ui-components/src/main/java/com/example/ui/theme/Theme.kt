@@ -90,17 +90,19 @@ private val darkScheme = darkColorScheme(
 
 @Composable
 fun Hospital_AutomationTheme(
-    darkTheme: Boolean?=null,
+    darkTheme: Boolean? = null,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val darkThemeResult= darkTheme ?: isSystemInDarkTheme()
+    val darkThemeResult = darkTheme ?: isSystemInDarkTheme()
 
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkThemeResult) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkThemeResult) dynamicDarkColorScheme(context) else dynamicLightColorScheme(
+                context
+            )
         }
 
         darkThemeResult -> darkScheme

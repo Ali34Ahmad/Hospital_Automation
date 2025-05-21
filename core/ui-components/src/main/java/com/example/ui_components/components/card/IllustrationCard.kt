@@ -82,7 +82,7 @@ fun IllustrationCardSystemStatePreview(){
                 modifier = Modifier.fillMaxWidth(),
                 illustration = {
                     SystemStateIcon(iconRes = R.drawable.ic_check,
-                        modifier = Modifier.size(MaterialTheme.sizing.extraLarge124))
+                        modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize))
                 },
                 actionButtonsSection = {
                     Button(onClick = {},
@@ -108,7 +108,7 @@ fun IllustrationCardPreview(){
                 illustration = {
                     Image(painter = painterResource(R.drawable.ill_permission),
                         contentDescription = null,
-                        modifier = Modifier.size(MaterialTheme.sizing.extraLarge124))
+                        modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize))
                 },
                 title = stringResource(R.string.permission_required),
                 description = stringResource(R.string.permission_required_description),

@@ -65,7 +65,7 @@ fun SystemStateIconPreview() {
         Surface {
             SystemStateIcon(
                 iconRes = R.drawable.ic_check,
-                modifier = Modifier.size(MaterialTheme.sizing.extraLarge124)
+                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
             )
         }
     }
