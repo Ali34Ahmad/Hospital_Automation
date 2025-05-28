@@ -107,7 +107,7 @@ fun AddChildScreen(
                 onNavigateToNextScreen =onNavigateToNextScreen,
                 onSendingData = onSendingData,
                 scope = scope,
-                bottomBarState = uiState.bottomBarState
+                fetchingDataState = uiState.fetchingDataState
             )
         },
         topBar = {

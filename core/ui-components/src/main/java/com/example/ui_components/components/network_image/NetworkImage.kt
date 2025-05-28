@@ -26,7 +26,7 @@ import com.example.ui_components.R
 
 @Composable
 fun NetworkImage(
-    imageUrl: String,
+    imageUrl: String?,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
     error: @Composable (SubcomposeAsyncImageScope.(State.Error) -> Unit)? = null,
@@ -34,7 +34,7 @@ fun NetworkImage(
 ) {
     val isInPreview = LocalInspectionMode.current
 
-    if (!isInPreview) {
+    if (!isInPreview && imageUrl != null) {
         var successfullyLoaded by remember {
             mutableStateOf(false)
         }

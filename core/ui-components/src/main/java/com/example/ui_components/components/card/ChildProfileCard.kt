@@ -17,7 +17,7 @@ import com.example.constants.enums.Gender
 import com.example.constants.icons.AppIcons
 import com.example.ext.clickableTextRange
 import com.example.ext.toAppropriateFormat
-import com.example.ext.toCapitalizedString
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing

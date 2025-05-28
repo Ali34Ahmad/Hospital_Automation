@@ -1,7 +1,5 @@
 package com.example.enter_email
 
-import com.example.constants.enums.Gender
-
 
 fun mockEnterEmailNavigationUiActions()=object : EnterEmailNavigationUiActions {
     override fun navigateToEmailOtpVerificationScreen() {

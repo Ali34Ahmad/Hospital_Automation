@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import com.example.constants.enums.AppointmentState
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
-import com.example.ext.toCapitalizedString
 import com.example.model.Appointment
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.fake.createSampleAppointments
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme

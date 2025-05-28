@@ -41,6 +41,10 @@ gradlePlugin {
             id = "gradlePlugins.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
+        register("koinConventionPlugin"){
+            id = "gradlePlugins.koin"
+            implementationClass = "KoinConventionPlugin"
+        }
 
     }
 }

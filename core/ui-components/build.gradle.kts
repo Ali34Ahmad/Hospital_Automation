@@ -47,7 +47,8 @@ dependencies {
     implementation(libs.calendar)
     implementation(libs.duration)
     implementation(libs.option)
-
+    
+    implementation(project(":core:model"))
 //    implementation(libs.accompanist.systemuicontroller)
 
 }

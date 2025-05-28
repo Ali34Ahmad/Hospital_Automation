@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.constants.enums.AgeUnit
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui_components.components.items.DetailsItem
-import com.example.model.Age
 import com.example.model.Child
+import com.example.model.helper.Age
+import com.example.model.helper.AgeUnit
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.spacing
@@ -55,8 +55,7 @@ fun ChildCard(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+                )
         }
         Spacer(modifier=Modifier.height(MaterialTheme.spacing.large24))
         Row(modifier = Modifier.fillMaxWidth()) {

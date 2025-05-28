@@ -16,7 +16,6 @@ class GuardiansPagingSource(
     private val query: String,
 ): PagingSource<Int, GuardianData>() {
 
-
     override fun getRefreshKey(state: PagingState<Int, GuardianData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)

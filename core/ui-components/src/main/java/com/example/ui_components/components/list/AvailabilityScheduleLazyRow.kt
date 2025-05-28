@@ -11,7 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.ext.toAppropriateFormat
-import com.example.ext.toCapitalizedString
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.model.WorkDay
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme

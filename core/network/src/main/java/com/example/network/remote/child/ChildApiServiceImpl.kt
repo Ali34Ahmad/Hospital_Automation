@@ -1,10 +1,12 @@
 package com.example.network.remote.child
 
 import android.util.Log
+import com.example.network.model.dto.child.ChildDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
+import com.example.network.model.response.child.GetChildrenAddedByEmployeeResponse
 import com.example.network.model.response.child.GetChildrenByGuardianIdResponse
 import com.example.network.model.response.child.GetChildrenByNameResponse
 import com.example.network.model.response.child.UploadCertificatedResponse
@@ -75,7 +77,7 @@ internal class ChildApiServiceImpl(
 
     override suspend fun getChildrenByGuardianId(
         token: String,
-        guardianId: String,
+        guardianId: Int,
     ): Result<GetChildrenByGuardianIdResponse, NetworkError> {
         val response = try {
             client.get(ApiRoutes.CHILDREN_BY_GUARDIAN_ID + "/$guardianId") {
@@ -91,8 +93,44 @@ internal class ChildApiServiceImpl(
                 Result.Success<GetChildrenByGuardianIdResponse>(data)
             }
             else -> {
+                Log.e(TAG, "getChildrenByGuardianId: ${response.status.description}")
                 Result.Error<NetworkError>(NetworkError.UNKNOWN)
             }
+        }
+    }
+
+    /**
+     * get children added by employee id
+     * page by page.
+     * @author Ali Mansoura
+     */
+    override suspend fun getChildrenAddedByEmployee(
+        token: String,
+        page: Int,
+        limit: Int
+    ): Result<GetChildrenAddedByEmployeeResponse, NetworkError> {
+        try {
+            val response = client.get(ApiRoutes.CHILDREN_BY_EMPLOYEE_ID) {
+
+                bearerAuth(token)
+
+                parameter("page",page)
+                parameter("limit",limit)
+            }
+            return when(response.status){
+                HttpStatusCode.OK -> {
+                    Log.d(TAG,"Success")
+                    val data: GetChildrenAddedByEmployeeResponse = response.body()
+                    Result.Success<GetChildrenAddedByEmployeeResponse>(data)
+                }
+                else ->{
+                    Log.e(TAG,"error: ${response.status.description}")
+                    Result.Error<NetworkError>(NetworkError.UNKNOWN)
+                }
+            }
+        }catch (e: Exception){
+            Log.e(TAG,"error: ${e.message}")
+            return Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
     }
 

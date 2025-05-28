@@ -18,7 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.example.model.BottomBarState
+import com.example.model.enums.FetchingDataState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -31,12 +31,12 @@ fun AddChildBottomBar(
     onNavigateToNextScreen:()-> Unit,
     onSendingData: () -> Unit,
     modifier: Modifier = Modifier,
-    bottomBarState: BottomBarState = BottomBarState.READY_TO_SEND,
+    fetchingDataState: FetchingDataState = FetchingDataState.READY,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
     AnimatedContent(
         modifier = modifier,
-        targetState = bottomBarState== BottomBarState.DATA_SENT_SUCCESSFULLY,
+        targetState = fetchingDataState== FetchingDataState.Success,
         transitionSpec = {
             slideInVertically(
                 animationSpec = tween(durationMillis = 500)
@@ -56,7 +56,7 @@ fun AddChildBottomBar(
                     onClick = {
                         onNavigateToNextScreen()
                     },
-                    bottomBarState = bottomBarState
+                    fetchingDataState = fetchingDataState
                 )
             }
             false->{
@@ -69,7 +69,7 @@ fun AddChildBottomBar(
                             onSendingData()
                         }
                     },
-                    bottomBarState = bottomBarState
+                    fetchingDataState = fetchingDataState
                 )
             }
         }
@@ -81,9 +81,9 @@ fun AddChildBottomBar(
 fun AddChildBottomBarPreview(){
     Hospital_AutomationTheme {
         Surface {
-            var state by remember { mutableStateOf(BottomBarState.ERROR_SENDING_DATA) }
+            var state by remember { mutableStateOf(FetchingDataState.ERROR) }
             AddChildBottomBar(
-                bottomBarState = state,
+                fetchingDataState = state,
                 onNavigateToNextScreen = {
 
                 },

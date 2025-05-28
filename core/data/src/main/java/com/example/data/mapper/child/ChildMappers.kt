@@ -3,17 +3,21 @@ package com.example.data.mapper.child
 import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
 import com.example.network.model.dto.child.ChildDto
+import com.example.network.model.dto.child.ChildFullDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
 
 internal fun ChildDto.toChildData() =
     ChildData(
-        id = childId,
-        fullName = "$firstName $lastName",
-        father = "$fatherFirstName $fatherLastName",
-        mother = "$motherFirstName $motherLastName",
-        age = dateOfBirth
+        id =childId ,
+        firstName = firstName,
+        lastName = lastName,
+        fatherFirstName = fatherFirstName,
+        fatherLastName = fatherLastName,
+        motherFirstName = motherFirstName,
+        motherLastName =motherLastName,
+        dateOfBirth = dateOfBirth
     )
 
 internal fun ChildFullResponse.toChildFullData(): ChildFullData {
@@ -60,3 +64,17 @@ internal fun AddChildResponse.toChildFullData(): ChildFullData =
         gender = child.gender,
         employeeId = child.employeeId
     )
+
+internal fun ChildFullDto.toChildFullData(): ChildFullData = ChildFullData(
+    childId = childId,
+    firstName = firstName,
+    lastName = lastName,
+    fatherFirstName = fatherFirstName,
+    fatherLastName = fatherLastName,
+    motherFirstName =motherFirstName,
+    motherLastName = motherLastName,
+    dateOfBirth = dateOfBirth,
+    birthCertificateImgUrl = birthCertificateImgUrl,
+    gender = gender,
+    employeeId = employeeId
+)

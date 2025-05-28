@@ -1,5 +1,9 @@
 package com.example.model.child
 
+import com.example.model.helper.Age
+import com.example.model.helper.AgeUnit
+import com.example.model.helper.ext.toAgeFromDate
+
 data class ChildFullData(
     val numberOfGuardians: Int? = null,
     val childId: Int? = null,
@@ -13,4 +17,13 @@ data class ChildFullData(
     val birthCertificateImgUrl: String? = null,
     val gender: String,
     val employeeId: Int? = null,
-)
+){
+    val fullName: String
+        get() = "$firstName $lastName"
+    val age: Age
+        get() = dateOfBirth.toAgeFromDate()
+    val fatherFullName: String
+        get() = "$fatherFirstName $fatherLastName"
+    val motherFullName: String
+        get() = "$motherFirstName $motherLastName"
+}

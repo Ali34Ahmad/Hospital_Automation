@@ -3,7 +3,6 @@ package com.example.guardians_search
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,10 +22,9 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
-import com.example.ui_components.components.items.custom.NoInternetConnectionItem
+import com.example.ui_components.components.items.custom.SomeThingWentWrong
 import com.example.ui_components.components.list_items.GuardianListItem
 import com.example.ui_components.components.topbars.custom.GuardianSearchBar
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun GuardiansSearchScreen(
@@ -128,7 +126,7 @@ fun GuardiansSearchScreen(
 
                 item {
                     AnimatedVisibility(state.value.hasError) {
-                        NoInternetConnectionItem(
+                        SomeThingWentWrong(
                             modifier = Modifier.padding(
                                 vertical = MaterialTheme.spacing.large24,
                             )

@@ -1,6 +1,5 @@
 package com.example.network.model.dto.user
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

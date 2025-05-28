@@ -13,5 +13,6 @@ enum class NetworkError : Error {
     UNPROCESSABLE_ENTITY,
     GUARDIAN_ALREADY_ASSIGNED,
     WRONG_ID,
-    EMPTY_TOKEN
+    EMPTY_TOKEN,
+    BAD_REQUEST
 }

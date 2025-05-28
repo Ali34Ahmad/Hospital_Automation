@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.children.AddChildUseCase
-import com.example.model.BottomBarState
+import com.example.model.enums.FetchingDataState
 import com.example.util.UiText
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -87,18 +87,18 @@ class AddChildViewModel(
                         //sending data using the network call
                         viewModelScope.launch {
                             _uiState.value = _uiState.value.copy(
-                                bottomBarState = BottomBarState.SENDING_DATA
+                                fetchingDataState = FetchingDataState.DOING_PROCESS
                             )
                             addChildUseCase(
                                 guardianId = id,
                                 child = _uiState.value.toChildFullData()
                             ).onSuccess{
                                 _uiState.value = _uiState.value.copy(
-                                    bottomBarState = BottomBarState.DATA_SENT_SUCCESSFULLY
+                                    fetchingDataState = FetchingDataState.Success
                                 )
                             }.onError {
                                 _uiState.value = _uiState.value.copy(
-                                    bottomBarState = BottomBarState.ERROR_SENDING_DATA
+                                    fetchingDataState = FetchingDataState.ERROR
                                 )
                                 delay(1000)
                                 onAction(AddChildUIActions.ClearForm)
@@ -109,13 +109,13 @@ class AddChildViewModel(
                 }
             }
             AddChildUIActions.ClearForm -> {
-                val bottomBarState = if (_uiState.value.bottomBarState == BottomBarState.DATA_SENT_SUCCESSFULLY) {
-                    BottomBarState.DATA_SENT_SUCCESSFULLY
+                val fetchingDataState = if (_uiState.value.fetchingDataState == FetchingDataState.Success) {
+                    FetchingDataState.Success
                 } else {
-                    BottomBarState.READY_TO_SEND
+                    FetchingDataState.READY
                 }
 
-                _uiState.value = AddChildUIState(bottomBarState = bottomBarState )
+                _uiState.value = AddChildUIState(fetchingDataState = fetchingDataState )
             }
             AddChildUIActions.NavigateBack -> TODO()
             AddChildUIActions.NavigateToNextScreen -> TODO()

@@ -13,22 +13,20 @@ import com.example.network.remote.child.ChildApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class ChildRepositoryImp(
     private val childApiService: ChildApiService,
     private val dataStore: UserPreferencesRepository
 ): ChildRepository {
-    var token: String? = null
 
     override suspend fun getChildrenByName(
         page: Int,
         limit: Int,
         name: String,
     ): Result<PagedData<ChildData>, NetworkError> {
-        dataStore.userPreferencesFlow.collectLatest{data->
-            token = data.token
-        }
+        val token = dataStore.userPreferencesFlow.map { it.token }.first()
          //we get the response from the network then convert the response to the data class
         token?.let {
             return childApiService.getChildrenByName(
@@ -71,4 +69,36 @@ class ChildRepositoryImp(
         }
     }
 
+
+    override suspend fun getChildrenByGuardianId(guardianId: Int): Result<List<ChildFullData>, NetworkError> {
+        val token = dataStore.userPreferencesFlow.map { it.token }.first()
+        if (token == null)
+            return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
+        val result  = childApiService.getChildrenByGuardianId(
+            token = token,
+            guardianId = guardianId
+        ).map {
+            it.data.map { it.child.toChildFullData() }
+        }
+        return result
+    }
+
+    override suspend fun getChildrenAddedByEmployee(
+        page: Int,
+        limit: Int,
+    ): Result<PagedData<ChildData>, NetworkError> {
+        val token = dataStore.userPreferencesFlow.map { it.token }.first()
+        return childApiService.getChildrenAddedByEmployee(
+            token = FAKE_TOKEN,
+            page = page,
+            limit = limit
+        ).map { response->
+            val children = response.data.map{it.toChildData()}
+            val page = response.pagination.page
+            PagedData<ChildData>(
+                page = page,
+                data = children
+            )
+        }
+    }
 }

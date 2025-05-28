@@ -12,6 +12,7 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
             with(project.pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
+                apply("gradlePlugins.koin")
             }
 
             extensions.configure<ApplicationExtension> {

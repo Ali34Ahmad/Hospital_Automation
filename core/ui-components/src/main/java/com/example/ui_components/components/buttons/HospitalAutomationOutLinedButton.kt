@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalShapes
+import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
 
@@ -57,6 +59,11 @@ fun HospitalAutomationOutLinedButton(
                 Icon(painter = painterResource(icon), null)
                 Spacer(modifier = Modifier.width(8.dp))
             }
+            Text(
+                text,
+                modifier = Modifier.padding(vertical = MaterialTheme.spacing.small8),
+                style = MaterialTheme.typography.labelLarge,
+            )
             Text(
                 text,
                 maxLines = 1,

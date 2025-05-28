@@ -1,6 +1,7 @@
 plugins {
 //    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.common.android.library)
+    alias(libs.plugins.common.koin)
 }
 
 android {
@@ -34,7 +35,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.koin.android)
 
     api(project(":core:network"))
     api(project(":core:datastore"))

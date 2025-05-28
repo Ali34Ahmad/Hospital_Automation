@@ -26,8 +26,8 @@ import androidx.compose.ui.res.stringResource
 import com.example.constants.enums.AvailabilityStatus
 import com.example.constants.enums.Gender
 import com.example.constants.icons.AppIcons
-import com.example.ext.toCapitalizedString
 import com.example.model.WorkDay
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.fake.createSampleAppointments
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview

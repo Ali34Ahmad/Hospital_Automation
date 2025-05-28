@@ -23,13 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.ext.toAge
+import com.example.model.helper.ext.toAge
 import com.example.ui_components.components.card.ChildCard
 import com.example.model.Child
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
-import com.example.ui_components.components.items.custom.NoInternetConnectionItem
+import com.example.ui_components.components.items.custom.SomeThingWentWrong
 import com.example.ui_components.components.topbars.custom.ChildrenSearchBar
 
 @Composable
@@ -74,6 +74,11 @@ fun ChildrenSearchScreen(
     ) { innerPadding ->
 
         val children = viewModel.childrenFlow.collectAsLazyPagingItems()
+        when(children.loadState.refresh){
+            is LoadState.Error -> onAction(ChildrenSearchUIActions.ShowError)
+            LoadState.Loading -> onAction(ChildrenSearchUIActions.OnSearch(true))
+            is LoadState.NotLoading -> onAction(ChildrenSearchUIActions.OnSearch(true))
+        }
         Surface(
             color = MaterialTheme.colorScheme.surface,
             modifier = Modifier.padding(innerPadding)
@@ -92,9 +97,9 @@ fun ChildrenSearchScreen(
                             child = Child(
                                 id = data.id,
                                 name = data.fullName,
-                                age = data.age.toAge(),
-                                fatherName = data.father,
-                                motherName = data.mother
+                                age = data.age,
+                                fatherName = data.fatherFullName,
+                                motherName = data.motherFullName
                             ),
                             onClick = {
                                 onAction(ChildrenSearchUIActions.NavigateToChildDetail(data.id))
@@ -116,32 +121,22 @@ fun ChildrenSearchScreen(
                 // showing error card
                 if(state.value.hasError){
                     item {
-                        NoInternetConnectionItem(
+                        SomeThingWentWrong(
                             modifier = Modifier.padding(
                                 vertical = MaterialTheme.spacing.large24,
                             )
                         )
                     }
                 }
-                //update the ui depending on load state.
-                children.loadState.apply {
-                    when {
-                        refresh is LoadState.Loading -> {
-                            onAction(ChildrenSearchUIActions.OnSearch(true))
-                        }
 
-                        append is LoadState.Loading -> {
-                            onAction(ChildrenSearchUIActions.OnSearch(true))
-                        }
-
-                        refresh is LoadState.Error -> {
-                            onAction(ChildrenSearchUIActions.OnSearch(false))
-                            onAction(ChildrenSearchUIActions.ShowError)
-                        }
-
-                        append is LoadState.Error -> {
-                            onAction(ChildrenSearchUIActions.OnSearch(false))
-                            onAction(ChildrenSearchUIActions.ShowError)
+                if(children.loadState.append == LoadState.Loading){
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(MaterialTheme.spacing.medium16),
+                            contentAlignment = Alignment.Center
+                        ){
+                            CircularProgressIndicator()
                         }
                     }
                 }
