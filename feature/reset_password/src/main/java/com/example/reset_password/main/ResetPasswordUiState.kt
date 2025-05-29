@@ -1,11 +1,12 @@
-package com.example.reset_password
+package com.example.reset_password.main
 
+import com.example.util.UiText
 import com.example.utility.network.Error
 
 data class ResetPasswordUiState(
     val email: String = "",
     val password: String = "",
-    val passwordError: String? = null,
+    val passwordError: UiText? = null,
     val isResetPasswordButtonEnabled: Boolean = false,
     val isLoading: Boolean = false,
     val error: Error? = null,

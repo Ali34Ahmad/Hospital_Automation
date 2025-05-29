@@ -1,4 +1,4 @@
-package com.example.reset_password
+package com.example.reset_password.main
 
 class ResetPasswordUiActions(
     navigationActions:ResetPasswordNavigationUiActions,

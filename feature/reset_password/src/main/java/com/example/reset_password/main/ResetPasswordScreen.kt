@@ -1,4 +1,4 @@
-package com.example.reset_password
+package com.example.reset_password.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import com.example.constants.icons.AppIcons
 import com.example.utility.network.NetworkError
@@ -132,8 +134,13 @@ fun ResetPasswordScreen(
                             uiActions.onPasswordChange(it)
                         },
                         label = R.string.new_password,
-                        supportingText = uiState.passwordError,
+                        supportingText = uiState.passwordError?.asString(),
+                        isError = uiState.passwordError != null,
+                        isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done
+                        )
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
@@ -143,6 +150,7 @@ fun ResetPasswordScreen(
                         text = stringResource(R.string.reset_password),
                         modifier = Modifier
                             .fillMaxWidth(),
+                        enabled = uiState.isResetPasswordButtonEnabled,
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
