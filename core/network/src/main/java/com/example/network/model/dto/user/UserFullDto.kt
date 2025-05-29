@@ -1,6 +1,5 @@
 package com.example.network.model.dto.user
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,17 +18,17 @@ data class UserFullDto(
     @SerialName("phone_number")
     val phoneNumber: String,
     @SerialName("address_governorate")
-    val addressGovernorate: String,
+    val addressGovernorate: String?= null,
     @SerialName("address_city")
-    val addressCity: String,
+    val addressCity: String?= null,
     @SerialName("address_region")
-    val addressRegion: String,
+    val addressRegion: String?= null,
     @SerialName("address_street")
-    val addressStreet: String,
+    val addressStreet: String?= null,
     @SerialName("address_note")
-    val addressNote: String,
+    val addressNote: String?= null,
     @SerialName("gender")
-    val gender: String?,
+    val gender: String?= null,
     @SerialName("imgurl")
-    val imgUrl: String?,
+    val imgUrl: String? = null,
 )

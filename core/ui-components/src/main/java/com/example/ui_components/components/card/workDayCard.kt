@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
-import com.example.ext.toCapitalizedString
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.model.WorkDay
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme

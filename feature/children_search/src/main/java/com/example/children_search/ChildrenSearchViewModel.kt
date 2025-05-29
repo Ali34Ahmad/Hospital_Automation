@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.data.source.ChildrenPagingSource
+import com.example.domain.model.constants.SourcesConstants
 import com.example.domain.use_cases.children.GetChildrenByNameUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -30,7 +31,7 @@ class ChildrenSearchViewModel(
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val childrenFlow = searchQuery
-        .debounce(300)
+        .debounce(150)
         .distinctUntilChanged()
         .filter{ it.isNotBlank() }
         .flatMapLatest{ query ->
@@ -40,8 +41,7 @@ class ChildrenSearchViewModel(
             }else{
                 Pager(
                     config = PagingConfig(
-                        pageSize = 50,
-                        prefetchDistance = 10
+                        pageSize = SourcesConstants.PAGE_SIZE,
                     ),
                     pagingSourceFactory = {
                         ChildrenPagingSource(

@@ -1,7 +1,7 @@
 package com.example.add_child_screen
 
 import com.example.constants.enums.Gender
-import com.example.model.BottomBarState
+import com.example.model.enums.FetchingDataState
 import com.example.model.child.ChildFullData
 import com.example.util.UiText
 
@@ -26,7 +26,7 @@ data class AddChildUIState(
     val isDatePickerVisible: Boolean = false,
     val isValid: Boolean = false,
 
-    val bottomBarState: BottomBarState = BottomBarState.READY_TO_SEND,
+    val fetchingDataState: FetchingDataState = FetchingDataState.READY,
     val isDatePickerShown: Boolean = false
 )
 
@@ -37,7 +37,7 @@ internal fun AddChildUIState.toChildFullData(): ChildFullData =
         fatherFirstName = fatherFirstName.trim(),
         fatherLastName = fatherLastName.trim(),
         motherFirstName = motherFirstName.trim(),
-        motherLastName  = motherLastName.trim(),
+        motherLastName = motherLastName.trim(),
         dateOfBirth = dateOfBirth.trim(),
         gender = gender.toString().trim(),
     )

@@ -10,6 +10,8 @@ import com.example.data.di.dataModule
 import com.example.datastore.di.dataStoreModule
 import com.example.domain.di.useCasesModule
 import com.example.domain.di.validatorUseCasesModule
+import com.example.guardian_profile.di.guardianProfileModule
+import com.example.children.di.childrenModule
 import com.example.email_verification.emailVerificationModule
 import com.example.employee_profile.employeeProfileModule
 import com.example.employment_history.employmentHistoryModule
@@ -33,6 +35,7 @@ class EmployeeApplication: Application() {
 
         startKoin {
             androidContext(this@EmployeeApplication)
+            //remove all modules that is not a feature module or data module.
             modules(
                 signUpModule,
                 emailVerificationModule,
@@ -48,7 +51,6 @@ class EmployeeApplication: Application() {
                 adminProfileModule,
                 networkModule,
                 dataStoreModule,
-                //
                 appModule,
                 dataModule,
                 guardiansSearchModule,
@@ -58,6 +60,9 @@ class EmployeeApplication: Application() {
                 employmentHistoryModule,
                 useCasesModule,
                 validatorUseCasesModule,
+                addChildModule,
+                guardianProfileModule,
+                childrenModule
             )
         }
     }

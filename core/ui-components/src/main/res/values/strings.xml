@@ -144,7 +144,7 @@
     <string name="verification_code_sent_to_email">Verification code sent to this email</string>
     <string name="Did_not_get_OTP_verification_code">Didn’t get OTP verification code?</string>
     <string name="verification_error">Verification error</string>
-    <string name="something_went_wrong">Something went wrong! Please try again later</string>
+    <string name="something_went_wrong">Something went wrong!</string>
     <string name="loggin_in">Loggin in...</string>
     <string name="login_failed">Login failed</string>
     <string name="document_upload_is_required">Document upload is required</string>
@@ -155,7 +155,6 @@
     <string name="region">Region</string>
     <string name="street">Street</string>
     <string name="address_privacy_policy">Your address will be accessible administrator as needed.</string>
-    <string name="error">Error</string>
     <string name="send_otp_code">Send otp code</string>
     <string name="sending_otp_failed">Sending otp code failed</string>
     <string name="enter_email">Enter your email</string>
@@ -181,17 +180,26 @@
     <string name="not_accepted_warning">You\'re not yet approved as an employee. You will be notified about your request state soon.</string>
     <string name="resigned_warning">You account is marked as resigned by admin. To see details click.</string>
     <string name="suspended_warning">You account is marked as suspended by admin. To see details click.</string>
-    <string name="loading">Loading</string>
-    <string name="send_data">Send data</string>
-    <string name="sending">Sending</string>
+
     <string name="child_info">Child Info</string>
     <string name="parents_info">Parents Info</string>
     <string name="father_first_name">Father First Name</string>
     <string name="father_last_name">Father Last Name</string>
     <string name="mother_first_name">Mother First Name</string>
     <string name="mother_last_name">Mother Last Name</string>
+    <string name="loading">Loading</string>
+    <string name="sending">Sending data</string>
+    <string name="send_data">Send data</string>
+    <string name="error">Error</string>
+    <string name="set_as_guardian">Set As Guardian</string>
+    <string name="wait">Wait</string>
+    <string name="success">Success</string>
+    <string name="guardian_already_assigned">Guardian has already been assigned to this child</string>
+    <string name="guardian_profile">Guardian Profile</string>
+    <string name="no_items">No Items</string>
+    <string name="no_items_subtitle">There are no items</string>
     <string name="no_internet_connection">No internet connection</string>
-    <string name="no_internet_connection_subtitle">No internet connection subtitle</string>
+    <string name="no_internet_connection_subtitle">No internet connection subtitle please try again later.</string>
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_subtitle">Fetching data subtitle</string>
     <string name="search_for_children">Search for chilren</string>

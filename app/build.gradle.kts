@@ -1,10 +1,6 @@
 plugins {
-//    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.common.android.application.compose)
     alias(libs.plugins.common.android.application)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -67,8 +63,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.compose)
 
+    // remove network, data and datastore modules
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:navigation"))
 
     //Auth features
     implementation(project(":feature:signup"))
@@ -92,6 +90,9 @@ dependencies {
     implementation(project(":feature:children_search"))
     implementation(project(":feature:child_profile"))
     implementation(project(":feature:add_child_screen"))
+    implementation(project(":feature:guardian_profile"))
+    implementation(project(":feature:children"))
+
     //data
     implementation(project(":core:data"))
 

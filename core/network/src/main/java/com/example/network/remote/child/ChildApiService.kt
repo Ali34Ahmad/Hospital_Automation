@@ -1,8 +1,10 @@
 package com.example.network.remote.child
 
+import com.example.network.model.dto.child.ChildDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
+import com.example.network.model.response.child.GetChildrenAddedByEmployeeResponse
 import com.example.network.model.response.child.GetChildrenByGuardianIdResponse
 import com.example.network.model.response.child.GetChildrenByNameResponse
 import com.example.network.model.response.child.UploadCertificatedResponse
@@ -39,6 +41,12 @@ interface ChildApiService {
 
     suspend fun getChildrenByGuardianId(
         token: String,
-        guardianId: String,
+        guardianId: Int,
     ): Result<GetChildrenByGuardianIdResponse, NetworkError>
+
+    suspend fun getChildrenAddedByEmployee(
+        token: String,
+        page: Int,
+        limit: Int
+    ): Result<GetChildrenAddedByEmployeeResponse, NetworkError>
 }

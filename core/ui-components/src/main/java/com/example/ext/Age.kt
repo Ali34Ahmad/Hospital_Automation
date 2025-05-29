@@ -1,6 +1,8 @@
 package com.example.ext
 
-import com.example.model.Age
+import com.example.model.helper.Age
+import com.example.model.helper.ext.toCapitalizedString
+
 
 fun Age.toAppropriateFormat():String{
     val value=this.value

@@ -38,8 +38,7 @@ fun GuardianProfileCard(
     onPhoneNumberButtonClick: () -> Unit,
     onEmailButtonClick: () -> Unit,
     phoneNumber: String,
-    email: String,
-    profileImageUrl: String,
+    profileImageUrl: String?,
     onNavigateUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -106,7 +105,6 @@ fun GuardianProfileCardPreview() {
                     .padding(MaterialTheme.spacing.medium16)
                     .fillMaxWidth(),
                 phoneNumber = "+963 931 661 772",
-                email = "aliahmad@gmail.com",
                 name = "Ali Ahmad",
                 onEmailButtonClick = {},
                 onPhoneNumberButtonClick = {},

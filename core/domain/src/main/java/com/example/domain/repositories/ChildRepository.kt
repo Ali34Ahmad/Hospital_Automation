@@ -6,6 +6,7 @@ import com.example.model.guardian.PagedData
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 
+
 interface ChildRepository {
     suspend fun getChildrenByName(
         page: Int,
@@ -21,4 +22,14 @@ interface ChildRepository {
         guardianId: Int,
         child: ChildFullData
     ): Result<ChildFullData,NetworkError>
+
+    suspend fun getChildrenByGuardianId(
+        guardianId: Int,
+    ): Result<List<ChildFullData>,NetworkError>
+
+    suspend fun getChildrenAddedByEmployee(
+        page: Int,
+        limit: Int
+    ): Result<PagedData<ChildData>, NetworkError>
+
 }

@@ -36,13 +36,13 @@ data class ChildFullDto(
     val gender: String,
 
     @SerialName("birth_certificate_img_url")
-    val birthCertificateImgUrl: String,
+    val birthCertificateImgUrl: String? = null,
 
     val createdAt: String,
     val updatedAt: String,
 
     @SerialName("employee_id")
-    val employeeId: Int,
+    val employeeId: Int? = null,
 
     val user: UserDto? = null
 )

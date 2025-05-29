@@ -17,8 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.constants.enums.AgeUnit
-import com.example.model.Age
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.items.DetailsItem
@@ -27,6 +25,8 @@ import com.example.ui_components.R
 import com.example.ui_components.components.texts.IndexedText
 import com.example.ui_components.components.texts.TitleWithSubtitle
 import com.example.model.InteractionData
+import com.example.model.helper.Age
+import com.example.model.helper.AgeUnit
 
 @Composable
 fun VaccineDetails(

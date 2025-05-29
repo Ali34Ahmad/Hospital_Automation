@@ -105,6 +105,7 @@ common-android-application-compose = { id = "gradlePlugins.android.application.c
 common-android-application = { id = "gradlePlugins.android.application", version = "unspecified" }
 common-android-library = { id = "gradlePlugins.android.library", version = "unspecified" }
 common-android-feature = {id = "gradlePlugins.android.feature", version = "unspecified"}
+common-koin = {id = "gradlePlugins.koin", version = "unspecified"}
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 [bundles]
