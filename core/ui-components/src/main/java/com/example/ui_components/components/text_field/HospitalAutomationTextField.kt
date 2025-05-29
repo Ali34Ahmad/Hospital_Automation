@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.helper.DarkAndLightModePreview
@@ -35,6 +37,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.util.UiText
 
 @Composable
 fun HospitalAutomationTextFiled(
@@ -46,14 +49,18 @@ fun HospitalAutomationTextFiled(
     @StringRes label: Int? = null,
     @StringRes placeholder: Int? = null,
     @DrawableRes icon: Int? = null,
+    onTrailingIconClick: () -> Unit = {},
     supportingText: String? = null,
     minLines: Int = 1,
     maxLines: Int = minLines,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        imeAction = ImeAction.Next,
+    ),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
-    val singleLine= maxLines <= 0
+    val singleLine = maxLines <= 1
     TextField(
         modifier = modifier,
         readOnly = readOnly,
@@ -61,6 +68,7 @@ fun HospitalAutomationTextFiled(
         shape = MaterialTheme.shapes.extraSmall,
         value = value,
         onValueChange = onValueChange,
+        visualTransformation = visualTransformation,
         label = {
             label?.let {
                 val text = buildString {
@@ -75,8 +83,11 @@ fun HospitalAutomationTextFiled(
             }
         },
         trailingIcon = {
-            if (icon != null)
-                Icon(painter = painterResource(icon), null)
+            if (icon != null) {
+                IconButton(onClick = onTrailingIconClick) {
+                    Icon(painter = painterResource(icon), null)
+                }
+            }
         },
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.background,
@@ -87,8 +98,8 @@ fun HospitalAutomationTextFiled(
             errorLabelColor = MaterialTheme.colorScheme.error,
             errorCursorColor = MaterialTheme.colorScheme.error,
             errorSupportingTextColor = MaterialTheme.colorScheme.error,
-            errorContainerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.12f),
-            errorTextColor = MaterialTheme.colorScheme.error,
+            errorContainerColor = MaterialTheme.colorScheme.background,
+            errorTextColor = MaterialTheme.colorScheme.onBackground,
             errorPlaceholderColor = MaterialTheme.colorScheme.error,
         ),
         placeholder = {
@@ -107,7 +118,7 @@ fun HospitalAutomationTextFiled(
         },
         minLines = minLines,
         maxLines = maxLines,
-        singleLine=singleLine,
+        singleLine = singleLine,
         enabled = enabled,
     )
 }

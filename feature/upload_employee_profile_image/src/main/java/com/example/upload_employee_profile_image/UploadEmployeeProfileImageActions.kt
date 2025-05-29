@@ -17,5 +17,4 @@ interface UploadEmployeeProfileImageBusinessUiActions {
 
 interface UploadEmployeeProfileImageNavigationUiActions {
     fun navigateToHomeScreenScreen()
-    fun openImagePicker()
 }

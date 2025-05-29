@@ -1,17 +1,23 @@
 package com.example.fake
 
-import com.example.network.constants.Gender
-import com.example.network.model.response.EmployeeProfile
-import com.example.network.model.response.EmployeeProfileResponse
+import com.example.model.employee.EmployeeProfile
+import com.example.model.employee.EmployeeProfileResponse
+import com.example.model.enums.Gender
+import com.example.model.user.FullName
+import com.example.network.model.enums.GenderDto
+import com.example.network.model.response.EmployeeProfileDto
+import com.example.network.model.response.EmployeeProfileResponseDto
 
 fun createSampleEmployeeProfileResponse(): EmployeeProfileResponse {
     val sampleProfile = EmployeeProfile(
         userId = 101,
         role = "developer",
         email = "jane.doe@example.com",
-        firstName = "Jane",
-        lastName = "Doe",
-        middleName = "Anne",
+        fullName = FullName(
+            firstName = "Jane",
+            lastName = "Doe",
+            middleName = "Anne"
+        ),
         verifiedResetPassword = true,
         verifiedAccount = true,
         phoneNumber = "0987654321",

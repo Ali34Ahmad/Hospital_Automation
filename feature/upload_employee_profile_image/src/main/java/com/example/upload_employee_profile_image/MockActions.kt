@@ -8,12 +8,6 @@ fun mockUploadEmployeeProfileImageNavigationUiActions()=object :
     override fun navigateToHomeScreenScreen() {
 
     }
-
-    override fun openImagePicker() {
-
-    }
-
-
 }
 
 fun mockUploadEmployeeProfileImageBusinessUiActions()=object :

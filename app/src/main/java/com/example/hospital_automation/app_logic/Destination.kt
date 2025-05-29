@@ -45,4 +45,10 @@ sealed interface Destination {
     @Serializable
     object EmployeeProfile : Destination
 
+    @Serializable
+    object EmploymentHistory : Destination
+
+    @Serializable
+    data class AdminProfile(val adminId: Int) : Destination
+
 }

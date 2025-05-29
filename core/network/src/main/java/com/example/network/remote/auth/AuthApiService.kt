@@ -1,45 +1,42 @@
 package com.example.network.remote.auth
 
-import com.example.network.model.request.LoginRequest
-import com.example.network.model.request.RegistrationRequest
-import com.example.network.model.request.ResetPasswordRequest
-import com.example.network.model.request.SendOtpRequest
-import com.example.network.model.request.VerifyEmailOtpRequest
-import com.example.network.model.response.CheckEmployeePermissionResponse
-import com.example.network.model.response.LoginResponse
-import com.example.network.model.response.LogoutResponse
-import com.example.network.model.response.RegistrationResponse
-import com.example.network.model.response.ResetPasswordResponse
-import com.example.network.model.response.VerifyEmailOtpResponse
-import com.example.network.utility.Resource
+import com.example.network.model.request.LoginRequestDto
+import com.example.network.model.request.RegistrationRequestDto
+import com.example.network.model.request.ResetPasswordRequestDto
+import com.example.network.model.request.SendOtpRequestDto
+import com.example.network.model.request.VerifyEmailOtpRequestDto
+import com.example.network.model.response.LoginResponseDto
+import com.example.network.model.response.LogoutResponseDto
+import com.example.network.model.response.RegistrationResponseDto
+import com.example.network.model.response.ResetPasswordResponseDto
+import com.example.network.model.response.SendOtpResponseDto
+import com.example.network.model.response.VerifyEmailOtpResponseDto
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface AuthApiService {
     suspend fun signup(
-        registrationRequest: RegistrationRequest
-    ): Result<RegistrationResponse, rootError >
+        registrationRequestDto: RegistrationRequestDto
+    ): Result<RegistrationResponseDto, rootError >
 
     suspend fun login(
-        loginRequest: LoginRequest
-    ): Result<LoginResponse, rootError>
+        loginRequestDto: LoginRequestDto
+    ): Result<LoginResponseDto, rootError>
 
 
     suspend fun verifyEmail(
-        verifyEmailOtpRequest: VerifyEmailOtpRequest
-    ): Result<VerifyEmailOtpResponse, rootError>
+        verifyEmailOtpRequestDto: VerifyEmailOtpRequestDto
+    ): Result<VerifyEmailOtpResponseDto, rootError>
 
     suspend fun sendOtpCodeToEmail(
-        sendOtpCodeRequest: SendOtpRequest
-    ): Result<VerifyEmailOtpResponse, rootError>
+        sendOtpCodeRequest: SendOtpRequestDto
+    ): Result<SendOtpResponseDto, rootError>
 
     suspend fun resetPassword(
-        resetPasswordRequest: ResetPasswordRequest
-    ): Result<ResetPasswordResponse, rootError>
-
-    suspend fun checkEmployeePermission(): Result<CheckEmployeePermissionResponse, rootError>
+        resetPasswordRequestDto: ResetPasswordRequestDto
+    ): Result<ResetPasswordResponseDto, rootError>
 
     suspend fun logout(
-    ): Result<LogoutResponse, rootError>
+    ): Result<LogoutResponseDto, rootError>
 
 }

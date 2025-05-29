@@ -4,14 +4,6 @@ import com.example.constants.enums.Gender
 
 
 fun mockEmployeeProfileNavigationUiActions()=object : EmployeeProfileNavigationUiActions {
-    override fun navigateToCallApp(phoneNumber: String) {
-
-    }
-
-    override fun navigateToEmail(email: String,subject: String) {
-
-    }
-
     override fun navigateToAddedChildrenScreen() {
 
     }
@@ -36,6 +28,10 @@ fun mockEmployeeProfileBusinessUiActions()=object : EmployeeProfileBusinessUiAct
     }
 
     override fun onDeactivateMyAccount() {
+
+    }
+
+    override fun onReactivateMyAccount() {
 
     }
 

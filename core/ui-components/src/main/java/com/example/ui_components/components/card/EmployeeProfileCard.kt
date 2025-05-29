@@ -1,7 +1,6 @@
 package com.example.ui_components.components.card
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,26 +16,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import com.example.constants.enums.Gender
+import com.example.constants.BASE_URL
+import com.example.model.enums.Gender
 import com.example.constants.icons.AppIcons
 import com.example.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @Composable
 fun EmployeeProfileCard(
@@ -66,13 +63,13 @@ fun EmployeeProfileCard(
     ) {
         Box(modifier = Modifier) {
             NetworkImage(
-                imageUrl = "https://dispensary-hkz3.onrender.com/${profileImageUrl}",
-                contentScale = ContentScale.Fit,
+                model = "$BASE_URL/$profileImageUrl",
+                contentScale = ContentScale.FillWidth,
                 loading = {
-                    ProfileImageLoader()
+                    NetworkImageLoader()
                 },
-                error = {
-                    ProfileImageError()
+                errorCompose = {
+                    NetworkImageError()
                 },
             )
             IconButton(
@@ -120,7 +117,7 @@ fun EmployeeProfileCard(
                 text = stringResource(R.string.suspended_warning),
                 clickableText = stringResource(R.string.learn_more),
                 onTextClick = {
-//                    onSuspendWaningTextClick()
+//                    onSuspendWarningTextClick()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -159,44 +156,6 @@ fun EmployeeProfileCard(
             )
         }
     }
-}
-
-@Composable
-private fun ProfileImageError() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(MaterialTheme.sizing.profileImageHeight)
-            .background(MaterialTheme.colorScheme.outlineVariant),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(AppIcons.Outlined.error),
-            contentDescription = null,
-            modifier = Modifier
-                .size(MaterialTheme.sizing.profileImageFailureIconSize),
-            tint = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
-        Text(
-            text = stringResource(R.string.failed_to_load_image),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
-
-@Composable
-private fun ProfileImageLoader(
-    modifier: Modifier = Modifier,
-) {
-    Spacer(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(MaterialTheme.sizing.profileImageHeight)
-            .background(MaterialTheme.colorScheme.outlineVariant),
-    )
 }
 
 @DarkAndLightModePreview

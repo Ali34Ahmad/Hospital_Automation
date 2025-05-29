@@ -55,6 +55,8 @@ sealed interface AppIcons {
         val logout = R.drawable.ic_logout
         val download = R.drawable.ic_download
         val pause=R.drawable.ic_pause
+        val visible=R.drawable.ic_visible
+        val invisible=R.drawable.ic_invisible
 
     }
 }

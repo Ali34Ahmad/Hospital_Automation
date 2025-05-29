@@ -48,5 +48,4 @@ dependencies {
 
     implementation(project(":core:datastore"))
     api(project(":core:utility"))
-
 }

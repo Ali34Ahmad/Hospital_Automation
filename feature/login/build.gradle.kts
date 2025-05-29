@@ -30,6 +30,4 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(project(":core:ui-components"))
-
-    implementation(project(":core:network"))
 }

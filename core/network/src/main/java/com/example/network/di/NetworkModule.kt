@@ -2,14 +2,18 @@ package com.example.network.di
 
 import com.example.network.remote.account_management.EmployeeAccountManagementApiService
 import com.example.network.remote.account_management.EmployeeAccountManagementApiServiceImpl
-import com.example.network.remote.add_residential_address.AddResidentialAddressApi
-import com.example.network.remote.add_residential_address.AddResidentialAddressApiImpl
+import com.example.network.remote.add_residential_address.AddResidentialAddressApiService
+import com.example.network.remote.add_residential_address.AddResidentialAddressApiServiceImpl
+import com.example.network.remote.admin_profile.AdminProfileApiService
+import com.example.network.remote.admin_profile.AdminProfileApiServiceImpl
 import com.example.network.remote.auth.AuthApiService
 import com.example.network.remote.auth.AuthApiServiceImpl
 import com.example.network.remote.child.ChildApiService
 import com.example.network.remote.child.ChildApiServiceImpl
 import com.example.network.remote.employee_profile.EmployeeProfileApiService
 import com.example.network.remote.employee_profile.EmployeeProfileApiServiceImpl
+import com.example.network.remote.employment_history.EmploymentHistoryApiService
+import com.example.network.remote.employment_history.EmploymentHistoryApiServiceImpl
 import com.example.network.remote.upload_employee_documents.UploadEmployeeDocumentsApi
 import com.example.network.remote.upload_employee_documents.UploadEmployeeDocumentsApiImpl
 import com.example.network.remote.upload_employee_profile_image.UploadEmployeeProfileImageApi
@@ -19,16 +23,16 @@ import com.example.network.remote.user.UserApiServiceImpl
 import com.example.network.utility.file.FileReader
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
@@ -43,10 +47,6 @@ val networkModule = module {
                     ignoreUnknownKeys = true
                 })
             }
-            install(HttpTimeout) {
-                requestTimeoutMillis = 100 * 1000
-                connectTimeoutMillis = 100 * 1000
-            }
             install(Logging) {
                 logger = Logger.DEFAULT
                 level = LogLevel.ALL
@@ -55,35 +55,27 @@ val networkModule = module {
     }
 
     //child api service
-    single<ChildApiService> { ChildApiServiceImpl(get()) }
+    singleOf(::ChildApiServiceImpl) { bind<ChildApiService>() }
 
-    //user api service
-    single<UserApiService> { UserApiServiceImpl(get()) }
+    singleOf(::UserApiServiceImpl) { bind<UserApiService>() }
 
-    //Auth api service
-    single<AuthApiService> { AuthApiServiceImpl(get(), get()) }
+    singleOf(::UploadEmployeeDocumentsApiImpl) { bind<UploadEmployeeDocumentsApi>() }
 
-    single<UploadEmployeeDocumentsApi> { UploadEmployeeDocumentsApiImpl(get(), get(), get()) }
-
-    single<UploadEmployeeProfileImageApi> { UploadEmployeeProfileImageApiImpl(get(), get(), get()) }
+    singleOf(::UploadEmployeeProfileImageApiImpl) { bind<UploadEmployeeProfileImageApi>() }
 
     single<FileReader> { FileReader(androidApplication()) }
 
-    single<AddResidentialAddressApi> { AddResidentialAddressApiImpl(get(), get()) }
-
-    single<EmployeeProfileApiService> { EmployeeProfileApiServiceImpl(get(), get()) }
-
-    single<EmployeeAccountManagementApiService> {
-        EmployeeAccountManagementApiServiceImpl(
-            get(),
-            get()
-        )
+    singleOf(::EmployeeAccountManagementApiServiceImpl) {
+        bind<EmployeeAccountManagementApiService>()
     }
 
+    singleOf(::AddResidentialAddressApiServiceImpl) { bind<AddResidentialAddressApiService>() }
 
-    single<UserApiService> { UserApiServiceImpl(get()) }
+    singleOf(::AuthApiServiceImpl) { bind<AuthApiService>() }
 
-    single<AddResidentialAddressApi> { AddResidentialAddressApiImpl(get(), get()) }
-    single<AuthApiService> { AuthApiServiceImpl(get(), get()) }
-    single<EmployeeProfileApiService> { EmployeeProfileApiServiceImpl(get(), get()) }
+    singleOf(::EmployeeProfileApiServiceImpl) { bind<EmployeeProfileApiService>() }
+
+    singleOf(::EmploymentHistoryApiServiceImpl) { bind<EmploymentHistoryApiService>() }
+
+    singleOf(::AdminProfileApiServiceImpl){ bind<AdminProfileApiService>() }
 }

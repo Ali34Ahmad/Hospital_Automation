@@ -4,7 +4,7 @@ import android.net.Uri
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.network.constants.Role
-import com.example.network.model.response.ProgressUpdate
+import com.example.network.model.response.ProgressUpdateDto
 import com.example.network.utility.ApiRoutes
 import com.example.network.utility.file.FileReader
 import io.ktor.client.HttpClient
@@ -26,7 +26,7 @@ class UploadEmployeeProfileImageApiImpl(
     private val fileReader: FileReader,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : UploadEmployeeProfileImageApi {
-    override fun uploadImage(uri: Uri): Flow<ProgressUpdate> = channelFlow {
+    override fun uploadImage(uri: Uri): Flow<ProgressUpdateDto> = channelFlow {
         val info = fileReader.uriToFileInfo(uri)
 
         val token = userPreferencesRepository.userPreferencesFlow.first().token
@@ -51,17 +51,17 @@ class UploadEmployeeProfileImageApiImpl(
                         info.bytes,
                         Headers.build {
                             append(HttpHeaders.ContentType, info.mimeType)
-                            append(HttpHeaders.ContentDisposition, "filename=\"${info.name}\"")
+                            append(HttpHeaders.ContentDisposition, "filename=\"${info.name}.${info.mimeType.removePrefix("image/")}\"")
                         }
                     )
-                    Log.v("Uploading Image", "Client")
+                    Log.v("Uploading Image Client", info.name + "." + info.mimeType)
                 }
             ) {
                 method = HttpMethod.Post
                 bearerAuth(token)
                 onUpload { bytesSent, totalBytes ->
                     if ((totalBytes ?: 0) > 0L) {
-                        send(ProgressUpdate(bytesSent, totalBytes ?: 0))
+                        send(ProgressUpdateDto(bytesSent, totalBytes ?: 0))
                         Log.v("Uploading Image", "$bytesSent/$totalBytes")
                     }
                 }

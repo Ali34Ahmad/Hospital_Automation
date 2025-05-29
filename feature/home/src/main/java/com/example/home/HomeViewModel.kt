@@ -4,17 +4,20 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.datastore.repositories.UserPreferencesRepository
-import com.example.network.remote.auth.AuthApiService
+import com.example.domain.repositories.EmployeeAccountManagementRepository
+import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import com.example.utility.network.Error
 import com.example.utility.network.Result
+import com.example.utility.network.onError
+import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val authService: AuthApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
+    private val checkEmployeePermissionUseCase: CheckEmployeePermissionUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -88,11 +91,10 @@ class HomeViewModel(
         viewModelScope.launch {
             updateIsLoadingState(true)
             Log.v("Checking Employee Permission", "HomeViewModel")
-            val result = authService.checkEmployeePermission()
-            when (result) {
-                is Result.Success -> {
+            checkEmployeePermissionUseCase()
+                .onSuccess { data ->
                     Log.v("Successful Check Employee Permission", "HomeViewModel")
-                    val isPermissionGranted = result.data.permissionGranted
+                    val isPermissionGranted = data.permissionGranted
                     updateIsPermissionGranted(isPermissionGranted)
                     if (!isPermissionGranted) {
                         writeShowPermissionCard(true)
@@ -100,16 +102,13 @@ class HomeViewModel(
                     updateIsLoadingState(false)
                     updateShowErrorDialogState(false)
                     updateErrorState(null)
-                }
-
-                is Result.Error -> {
+                }.onError { error ->
                     Log.v("Failed CheckingPermission", "HomeViewModel")
                     updateIsLoadingState(false)
                     updateIsPermissionGranted(false)
                     updateShowErrorDialogState(true)
-                    updateErrorState(result.error)
+                    updateErrorState(error)
                 }
-            }
         }
     }
 

@@ -195,4 +195,14 @@
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_subtitle">Fetching data subtitle</string>
     <string name="search_for_children">Search for chilren</string>
+    <string name="suspensiong_date">Suspnsion date</string>
+    <string name="suspended_by">Suspended by</string>
+    <string name="required_field">This field is required</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="unknown_validation_error">Unknown validation error</string>
+    <string name="password_must_contains_more_than_eight_letters">Password must contains more than eight letters</string>
+    <string name="invalid_phone_number">Invalid phone number</string>
+    <string name="does_not_match_password">Confirmation text does not match the password</string>
+    <string name="otp_invalid_length">Invalid length</string>
+    <string name="otp_must_be_digits">Otp code must only contains digits</string>
 </resources>

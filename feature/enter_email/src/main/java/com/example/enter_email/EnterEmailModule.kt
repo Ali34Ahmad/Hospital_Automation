@@ -1,12 +1,13 @@
 package com.example.enter_email
 
-import org.koin.core.module.dsl.viewModel
+import com.example.enter_email.main.EnterEmailViewModel
+import com.example.enter_email.validator.EnterEmailValidator
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val enterEmailModule = module {
-    viewModel {
-        EnterEmailViewModel(
-            get()
-        )
-    }
+    viewModelOf(::EnterEmailViewModel)
+
+    singleOf(::EnterEmailValidator)
 }

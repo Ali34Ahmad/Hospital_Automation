@@ -1,53 +1,49 @@
 package com.example.hospital_automation
 
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.add_residential_address.AddResidentialAddressNavigationUiActions
-import com.example.add_residential_address.AddResidentialAddressScreen
-import com.example.add_residential_address.AddResidentialAddressViewModel
+import com.example.add_residential_address.main.AddResidentialAddressNavigationUiActions
+import com.example.add_residential_address.main.AddResidentialAddressScreen
+import com.example.add_residential_address.main.AddResidentialAddressViewModel
+import com.example.admin_profile.AdminProfileNavigationUiActions
+import com.example.admin_profile.AdminProfileScreen
+import com.example.admin_profile.AdminProfileViewModel
 import com.example.email_verification.email_verified_successfully.EmailVerifiedSuccessfullyNavigationUiActions
 import com.example.email_verification.email_verified_successfully.EmailVerifiedSuccessfullyScreen
 import com.example.email_verification.email_verified_successfully.EmailVerifiedSuccessfullyViewModel
-import com.example.email_verification.otp_verification.OtpVerificationNavigationUiActions
-import com.example.email_verification.otp_verification.OtpVerificationScreen
-import com.example.email_verification.otp_verification.OtpVerificationViewModel
+import com.example.email_verification.otp_verification.main.OtpVerificationNavigationUiActions
+import com.example.email_verification.otp_verification.main.OtpVerificationScreen
+import com.example.email_verification.otp_verification.main.OtpVerificationViewModel
 import com.example.employee_profile.EmployeeProfileNavigationUiActions
 import com.example.employee_profile.EmployeeProfileScreen
 import com.example.employee_profile.EmployeeProfileViewModel
-import com.example.enter_email.EnterEmailNavigationUiActions
-import com.example.enter_email.EnterEmailScreen
-import com.example.enter_email.EnterEmailViewModel
+import com.example.employment_history.EmploymentHistoryNavigationUiActions
+import com.example.employment_history.EmploymentHistoryScreen
+import com.example.employment_history.EmploymentHistoryViewModel
+import com.example.enter_email.main.EnterEmailNavigationUiActions
+import com.example.enter_email.main.EnterEmailScreen
+import com.example.enter_email.main.EnterEmailViewModel
 import com.example.home.HomeNavigationUiActions
 import com.example.home.HomeScreen
 import com.example.home.HomeViewModel
 import com.example.hospital_automation.app_logic.AppViewModel
 import com.example.hospital_automation.app_logic.Destination
 import com.example.hospital_automation.ui.theme.Hospital_AutomationTheme
-import com.example.hospital_automation.ui.theme.scrimDark
-import com.example.hospital_automation.ui.theme.scrimLight
-import com.example.login.LoginNavigationUiActions
-import com.example.login.LoginScreen
-import com.example.login.LoginViewModel
-import com.example.reset_password.ResetPasswordNavigationUiActions
-import com.example.reset_password.ResetPasswordScreen
-import com.example.reset_password.ResetPasswordViewModel
-import com.example.signup.SignUpNavigationUiActions
-import com.example.signup.SignUpScreen
-import com.example.signup.SignUpViewModel
+import com.example.login.main.LoginNavigationUiActions
+import com.example.login.main.LoginScreen
+import com.example.login.main.LoginViewModel
+import com.example.reset_password.main.ResetPasswordNavigationUiActions
+import com.example.reset_password.main.ResetPasswordScreen
+import com.example.reset_password.main.ResetPasswordViewModel
+import com.example.signup.main.SignUpNavigationUiActions
+import com.example.signup.main.SignUpScreen
+import com.example.signup.main.SignUpViewModel
 import com.example.upload_employee_documents.UploadEmployeeDocumentsNavigationUiActions
 import com.example.upload_employee_documents.UploadEmployeeDocumentsScreen
 import com.example.upload_employee_documents.UploadEmployeeDocumentsViewModel
@@ -61,16 +57,7 @@ import org.koin.core.scope.Scope
 
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.auto(
-                scrimLight.toArgb(),
-                scrimDark.toArgb()
-            ),
-            navigationBarStyle = SystemBarStyle.auto(
-                scrimLight.toArgb(),
-                scrimDark.toArgb()
-            )
-        )
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             val appViewModel = koinViewModel<AppViewModel>()
@@ -111,7 +98,8 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     }
 
                     composable<Destination.EmailOtpVerification> {
-                        val emailOtpVerificationViewModel = koinViewModel<OtpVerificationViewModel>()
+                        val emailOtpVerificationViewModel =
+                            koinViewModel<OtpVerificationViewModel>()
                         val emailOtpVerificationUiState =
                             emailOtpVerificationViewModel.uiState.collectAsState()
 
@@ -143,11 +131,13 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             override fun navigateToUploadEmployeeDocumentsScreen() {
                                 navController.navigate(Destination.UploadEmployeeDocuments)
                             }
+
                             override fun navigateToResetPasswordScreen() {
                                 navController.navigate(
                                     Destination.ResetPassword(
-                                    email = emailVerifiedSuccessfullyUiState.value.email
-                                ))
+                                        email = emailVerifiedSuccessfullyUiState.value.email
+                                    )
+                                )
                             }
                         }
                         EmailVerifiedSuccessfullyScreen(
@@ -166,9 +156,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             override fun navigateToAddResidentialAddressScreen() {
                                 navController.navigate(Destination.AddResidentialAddress)
                             }
-
-                            override fun openPdfFileChooser() {
-                            }
                         }
 
                         UploadEmployeeDocumentsScreen(
@@ -178,8 +165,10 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     }
 
                     composable<Destination.AddResidentialAddress> {
-                        val addResidentialAddressViewModel = koinViewModel<AddResidentialAddressViewModel>()
-                        val addResidentialAddressUiState = addResidentialAddressViewModel.uiState.collectAsState()
+                        val addResidentialAddressViewModel =
+                            koinViewModel<AddResidentialAddressViewModel>()
+                        val addResidentialAddressUiState =
+                            addResidentialAddressViewModel.uiState.collectAsState()
 
                         val navActions = object : AddResidentialAddressNavigationUiActions {
                             override fun navigateToUploadProfileImageScreen() {
@@ -202,11 +191,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             override fun navigateToHomeScreenScreen() {
                                 navController.navigate(Destination.Home)
                             }
-
-                            override fun openImagePicker() {
-
-                            }
-
                         }
 
                         UploadEmployeeProfileImageScreen(
@@ -264,9 +248,10 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             override fun navigateToEmailOtpVerificationScreen() {
                                 navController.navigate(
                                     Destination.EmailOtpVerification(
-                                    email = emailEmailUiState.value.email,
-                                    navigateToResetPassword = true,
-                                ))
+                                        email = emailEmailUiState.value.email,
+                                        navigateToResetPassword = true,
+                                    )
+                                )
                             }
                         }
                         EnterEmailScreen(
@@ -310,53 +295,13 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         val viewModel = koinViewModel<EmployeeProfileViewModel>()
                         val uiState = viewModel.uiState.collectAsState()
 
-                        val context= LocalContext.current
-
                         val navActions = object : EmployeeProfileNavigationUiActions {
-                            override fun navigateToCallApp(phoneNumber: String) {
-                                val intent = Intent(Intent.ACTION_DIAL).apply {
-                                    data = "tel:$phoneNumber".toUri()
-                                }
-
-                                if (intent.resolveActivity(context.packageManager) != null) {
-                                    try {
-                                        context.startActivity(intent)
-                                    } catch (e: SecurityException) {
-                                        Toast.makeText(context, "Could not open dialer: Permission denied.", Toast.LENGTH_SHORT).show()
-                                    } catch (e: Exception) {
-                                        Toast.makeText(context, "Could not open dialer.", Toast.LENGTH_SHORT).show()
-                                    }
-                                } else {
-                                    Toast.makeText(context, "No application available to make calls.", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-
-                            override fun navigateToEmail(email: String,subject: String) {
-                                val intent = Intent(Intent.ACTION_SENDTO).apply {
-                                    data = "mailto:${Uri.encode(email)}".toUri()
-                                    putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
-                                    if (subject.isNotEmpty()) {
-                                        putExtra(Intent.EXTRA_SUBJECT, subject)
-                                    }
-                                }
-
-                                if (intent.resolveActivity(context.packageManager) != null) {
-                                    try {
-                                        context.startActivity(intent)
-                                    } catch (e: Exception) {
-                                        Toast.makeText(context, "Could not open email app.", Toast.LENGTH_SHORT).show()
-                                    }
-                                } else {
-                                    Toast.makeText(context, "No application available to send emails.", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-
                             override fun navigateToAddedChildrenScreen() {
 
                             }
 
                             override fun navigateToEmploymentHistoryScreen() {
-
+                                navController.navigate(Destination.EmploymentHistory)
                             }
 
                             override fun navigateUp() {
@@ -369,6 +314,65 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
                         }
                         EmployeeProfileScreen(
+                            uiState = uiState.value,
+                            uiActions = viewModel.getUiActions(navActions)
+                        )
+                    }
+
+                    composable<Destination.EmploymentHistory> {
+                        val viewModel = koinViewModel<EmploymentHistoryViewModel>()
+                        val uiState = viewModel.uiState.collectAsState()
+
+                        val navActions = object : EmploymentHistoryNavigationUiActions {
+                            override fun navigateToAcceptedByAdminProfileScreen() {
+                                navController.navigate(
+                                    Destination.AdminProfile(
+                                        adminId = uiState.value.employmentHistory?.acceptedBy?.userId
+                                            ?: -1
+                                    )
+                                )
+                            }
+
+                            override fun navigateToToResignedByAdminProfileScreen() {
+                                navController.navigate(
+                                    Destination.AdminProfile(
+                                        adminId = uiState.value.employmentHistory?.resignedBy?.userId
+                                            ?: -1
+                                    )
+                                )
+                            }
+
+                            override fun navigateToToSuspendedByAdminProfileScreen() {
+                                navController.navigate(
+                                    Destination.AdminProfile(
+                                        adminId = uiState.value.employmentHistory?.suspendedBy?.userId
+                                            ?: -1
+                                    )
+                                )
+                            }
+
+                            override fun navigateUp() {
+                                navController.navigateUp()
+                            }
+
+
+                        }
+                        EmploymentHistoryScreen(
+                            uiState = uiState.value,
+                            uiActions = viewModel.getUiActions(navActions)
+                        )
+                    }
+
+                    composable<Destination.AdminProfile> {
+                        val viewModel = koinViewModel<AdminProfileViewModel>()
+                        val uiState = viewModel.uiState.collectAsState()
+
+                        val navActions = object : AdminProfileNavigationUiActions {
+                            override fun navigateUp() {
+                                navController.navigateUp()
+                            }
+                        }
+                        AdminProfileScreen(
                             uiState = uiState.value,
                             uiActions = viewModel.getUiActions(navActions)
                         )

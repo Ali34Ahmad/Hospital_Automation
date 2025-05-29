@@ -14,6 +14,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
+import com.example.model.employment_history.UserReference
+import com.example.model.user.FullName
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -24,13 +26,15 @@ import java.time.LocalDate
 
 @Composable
 fun EmploymentHistoryCard(
-    employmentDate: LocalDate,
-    adminWhoAcceptedName: String,
-    resignationDate: LocalDate,
-    adminWhoResignedName: String,
+    employmentDate: LocalDate?,
+    acceptedBy: UserReference?,
+    suspendedBy: UserReference?,
+    resignationDate: LocalDate?,
+    resignedBy: UserReference?,
     onDocumentsItemClick: () -> Unit,
     onAcceptedByItemClick: () -> Unit,
     onResignedByItemClick: () -> Unit,
+    onSuspendedByItemClick: () -> Unit,
     filesNumber: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -44,32 +48,52 @@ fun EmploymentHistoryCard(
                 bottom = MaterialTheme.spacing.large24,
             )
     ) {
-        DetailsItem(
-            iconRes = AppIcons.Outlined.workBriefcase,
-            title = stringResource(id = R.string.employment_date),
-            description = employmentDate.toAppropriateFormat(),
-            modifier = detailsItemModifier,
-        )
-        DetailsItem(
-            iconRes = AppIcons.Outlined.admin,
-            title = stringResource(id = R.string.accepted_by),
-            description = adminWhoAcceptedName,
-            modifier = detailsItemModifier,
-            onClick = onAcceptedByItemClick,
-        )
-        DetailsItem(
-            iconRes = AppIcons.Outlined.finishLineFlag,
-            title = stringResource(id = R.string.date_and_time),
-            description = resignationDate.toAppropriateFormat(),
-            modifier = detailsItemModifier,
-        )
-        DetailsItem(
-            iconRes = AppIcons.Outlined.admin,
-            title = stringResource(id = R.string.resigned_by),
-            description = adminWhoResignedName,
-            modifier = detailsItemModifier,
-            onClick = onResignedByItemClick,
-        )
+        employmentDate?.let {
+            DetailsItem(
+                iconRes = AppIcons.Outlined.workBriefcase,
+                title = stringResource(id = R.string.employment_date),
+                description = employmentDate.toAppropriateFormat(),
+                modifier = detailsItemModifier,
+            )
+        }
+        acceptedBy?.userId?.let{
+            DetailsItem(
+                iconRes = AppIcons.Outlined.admin,
+                title = stringResource(id = R.string.accepted_by),
+                description = acceptedBy.fullName.toAppropriateFormat(),
+                modifier = detailsItemModifier,
+                onClick = onAcceptedByItemClick,
+            )
+        }
+
+        suspendedBy?.userId?.let{
+            DetailsItem(
+                iconRes = AppIcons.Outlined.admin,
+                title = stringResource(id = R.string.suspended_by),
+                description = suspendedBy.fullName.toAppropriateFormat(),
+                modifier = detailsItemModifier,
+                onClick = onSuspendedByItemClick,
+            )
+        }
+
+        resignationDate?.let {
+            DetailsItem(
+                iconRes = AppIcons.Outlined.finishLineFlag,
+                title = stringResource(id = R.string.date_and_time),
+                description = resignationDate.toAppropriateFormat(),
+                modifier = detailsItemModifier,
+            )
+        }
+
+        resignedBy?.userId?.let{
+            DetailsItem(
+                iconRes = AppIcons.Outlined.admin,
+                title = stringResource(id = R.string.resigned_by),
+                description = resignedBy.fullName.toAppropriateFormat(),
+                modifier = detailsItemModifier,
+                onClick = onResignedByItemClick,
+            )
+        }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
         SubDetailsItem(
             title = stringResource(R.string.documents),
@@ -89,14 +113,16 @@ fun EmploymentHistoryCardPreview() {
         Surface {
             EmploymentHistoryCard(
                 employmentDate = LocalDate.of(2022, 8, 15),
-                adminWhoAcceptedName = "John Doe",
+                acceptedBy = UserReference(1, FullName("Jane" ,null,"Smith")),
                 resignationDate = LocalDate.of(2024, 7, 31),
-                adminWhoResignedName = "Jane Smith",
+                resignedBy = UserReference(1, FullName("Jane" ,null,"Smith")),
                 onDocumentsItemClick = { },
                 onAcceptedByItemClick = { },
                 onResignedByItemClick = { },
+                onSuspendedByItemClick = { },
                 filesNumber = 3,
-                modifier = Modifier
+                modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                suspendedBy = UserReference(1, FullName("Jane" ,null,"Smith")),
             )
         }
     }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -48,14 +47,14 @@ fun OverlappingImagesVerticalBox(
         Box {
             if(imagesUrls.isNotEmpty()) {
                 NetworkImage(
-                    imageUrl = imagesUrls[0],
+                    model = imagesUrls[0],
                     modifier = imageModifier,
                     contentScale = ContentScale.Crop,
                 )
             }
             if(imagesUrls.size>=2) {
                 NetworkImage(
-                    imageUrl = imagesUrls[1],
+                    model = imagesUrls[1],
                     modifier = secondImageModifier,
                     contentScale = ContentScale.Crop,
                 )
@@ -63,7 +62,7 @@ fun OverlappingImagesVerticalBox(
         }
         if(imagesUrls.size>=3){
             NetworkImage(
-                imageUrl = imagesUrls[2],
+                model = imagesUrls[2],
                 modifier = thirdImageModifier,
                 contentScale = ContentScale.Crop,
             )

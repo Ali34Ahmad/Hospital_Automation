@@ -21,5 +21,4 @@ interface UploadEmployeeDocumentsBusinessUiActions {
 
 interface UploadEmployeeDocumentsNavigationUiActions {
     fun navigateToAddResidentialAddressScreen()
-    fun openPdfFileChooser()
 }

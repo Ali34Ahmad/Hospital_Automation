@@ -9,11 +9,12 @@ import com.example.model.BottomBarState
 import com.example.util.UiText
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
-import com.example.utility.validation.TextValidator
+import com.example.utility.validation.validator.TextValidator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.example.ui_components.R
 
 class AddChildViewModel(
     savedStateHandle: SavedStateHandle,
@@ -125,49 +126,49 @@ class AddChildViewModel(
     fun validateFirstName(){
         val error = TextValidator.validate(_uiState.value.firstName)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(firstNameErrorMessage = text)
         }
     }
     fun validateLastName(){
         val error = TextValidator.validate(_uiState.value.lastName)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(lastNameErrorMessage = text)
         }
     }
     fun validateFatherFirstName(){
         val error = TextValidator.validate(_uiState.value.fatherFirstName)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(fatherFirstNameErrorMessage = text)
         }
     }
     fun validateFatherLastName(){
         val error = TextValidator.validate(_uiState.value.fatherLastName)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(fatherLastNameErrorMessage = text)
         }
     }
     fun validateMotherFirstName(){
         val error = TextValidator.validate(_uiState.value.motherFirstName)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = text)
         }
     }
     fun validateMotherLastName(){
         val error = TextValidator.validate(_uiState.value.motherLastName)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = text)
         }
     }
     fun validateDateOfBirth(){
         val error = TextValidator.validate(_uiState.value.dateOfBirth)
         error?.let {
-            val text = UiText.StringResource(resId = it.string)
+            val text = UiText.StringResource(resId = R.string.required_field)
             _uiState.value = _uiState.value.copy(dateOfBirthErrorMessage = text)
         }
     }

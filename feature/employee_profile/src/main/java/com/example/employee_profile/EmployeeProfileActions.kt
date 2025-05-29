@@ -1,5 +1,7 @@
 package com.example.employee_profile
 
+import com.example.utility.ui.AppNavigationUiAction
+
 class EmployeeProfileUiActions(
     navigationActions:EmployeeProfileNavigationUiActions,
     businessActions:EmployeeProfileBusinessUiActions,
@@ -10,13 +12,12 @@ class EmployeeProfileUiActions(
 interface EmployeeProfileBusinessUiActions {
     fun onRefreshProfile()
     fun onDeactivateMyAccount()
+    fun onReactivateMyAccount()
     fun onLogout()
     fun hideErrorDialog()
 }
 
-interface EmployeeProfileNavigationUiActions {
-    fun navigateToCallApp(phoneNumber: String)
-    fun navigateToEmail(email: String,subject: String)
+interface EmployeeProfileNavigationUiActions:AppNavigationUiAction {
     fun navigateToAddedChildrenScreen()
     fun navigateToEmploymentHistoryScreen()
     fun navigateUp()

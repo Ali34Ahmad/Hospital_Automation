@@ -33,7 +33,9 @@ android {
 dependencies {
 
     implementation(libs.coil.compose)
-    implementation (libs.composepininput)
+    implementation(libs.coil.network.okhttp)
+
+    implementation(libs.composepininput)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -48,6 +50,7 @@ dependencies {
     implementation(libs.duration)
     implementation(libs.option)
 
-//    implementation(libs.accompanist.systemuicontroller)
+    implementation(project(":core:model"))
 
+    implementation(libs.androidx.foundation.layout)
 }

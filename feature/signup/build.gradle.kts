@@ -25,7 +25,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -33,9 +32,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(project(":core:ui-components"))
-
-    implementation(project(":core:network"))
-
-    implementation(project(":core:network"))
 
 }

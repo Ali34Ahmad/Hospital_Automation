@@ -29,10 +29,14 @@ object ApiRoutes {
 
     const val UPLOAD_EMPLOYEE_DOCUMENTS = "$EMPLOYEE/upload-file"
     const val UPLOAD_EMPLOYEE_PROFILE_IMAGE ="$EMPLOYEE/add-image"
-    const val EMPLOYEE_PROFILES = "$EMPLOYEE/show-profile"
+    const val EMPLOYEE_PROFILE = "$EMPLOYEE/show-profile"
     const val RESET_PASSWORD ="$EMPLOYEE/reset-password"
 
     const val CHECK_EMPLOYEE_PERMISSION ="$EMPLOYEE/show-permissions"
     const val DEACTIVATE_MY_ACCOUNT = "$EMPLOYEE/deactivate-my-account"
+    const val REACTIVATE_MY_ACCOUNT = "$EMPLOYEE/reactivate-my-account"
+    const val EMPLOYMENT_HISTORY = "$EMPLOYEE/employment-history"
+
+    const val ADMIN_PROFILE_BY_ID = "$EMPLOYEE/find-admin-by-id"
 
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.helper.DarkAndLightModePreview
 
 @Composable
 fun OtpInputField(
@@ -33,6 +34,7 @@ fun OtpInputField(
     onBackButtonPress: () -> Unit,
     focusRequester: FocusRequester,
     enabled: Boolean,
+    isError: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val value = number?.toString().orEmpty()
@@ -77,13 +79,15 @@ fun OtpInputField(
             unfocusedContainerColor =  MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
             focusedTextColor = MaterialTheme.colorScheme.onBackground,
             unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            errorBorderColor = MaterialTheme.colorScheme.error,
         ),
+        isError = isError,
         enabled = enabled
     )
 }
 
 
-@Preview()
+@DarkAndLightModePreview
 @Composable
 fun OtpInputFieldPreview() {
     var number by remember { mutableStateOf<Int?>(null) }
@@ -98,7 +102,8 @@ fun OtpInputFieldPreview() {
         },
         focusRequester = FocusRequester(),
         onBackButtonPress = {},
-        enabled = true
+        enabled = true,
+        isError=true
     )
 
 }

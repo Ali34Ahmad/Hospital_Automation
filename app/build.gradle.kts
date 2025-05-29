@@ -33,6 +33,11 @@ android {
     buildFeatures {
         compose = true
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
+    }
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -74,10 +79,12 @@ dependencies {
     implementation(project(":feature:enter_email"))
     implementation(project(":feature:reset_password"))
     implementation(project(":feature:upload_employee_profile_image"))
+    implementation(project(":feature:employment_history"))
 
     //
     implementation(project(":feature:home"))
     implementation(project(":feature:employee_profile"))
+    implementation(project(":feature:admin_profile"))
 
 
     //features
@@ -92,4 +99,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.navigation)
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
 }

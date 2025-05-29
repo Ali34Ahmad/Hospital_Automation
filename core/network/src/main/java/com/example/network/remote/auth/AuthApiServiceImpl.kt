@@ -2,18 +2,18 @@ package com.example.network.remote.auth
 
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
-import com.example.network.model.request.LoginRequest
-import com.example.network.model.request.RegistrationRequest
-import com.example.network.model.request.ResetPasswordRequest
-import com.example.network.model.request.SendOtpRequest
-import com.example.network.model.request.VerifyEmailOtpRequest
-import com.example.network.model.response.CheckEmployeePermissionResponse
-import com.example.network.model.response.LoginResponse
-import com.example.network.model.response.LogoutResponse
+import com.example.network.model.request.LoginRequestDto
+import com.example.network.model.request.RegistrationRequestDto
+import com.example.network.model.request.ResetPasswordRequestDto
+import com.example.network.model.request.SendOtpRequestDto
+import com.example.network.model.request.VerifyEmailOtpRequestDto
+import com.example.network.model.response.LoginResponseDto
+import com.example.network.model.response.LogoutResponseDto
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.RegistrationResponse
-import com.example.network.model.response.ResetPasswordResponse
-import com.example.network.model.response.VerifyEmailOtpResponse
+import com.example.network.model.response.RegistrationResponseDto
+import com.example.network.model.response.ResetPasswordResponseDto
+import com.example.network.model.response.SendOtpResponseDto
+import com.example.network.model.response.VerifyEmailOtpResponseDto
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
@@ -21,7 +21,6 @@ import com.example.utility.network.rootError
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.bearerAuth
-import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
@@ -34,18 +33,18 @@ class AuthApiServiceImpl(
     private val client: HttpClient,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : AuthApiService {
-    override suspend fun signup(registrationRequest: RegistrationRequest): Result<RegistrationResponse, rootError> =
+    override suspend fun signup(registrationRequestDto: RegistrationRequestDto): Result<RegistrationResponseDto, rootError> =
         try {
             val response = client.post(ApiRoutes.SIGNUP_EMPLOYEE) {
                 contentType(ContentType.Application.Json)
-                setBody(registrationRequest)
+                setBody(registrationRequestDto)
             }
 
             when (response.status.value) {
                 in 200..299 -> {
-                    val registrationResponse: RegistrationResponse = response.body()
+                    val registrationResponseDto: RegistrationResponseDto = response.body()
                     Log.v("Sign Up:", "Successfully signed up")
-                    Result.Success(data = registrationResponse)
+                    Result.Success(data = registrationResponseDto)
                 }
 
                 else -> {
@@ -60,15 +59,15 @@ class AuthApiServiceImpl(
         }
 
 
-    override suspend fun login(loginRequest: LoginRequest): Result<LoginResponse, rootError> = try {
+    override suspend fun login(loginRequestDto: LoginRequestDto): Result<LoginResponseDto, rootError> = try {
         val response: HttpResponse = client.post(ApiRoutes.LOGIN_EMPLOYEE) {
             contentType(ContentType.Application.Json)
-            setBody(loginRequest)
+            setBody(loginRequestDto)
         }
         when (response.status.value) {
             in 200..299 -> {
                 Log.v("Login:", "Successfully logged in")
-                val responseBody: LoginResponse = response.body()
+                val responseBody: LoginResponseDto = response.body()
                 userPreferencesRepository.updateToken(responseBody.token)
                 Log.v("MyToken",userPreferencesRepository.userPreferencesFlow.first().token.toString())
                 Result.Success(data = responseBody)
@@ -86,22 +85,22 @@ class AuthApiServiceImpl(
         Result.Error(NetworkError.UNKNOWN)
     }
 
-    override suspend fun verifyEmail(verifyEmailOtpRequest: VerifyEmailOtpRequest): Result<VerifyEmailOtpResponse, rootError> =
+    override suspend fun verifyEmail(verifyEmailOtpRequestDto: VerifyEmailOtpRequestDto): Result<VerifyEmailOtpResponseDto, rootError> =
         try {
             val response: HttpResponse = client.post(ApiRoutes.VERIFY_OTP) {
                 contentType(ContentType.Application.Json)
-                setBody(verifyEmailOtpRequest)
+                setBody(verifyEmailOtpRequestDto)
             }
             when (response.status.value) {
                 in 200..299 -> {
-                    val responseBody: VerifyEmailOtpResponse = response.body()
-                    Log.v("Verify Email:", "Successfully verified ${verifyEmailOtpRequest.email} ${verifyEmailOtpRequest.otp}")
+                    val responseBody: VerifyEmailOtpResponseDto = response.body()
+                    Log.v("Verify Email:", "Successfully verified ${verifyEmailOtpRequestDto.email} ${verifyEmailOtpRequestDto.otp}")
                     Result.Success(data = responseBody)
                 }
 
                 else -> {
                     val errorBody: NetworkMessage = response.body()
-                    Log.e("Verify Email out of 200 range::", errorBody.message +"${verifyEmailOtpRequest.email} ${verifyEmailOtpRequest.otp}")
+                    Log.e("Verify Email out of 200 range::", errorBody.message +"${verifyEmailOtpRequestDto.email} ${verifyEmailOtpRequestDto.otp}")
                     Result.Error(NetworkError.UNKNOWN)
                 }
             }
@@ -110,7 +109,7 @@ class AuthApiServiceImpl(
             Result.Error(NetworkError.UNKNOWN)
         }
 
-    override suspend fun sendOtpCodeToEmail(sendOtpCodeRequest: SendOtpRequest): Result<VerifyEmailOtpResponse, rootError> =
+    override suspend fun sendOtpCodeToEmail(sendOtpCodeRequest: SendOtpRequestDto): Result<SendOtpResponseDto, rootError> =
         try {
             val response: HttpResponse = client.post(ApiRoutes.SEND_OTP) {
                 contentType(ContentType.Application.Json)
@@ -118,7 +117,7 @@ class AuthApiServiceImpl(
             }
             when (response.status.value) {
                 in 200..299 -> {
-                    val responseBody: VerifyEmailOtpResponse = response.body()
+                    val responseBody: SendOtpResponseDto = response.body()
                     Log.v("Send OTP Code:In Range 2xx", "Successfully Sent")
                     Result.Success(data = responseBody)
                 }
@@ -134,15 +133,15 @@ class AuthApiServiceImpl(
             Result.Error(NetworkError.UNKNOWN)
         }
 
-    override suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Result<ResetPasswordResponse, rootError> =
+    override suspend fun resetPassword(resetPasswordRequestDto: ResetPasswordRequestDto): Result<ResetPasswordResponseDto, rootError> =
         try {
             val response: HttpResponse = client.post(ApiRoutes.RESET_PASSWORD) {
                 contentType(ContentType.Application.Json)
-                setBody(resetPasswordRequest)
+                setBody(resetPasswordRequestDto)
             }
             when (response.status.value) {
                 in 200..299 -> {
-                    val responseBody: ResetPasswordResponse = response.body()
+                    val responseBody: ResetPasswordResponseDto = response.body()
                     Log.v("Reset password: In Range 2xx", "Successfully Reset Password")
                     Result.Success(data = responseBody)
                 }
@@ -158,35 +157,7 @@ class AuthApiServiceImpl(
             Result.Error(NetworkError.UNKNOWN)
         }
 
-    override suspend fun checkEmployeePermission(): Result<CheckEmployeePermissionResponse, rootError> =
-        try {
-            val response: HttpResponse = client.get(ApiRoutes.CHECK_EMPLOYEE_PERMISSION) {
-                contentType(ContentType.Application.Json)
-                val token=userPreferencesRepository.userPreferencesFlow.first().token
-                if (token.isNullOrBlank()){
-                    return@get
-                }
-                bearerAuth(token)
-            }
-            when (response.status.value) {
-                in 200..299 -> {
-                    val responseBody: CheckEmployeePermissionResponse = response.body()
-                    Log.v("Check Employee Permission: In Range 2xx", "Successfully Checked ${responseBody.permissionGranted}")
-                    Result.Success(data = responseBody)
-                }
-
-                else -> {
-                    val errorBody: String = response.body()
-                    Log.e("Check Employee Permission: Out of Range 2xx", errorBody)
-                    Result.Error(NetworkError.UNKNOWN)
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("Check Employee Permission Exception:", e.message ?: "Unknown")
-            Result.Error(NetworkError.UNKNOWN)
-        }
-
-    override suspend fun logout(): Result<LogoutResponse, rootError> =
+    override suspend fun logout(): Result<LogoutResponseDto, rootError> =
         try {
             val response: HttpResponse = client.post(ApiRoutes.LOGOUT_EMPLOYEE) {
                 contentType(ContentType.Application.Json)
@@ -198,7 +169,7 @@ class AuthApiServiceImpl(
             }
             when (response.status.value) {
                 in 200..299 -> {
-                    val responseBody: LogoutResponse = response.body()
+                    val responseBody: LogoutResponseDto = response.body()
                     Log.v("Logout: In Range 2xx", "Successfully Logged out ${responseBody.message}")
                     Result.Success(data = responseBody)
                 }

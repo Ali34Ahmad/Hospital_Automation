@@ -88,7 +88,7 @@ fun DoctorProfileCard(
     ) {
         Box(modifier = Modifier) {
             NetworkImage(
-                imageUrl = profileImageUrl,
+                model = profileImageUrl,
                 contentScale = ContentScale.Fit,
             )
             IconButton(

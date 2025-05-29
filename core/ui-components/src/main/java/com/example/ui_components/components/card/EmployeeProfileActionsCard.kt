@@ -22,20 +22,23 @@ fun EmployeeProfileActionsCard(
     isAddedChildrenEnabled: Boolean,
     onEmploymentHistoryItemClick: () -> Unit,
     onDeactivateAccountItemClick: () -> Unit,
+    onReactivateAccountItemClick: () -> Unit,
     showDeactivateMyAccountItem: Boolean,
     isAccountDeactivated: Boolean,
     onLogoutItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (activationActionText, activationActionIcon) = if (isAccountDeactivated) {
-        Pair(
+    val (activationActionText, activationActionIcon,activationActionOnClick) = if (!isAccountDeactivated) {
+        Triple(
             stringResource(R.string.deactivate_account),
-            AppIcons.Outlined.deactivateAccount
+            AppIcons.Outlined.deactivateAccount,
+            onDeactivateAccountItemClick
         )
     } else {
-        Pair(
+        Triple(
             stringResource(R.string.activate_account),
-            AppIcons.Outlined.reactivateAccount
+            AppIcons.Outlined.reactivateAccount,
+            onReactivateAccountItemClick
         )
     }
 
@@ -61,7 +64,7 @@ fun EmployeeProfileActionsCard(
         )
         if (showDeactivateMyAccountItem){
             ProfileActionsItem(
-                onClick = onDeactivateAccountItemClick,
+                onClick = activationActionOnClick,
                 modifier = Modifier.fillMaxWidth(),
                 iconRes = activationActionIcon,
                 title = activationActionText,
@@ -101,6 +104,7 @@ fun EmployeeProfileActionsCardPreview() {
                     isAddedChildrenEnabled = true,
                     showDeactivateMyAccountItem = false,
                     isAccountDeactivated = false,
+                    onReactivateAccountItemClick = {},
                 )
             }
         }
@@ -122,6 +126,7 @@ fun EmployeeProfileActionsCardDeactivatedAccountPreview() {
                     isAddedChildrenEnabled = true,
                     showDeactivateMyAccountItem = false,
                     isAccountDeactivated = true,
+                    onReactivateAccountItemClick = {},
                 )
             }
         }

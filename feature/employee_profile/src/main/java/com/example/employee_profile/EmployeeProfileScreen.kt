@@ -18,9 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.Gender
+import com.example.ext.toAppropriateFormat
 import com.example.fake.createSampleEmployeeProfileResponse
 import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.utility.network.NetworkError
@@ -33,6 +34,8 @@ import com.example.ui_components.components.card.EmployeeProfileActionsCard
 import com.example.ui_components.components.card.EmployeeProfileCard
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
+import com.example.model.enums.Gender
+import com.example.utility.ui.formatAddress
 
 @Composable
 fun EmployeeProfileScreen(
@@ -62,10 +65,15 @@ fun EmployeeProfileScreen(
 
     val isAddedChildrenEnabled = uiState.userInfo?.profile?.acceptedBy != null
 
-    val showDeactivateMyAccountItem =
-        uiState.userInfo?.profile?.isResigned == false
-                && uiState.userInfo.profile.acceptedBy != null
-                && uiState.userInfo.profile.suspendedBy == uiState.userInfo.profile.userId
+    val isResigned = uiState.userInfo?.profile?.isResigned == true
+    val isAccepted = uiState.userInfo?.profile?.acceptedBy != null
+    val isSuspended = uiState.userInfo?.profile?.isSuspended == true
+    val isSuspendedByHimself = (isSuspended &&
+            uiState.userInfo.profile.suspendedBy == uiState.userInfo.profile.userId)
+    val showDeactivationItem = !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
+
+
+    val context = LocalContext.current
 
     val scrollState = rememberScrollState()
     Scaffold { contentPadding ->
@@ -106,10 +114,7 @@ fun EmployeeProfileScreen(
                 }
             }
             if (uiState.userInfo != null) {
-                val name =
-                    uiState.userInfo.profile.firstName +
-                            " " + uiState.userInfo.profile.middleName +
-                            " " + uiState.userInfo.profile.lastName
+                val name = uiState.userInfo.profile.fullName.toAppropriateFormat()
                 val subject = stringResource(R.string.medicare)
                 Column(
                     modifier = Modifier
@@ -128,15 +133,19 @@ fun EmployeeProfileScreen(
                             },
                             onEmailButtonClick = {
                                 uiActions.navigateToEmail(
+                                    context = context,
                                     email = uiState.userInfo.profile.email,
                                     subject = subject
                                 )
                             },
                             onPhoneNumberButtonClick = {
-                                uiActions.navigateToCallApp(phoneNumber = uiState.userInfo.profile.phoneNumber)
+                                uiActions.navigateToCallApp(
+                                    context = context,
+                                    phoneNumber = uiState.userInfo.profile.phoneNumber
+                                )
                             },
                             phoneNumber = uiState.userInfo.profile.phoneNumber,
-                            profileImageUrl = uiState.userInfo.profile.imageUrl?:"",
+                            profileImageUrl = uiState.userInfo.profile.imageUrl ?: "",
                             address = formatAddress(
                                 governorate = uiState.userInfo.profile.addressGovernorate,
                                 city = uiState.userInfo.profile.addressCity,
@@ -144,11 +153,11 @@ fun EmployeeProfileScreen(
                                 street = uiState.userInfo.profile.addressStreet,
                                 note = uiState.userInfo.profile.addressNote,
                             ),
-                            gender = uiState.userInfo.profile.gender?.toUiGender() ?: Gender.MALE,
+                            gender = uiState.userInfo.profile.gender ?: Gender.MALE,
                             email = uiState.userInfo.profile.email,
-                            isResigned=uiState.userInfo.profile.isResigned,
-                            isSuspended=uiState.userInfo.profile.isSuspended,
-                            isAccepted=uiState.userInfo.profile.acceptedBy!=null,
+                            isResigned = uiState.userInfo.profile.isResigned,
+                            isSuspended = uiState.userInfo.profile.isSuspended,
+                            isAccepted = uiState.userInfo.profile.acceptedBy != null,
                         )
                         EmployeeProfileActionsCard(
                             onAddedChildrenItemClick = {
@@ -161,8 +170,11 @@ fun EmployeeProfileScreen(
                             onDeactivateAccountItemClick = {
                                 uiActions.onDeactivateMyAccount()
                             },
-                            showDeactivateMyAccountItem =showDeactivateMyAccountItem,
-                            isAccountDeactivated = uiState.userInfo.profile.isSuspended,
+                            onReactivateAccountItemClick = {
+                                uiActions.onReactivateMyAccount()
+                            },
+                            showDeactivateMyAccountItem = showDeactivationItem,
+                            isAccountDeactivated = isSuspended,
                             onLogoutItemClick = {
                                 uiActions.onLogout()
                             },
@@ -171,34 +183,6 @@ fun EmployeeProfileScreen(
                 }
             }
         }
-    }
-}
-
-fun com.example.network.constants.Gender.toUiGender(): Gender {
-    return Gender.entries.find {
-        it.name.lowercase() == this.name.lowercase()
-    } ?: Gender.MALE
-}
-
-fun formatAddress(
-    governorate: String?,
-    city: String?,
-    region: String?,
-    street: String?,
-    note: String?,
-): String {
-    val addressParts = listOfNotNull(
-        street?.takeIf { it.isNotBlank() },
-        region?.takeIf { it.isNotBlank() },
-        city?.takeIf { it.isNotBlank() },
-        governorate?.takeIf { it.isNotBlank() },
-        note?.takeIf { it.isNotBlank() }?.let { "($it)" }
-    )
-
-    return if (addressParts.isEmpty()) {
-        ""
-    } else {
-        addressParts.joinToString(separator = ", ")
     }
 }
 

@@ -4,18 +4,24 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.repositories.AuthRepository
+import com.example.domain.use_cases.auth.LoginUseCase
+import com.example.domain.use_cases.auth.VerifyEmailUseCase
 import com.example.email_verification.EmailVerificationNavConstants
-import com.example.network.model.request.LoginRequest
+import com.example.model.auth.login.LoginRequest
+import com.example.network.model.request.LoginRequestDto
 import com.example.network.remote.auth.AuthApiService
 import com.example.utility.network.Error
 import com.example.utility.network.Result
+import com.example.utility.network.onError
+import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EmailVerifiedSuccessfullyViewModel(
-    private val authService: AuthApiService,
+    private val loginUseCase: LoginUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EmailVerifiedSuccessfullyUiState())
@@ -70,28 +76,23 @@ class EmailVerifiedSuccessfullyViewModel(
         viewModelScope.launch {
             updateIsLoadingState(true)
             Log.v("Submitting log in info", "EmailVerifiedSuccessfullyViewModel")
-            val result = authService.login(
+            val result = loginUseCase(
                 loginRequest = LoginRequest(
                     email = uiState.value.email,
                     password = uiState.value.password,
                 )
-            )
-            when (result) {
-                is Result.Success -> {
-                    Log.v("Successful log in", "EmailVerifiedSuccessfullyViewModel")
-                    updateIsLoadingState(false)
-                    updateShowErrorDialogState(false)
-                    updateErrorState(null)
-                    updateIsSuccessfulState(true)
-                }
-
-                is Result.Error -> {
-                    Log.v("Failed log in", "EmailVerifiedSuccessfullyViewModel")
-                    updateIsLoadingState(false)
-                    updateShowErrorDialogState(true)
-                    updateErrorState(result.error)
-                    updateIsSuccessfulState(false)
-                }
+            ).onSuccess{
+                Log.v("Successful log in", "EmailVerifiedSuccessfullyViewModel")
+                updateIsLoadingState(false)
+                updateShowErrorDialogState(false)
+                updateErrorState(null)
+                updateIsSuccessfulState(true)
+            }.onError {error->
+                Log.v("Failed log in", "EmailVerifiedSuccessfullyViewModel")
+                updateIsLoadingState(false)
+                updateShowErrorDialogState(true)
+                updateErrorState(error)
+                updateIsSuccessfulState(false)
             }
         }
     }

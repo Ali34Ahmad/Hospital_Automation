@@ -1,13 +1,19 @@
 package com.example.network.remote.account_management
 
-import com.example.network.model.request.DeactivateMyEmployeeAccountRequest
-import com.example.network.model.response.DeactivateMyEmployeeAccountResponse
+import com.example.network.model.request.DeactivateMyEmployeeAccountRequestDto
+import com.example.network.model.response.CheckEmployeePermissionResponseDto
+import com.example.network.model.response.DeactivateMyEmployeeAccountResponseDto
+import com.example.network.model.response.ReactivateMyEmployeeAccountResponseDto
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface EmployeeAccountManagementApiService {
     suspend fun deactivateMyEmployeeAccount(
-        deactivateMyEmployeeAccountRequest:DeactivateMyEmployeeAccountRequest
-    ): Result<DeactivateMyEmployeeAccountResponse, rootError>
+        deactivateMyEmployeeAccountRequestDto:DeactivateMyEmployeeAccountRequestDto
+    ): Result<DeactivateMyEmployeeAccountResponseDto, rootError>
+
+    suspend fun reactivateMyEmployeeAccount(): Result<ReactivateMyEmployeeAccountResponseDto, rootError>
+
+    suspend fun checkEmployeePermission(): Result<CheckEmployeePermissionResponseDto, rootError>
 
 }

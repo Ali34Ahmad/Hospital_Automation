@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.constants.enums.FileUploadingState
+import com.example.domain.repositories.UploadEmployeeDocumentsRepository
+import com.example.domain.use_cases.upload_employee_documents.UploadEmployeeDocumentsUseCase
 import com.example.model.File
 import com.example.network.remote.upload_employee_documents.UploadEmployeeDocumentsApi
 import com.example.utility.network.Error
@@ -23,7 +25,7 @@ import java.io.FileNotFoundException
 import java.nio.channels.UnresolvedAddressException
 
 class UploadEmployeeDocumentsViewModel(
-    private val fileUploadService: UploadEmployeeDocumentsApi,
+    private val uploadEmployeeDocumentsUseCase: UploadEmployeeDocumentsUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UploadEmployeeDocumentsUiState())
     val uiState = _uiState.asStateFlow()
@@ -86,8 +88,7 @@ class UploadEmployeeDocumentsViewModel(
     }
 
     fun uploadFile(uri: Uri) {
-        uploadJob = fileUploadService
-            .uploadFile(uri)
+        uploadJob = uploadEmployeeDocumentsUseCase(uri)
             .onStart {
                 setStartUploadingState(uri)
                 Log.v("Uploading File:","Started")

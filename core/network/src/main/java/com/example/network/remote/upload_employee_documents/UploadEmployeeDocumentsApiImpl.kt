@@ -3,25 +3,18 @@ package com.example.network.remote.upload_employee_documents
 import android.net.Uri
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
-import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.ProgressUpdate
+import com.example.network.model.response.ProgressUpdateDto
 import com.example.network.utility.ApiRoutes
-import com.example.network.utility.Resource
 import com.example.network.utility.file.FileReader
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.bearerAuth
-import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
-import io.ktor.client.request.header
-import io.ktor.client.request.post
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
@@ -31,7 +24,7 @@ class UploadEmployeeDocumentsApiImpl(
     private val fileReader: FileReader,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : UploadEmployeeDocumentsApi {
-    override fun uploadFile(uri: Uri): Flow<ProgressUpdate> = channelFlow {
+    override fun uploadFile(uri: Uri): Flow<ProgressUpdateDto> = channelFlow {
         val info = fileReader.uriToFileInfo(uri)
 
         val token = userPreferencesRepository.userPreferencesFlow.first().token
@@ -55,14 +48,14 @@ class UploadEmployeeDocumentsApiImpl(
                             append(HttpHeaders.ContentDisposition, "filename=\"${info.name}\"")
                         }
                     )
-                    Log.v("Uploading File", "Client")
+                    Log.v("Uploading File Client", info.name + "." + info.mimeType)
                 }
             ) {
                 method = HttpMethod.Post
                 bearerAuth(token)
                 onUpload { bytesSent, totalBytes ->
                     if ((totalBytes ?: 0) > 0L) {
-                        send(ProgressUpdate(bytesSent, totalBytes ?: 0))
+                        send(ProgressUpdateDto(bytesSent, totalBytes ?: 0))
                         Log.v("Uploading File", "$bytesSent/$totalBytes")
                     }
                 }

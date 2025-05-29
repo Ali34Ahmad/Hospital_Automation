@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ui_components.components.texts.OtpValidatorText
@@ -31,12 +32,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun OtpInputRow(
     otp: List<Int?>,
-    onOtpChange: (index:Int,value: Int?) -> Unit,
+    onOtpChange: (index: Int, value: Int?) -> Unit,
     isValid: Boolean?,
     onValidate: (List<Int?>) -> Unit,
-    @StringRes validText: Int,
-    @StringRes invalidText: Int,
-    modifier: Modifier = Modifier
+    validText: String? = null,
+    invalidText: String? = null,
+    modifier: Modifier = Modifier,
 ) {
     val size = otp.size
     Column(
@@ -51,7 +52,7 @@ fun OtpInputRow(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val focusRequesters = remember { List(size) { FocusRequester() } }
-            for (i in 0 until size){
+            for (i in 0 until size) {
                 OtpInputField(
                     modifier = Modifier.width(48.dp),
                     number = otp[i],
@@ -60,7 +61,7 @@ fun OtpInputRow(
                     },
                     onNumberEntered = {
                         onValidate(otp)
-                        scoop.launch{
+                        scoop.launch {
                             delay(100)
                             if (i < size - 1) {
                                 focusRequesters[i + 1].requestFocus()
@@ -69,11 +70,12 @@ fun OtpInputRow(
                     },
                     focusRequester = focusRequesters[i],
                     onBackButtonPress = {
-                        if(i != 0){
+                        if (i != 0) {
                             focusRequesters[i - 1].requestFocus()
                         }
                     },
-                    enabled = isValid != true
+                    enabled = true,
+                    isError = isValid!=true
                 )
             }
 
@@ -81,13 +83,16 @@ fun OtpInputRow(
         isValid?.let {
             Spacer(Modifier.height(12.dp))
             AnimatedContent(targetState = isValid, label = "") {
-                when(it){
+                if (validText == null) return@AnimatedContent
+                if (invalidText == null) return@AnimatedContent
+                when (it) {
                     true -> {
                         OtpValidatorText(
                             isValid = true,
                             text = validText
                         )
                     }
+
                     false -> {
                         OtpValidatorText(
                             isValid = false,
@@ -106,10 +111,10 @@ fun OtpInputRow(
 fun OtpInputRowPreview() {
     Hospital_AutomationTheme {
         var otp = remember {
-            mutableStateListOf<Int?>(null,null,null)
+            mutableStateListOf<Int?>(null, null, null)
         }
         var isValid by remember { mutableStateOf<Boolean?>(null) }
-            Column(
+        Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -121,11 +126,11 @@ fun OtpInputRowPreview() {
                     otp[index] = value
                 },
                 modifier = Modifier.fillMaxWidth(),
-                isValid = isValid,
-                validText = R.string.supporting_text,
-                invalidText = R.string.supporting_text,
+                isValid = false,
+                validText = stringResource(R.string.supporting_text),
+                invalidText = stringResource(R.string.supporting_text),
                 onValidate = {
-                    isValid = if(it.any{it == null})  null else otp.all { it == 0 }
+                    isValid = if (it.any { it == null }) null else otp.all { it == 0 }
                 }
             )
         }

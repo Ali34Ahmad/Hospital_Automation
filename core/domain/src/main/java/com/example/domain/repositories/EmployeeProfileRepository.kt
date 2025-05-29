@@ -1,0 +1,9 @@
+package com.example.domain.repositories
+
+import com.example.model.employee.EmployeeProfileResponse
+import com.example.utility.network.Result
+import com.example.utility.network.rootError
+
+interface EmployeeProfileRepository {
+    suspend fun getEmployeeInfo(): Result<EmployeeProfileResponse, rootError>
+}

@@ -53,14 +53,14 @@ fun OverlappingImagesTriangleBox(
         Box {
             if(imagesUrls.isNotEmpty()) {
                 NetworkImage(
-                    imageUrl = imagesUrls[0],
+                    model = imagesUrls[0],
                     modifier = imageModifier,
                     contentScale = ContentScale.Crop,
                 )
             }
             if(imagesUrls.size>=2) {
                 NetworkImage(
-                    imageUrl = imagesUrls[1],
+                    model = imagesUrls[1],
                     modifier = secondImageModifier,
                     contentScale = ContentScale.Crop,
                 )
@@ -68,7 +68,7 @@ fun OverlappingImagesTriangleBox(
         }
         if(imagesUrls.size>=3){
             NetworkImage(
-                imageUrl = imagesUrls[2],
+                model = imagesUrls[2],
                 modifier = thirdImageModifier,
                 contentScale = ContentScale.Crop,
             )

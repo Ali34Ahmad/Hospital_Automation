@@ -62,7 +62,7 @@ fun DepartmentDoctorCard(
             modifier = Modifier.padding(vertical = MaterialTheme.spacing.small12)
         ) {
             NetworkImage(
-                imageUrl = doctor.imageUrl,
+                model = doctor.imageUrl,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(MaterialTheme.sizing.medium32)

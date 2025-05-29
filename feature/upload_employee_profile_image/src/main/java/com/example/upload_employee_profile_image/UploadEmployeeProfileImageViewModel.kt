@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.constants.enums.FileUploadingState
+import com.example.domain.repositories.UploadEmployeeProfileImageRepository
+import com.example.domain.use_cases.upload_employee_profile_image.UploadEmployeeProfileImageUseCase
 import com.example.model.File
 import com.example.network.remote.upload_employee_profile_image.UploadEmployeeProfileImageApi
 import com.example.utility.network.Error
@@ -23,7 +25,7 @@ import java.io.FileNotFoundException
 import java.nio.channels.UnresolvedAddressException
 
 class UploadEmployeeProfileImageViewModel(
-    private val uploadProfileImageApi: UploadEmployeeProfileImageApi,
+    private val uploadEmployeeProfileImageUseCase: UploadEmployeeProfileImageUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UploadEmployeeProfileImageUiState())
     val uiState = _uiState.asStateFlow()
@@ -66,8 +68,7 @@ class UploadEmployeeProfileImageViewModel(
     }
 
     private fun uploadImage(uri: Uri) {
-        uploadJob = uploadProfileImageApi
-            .uploadImage(uri)
+        uploadJob = uploadEmployeeProfileImageUseCase(uri)
             .onStart {
                 setStartUploadingState(uri)
                 Log.v("Uploading Image:", "Started")
@@ -106,13 +107,13 @@ class UploadEmployeeProfileImageViewModel(
                     }
                 }
 
-                setFailureState(NetworkError.UNKNOWN,message)
+                setFailureState(NetworkError.UNKNOWN, message)
                 Log.v("Uploading Image:", "Exception")
             }
             .launchIn(viewModelScope)
     }
 
-    private fun updateUploadingProgressState(uploadingProgress:Int,fileSize: Long) {
+    private fun updateUploadingProgressState(uploadingProgress: Int, fileSize: Long) {
         _uiState.update {
             it.copy(
                 imageFile = File(
@@ -139,11 +140,12 @@ class UploadEmployeeProfileImageViewModel(
                 error = null,
                 showErrorDialog = false,
                 isLoading = true,
+                loadingState = FileUploadingState.UPLOADING,
             )
         }
     }
 
-    private fun setFailureState(error: Error?,message: String) {
+    private fun setFailureState(error: Error?, message: String) {
         _uiState.update {
             it.copy(
                 uri = null,
@@ -152,6 +154,7 @@ class UploadEmployeeProfileImageViewModel(
                 errorDialogText = message,
                 showErrorDialog = true,
                 isLoading = true,
+                loadingState = FileUploadingState.FAILED,
             )
         }
     }
@@ -161,7 +164,7 @@ class UploadEmployeeProfileImageViewModel(
         setCancelUploadingState()
     }
 
-    private fun setCancelUploadingState(){
+    private fun setCancelUploadingState() {
         _uiState.update {
             it.copy(
                 isLoading = false,
@@ -169,17 +172,21 @@ class UploadEmployeeProfileImageViewModel(
                 imageFile = null,
                 error = null,
                 showErrorDialog = false,
+                loadingState = FileUploadingState.Cancelled,
             )
         }
     }
 
-    private fun setSuccessfulUploadingState(){
-        _uiState.update { it.copy(loadingState = FileUploadingState.COMPLETE,
-            isLoading = false,
-            error = null,
-            showErrorDialog = false,
-            isUploadButtonEnabled = true,
-            ) }
+    private fun setSuccessfulUploadingState() {
+        _uiState.update {
+            it.copy(
+                loadingState = FileUploadingState.COMPLETE,
+                isLoading = false,
+                error = null,
+                showErrorDialog = false,
+                isUploadButtonEnabled = true,
+            )
+        }
     }
 }
 

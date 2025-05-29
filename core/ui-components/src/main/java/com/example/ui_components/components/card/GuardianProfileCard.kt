@@ -51,7 +51,7 @@ fun GuardianProfileCard(
     ) {
         Box(modifier = Modifier) {
             NetworkImage(
-                imageUrl = profileImageUrl,
+                model = profileImageUrl,
                 contentScale = ContentScale.Fit,
             )
             IconButton(

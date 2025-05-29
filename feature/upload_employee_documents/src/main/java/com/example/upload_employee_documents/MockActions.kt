@@ -7,11 +7,6 @@ fun mockUploadEmployeeDocumentsNavigationUiActions()=object : UploadEmployeeDocu
     override fun navigateToAddResidentialAddressScreen() {
 
     }
-
-    override fun openPdfFileChooser() {
-
-    }
-
 }
 
 fun mockUploadEmployeeDocumentsBusinessUiActions()=object : UploadEmployeeDocumentsBusinessUiActions {

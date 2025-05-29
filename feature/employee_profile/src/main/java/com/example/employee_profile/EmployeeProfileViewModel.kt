@@ -3,22 +3,31 @@ package com.example.employee_profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.network.model.request.DeactivateMyEmployeeAccountRequest
-import com.example.network.model.response.EmployeeProfileResponse
+import com.example.domain.repositories.AuthRepository
+import com.example.domain.repositories.EmployeeAccountManagementRepository
+import com.example.domain.repositories.EmployeeProfileRepository
+import com.example.domain.use_cases.auth.LogoutUseCase
+import com.example.domain.use_cases.employee_account_management.DeactivateMyEmployeeAccountUseCase
+import com.example.domain.use_cases.employee_account_management.ReactivateMyEmployeeAccountUseCase
+import com.example.domain.use_cases.employee_profile.GetEmployeeProfileUseCase
+import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
+import com.example.model.employee.EmployeeProfileResponse
+import com.example.network.model.request.DeactivateMyEmployeeAccountRequestDto
 import com.example.network.remote.account_management.EmployeeAccountManagementApiService
-import com.example.network.remote.auth.AuthApiService
-import com.example.network.remote.employee_profile.EmployeeProfileApiService
 import com.example.utility.network.Error
 import com.example.utility.network.Result
+import com.example.utility.network.onError
+import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EmployeeProfileViewModel(
-    private val authService: AuthApiService,
-    private val employeeAccountManagementService: EmployeeAccountManagementApiService,
-    private val employeeProfileApiService: EmployeeProfileApiService
+    private val logoutUseCase: LogoutUseCase,
+    private val deactivateMyEmployeeAccountUseCase: DeactivateMyEmployeeAccountUseCase,
+    private val reactivateMyEmployeeAccountUseCase: ReactivateMyEmployeeAccountUseCase,
+    private val getEmployeeProfileUseCase: GetEmployeeProfileUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EmployeeProfileUiState())
     val uiState = _uiState.asStateFlow()
@@ -43,6 +52,11 @@ class EmployeeProfileViewModel(
             override fun onDeactivateMyAccount() {
                 deactivateMyAccount()
             }
+
+            override fun onReactivateMyAccount() {
+                reactivateMyAccount()
+            }
+
 
             override fun onLogout() {
                 logout()
@@ -71,23 +85,19 @@ class EmployeeProfileViewModel(
     private fun getEmployeeProfile() {
         viewModelScope.launch {
             updateIsLoadingProfileState(true)
-            Log.v("Submitting log in info", "LoginViewModel")
-            val result = employeeProfileApiService.getEmployeeInfo()
-            when (result) {
-                is Result.Success -> {
+            Log.v("Fetching Employee Profile", "EmployeeProfileViewModel")
+            getEmployeeProfileUseCase()
+                .onSuccess { data ->
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
                     updateIsLoadingProfileState(false)
                     updateProfileErrorState(null)
-                    updateProfileInfoState(result.data)
-                }
-
-                is Result.Error -> {
+                    updateProfileInfoState(data)
+                }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
                     updateIsLoadingProfileState(false)
-                    updateProfileErrorState(result.error)
+                    updateProfileErrorState(error)
                     updateProfileInfoState(null)
                 }
-            }
         }
     }
 
@@ -111,24 +121,20 @@ class EmployeeProfileViewModel(
         viewModelScope.launch {
             setLoadingDialogState(true, "Logging out...")
             Log.v("Logging out", "ProfileViewModel")
-            val result = authService.logout()
-            when (result) {
-                is Result.Success -> {
+            logoutUseCase()
+                .onSuccess { data ->
                     Log.v("Logged out Successfully", "EmployeeProfileViewModel")
                     setLoadingDialogState(false)
                     setErrorDialogState(false)
                     updateLogoutErrorState(null)
                     updateIsLoggedOutSuccessfullyState(true)
-                }
-
-                is Result.Error -> {
+                }.onError { error ->
                     Log.v("Logging out Failed", "EmployeeProfileViewModel")
                     setLoadingDialogState(false)
                     setErrorDialogState(true, "Failed to logout. Please try again later")
-                    updateLogoutErrorState(result.error)
+                    updateLogoutErrorState(error)
                     updateIsLoggedOutSuccessfullyState(false)
                 }
-            }
         }
     }
 
@@ -143,26 +149,51 @@ class EmployeeProfileViewModel(
 
     private fun deactivateMyAccount() {
         viewModelScope.launch {
-            setLoadingDialogState(true, "Logging out...")
+            setLoadingDialogState(true, "Deactivating...")
             Log.v("Deactivating Account", "ProfileViewModel")
-            val result = employeeAccountManagementService.deactivateMyEmployeeAccount(
+            deactivateMyEmployeeAccountUseCase(
                 deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest("Feeling Sick")
-            )
+            ).onSuccess {
+                Log.v("Account Deactivated Successfully", "EmployeeProfileViewModel")
+                setLoadingDialogState(false)
+                setErrorDialogState(false)
+                updateAccountDeactivationErrorState(null)
+                updateIsDeactivatedSuccessfullyState(true)
+                getEmployeeProfile()
+            }.onError { error ->
+                Log.v("Failed to Deactivate Account", "EmployeeProfileViewModel")
+                setLoadingDialogState(false)
+                setErrorDialogState(
+                    true,
+                    "Failed to deactivate your account. Please try again later"
+                )
+                updateAccountDeactivationErrorState(error)
+                updateIsDeactivatedSuccessfullyState(false)
+            }
+        }
+    }
+
+    private fun reactivateMyAccount() {
+        viewModelScope.launch {
+            setLoadingDialogState(true, "Reactivating...")
+            Log.v("Reactivating Account", "ProfileViewModel")
+            val result = reactivateMyEmployeeAccountUseCase()
             when (result) {
                 is Result.Success -> {
-                    Log.v("Account Deactivated Successfully", "EmployeeProfileViewModel")
+                    Log.v("Account Reactivated Successfully", "EmployeeProfileViewModel")
                     setLoadingDialogState(false)
                     setErrorDialogState(false)
                     updateAccountDeactivationErrorState(null)
                     updateIsDeactivatedSuccessfullyState(true)
+                    getEmployeeProfile()
                 }
 
                 is Result.Error -> {
-                    Log.v("Failed to Deactivate Account", "EmployeeProfileViewModel")
+                    Log.v("Failed to Reactivate Account", "EmployeeProfileViewModel")
                     setLoadingDialogState(false)
                     setErrorDialogState(
                         true,
-                        "Failed to deactivate your account. Please try again later"
+                        "Failed to reactivate your account. Please try again later"
                     )
                     updateAccountDeactivationErrorState(result.error)
                     updateIsDeactivatedSuccessfullyState(false)
@@ -170,5 +201,6 @@ class EmployeeProfileViewModel(
             }
         }
     }
+
 
 }

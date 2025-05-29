@@ -12,7 +12,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 
 @Composable
 fun OtpValidatorText(
-    @StringRes text: Int,
+    text: String,
     isValid: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -20,7 +20,7 @@ fun OtpValidatorText(
         else MaterialTheme.colorScheme.error
 
     Text(
-        text = stringResource(text),
+        text = text,
         style = MaterialTheme.typography.labelLarge,
         color = color,
         modifier = modifier
@@ -32,7 +32,7 @@ fun OtpValidatorText(
 fun OtpValidatorTextPreview() {
     Hospital_AutomationTheme {
         OtpValidatorText(
-            text = R.string.supporting_text,
+            text = stringResource(R.string.supporting_text),
             isValid = true
         )
     }
@@ -42,7 +42,7 @@ fun OtpValidatorTextPreview() {
 fun OtpValidatorTextErrorPreview() {
     Hospital_AutomationTheme {
         OtpValidatorText(
-            text = R.string.supporting_text,
+            text = stringResource(R.string.supporting_text),
             isValid = false
         )
     }

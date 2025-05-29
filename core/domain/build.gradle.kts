@@ -36,4 +36,7 @@ dependencies {
 
     api(project(":core:utility"))
     api(project(":core:model"))
+
+    implementation(libs.koin.android)
+
 }

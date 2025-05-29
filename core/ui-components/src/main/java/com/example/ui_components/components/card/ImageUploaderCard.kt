@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.scale
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,6 +54,8 @@ import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
 import com.example.ui_components.components.icon.IconWithBackground
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @Composable
 fun ImageUploaderCard(
@@ -63,12 +66,6 @@ fun ImageUploaderCard(
     onNextButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val imageRequest = ImageRequest.Builder(LocalContext.current)
-        .data(imageUri)
-        .crossfade(true)
-        .scale(Scale.FIT)
-        .build()
-
     val icon = when (fileUploadingState) {
         FileUploadingState.UPLOADING -> {
             AppIcons.Outlined.pause
@@ -96,24 +93,30 @@ fun ImageUploaderCard(
         Box(
             contentAlignment = Alignment.Center,
         ) {
-            AsyncImage(
-                model = imageRequest,
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth()
+            NetworkImage(
+                model = imageUri,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+                errorCompose = {
+                    NetworkImageError()
+                },
+                loading = {
+                    NetworkImageLoader()
+                }
             )
             IconButton(
                 onClick = {},
                 modifier=Modifier
                     .clip(CircleShape)
                     .background(
-                    MaterialTheme.colorScheme.background.copy(alpha = 0.4f)
+                    MaterialTheme.colorScheme.background.copy(alpha = 0.6f)
                 )
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(icon),
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
-                    tint = MaterialTheme.colorScheme.secondary
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
             CircularProgressIndicator(
@@ -121,7 +124,7 @@ fun ImageUploaderCard(
                 modifier = Modifier.size(36.dp)
                     .padding(MaterialTheme.spacing.extraSmall4),
                 strokeWidth = 3.dp,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.primary
             )
         }
         Row(

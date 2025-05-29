@@ -44,4 +44,6 @@ dependencies {
     implementation(project(":core:ui-components"))
 
     implementation(project(":core:network"))
+
+    implementation(project(":core:utility"))
 }

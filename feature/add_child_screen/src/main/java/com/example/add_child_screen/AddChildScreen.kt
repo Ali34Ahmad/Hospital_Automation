@@ -30,9 +30,9 @@ import com.example.ui_components.components.complex_components.slots.ParentInfoS
 import com.example.ui_components.components.complex_components.slots.SelectGenderSlot
 import com.example.ui_components.components.topbars.custom.AddChildTopBar
 import com.example.util.UiText
-import com.example.utility.validation.TextValidator
+import com.example.utility.validation.validator.TextValidator
 import kotlinx.coroutines.CoroutineScope
-
+import com.example.ui_components.R
 @Composable
 fun AddChildScreen(
     viewModel: AddChildViewModel,
@@ -194,7 +194,7 @@ fun AddChildScreenPreview() {
             onSendingData = {
                 val error = TextValidator.validate(uiState.firstName)
                 error?.let {
-                    val text = UiText.StringResource(resId = it.string)
+                    val text = UiText.StringResource(resId = R.string.required_field)
                     uiState = uiState.copy(firstName = "")
                     uiState = uiState.copy(firstNameErrorMessage = text)
                 }

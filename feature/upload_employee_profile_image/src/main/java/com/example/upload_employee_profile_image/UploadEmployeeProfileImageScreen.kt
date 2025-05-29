@@ -98,7 +98,7 @@ fun UploadEmployeeProfileImageScreen(
                         onNextButtonClick = { uiActions.navigateToHomeScreenScreen() },
                         onReplaceFileButtonClick = { filePickerLauncher.launch("image/*") },
                         file = uiState.imageFile,
-                        fileUploadingState = FileUploadingState.UPLOADING,
+                        fileUploadingState = uiState.loadingState,
                     )
                 }
             }

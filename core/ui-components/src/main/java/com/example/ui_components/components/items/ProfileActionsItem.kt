@@ -67,7 +67,7 @@ fun ProfileActionsItem(
 
     if (!enabled){
         itemClickableModifier= columnModifier
-            .alpha(0.5f)
+            .alpha(0.4f)
     }
 
     Column(
