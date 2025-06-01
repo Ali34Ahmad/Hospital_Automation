@@ -1,6 +1,6 @@
 package com.example.add_child_screen.di
 
-import com.example.add_child_screen.AddChildViewModel
+import com.example.add_child_screen.presentation.AddChildViewModel
 import com.example.domain.use_cases.children.AddChildUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

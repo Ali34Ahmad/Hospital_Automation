@@ -9,10 +9,6 @@ import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.children.navigation.ChildrenRoute
 import com.example.children.navigation.childrenScreen
-import com.example.children.navigation.navigateToChildrenScreen
-import com.example.children.presentation.ChildrenScreen
-import com.example.guardian_profile.GuardianProfileScreen
-import com.example.guardian_profile.navigation.GuardianProfileRoute
 import com.example.model.helper.IdType
 
 @Composable

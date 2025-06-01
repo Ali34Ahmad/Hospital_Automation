@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.example.model.enums.BottomBarState
 import com.example.model.enums.FetchingDataState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -31,49 +32,10 @@ fun AddChildBottomBar(
     onNavigateToNextScreen:()-> Unit,
     onSendingData: () -> Unit,
     modifier: Modifier = Modifier,
-    fetchingDataState: FetchingDataState = FetchingDataState.READY,
+    bottomBarState: BottomBarState = BottomBarState.IDLE,
     scope: CoroutineScope = rememberCoroutineScope()
 ) {
-    AnimatedContent(
-        modifier = modifier,
-        targetState = fetchingDataState== FetchingDataState.Success,
-        transitionSpec = {
-            slideInVertically(
-                animationSpec = tween(durationMillis = 500)
-            ) {
-                height -> height
-            } + fadeIn(animationSpec = tween(durationMillis = 500)) togetherWith  slideOutVertically(
-                animationSpec = tween(durationMillis = 500)
-            ) { height -> -height } + fadeOut(animationSpec = tween(durationMillis = 500))
-        }
-    ) { target->
-        when(target){
-            true->{
-                AddChildButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(MaterialTheme.spacing.medium16),
-                    onClick = {
-                        onNavigateToNextScreen()
-                    },
-                    fetchingDataState = fetchingDataState
-                )
-            }
-            false->{
-                AddChildButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(MaterialTheme.spacing.medium16),
-                    onClick = {
-                        scope.launch {
-                            onSendingData()
-                        }
-                    },
-                    fetchingDataState = fetchingDataState
-                )
-            }
-        }
-    }
+
 }
 
 @DarkAndLightModePreview
@@ -81,9 +43,9 @@ fun AddChildBottomBar(
 fun AddChildBottomBarPreview(){
     Hospital_AutomationTheme {
         Surface {
-            var state by remember { mutableStateOf(FetchingDataState.ERROR) }
+            var state by remember { mutableStateOf(BottomBarState.FAILURE) }
             AddChildBottomBar(
-                fetchingDataState = state,
+                bottomBarState = state,
                 onNavigateToNextScreen = {
 
                 },

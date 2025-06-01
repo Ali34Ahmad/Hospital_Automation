@@ -9,9 +9,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.children.navigation.ChildrenRoute
-import com.example.data.constants.FAKE_ID
 import com.example.data.source.ChildrenAddedByEmployeePagingSource
-import com.example.domain.model.constants.SourcesConstants
+import com.example.domain.model.constants.PagingConstants
 import com.example.domain.use_cases.children.GetChildrenAddedByEmployeeUseCase
 import com.example.domain.use_cases.children.GetChildrenByGuardianIdUseCase
 import com.example.model.child.ChildData
@@ -57,7 +56,7 @@ class ChildrenViewModel(
         return if(type== IdType.EMPLOYEE){
             Pager(
                 config = PagingConfig(
-                    pageSize = SourcesConstants.PAGE_SIZE,
+                    pageSize = PagingConstants.PAGE_SIZE,
                 ),
                 pagingSourceFactory = {
                     ChildrenAddedByEmployeePagingSource(
@@ -87,7 +86,7 @@ class ChildrenViewModel(
     }
 
     private fun loadUserData() = viewModelScope.launch{
-        onAction(ChildrenUIAction.UpdateFetchingDataState(newState = FetchingDataState.DOING_PROCESS))
+        onAction(ChildrenUIAction.UpdateFetchingDataState(newState = FetchingDataState.LOADING))
         val response = getChildrenByGuardianIdUseCase(id)
         response.onSuccess{ data:List<ChildFullData> ->
             _uiState.value = uiState.value.copy(userChildren = data)

@@ -14,4 +14,9 @@ data class GuardianFullData(
     val addressNote: String?,
     val gender: String?,
     val imgUrl: String?,
-)
+){
+    val fullName: String
+        get() = "$firstName $lastName"
+    val fullAddress : String
+        get() = "$addressCity-$addressRegion-$addressStreet"
+}

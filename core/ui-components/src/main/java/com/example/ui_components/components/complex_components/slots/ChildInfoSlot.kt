@@ -97,6 +97,9 @@ fun ChildInfoSlot(
                 .focusable(),
             value = dateOfBirth,
             onValueChange = {},
+            onTrailingButtonClick = {
+                onDatePickerVisibilityChanged(true)
+            },
             icon = HospitalAutomationIcons.calender,
             isRequired = true,
             label = R.string.date_of_birth,

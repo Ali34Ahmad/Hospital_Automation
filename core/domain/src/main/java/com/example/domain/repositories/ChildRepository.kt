@@ -8,6 +8,12 @@ import com.example.utility.network.Result
 
 
 interface ChildRepository {
+    suspend fun searchChildrenAddedByEmployeeByName(
+        page: Int,
+        limit: Int,
+        name: String
+    ): Result<PagedData<ChildData>, NetworkError>
+
     suspend fun getChildrenByName(
         page: Int,
         limit: Int,

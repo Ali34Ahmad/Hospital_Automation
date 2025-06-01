@@ -13,6 +13,7 @@ object ApiRoutes {
     const val CHILDREN_BY_NAME = "$EMPLOYEE/find-child-byname"
     const val CHILDREN_BY_GUARDIAN_ID = "$EMPLOYEE/show-children_for_guardian"
     const val CHILDREN_BY_EMPLOYEE_ID = "$EMPLOYEE/show-children-added-by-employee"
+    const val SEARCH_FOR_CHILDREN_ADDED_BY_EMPLOYEE_BY_NAME = "$EMPLOYEE/search-children-added-by-employee"
     //users
     const val SHOW_USER_PROFILE = "$EMPLOYEE/find-user-byId"
     const val SEARCH_FOR_USER = "$EMPLOYEE/searchFor-user"

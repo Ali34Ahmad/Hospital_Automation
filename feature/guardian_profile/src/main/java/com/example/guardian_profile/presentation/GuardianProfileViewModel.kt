@@ -1,16 +1,18 @@
-package com.example.guardian_profile
+package com.example.guardian_profile.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.constants.FAKE_CHILD_ID
+import androidx.navigation.toRoute
 import com.example.data.constants.FAKE_ID
 import com.example.domain.use_cases.users.AddGuardianToChildUseCase
 import com.example.domain.use_cases.users.GetGuardianByIdUseCase
+import com.example.guardian_profile.navigation.GuardianProfileRoute
+import com.example.model.enums.BottomBarState
 import com.example.model.enums.FetchingDataState
 import com.example.ui_components.R
 import com.example.util.UiText
+import com.example.utility.constants.DurationConstants
 import com.example.utility.network.NetworkError
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -28,15 +30,15 @@ class GuardianProfileViewModel(
     private val addGuardianToChildUseCase: AddGuardianToChildUseCase
 ): ViewModel() {
 
-//    val guardianId: Int = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId
-//    val childId: Int? = savedStateHandle.toRoute<GuardianProfileRoute>().childId
-    val childId: Int? = FAKE_CHILD_ID
-    val guardianId: Int = FAKE_ID
+    private val _uiState = MutableStateFlow(
+        GuardianProfileUIState(
+        childId = savedStateHandle.toRoute<GuardianProfileRoute>().childId,
+        guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId
+        )
+    )
 
-    private val _uiState = MutableStateFlow(GuardianProfileUIState(hasBottomBar = childId!=null))
     val uiState: StateFlow<GuardianProfileUIState> = _uiState
         .onStart {
-            //do initial loading
             loadInitialData()
         }.stateIn(
             viewModelScope,
@@ -47,112 +49,110 @@ class GuardianProfileViewModel(
     fun onAction(action: GuardianProfileActions){
         when(action){
 
-            GuardianProfileActions.Retry->{
+            GuardianProfileActions.RetryLoadingData->{
                 loadInitialData()
             }
-            //network calls
+            //network call to add guardian to child
             GuardianProfileActions.SetAsGuardian -> {
-                childId?.let {
+                _uiState.value.childId?.let {
                     onAction(
                         GuardianProfileActions.UpdateBottomBarState(
-                            state = FetchingDataState.DOING_PROCESS
+                            state = BottomBarState.LOADING
                         )
                     )
-
                     viewModelScope.launch {
                         addGuardianToChildUseCase(
                             childId = it,
-                            userId = guardianId
+                            userId = _uiState.value.guardianId
                         ).onSuccess{
                             onAction(
                                 GuardianProfileActions.UpdateBottomBarState(
-                                    state = FetchingDataState.Success
+                                    state = BottomBarState.SUCCESS
                                 )
                             )
                         }
-                            .onError {
+                            .onError {error->
                                 onAction(
                                     GuardianProfileActions.UpdateBottomBarState(
-                                        state = FetchingDataState.ERROR
+                                        state = BottomBarState.FAILURE
                                     )
                                 )
-                                if(it == NetworkError.GUARDIAN_ALREADY_ASSIGNED){
-                                    _uiState.value = _uiState.value.copy(
-                                        errorMessage = UiText.StringResource(
-                                           R.string.guardian_already_assigned
-                                        )
-                                    )
-                                }
-                                delay(3000)
-                                onAction(
-                                    GuardianProfileActions.UpdateBottomBarState(
-                                        state = FetchingDataState.READY
-                                    )
-                                )
-                                _uiState.value = _uiState.value.copy(
-                                    errorMessage = null
-                                )
+                                setErrorMessage(error)
+                                delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
+                                resetButtonState()
                             }
                     }
                 }
             }
 
-            // need navigation
-            GuardianProfileActions.NavigateBack -> {
-                TODO()
-            }
-            is GuardianProfileActions.Open -> {
-                TODO()
-            }
-            is GuardianProfileActions.OpenEmail -> {
-                TODO()
-            }
-            is GuardianProfileActions.NavigateToChildren -> {
-                TODO()
-            }
-
-            is GuardianProfileActions.UpdateFetchGuardianState -> {
+            is GuardianProfileActions.UpdateScreenState -> {
                 _uiState.value = _uiState.value.copy(
-                    fetchGuardianState = action.state
+                    screenState = action.state
                 )
             }
             is GuardianProfileActions.UpdateBottomBarState ->{
                 _uiState.value = _uiState.value.copy(
-                    setAsGuardianState = action.state
+                    bottomBarState = action.state
                 )
             }
-
             is GuardianProfileActions.UpdateGuardianData ->{
                 _uiState.value = _uiState.value.copy(
                     guardianData = action.data
                 )
             }
+            // need navigation
+            GuardianProfileActions.NavigateBack -> Unit
+            is GuardianProfileActions.Open -> Unit
+            is GuardianProfileActions.OpenEmail -> Unit
+            is GuardianProfileActions.NavigateToChildren -> Unit
+
         }
     }
 
-    fun loadInitialData(){
+    private fun loadInitialData(){
         onAction(
-            GuardianProfileActions.UpdateFetchGuardianState(
-                state = FetchingDataState.DOING_PROCESS
+            GuardianProfileActions.UpdateScreenState(
+                state = FetchingDataState.LOADING
             )
         )
         viewModelScope.launch {
-            Log.d("GuardianProfileViewmodel","Fetching data...")
             guardianProfileUseCase(FAKE_ID)
                 .onSuccess{ data->
-                    Log.d("GuardianProfileViewmodel","Success Fetching data...")
                     onAction(GuardianProfileActions.UpdateGuardianData(data))
                     onAction(
                         GuardianProfileActions
-                            .UpdateFetchGuardianState(state = FetchingDataState.Success)
+                            .UpdateScreenState(state = FetchingDataState.Success)
                     )
                 }.onError {
-                    Log.e("GuardianProfileViewmodel","Error Fetching data...")
                     onAction(
                         GuardianProfileActions
-                            .UpdateFetchGuardianState(state = FetchingDataState.ERROR)
+                            .UpdateScreenState(state = FetchingDataState.ERROR)
                     )
                 }
+        }
+    }
+    private fun resetButtonState(){
+        _uiState.value = _uiState.value.copy(
+            errorMessage = null,
+            bottomBarState = BottomBarState.IDLE
+        )
+    }
+    private fun setErrorMessage(error: NetworkError){
+        when(error){
+            NetworkError.GUARDIAN_ALREADY_ASSIGNED -> {
+                _uiState.value = _uiState.value.copy(
+                    errorMessage = UiText.StringResource(
+                        R.string.guardian_already_assigned
+                    )
+                )
+            }
+            else -> {
+                _uiState.value = _uiState.value.copy(
+                    errorMessage = UiText.StringResource(
+                        R.string.network_error
+                    )
+                )
+            }
         }
     }
 }

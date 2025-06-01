@@ -49,4 +49,12 @@ interface ChildApiService {
         page: Int,
         limit: Int
     ): Result<GetChildrenAddedByEmployeeResponse, NetworkError>
+
+    suspend fun searchForChildrenAddedByEmployee(
+        token: String,
+        name: String,
+        page: Int,
+        limit: Int
+    ): Result<GetChildrenByNameResponse, NetworkError>
+
 }

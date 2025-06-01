@@ -202,5 +202,5 @@
     <string name="no_internet_connection_subtitle">No internet connection subtitle please try again later.</string>
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_subtitle">Fetching data subtitle</string>
-    <string name="search_for_children">Search for chilren</string>
+    <string name="search_for_children">Search for children</string>
 </resources>

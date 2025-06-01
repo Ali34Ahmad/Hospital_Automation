@@ -1,8 +1,8 @@
 package com.example.model.enums
 
-enum class FetchingDataState {
+enum class BottomBarState {
     IDLE,
     LOADING,
-    ERROR,
-    Success,
+    SUCCESS,
+    FAILURE
 }

@@ -81,7 +81,7 @@ fun ChildrenScreen(
             updateFetchingDataState(FetchingDataState.ERROR)
         }
         LoadState.Loading -> {
-            updateFetchingDataState(FetchingDataState.DOING_PROCESS)
+            updateFetchingDataState(FetchingDataState.LOADING)
         }
         is LoadState.NotLoading ->{
             updateFetchingDataState(FetchingDataState.Success)
@@ -103,8 +103,8 @@ fun ChildrenScreen(
                 .padding(MaterialTheme.spacing.medium16)
         ) {
             when(uiState.fetchingDataState){
-                FetchingDataState.READY ->{}
-                FetchingDataState.DOING_PROCESS ->{
+                FetchingDataState.IDLE ->{}
+                FetchingDataState.LOADING ->{
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                     ){
@@ -274,6 +274,6 @@ val errorState = ChildrenUIState(
 )
 val doingProcessState = ChildrenUIState(
     userChildren = emptyList(),
-    fetchingDataState = FetchingDataState.DOING_PROCESS,
+    fetchingDataState = FetchingDataState.LOADING,
     type = IdType.USER
 )
