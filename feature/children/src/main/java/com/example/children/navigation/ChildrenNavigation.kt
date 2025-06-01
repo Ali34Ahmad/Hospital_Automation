@@ -12,6 +12,7 @@ import com.example.children.presentation.ChildrenScreen
 import com.example.children.presentation.ChildrenUIAction
 import com.example.children.presentation.ChildrenViewModel
 import com.example.model.helper.IdType
+import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -23,9 +24,7 @@ data class ChildrenRoute(
 fun NavController.navigateToChildrenScreen(
     userId: Int,idType: IdType
 ){
-    navigate(ChildrenRoute(userId = userId,type = idType)){
-        launchSingleTop = true
-    }
+    navigateToScreen(ChildrenRoute(userId = userId,type = idType))
 }
 
 fun NavGraphBuilder.childrenScreen(

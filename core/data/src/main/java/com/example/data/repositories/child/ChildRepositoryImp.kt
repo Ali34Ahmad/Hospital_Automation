@@ -27,7 +27,6 @@ class ChildRepositoryImp(
         name: String,
     ): Result<PagedData<ChildData>, NetworkError> {
         val token = dataStore.userPreferencesFlow.map { it.token }.first()
-         //we get the response from the network then convert the response to the data class
         token?.let {
             return childApiService.getChildrenByName(
                 page = page,
@@ -43,7 +42,6 @@ class ChildRepositoryImp(
                 )
             }
         }?:return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
-
     }
 
     override suspend fun getChildById(childId: Int): Result<ChildFullData, NetworkError> {
@@ -101,4 +99,24 @@ class ChildRepositoryImp(
             )
         }
     }
+
+    override suspend fun searchChildrenAddedByEmployeeByName(
+        page: Int,
+        limit: Int,
+        name: String,
+    ): Result<PagedData<ChildData>, NetworkError> =
+        childApiService.searchForChildrenAddedByEmployee(
+            token = FAKE_TOKEN,
+            page = page,
+            limit = limit,
+            name = name
+        ).map {
+            val children = it.data.map{it.toChildData()}
+            val page = it.pagination.page
+            PagedData<ChildData>(
+                page = page,
+                data = children
+            )
+        }
+
 }

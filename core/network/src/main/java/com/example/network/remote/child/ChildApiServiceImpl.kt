@@ -258,4 +258,46 @@ internal class ChildApiServiceImpl(
             }
         }
     }
+
+    /**
+     * search for users added by employee
+     * @param name :It filters the result by child's name
+     * @author Ali Mansoura.
+     */
+    override suspend fun searchForChildrenAddedByEmployee(
+        token: String,
+        name: String,
+        page: Int,
+        limit: Int
+    ): Result<GetChildrenByNameResponse, NetworkError> {
+        val response = try {
+            client.get(ApiRoutes.SEARCH_FOR_CHILDREN_ADDED_BY_EMPLOYEE_BY_NAME) {
+                parameters {
+                    append("name",name)
+                    append("page",page.toString())
+                    append("limit",limit.toString())
+                }
+                bearerAuth(token)
+            }
+
+        }catch (e: Exception){
+            Log.e(TAG,"msg : ${e.message}, cause: ${e.cause?.message}")
+            return Result.Error<NetworkError>(NetworkError.UNKNOWN)
+        }
+        return when(response.status){
+            HttpStatusCode.OK ->{
+                Log.d(TAG,"success!")
+                val body : GetChildrenByNameResponse= response.body()
+                Result.Success<GetChildrenByNameResponse>(body)
+            }
+            HttpStatusCode.UnprocessableEntity ->{
+                Log.d(TAG,"Error description: ${response.status.description}")
+                    Result.Error<NetworkError>( error = NetworkError.UNPROCESSABLE_ENTITY)
+                }
+            else -> {
+                Log.d(TAG,"Error description: ${response.status.description}")
+                Result.Error<NetworkError>( error = NetworkError.UNKNOWN)
+            }
+        }
+    }
 }

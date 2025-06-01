@@ -1,4 +1,4 @@
-package com.example.data.source
+package com.example.data.source.childrenSearch
 
 import android.util.Log
 import androidx.paging.PagingSource
@@ -10,9 +10,9 @@ import com.example.utility.network.NetworkError
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 
-const val CHILDREN_SOURCE_TAG = "ChildrenPagingSource"
+const val CHILDREN_SOURCE_TAG = "ChildrenSearchPagingSource"
 
-class ChildrenPagingSource(
+class ChildrenSearchPagingSource(
     private val getChildrenByName: GetChildrenByNameUseCase,
     private val query: String,
 ): PagingSource<Int, ChildData>(){
@@ -25,12 +25,11 @@ class ChildrenPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ChildData> {
-        try {
             //start refresh at page 1 if undefined
             val nextPageNumber = params.key?:1
 
 
-            //initializing data per one page
+
             var nextKey: Int? = null
             var children = emptyList<ChildData>()
 
@@ -54,9 +53,6 @@ class ChildrenPagingSource(
                 prevKey = null,
                 nextKey = nextKey
             )
-        }catch (e: Exception){
-            Log.e(CHILDREN_SOURCE_TAG, "load :exception ${e.message}" )
-            return LoadResult.Error(e)
-        }
+
     }
 }

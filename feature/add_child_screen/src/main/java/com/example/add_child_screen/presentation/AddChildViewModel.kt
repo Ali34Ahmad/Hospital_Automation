@@ -1,12 +1,16 @@
-package com.example.add_child_screen
+package com.example.add_child_screen.presentation
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.example.add_child_screen.navigation.AddChildRoute
 import com.example.domain.use_cases.children.AddChildUseCase
-import com.example.model.enums.FetchingDataState
+import com.example.model.child.ChildFullData
+import com.example.model.enums.BottomBarState
 import com.example.util.UiText
+import com.example.utility.constants.DurationConstants
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import com.example.utility.validation.validator.TextValidator
@@ -17,12 +21,13 @@ import kotlinx.coroutines.launch
 import com.example.ui_components.R
 
 class AddChildViewModel(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val addChildUseCase: AddChildUseCase
 ): ViewModel() {
-    val guardianId = savedStateHandle.get<Int>("guardianId")
 
-    private var _uiState = MutableStateFlow<AddChildUIState>(AddChildUIState())
+    private var _uiState = MutableStateFlow<AddChildUIState>(AddChildUIState(
+        guardianId = savedStateHandle.toRoute<AddChildRoute>().guardianId
+    ))
     val uiState: StateFlow<AddChildUIState> = _uiState
 
     fun onAction(action: AddChildUIActions){
@@ -72,54 +77,54 @@ class AddChildViewModel(
                        firstNameErrorMessage,lastNameErrorMessage,dateOfBirthErrorMessage,
                        fatherFirstNameErrorMessage,fatherFirstNameErrorMessage,
                        motherFirstNameErrorMessage,motherLastNameErrorMessage
-                   ).any{it == null}
+                   ).all{it == null}
                     _uiState.value = _uiState.value.copy(isValid = isValid)
                 }
             }
             is AddChildUIActions.ChangeDatePickerVisibility->{
-                _uiState.value = _uiState.value.copy(isDatePickerShown = action.isVisible)
+                _uiState.value = _uiState.value.copy(isDatePickerVisible = action.isVisible)
             }
             AddChildUIActions.SendData ->{
-                guardianId?.let { id->
+
                     onAction(AddChildUIActions.Validate)
                     if(_uiState.value.isValid){
-                        Log.d("AddChildViewModel",_uiState.value.toString())
-
                         //sending data using the network call
                         viewModelScope.launch {
                             _uiState.value = _uiState.value.copy(
-                                fetchingDataState = FetchingDataState.DOING_PROCESS
+                                sendingDataButtonState = BottomBarState.LOADING
                             )
                             addChildUseCase(
-                                guardianId = id,
+                                guardianId = _uiState.value.guardianId,
                                 child = _uiState.value.toChildFullData()
-                            ).onSuccess{
+                            ).onSuccess{child: ChildFullData->
                                 _uiState.value = _uiState.value.copy(
-                                    fetchingDataState = FetchingDataState.Success
+                                    sendingDataButtonState = BottomBarState.SUCCESS,
+                                    childId = child.childId
                                 )
+                                delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
+                                _uiState.value = _uiState.value.copy(isSendingDataButtonVisible = false)
                             }.onError {
                                 _uiState.value = _uiState.value.copy(
-                                    fetchingDataState = FetchingDataState.ERROR
+                                    sendingDataButtonState = BottomBarState.FAILURE
                                 )
-                                delay(1000)
+                                delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
                                 onAction(AddChildUIActions.ClearForm)
                             }
                         }
 
-                    }
+
                 }
             }
             AddChildUIActions.ClearForm -> {
-                val fetchingDataState = if (_uiState.value.fetchingDataState == FetchingDataState.Success) {
-                    FetchingDataState.Success
+                val bottomBarState = if (_uiState.value.sendingDataButtonState == BottomBarState.SUCCESS) {
+                    BottomBarState.SUCCESS
                 } else {
-                    FetchingDataState.READY
+                    BottomBarState.IDLE
                 }
-
-                _uiState.value = AddChildUIState(fetchingDataState = fetchingDataState )
+                _uiState.value = AddChildUIState(sendingDataButtonState = bottomBarState )
             }
-            AddChildUIActions.NavigateBack -> TODO()
-            AddChildUIActions.NavigateToNextScreen -> TODO()
+            AddChildUIActions.NavigateBack -> Unit
+            AddChildUIActions.NavigateToNextScreen -> Unit
         }
     }
 

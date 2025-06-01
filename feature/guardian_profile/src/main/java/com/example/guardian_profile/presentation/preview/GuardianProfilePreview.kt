@@ -1,0 +1,154 @@
+package com.example.guardian_profile.presentation.preview
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.constants.enums.Gender
+import com.example.guardian_profile.navigation.UserProfileMode
+import com.example.guardian_profile.presentation.GuardianProfileScreen
+import com.example.guardian_profile.presentation.GuardianProfileUIState
+import com.example.model.enums.FetchingDataState
+import com.example.model.guardian.GuardianFullData
+import com.example.ui.helper.DarkAndLightModePreview
+import com.example.ui.theme.Hospital_AutomationTheme
+
+internal val fakeUser = GuardianFullData(
+    userId = 1,
+    email = "ali.man@gmail.com",
+    firstName = "Ali",
+    middleName = "Bassam",
+    lastName = "Mansoura",
+    phoneNumber = "0998439583",
+    addressGovernorate = "Syria",
+    addressCity = "Latakia",
+    addressRegion = "Basnada",
+    addressStreet = "Domino Street",
+    addressNote = "",
+    gender = Gender.MALE.name,
+    imgUrl = null
+)
+@DarkAndLightModePreview
+@Composable
+fun GuardianProfileSuccessPreview() {
+    var uiState by remember{
+        mutableStateOf(
+        GuardianProfileUIState(
+            guardianData = fakeUser,
+            userProfileMode = UserProfileMode.VIEW_ONLY,
+            screenState = FetchingDataState.Success
+        )
+        )
+    }
+    Hospital_AutomationTheme {
+        GuardianProfileScreen(
+            uiState = uiState,
+            onNavigateToAddChild = {},
+            onSetAsGuardian = {},
+            onOpen = {},
+            onOpenEmail = {},
+            onNavigateBack = {},
+            onNavigateToChildren = {}
+        )
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun GuardianProfileErrorPreview() {
+    var uiState by remember{
+        mutableStateOf(
+            GuardianProfileUIState(
+                guardianData = fakeUser,
+                userProfileMode = UserProfileMode.VIEW_ONLY,
+                screenState = FetchingDataState.ERROR
+            )
+        )
+    }
+    Hospital_AutomationTheme {
+        GuardianProfileScreen(
+            uiState = uiState,
+            onNavigateToAddChild = {},
+            onSetAsGuardian = {},
+            onOpen = {},
+            onOpenEmail = {},
+            onNavigateBack = {},
+            onNavigateToChildren = {}
+        )
+    }
+}
+@DarkAndLightModePreview
+@Composable
+fun GuardianProfileLoadingPreview() {
+    var uiState by remember{
+        mutableStateOf(
+            GuardianProfileUIState(
+                guardianData = fakeUser,
+                userProfileMode = UserProfileMode.VIEW_ONLY,
+                screenState = FetchingDataState.LOADING
+            )
+        )
+    }
+    Hospital_AutomationTheme {
+        GuardianProfileScreen(
+            uiState = uiState,
+            onNavigateToAddChild = {},
+            onSetAsGuardian = {},
+            onOpen = {},
+            onOpenEmail = {},
+            onNavigateBack = {},
+            onNavigateToChildren = {}
+        )
+    }
+}
+@DarkAndLightModePreview
+@Composable
+fun GuardianProfileSetAsGuardianPreview() {
+    var uiState by remember{
+        mutableStateOf(
+            GuardianProfileUIState(
+                guardianData = fakeUser,
+                userProfileMode = UserProfileMode.ADD_AS_GUARDIAN,
+                childId = 1,
+                screenState = FetchingDataState.Success
+            )
+        )
+    }
+    Hospital_AutomationTheme {
+        GuardianProfileScreen(
+            uiState = uiState,
+            onNavigateToAddChild = {},
+            onSetAsGuardian = {},
+            onOpen = {},
+            onOpenEmail = {},
+            onNavigateBack = {},
+            onNavigateToChildren = {}
+        )
+    }
+}
+@DarkAndLightModePreview
+@Composable
+fun GuardianProfileAddChildPreview() {
+    var uiState by remember{
+        mutableStateOf(
+            GuardianProfileUIState(
+                guardianData = fakeUser,
+                userProfileMode = UserProfileMode.ADD_CHILD,
+                screenState = FetchingDataState.Success,
+                childId = 1
+            )
+        )
+    }
+    Hospital_AutomationTheme {
+        GuardianProfileScreen(
+            uiState = uiState,
+            onNavigateToAddChild = {},
+            onSetAsGuardian = {},
+            onOpen = {},
+            onOpenEmail = {},
+            onNavigateBack = {},
+            onNavigateToChildren = {}
+        )
+    }
+}

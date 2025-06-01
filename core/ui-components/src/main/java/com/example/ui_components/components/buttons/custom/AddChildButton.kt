@@ -3,6 +3,7 @@ package com.example.ui_components.components.buttons.custom
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.example.model.enums.BottomBarState
 import com.example.model.enums.FetchingDataState
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.R
@@ -10,18 +11,19 @@ import com.example.ui_components.R
 fun AddChildButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    fetchingDataState: FetchingDataState = FetchingDataState.READY
+    bottomBarState: BottomBarState = BottomBarState.IDLE
 ) {
 
-    val text = when(fetchingDataState){
-        FetchingDataState.READY -> stringResource(R.string.send_data)
-        FetchingDataState.DOING_PROCESS -> stringResource(R.string.sending)
-        FetchingDataState.ERROR -> stringResource(R.string.error)
-        FetchingDataState.Success -> stringResource(R.string.next)
+    val text = when(bottomBarState){
+
+        BottomBarState.IDLE  -> stringResource(R.string.send_data)
+        BottomBarState.LOADING -> stringResource(R.string.sending)
+        BottomBarState.FAILURE-> stringResource(R.string.error)
+        BottomBarState.SUCCESS  -> stringResource(R.string.next)
     }
 
-    val isLoading = fetchingDataState == FetchingDataState.DOING_PROCESS
-    val hasError = fetchingDataState == FetchingDataState.ERROR
+    val isLoading = bottomBarState == BottomBarState.LOADING
+    val hasError = bottomBarState == BottomBarState.FAILURE
 
     val enabled = !isLoading && !hasError
     HospitalAutomationButton(

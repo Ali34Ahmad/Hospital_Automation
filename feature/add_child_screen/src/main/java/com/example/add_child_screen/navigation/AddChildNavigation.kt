@@ -3,8 +3,9 @@ package com.example.add_child_screen.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.add_child_screen.AddChildScreen
-import com.example.add_child_screen.AddChildViewModel
+import com.example.add_child_screen.presentation.AddChildScreen
+import com.example.add_child_screen.presentation.AddChildViewModel
+import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -13,10 +14,17 @@ data class AddChildRoute(
     val guardianId: Int
 )
 
+/**
+ * Navigates to add child screen after selecting the guardian.
+ * @param guardianId: The ID of the selected guardian.
+ * @author Ali Mansoura.
+ */
 fun NavController.navigateToAddChild(guardianId: Int) {
-    navigate(route = AddChildRoute(guardianId = guardianId)){
-        launchSingleTop = true
-    }
+    navigateToScreen(
+        route = AddChildRoute(
+            guardianId = guardianId
+        )
+    )
 }
 
 fun NavGraphBuilder.addChildScreen(){

@@ -1,12 +1,11 @@
 package com.example.children_search.navigation
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.children_search.ChildrenSearchScreen
-import com.example.children_search.ChildrenSearchViewModel
+import com.example.children_search.presentation.ChildrenSearchScreen
+import com.example.children_search.presentation.ChildrenSearchViewModel
+import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -14,9 +13,9 @@ import org.koin.androidx.compose.koinViewModel
 object ChildrenSearch
 
 fun NavController.navigateToChildrenSearch(){
-    navigate(route = ChildrenSearch){
-        launchSingleTop = true
-    }
+    navigateToScreen(
+        ChildrenSearch
+    )
 }
 
 fun NavGraphBuilder.childrenSearchScreen(){

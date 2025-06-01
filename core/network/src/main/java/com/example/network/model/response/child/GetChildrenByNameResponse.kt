@@ -5,6 +5,11 @@ import com.example.network.model.response.NetworkPagination
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 
+/**
+ * You can use this class to represent any response
+ * that return children filtered by name.
+ * @author Ali Mansoura
+ */
 @OptIn(InternalSerializationApi::class)
 @Serializable
 data class GetChildrenByNameResponse(

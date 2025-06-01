@@ -1,4 +1,4 @@
-package com.example.add_child_screen
+package com.example.add_child_screen.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,22 +13,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constants.enums.Gender
-import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
-import com.example.ui_components.components.bottomBars.custom.AddChildBottomBar
+import com.example.ui_components.R
+import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.complex_components.slots.ChildInfoSlot
 import com.example.ui_components.components.complex_components.slots.ParentInfoSlots
 import com.example.ui_components.components.complex_components.slots.SelectGenderSlot
 import com.example.ui_components.components.topbars.custom.AddChildTopBar
+
 import com.example.util.UiText
 import com.example.utility.validation.validator.TextValidator
 import kotlinx.coroutines.CoroutineScope
@@ -92,22 +89,27 @@ fun AddChildScreen(
     onFatherLastNameChanged: (String)-> Unit,
     onMotherFirstNameChange: (String)-> Unit,
     onMotherLastNameChanged: (String)-> Unit,
-    onNavigateToNextScreen: () -> Unit,
+    onNavigateToNextScreen: (childId: Int) -> Unit,
     onDatePickerVisibilityChanged: (Boolean) -> Unit,
     onSendingData: ()-> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    scope : CoroutineScope = rememberCoroutineScope()
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surface,
         modifier = modifier.fillMaxSize(),
         bottomBar = {
-            AddChildBottomBar(
-                onNavigateToNextScreen =onNavigateToNextScreen,
-                onSendingData = onSendingData,
-                scope = scope,
-                fetchingDataState = uiState.fetchingDataState
+            SendingDataBottomBar(
+                text = stringResource(R.string.send_data),
+                onButtonClick = onSendingData,
+                state = uiState.sendingDataButtonState,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium16),
+                onSuccess = {
+                    uiState.childId?.let {
+                        onNavigateToNextScreen(it)
+                    }
+                }
             )
         },
         topBar = {
@@ -138,7 +140,7 @@ fun AddChildScreen(
                 firstNameError = uiState.firstNameErrorMessage?.asString(),
                 lastNameError = uiState.lastNameErrorMessage?.asString(),
                 dateOfBirthError = uiState.dateOfBirthErrorMessage?.asString(),
-                isDatePickerShown = uiState.isDatePickerShown,
+                isDatePickerShown = uiState.isDatePickerVisible,
                 onDatePickerVisibilityChanged = onDatePickerVisibilityChanged
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
@@ -165,41 +167,5 @@ fun AddChildScreen(
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
         }
-    }
-}
-
-@Preview
-@Composable
-fun AddChildScreenPreview() {
-    Hospital_AutomationTheme {
-        var uiState by remember { mutableStateOf(AddChildUIState()) }
-        
-        AddChildScreen(
-            uiState = uiState,
-            onFirstNameChanged = {
-                uiState = uiState.copy(firstNameErrorMessage = null)
-                uiState = uiState.copy(firstName = it)
-            },
-            onLastNameChanged = {},
-            onDateOfBirthChanged = {},
-            onGenderChange = {
-                uiState = uiState.copy(gender = it)
-            },
-            onFatherFirstNameChange = {},
-            onFatherLastNameChanged = { },
-            onMotherFirstNameChange = { },
-            onMotherLastNameChanged = {},
-            onNavigateToNextScreen = {},
-            onDatePickerVisibilityChanged = {},
-            onSendingData = {
-                val error = TextValidator.validate(uiState.firstName)
-                error?.let {
-                    val text = UiText.StringResource(resId = R.string.required_field)
-                    uiState = uiState.copy(firstName = "")
-                    uiState = uiState.copy(firstNameErrorMessage = text)
-                }
-            },
-            onNavigateBack = {}
-        )
     }
 }
