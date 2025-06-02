@@ -22,52 +22,38 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import com.example.utility.network.NetworkError
+import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
+import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
-import com.example.ui_components.R
+
 @Composable
 fun EnterEmailScreen(
     uiState: EnterEmailUiState,
     uiActions: EnterEmailUiActions,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(uiState.isSuccessful){
-        if (uiState.isSuccessful) {
+    LaunchedEffect(uiState.screenState){
+        if (uiState.screenState== ScreenState.Success) {
             uiActions.navigateToEmailOtpVerificationScreen()
-        }
-    }
-
-    val errorMessage = when (uiState.error) {
-        is NetworkError -> {
-            stringResource(R.string.something_went_wrong)
-        }
-
-        else -> {
-            stringResource(R.string.something_went_wrong)
         }
     }
 
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.sending_otp_failed),
-        description = errorMessage,
+        description = stringResource(R.string.something_went_wrong),
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
     )
 
-    LoadingDialog(
-        showDialog = uiState.isLoading,
-        text = stringResource(R.string.submitting)
-    )
-
+    val isLoading=uiState.screenState== ScreenState.LOADING
 
 //    val scrollState = rememberScrollState()
     Scaffold { contentPadding ->
@@ -127,7 +113,8 @@ fun EnterEmailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Done
-                        )
+                        ),
+                        enabled = !isLoading,
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
@@ -138,6 +125,7 @@ fun EnterEmailScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                         enabled = uiState.isSendOtpCodeButtonEnabled,
+                        isLoading = isLoading,
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))

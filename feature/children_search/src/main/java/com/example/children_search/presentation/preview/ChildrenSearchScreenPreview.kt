@@ -6,7 +6,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.children_search.presentation.ChildrenSearchScreen
 import com.example.children_search.presentation.ChildrenSearchUiState
 import com.example.model.child.ChildData
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import kotlinx.coroutines.flow.flowOf
@@ -57,7 +57,7 @@ fun ChildrenSearchScreenSuccessPreview(){
             onStateUpdated = {},
             onNavigateToChildProfile = {},
             onQueryChanged = {},
-            uiState = ChildrenSearchUiState(state = FetchingDataState.Success),
+            uiState = ChildrenSearchUiState(state = ScreenState.Success),
             children = fakeChildren.collectAsLazyPagingItems()
         )
     }
@@ -72,7 +72,7 @@ fun ChildrenSearchScreenErrorPreview(){
             onStateUpdated = {},
             onNavigateToChildProfile = {},
             onQueryChanged = {},
-            uiState = ChildrenSearchUiState(state = FetchingDataState.ERROR),
+            uiState = ChildrenSearchUiState(state = ScreenState.ERROR),
             children = fakeChildren.collectAsLazyPagingItems()
         )
     }
@@ -88,7 +88,7 @@ fun ChildrenSearchScreenLoadingPreview(){
             onStateUpdated = {},
             onNavigateToChildProfile = {},
             onQueryChanged = {},
-            uiState = ChildrenSearchUiState(state = FetchingDataState.LOADING),
+            uiState = ChildrenSearchUiState(state = ScreenState.LOADING),
             children = fakeChildren.collectAsLazyPagingItems()
         )
     }

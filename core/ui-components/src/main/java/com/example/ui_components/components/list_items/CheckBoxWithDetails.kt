@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -32,19 +33,27 @@ fun CheckBoxWithDetails(
     onCheckedChange: (Boolean) -> Unit,
     @StringRes title: Int,
     @StringRes subTitle: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean=true,
 ) {
-    Row(
-        modifier = modifier
-            .clickable{
+    val clickableModifier= if (enabled){
+        modifier
+            .clickable {
                 onCheckedChange
-            },
+            }
+    }else{
+        modifier
+            .alpha(0.4f)
+    }
+    Row(
+        modifier = clickableModifier,
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.Top,
     ) {
         Checkbox(
             checked = checked,
             onCheckedChange= onCheckedChange,
+            enabled=enabled
         )
         Column(
             modifier = Modifier.padding(top = 10.dp),
@@ -78,7 +87,8 @@ fun CheckBoxWithDetailsPreview() {
             checked = checked,
             onCheckedChange = {
                 checked = it
-            }
+            },
+            enabled = false
         )
     }
 }

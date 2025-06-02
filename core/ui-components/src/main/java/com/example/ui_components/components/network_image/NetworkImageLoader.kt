@@ -15,8 +15,6 @@ fun NetworkImageLoader(
 ) {
     Spacer(
         modifier = modifier
-            .fillMaxWidth()
-            .height(MaterialTheme.sizing.profileImageHeight)
             .background(MaterialTheme.colorScheme.outlineVariant),
     )
 }

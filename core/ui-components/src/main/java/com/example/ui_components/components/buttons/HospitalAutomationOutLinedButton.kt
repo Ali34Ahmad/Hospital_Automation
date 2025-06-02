@@ -37,6 +37,7 @@ fun HospitalAutomationOutLinedButton(
     onClick: () -> Unit,
     text: String,
     @DrawableRes icon: Int? = null,
+    enabled: Boolean=true,
     modifier: Modifier = Modifier
 ) {
     OutlinedButton(
@@ -49,6 +50,7 @@ fun HospitalAutomationOutLinedButton(
         ),
         shape = MaterialTheme.additionalShapes.small12,
         modifier = modifier,
+        enabled = enabled,
     ) {
         Row(
             modifier = Modifier,
@@ -61,11 +63,7 @@ fun HospitalAutomationOutLinedButton(
             }
             Text(
                 text,
-                modifier = Modifier.padding(vertical = MaterialTheme.spacing.small8),
                 style = MaterialTheme.typography.labelLarge,
-            )
-            Text(
-                text,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

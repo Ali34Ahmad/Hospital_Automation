@@ -9,6 +9,7 @@ import com.example.domain.use_cases.auth.LoginUseCase
 import com.example.domain.use_cases.auth.ResetPasswordUseCase
 import com.example.model.auth.login.LoginRequest
 import com.example.model.auth.reset_password.ResetPasswordRequest
+import com.example.model.enums.ScreenState
 import com.example.reset_password.validator.ResetPasswordValidationResult
 import com.example.reset_password.validator.ResetPasswordValidator
 import com.example.utility.network.Error
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
 class ResetPasswordViewModel(
     private val resetPasswordUseCase: ResetPasswordUseCase,
     private val loginUseCase: LoginUseCase,
-    private val validator: ResetPasswordValidator,
+    private val resetPasswordValidator: ResetPasswordValidator,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ResetPasswordUiState())
@@ -49,6 +50,10 @@ class ResetPasswordViewModel(
                 updatePasswordText(password)
             }
 
+            override fun onUpdatePasswordVisibility(isVisible: Boolean) {
+                updatePasswordVisibility(isVisible)
+            }
+
             override fun onShowErrorDialogStateChange(value: Boolean) {
                 updateShowErrorDialogState(value)
             }
@@ -67,29 +72,26 @@ class ResetPasswordViewModel(
         updateLoginButtonEnablement()
     }
 
-    private fun updateIsLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
+    private fun updatePasswordVisibility(isVisible: Boolean) {
+        _uiState.update {
+            it.copy(
+                showPassword = isVisible
+            )
+        }
     }
 
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
     }
 
-    private fun updateIsSuccessfulState(isSent: Boolean) {
-        _uiState.update { it.copy(isSuccessful = isSent) }
-    }
-
     private fun updateLoginButtonEnablement() {
         _uiState.update { currentState ->
-            val allFieldsFilled = currentState.email.isNotEmpty()
+            val allFieldsFilled = currentState.password.isNotEmpty()
 
             currentState.copy(isResetPasswordButtonEnabled = allFieldsFilled)
         }
     }
+
     private fun updateValidationErrors(result: ResetPasswordValidationResult) {
         _uiState.update {
             it.copy(
@@ -98,9 +100,17 @@ class ResetPasswordViewModel(
         }
     }
 
+    private fun updateScreenState(screenState: ScreenState){
+        _uiState.update {
+            it.copy(
+                screenState=screenState
+            )
+        }
+    }
+
     private fun resetPassword() {
         viewModelScope.launch {
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Submitting new password", "ResetPasswordViewModel")
             val result = resetPasswordUseCase(
                 resetPasswordRequest = ResetPasswordRequest(
@@ -112,18 +122,14 @@ class ResetPasswordViewModel(
                 is Result.Success -> {
                     Log.v("Successful Reset Password", "ResetPasswordViewModel")
                     login()
-                    updateIsLoadingState(false)
+                    updateScreenState(ScreenState.Success)
                     updateShowErrorDialogState(false)
-                    updateErrorState(null)
-                    updateIsSuccessfulState(true)
                 }
 
                 is Result.Error -> {
                     Log.v("Failed to Reset Password", "ResetPasswordViewModel")
-                    updateIsLoadingState(false)
+                    updateScreenState(ScreenState.ERROR)
                     updateShowErrorDialogState(true)
-                    updateErrorState(result.error)
-                    updateIsSuccessfulState(false)
                 }
             }
         }
@@ -136,8 +142,8 @@ class ResetPasswordViewModel(
         )
     )
 
-    private fun validateAndResetPassword(){
-        val validationResult = validator.validate(uiState.value)
+    private fun validateAndResetPassword() {
+        val validationResult = resetPasswordValidator.validate(uiState.value)
         updateValidationErrors(validationResult)
         if (!validationResult.hasErrors()) {
             resetPassword()

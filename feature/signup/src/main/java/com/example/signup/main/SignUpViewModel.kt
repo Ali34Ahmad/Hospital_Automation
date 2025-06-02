@@ -7,11 +7,11 @@ import com.example.domain.use_cases.auth.SendOtpToEmailUseCase
 import com.example.domain.use_cases.auth.SignupUseCase
 import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.auth.signup.SignUpCredentials
+import com.example.model.enums.ScreenState
 import com.example.model.enums.Gender
 import com.example.network.constants.Role
 import com.example.signup.validator.SignUpValidationResult
 import com.example.signup.validator.SignUpValidator
-import com.example.utility.network.Error
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -199,20 +199,16 @@ class SignUpViewModel(
         updateSignUpButtonEnablement()
     }
 
-    private fun updateIsLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
-    }
-
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
     }
 
-    private fun updateIsSuccessfulState(isSuccessful: Boolean) {
-        _uiState.update { it.copy(isSuccessful = isSuccessful) }
+    private fun updateScreenState(screenState: ScreenState){
+        _uiState.update {
+            it.copy(
+                screenState = screenState
+            )
+        }
     }
 
     private fun updateSignUpButtonEnablement() {
@@ -249,7 +245,7 @@ class SignUpViewModel(
 
     private fun signUp() {
         viewModelScope.launch {
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Submitting sign up info", "SignUpViewModel")
             signupUseCase(
                 registrationRequest = SignUpCredentials(
@@ -265,16 +261,12 @@ class SignUpViewModel(
             ).onSuccess { response ->
                 Log.v("Successful sign up", "SignUpViewModel")
                 sendOtpService()
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.Success)
                 updateShowErrorDialogState(false)
-                updateErrorState(null)
-                updateIsSuccessfulState(true)
             }.onError { error ->
                 Log.v("Failed sign up", "SignUpViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.ERROR)
                 updateShowErrorDialogState(true)
-                updateErrorState(error)
-                updateIsSuccessfulState(false)
             }
         }
     }

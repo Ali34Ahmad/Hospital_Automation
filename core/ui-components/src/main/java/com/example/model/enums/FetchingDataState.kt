@@ -1,8 +1,0 @@
-package com.example.model.enums
-
-enum class FetchingDataState {
-    IDLE,
-    LOADING,
-    ERROR,
-    Success,
-}

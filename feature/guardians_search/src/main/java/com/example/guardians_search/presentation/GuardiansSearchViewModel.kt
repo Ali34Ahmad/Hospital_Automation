@@ -69,7 +69,7 @@ class GuardiansSearchViewModel (
 
 
             is GuardiansSearchActions.UpdateFetchingDataState -> {
-                _uiState.value = _uiState.value.copy(fetchingDataState = action.newState)
+                _uiState.value = _uiState.value.copy(screenState = action.newState)
             }
             is GuardiansSearchActions.NavigateToGuardianDetails -> Unit
             GuardiansSearchActions.OnNavigateBack -> Unit

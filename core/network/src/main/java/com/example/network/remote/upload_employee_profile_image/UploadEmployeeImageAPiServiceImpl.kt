@@ -1,6 +1,7 @@
 package com.example.network.remote.upload_employee_profile_image
 
 import android.net.Uri
+import android.system.Os.close
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.network.constants.Role
@@ -16,9 +17,11 @@ import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
+import java.io.File
 
 
 class UploadEmployeeProfileImageApiImpl(
@@ -26,6 +29,7 @@ class UploadEmployeeProfileImageApiImpl(
     private val fileReader: FileReader,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : UploadEmployeeProfileImageApi {
+
     override fun uploadImage(uri: Uri): Flow<ProgressUpdateDto> = channelFlow {
         val info = fileReader.uriToFileInfo(uri)
 
@@ -51,7 +55,10 @@ class UploadEmployeeProfileImageApiImpl(
                         info.bytes,
                         Headers.build {
                             append(HttpHeaders.ContentType, info.mimeType)
-                            append(HttpHeaders.ContentDisposition, "filename=\"${info.name}.${info.mimeType.removePrefix("image/")}\"")
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "filename=\"${info.name}.${info.mimeType.removePrefix("image/")}\""
+                            )
                         }
                     )
                     Log.v("Uploading Image Client", info.name + "." + info.mimeType)

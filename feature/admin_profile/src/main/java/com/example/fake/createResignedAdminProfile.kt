@@ -1,5 +1,6 @@
 package com.example.fake
 
+import com.example.model.address.Address
 import com.example.model.admin_account.AdminProfile
 import com.example.model.admin_account.AdminProfileResponse
 import com.example.model.enums.Gender
@@ -17,11 +18,13 @@ fun createSampleAdminProfile(): AdminProfileResponse {
                 lastName = "Roe"
             ),
             phoneNumber = "+1-555-0199",
-            addressGovernorate = "California",
-            addressCity = "San Francisco",
-            addressRegion = "Mission District",
-            addressStreet = "123 Main St",
-            addressNote = "Resigned on good terms.",
+            address = Address(
+                governorate = "California",
+                city = "San Francisco",
+                region = "Mission District",
+                street = "123 Main St",
+                note = "Resigned on good terms."
+            ),
             gender = Gender.MALE,
             isSuspended = false,
             isResigned = true // Example of a resigned admin)

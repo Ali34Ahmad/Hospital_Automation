@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.common.android.application.compose)
     alias(libs.plugins.common.android.application)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -102,5 +103,7 @@ dependencies {
     implementation(libs.koin.androidx.navigation)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(project(":core:ui-components"))
 
 }

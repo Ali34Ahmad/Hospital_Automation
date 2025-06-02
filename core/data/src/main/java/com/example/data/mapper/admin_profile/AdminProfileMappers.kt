@@ -3,6 +3,7 @@ package com.example.data.mapper.admin_profile
 import com.example.data.mapper.enums.toGender
 import com.example.model.admin_account.AdminProfile
 import com.example.model.admin_account.AdminProfileResponse
+import com.example.model.address.Address
 import com.example.model.user.FullName
 import com.example.network.model.response.AdminProfileDto
 import com.example.network.model.response.AdminProfileResponseDto
@@ -24,11 +25,13 @@ fun AdminProfileDto.toAdminProfile(): AdminProfile {
             lastName = this.lastName,
         ),
         phoneNumber = this.phoneNumber,
-        addressGovernorate = this.addressGovernorate,
-        addressCity = this.addressCity,
-        addressRegion = this.addressRegion,
-        addressStreet = this.addressStreet,
-        addressNote = this.addressNote,
+        address = Address(
+            governorate = this.addressGovernorate,
+            city = this.addressCity,
+            region = this.addressRegion,
+            street = this.addressStreet,
+            note = this.addressNote
+        ),
         gender = this.gender?.toGender(), // Using the GenderDto to Gender mapper
         isSuspended = this.isSuspended,
         isResigned = this.isResigned

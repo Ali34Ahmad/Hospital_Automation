@@ -1,5 +1,6 @@
 package com.example.model.admin_account
 
+import com.example.model.address.Address
 import com.example.model.enums.Gender
 import com.example.model.user.FullName
 
@@ -12,11 +13,7 @@ data class AdminProfile(
     val email: String,
     val fullName: FullName,
     val phoneNumber: String,
-    val addressGovernorate: String?,
-    val addressCity: String?,
-    val addressRegion: String?,
-    val addressStreet: String?,
-    val addressNote: String?,
+    val address: Address,
     val gender: Gender?,
     val isSuspended: Boolean,
     val isResigned: Boolean

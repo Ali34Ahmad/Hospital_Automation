@@ -18,7 +18,7 @@ import com.example.employment_history.employmentHistoryModule
 import com.example.enter_email.enterEmailModule
 import com.example.guardians_search.di.guardiansSearchModule
 import com.example.home.homeModule
-import com.example.hospital_automation.app_logic.appModule
+import com.example.hospital_automation.main.appModule
 import com.example.login.loginModule
 import com.example.network.di.networkModule
 import com.example.reset_password.resetPasswordModule

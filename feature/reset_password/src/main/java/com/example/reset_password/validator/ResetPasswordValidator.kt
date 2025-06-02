@@ -10,10 +10,10 @@ class ResetPasswordValidator(
     private val validatePasswordUseCase: ValidatePasswordUseCase,
 ){
     fun validate(state: ResetPasswordUiState): ResetPasswordValidationResult {
-        val emailError = validatePassword(state.email)
+        val passwordError = validatePassword(state.password)
 
         return ResetPasswordValidationResult(
-            passwordError = emailError,
+            passwordError = passwordError,
         )
     }
     

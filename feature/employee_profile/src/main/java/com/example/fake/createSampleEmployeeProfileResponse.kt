@@ -1,12 +1,10 @@
 package com.example.fake
 
+import com.example.model.address.Address
 import com.example.model.employee.EmployeeProfile
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.enums.Gender
 import com.example.model.user.FullName
-import com.example.network.model.enums.GenderDto
-import com.example.network.model.response.EmployeeProfileDto
-import com.example.network.model.response.EmployeeProfileResponseDto
 
 fun createSampleEmployeeProfileResponse(): EmployeeProfileResponse {
     val sampleProfile = EmployeeProfile(
@@ -21,11 +19,13 @@ fun createSampleEmployeeProfileResponse(): EmployeeProfileResponse {
         verifiedResetPassword = true,
         verifiedAccount = true,
         phoneNumber = "0987654321",
-        addressGovernorate = "California",
-        addressCity = "Mountain View",
-        addressRegion = "Silicon Valley",
-        addressStreet = "1600 Amphitheatre Parkway",
-        addressNote = "Near the big colorful sign",
+        address = Address(
+            governorate = "California",
+            city = "Mountain View",
+            region = "Silicon Valley",
+            street = "1600 Amphitheatre Parkway",
+            note = "Near the big colorful sign"
+        ),
         imageUrl = "https://example.com/images/jane_doe.jpg",
         documentsUrl = "https://example.com/documents/jane_doe_license.pdf",
         gender = Gender.FEMALE,

@@ -1,7 +1,7 @@
 package com.example.guardian_profile.presentation
 
 import com.example.model.enums.BottomBarState
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianFullData
 
 sealed interface GuardianProfileActions {
@@ -9,7 +9,7 @@ sealed interface GuardianProfileActions {
     object NavigateBack: GuardianProfileActions
 
     data class UpdateGuardianData(val data: GuardianFullData): GuardianProfileActions
-    data class UpdateScreenState(val state: FetchingDataState): GuardianProfileActions
+    data class UpdateScreenState(val state: ScreenState): GuardianProfileActions
     data class UpdateBottomBarState(val state: BottomBarState): GuardianProfileActions
 
     data class OpenEmail(val string: String): GuardianProfileActions

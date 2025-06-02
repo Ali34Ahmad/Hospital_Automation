@@ -25,7 +25,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.model.Child
 import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.model.helper.IdType
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -70,7 +70,7 @@ fun ChildrenScreen(
     onNavigateUp: () -> Unit,
     employeeChildrenFlow: Flow<PagingData<ChildData>>,
     onNavigateToChildProfile: (id:Int) -> Unit,
-    updateFetchingDataState:(FetchingDataState)-> Unit,
+    updateFetchingDataState:(ScreenState)-> Unit,
     modifier: Modifier = Modifier
 ) {
     val employeeChildren = employeeChildrenFlow.collectAsLazyPagingItems()
@@ -78,13 +78,13 @@ fun ChildrenScreen(
     //react to the loading state of the paged data
     when(loadState.refresh){
         is LoadState.Error -> {
-            updateFetchingDataState(FetchingDataState.ERROR)
+            updateFetchingDataState(ScreenState.ERROR)
         }
         LoadState.Loading -> {
-            updateFetchingDataState(FetchingDataState.LOADING)
+            updateFetchingDataState(ScreenState.LOADING)
         }
         is LoadState.NotLoading ->{
-            updateFetchingDataState(FetchingDataState.Success)
+            updateFetchingDataState(ScreenState.Success)
         }
     }
     Scaffold(
@@ -102,21 +102,21 @@ fun ChildrenScreen(
                 .padding(innerPadding)
                 .padding(MaterialTheme.spacing.medium16)
         ) {
-            when(uiState.fetchingDataState){
-                FetchingDataState.IDLE ->{}
-                FetchingDataState.LOADING ->{
+            when(uiState.screenState){
+                ScreenState.IDLE ->{}
+                ScreenState.LOADING ->{
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                     ){
                         FetchingDataItem()
                     }
                 }
-                FetchingDataState.ERROR -> {
+                ScreenState.ERROR -> {
                     SomeThingWentWrong(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                FetchingDataState.Success -> {
+                ScreenState.Success -> {
                     if(uiState.userChildren.isEmpty()&&uiState.type==IdType.USER) {
                         Surface(
                             modifier = modifier.fillMaxSize()
@@ -259,21 +259,21 @@ private val children = listOf(
 )
 val successState = ChildrenUIState(
     userChildren = children,
-    fetchingDataState = FetchingDataState.Success,
+    screenState = ScreenState.Success,
     type = IdType.USER
 )
 val emptyState = ChildrenUIState(
     userChildren = emptyList(),
-    fetchingDataState = FetchingDataState.Success,
+    screenState = ScreenState.Success,
     type = IdType.USER
 )
 val errorState = ChildrenUIState(
     userChildren = children,
-    fetchingDataState = FetchingDataState.ERROR,
+    screenState = ScreenState.ERROR,
     type = IdType.USER
 )
 val doingProcessState = ChildrenUIState(
     userChildren = emptyList(),
-    fetchingDataState = FetchingDataState.LOADING,
+    screenState = ScreenState.LOADING,
     type = IdType.USER
 )

@@ -9,7 +9,7 @@ import com.example.domain.use_cases.users.AddGuardianToChildUseCase
 import com.example.domain.use_cases.users.GetGuardianByIdUseCase
 import com.example.guardian_profile.navigation.GuardianProfileRoute
 import com.example.model.enums.BottomBarState
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.constants.DurationConstants
@@ -112,7 +112,7 @@ class GuardianProfileViewModel(
     private fun loadInitialData(){
         onAction(
             GuardianProfileActions.UpdateScreenState(
-                state = FetchingDataState.LOADING
+                state = ScreenState.LOADING
             )
         )
         viewModelScope.launch {
@@ -121,12 +121,12 @@ class GuardianProfileViewModel(
                     onAction(GuardianProfileActions.UpdateGuardianData(data))
                     onAction(
                         GuardianProfileActions
-                            .UpdateScreenState(state = FetchingDataState.Success)
+                            .UpdateScreenState(state = ScreenState.Success)
                     )
                 }.onError {
                     onAction(
                         GuardianProfileActions
-                            .UpdateScreenState(state = FetchingDataState.ERROR)
+                            .UpdateScreenState(state = ScreenState.ERROR)
                     )
                 }
         }

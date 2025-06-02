@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.model.enums.BottomBarState
-import com.example.model.enums.FetchingDataState
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.R
 @Composable

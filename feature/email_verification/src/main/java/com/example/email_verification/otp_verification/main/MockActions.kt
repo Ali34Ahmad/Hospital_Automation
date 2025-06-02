@@ -13,10 +13,6 @@ fun mockEmailVerificationBusinessUiActions()=object : OtpVerificationBusinessUiA
 
     }
 
-    override fun onOtpSentInitiallyChange(value: Boolean) {
-
-    }
-
     override fun onOtpCodeChange(index: Int, value: Int?) {
 
     }

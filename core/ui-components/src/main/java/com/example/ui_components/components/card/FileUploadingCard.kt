@@ -10,7 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.FileUploadingState
+import com.example.constants.enums.FileLoadingState
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.hospital_automation.core.components.card.IllustrationCard
@@ -33,7 +33,8 @@ fun FileUploadingCard(
     onUploadFileButtonClick: () -> Unit,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
-    loadingState: FileUploadingState,
+    loadingState: FileLoadingState,
+    enableNextButton:Boolean,
     modifier: Modifier = Modifier,
 ) {
     IllustrationCard(
@@ -72,7 +73,8 @@ fun FileUploadingCard(
                     HospitalAutomationButton(
                         onClick = onNextButtonClick,
                         text = stringResource(R.string.next),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        enabled = enableNextButton,
                     )
                 }
             }
@@ -100,7 +102,8 @@ fun FileUploadingCardPreview() {
                 onFileUploadingPause = {},
                 onFileUploadingOpen = {},
                 onNextButtonClick = {},
-                loadingState = FileUploadingState.UPLOADING,
+                loadingState = FileLoadingState.UPLOADING,
+                enableNextButton=true,
             )
         }
     }
@@ -121,7 +124,8 @@ fun FileUploadingCardInit2Preview() {
                 onFileUploadingOpen = {},
                 onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
-                loadingState = FileUploadingState.UPLOADING,
+                loadingState = FileLoadingState.UPLOADING,
+                enableNextButton=false,
             )
         }
     }

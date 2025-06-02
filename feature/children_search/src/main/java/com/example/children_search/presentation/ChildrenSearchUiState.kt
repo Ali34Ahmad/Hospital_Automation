@@ -1,8 +1,8 @@
 package com.example.children_search.presentation
 
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 
 data class ChildrenSearchUiState(
-    val state: FetchingDataState = FetchingDataState.IDLE,
+    val state: ScreenState = ScreenState.IDLE,
     val query: String = ""
 )

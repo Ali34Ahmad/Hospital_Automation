@@ -9,7 +9,6 @@ class OtpVerificationUiActions(
 
 interface OtpVerificationBusinessUiActions {
     fun onEmailTextChange(value: String)
-    fun onOtpSentInitiallyChange(value: Boolean)
     fun onOtpCodeChange(index: Int, value: Int?)
     fun onShowErrorDialogStateChange(value: Boolean)
     fun onSubmitButtonClick()

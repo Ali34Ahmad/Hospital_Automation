@@ -22,8 +22,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.example.constants.icons.AppIcons
+import com.example.model.enums.ScreenState
 import com.example.utility.network.NetworkError
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -42,36 +46,22 @@ fun ResetPasswordScreen(
     uiActions: ResetPasswordUiActions,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(uiState.isSuccessful) {
-        if (uiState.isSuccessful) {
+    LaunchedEffect(uiState.screenState) {
+        if (uiState.screenState== ScreenState.Success) {
             uiActions.navigateToHomeScreen()
-        }
-    }
-
-    val errorMessage = when (uiState.error) {
-        is NetworkError -> {
-            stringResource(R.string.something_went_wrong)
-        }
-
-        else -> {
-            stringResource(R.string.something_went_wrong)
         }
     }
 
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.error_reseting_password),
-        description = errorMessage,
+        description = stringResource(R.string.something_went_wrong),
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
     )
 
-    LoadingDialog(
-        showDialog = uiState.isLoading,
-        text = stringResource(R.string.submitting)
-    )
-
+    val isLoading=uiState.screenState== ScreenState.LOADING
 
 //    val scrollState = rememberScrollState()
     Scaffold { contentPadding ->
@@ -137,10 +127,25 @@ fun ResetPasswordScreen(
                         supportingText = uiState.passwordError?.asString(),
                         isError = uiState.passwordError != null,
                         isRequired = true,
+                        trailingIcon = if(uiState.showPassword){
+                            AppIcons.Outlined.visible
+                        }else{
+                            AppIcons.Outlined.invisible
+                        },
+                        visualTransformation = if(uiState.showPassword){
+                            VisualTransformation.None
+                        }else{
+                            PasswordVisualTransformation()
+                        },
+                        onTrailingIconClick ={
+                            uiActions.onUpdatePasswordVisibility(!uiState.showPassword)
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done
-                        )
+                            imeAction = ImeAction.Done,
+                            keyboardType = KeyboardType.Password,
+                        ),
+                        enabled = !isLoading,
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
@@ -151,6 +156,7 @@ fun ResetPasswordScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                         enabled = uiState.isResetPasswordButtonEnabled,
+                        isLoading = isLoading,
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))

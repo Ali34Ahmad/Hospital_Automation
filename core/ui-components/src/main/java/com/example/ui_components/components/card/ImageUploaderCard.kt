@@ -1,7 +1,6 @@
 package com.example.ui_components.components.card
 
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,41 +17,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import coil3.size.Scale
-import coil3.toUri
-import com.example.constants.enums.FileUploadingState
+import com.example.constants.enums.FileLoadingState
 import com.example.constants.icons.AppIcons
 import com.example.model.File
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui.theme.additionalColorScheme
-import com.example.ui.theme.additionalShapes
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
-import com.example.ui_components.components.icon.IconWithBackground
 import com.example.ui_components.components.network_image.NetworkImage
 import com.example.ui_components.components.network_image.NetworkImageError
 import com.example.ui_components.components.network_image.NetworkImageLoader
@@ -60,22 +44,23 @@ import com.example.ui_components.components.network_image.NetworkImageLoader
 @Composable
 fun ImageUploaderCard(
     imageUri: Uri,
-    fileUploadingState: FileUploadingState,
+    fileLoadingState: FileLoadingState,
     file: File,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
+    enableNextButton: Boolean,
+    modifier: Modifier = Modifier,
 ) {
-    val icon = when (fileUploadingState) {
-        FileUploadingState.UPLOADING -> {
+    val icon = when (fileLoadingState) {
+        FileLoadingState.UPLOADING -> {
             AppIcons.Outlined.pause
         }
 
-        FileUploadingState.PAUSED -> {
+        FileLoadingState.PAUSED -> {
             AppIcons.Outlined.download
         }
 
-        FileUploadingState.COMPLETE -> {
+        FileLoadingState.COMPLETE -> {
             AppIcons.Outlined.check
         }
 
@@ -101,7 +86,11 @@ fun ImageUploaderCard(
                     NetworkImageError()
                 },
                 loading = {
-                    NetworkImageLoader()
+                    NetworkImageLoader(
+                        modifier=Modifier
+                            .fillMaxWidth()
+                            .height(MaterialTheme.sizing.profileImageHeight)
+                    )
                 }
             )
             IconButton(
@@ -115,13 +104,13 @@ fun ImageUploaderCard(
                 Icon(
                     imageVector = ImageVector.vectorResource(icon),
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.small18),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
             CircularProgressIndicator(
                 progress = { file.uploadingProgress.toFloat()/100 },
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize36)
                     .padding(MaterialTheme.spacing.extraSmall4),
                 strokeWidth = 3.dp,
                 color = MaterialTheme.colorScheme.primary
@@ -145,7 +134,8 @@ fun ImageUploaderCard(
             HospitalAutomationButton(
                 onClick = onNextButtonClick,
                 text = stringResource(R.string.finish),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                enabled = enableNextButton,
             )
         }
     }
@@ -158,7 +148,7 @@ fun ImageUploaderCardPreview() {
         Surface {
             ImageUploaderCard(
                 imageUri = "".toUri(),
-                fileUploadingState = FileUploadingState.UPLOADING,
+                fileLoadingState = FileLoadingState.UPLOADING,
                 file = File(
                     uploadingProgress = 50,
                     fileSizeWithBytes = 0,
@@ -166,6 +156,7 @@ fun ImageUploaderCardPreview() {
                 ),
                 onReplaceFileButtonClick = {},
                 onNextButtonClick = {},
+                enableNextButton = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(MaterialTheme.spacing.medium16)

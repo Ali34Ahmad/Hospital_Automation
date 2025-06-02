@@ -5,13 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import com.example.add_child_screen.presentation.AddChildScreen
 import com.example.add_child_screen.presentation.AddChildUIState
 import com.example.model.enums.BottomBarState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.util.UiText
-import com.example.utility.validation.TextValidator
+import com.example.utility.validation.validator.TextValidator
 
 @DarkAndLightModePreview
 @Composable
@@ -55,10 +55,7 @@ fun AddChildScreenPreview() {
             onSendingData = {
                 val error = TextValidator.validate(uiState.firstName)
                 error?.let {
-                    val text = UiText.StringResource(resId = it.string)
-                    uiState = uiState.copy(firstName = "")
-                    uiState = uiState.copy(firstNameErrorMessage = text)
-                }
+                    }
             },
             onNavigateBack = {}
         )

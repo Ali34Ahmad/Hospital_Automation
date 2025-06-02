@@ -20,6 +20,7 @@ data class Sizing(
     val small18: Dp = 18.dp,
     val small24: Dp = 24.dp,
     val medium32: Dp = 32.dp,
+    val circularProgressIndicatorSize36: Dp = 36.dp,
     val medium40: Dp = 40.dp,
     val medium44: Dp = 44.dp,
     val circularProgressIndicatorSize: Dp = 48.dp,

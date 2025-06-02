@@ -12,7 +12,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.guardians_search.presentation.GuardiansSearchScreen
 import com.example.guardians_search.presentation.GuardiansSearchUiState
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianData
 import com.example.ui.theme.Hospital_AutomationTheme
 import kotlinx.coroutines.flow.flowOf
@@ -67,7 +67,7 @@ fun GuardiansSearchScreenEmptyPreview() {
     Hospital_AutomationTheme {
         val uiState by remember { mutableStateOf(GuardiansSearchUiState(
             searchQuery = "Ali",
-            fetchingDataState = FetchingDataState.Success
+            screenState = ScreenState.Success
         )) }
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
@@ -87,7 +87,7 @@ fun GuardiansSearchScreenLoadingPreview() {
     Hospital_AutomationTheme {
         val uiState by remember { mutableStateOf(GuardiansSearchUiState(
             searchQuery = "Ali",
-            fetchingDataState = FetchingDataState.LOADING
+            screenState = ScreenState.LOADING
         )) }
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
@@ -107,7 +107,7 @@ fun GuardiansSearchScreenSuccessPreview() {
     Hospital_AutomationTheme {
         var uiState by remember { mutableStateOf(GuardiansSearchUiState(
             searchQuery = "Ali",
-            fetchingDataState = FetchingDataState.Success
+            screenState = ScreenState.Success
         )) }
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
@@ -128,7 +128,7 @@ fun GuardiansSearchScreenErrorPreview() {
     Hospital_AutomationTheme {
         val uiState by remember { mutableStateOf(GuardiansSearchUiState(
             searchQuery = "Ali",
-            fetchingDataState = FetchingDataState.ERROR
+            screenState = ScreenState.ERROR
         )) }
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),

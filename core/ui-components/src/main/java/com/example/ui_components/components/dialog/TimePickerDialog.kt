@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,8 +34,8 @@ import java.time.LocalTime
 fun TimePickerDialog(
     onConfirm: (LocalTime) -> Unit,
     onDismiss: () -> Unit,
+    timePickerState: TimePickerState = rememberTimePickerState()
 ) {
-    val timePickerState = rememberTimePickerState()
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -87,6 +88,7 @@ fun TimePickerDialog(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @DarkAndLightModePreview
 @Composable
 fun TimePickerDialogPreview() {
@@ -95,6 +97,7 @@ fun TimePickerDialogPreview() {
             TimePickerDialog(
                 onConfirm = {},
                 onDismiss = {},
+
             )
         }
     }

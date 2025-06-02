@@ -19,13 +19,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import com.example.utility.network.NetworkError
+import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.list_items.CheckBoxWithDetails
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
@@ -37,34 +36,22 @@ fun AddResidentialAddressScreen(
     uiActions: AddResidentialAddressUiActions,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(uiState.isSuccessful) {
-        if (uiState.isSuccessful) {
+    LaunchedEffect(uiState.screenState) {
+        if (uiState.screenState== ScreenState.Success) {
             uiActions.navigateToUploadProfileImageScreen()
         }
     }
 
-    val errorMessage = when (uiState.error) {
-        is NetworkError -> {
-            stringResource(R.string.something_went_wrong)
-        }
-
-        else -> {
-            stringResource(R.string.something_went_wrong)
-        }
-    }
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.error),
-        description = errorMessage,
+        description = stringResource(R.string.something_went_wrong),
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
     )
 
-    LoadingDialog(
-        showDialog = uiState.isLoading,
-        text = stringResource(R.string.submitting)
-    )
+    val isLoading = uiState.screenState == ScreenState.LOADING
 
     val scrollState = rememberScrollState()
     Scaffold(
@@ -97,9 +84,10 @@ fun AddResidentialAddressScreen(
                         },
                         label = R.string.governorate,
                         supportingText = uiState.governorateError?.asString(),
-                        isError = uiState.governorateError!=null,
+                        isError = uiState.governorateError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
 
                     HospitalAutomationTextFiled(
@@ -109,9 +97,10 @@ fun AddResidentialAddressScreen(
                         },
                         label = R.string.city,
                         supportingText = uiState.cityError?.asString(),
-                        isError = uiState.cityError!=null,
+                        isError = uiState.cityError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
 
                     HospitalAutomationTextFiled(
@@ -121,9 +110,10 @@ fun AddResidentialAddressScreen(
                         },
                         label = R.string.region,
                         supportingText = uiState.regionError?.asString(),
-                        isError = uiState.regionError!=null,
+                        isError = uiState.regionError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     HospitalAutomationTextFiled(
                         value = uiState.street,
@@ -132,9 +122,10 @@ fun AddResidentialAddressScreen(
                         },
                         label = R.string.street,
                         supportingText = uiState.streetError?.asString(),
-                        isError = uiState.streetError!=null,
+                        isError = uiState.streetError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     HospitalAutomationTextFiled(
                         value = uiState.note,
@@ -143,11 +134,12 @@ fun AddResidentialAddressScreen(
                         },
                         label = R.string.note,
                         supportingText = uiState.noteError?.asString(),
-                        isError = uiState.noteError!=null,
+                        isError = uiState.noteError != null,
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Done
-                        )
+                        ),
+                        enabled = !isLoading,
                     )
 
                 }
@@ -170,6 +162,7 @@ fun AddResidentialAddressScreen(
                         title = R.string.I_agree,
                         subTitle = R.string.address_privacy_policy,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
 
@@ -178,6 +171,7 @@ fun AddResidentialAddressScreen(
                         text = stringResource(R.string.submit),
                         modifier = Modifier.fillMaxWidth(),
                         enabled = uiState.isSubmitButtonEnabled,
+                        isLoading = isLoading,
                     )
                 }
 

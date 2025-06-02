@@ -23,10 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.BASE_URL
 import com.example.constants.icons.AppIcons
-import com.example.ext.toCapitalizedString
 import com.example.model.enums.Gender
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
@@ -66,7 +67,11 @@ fun AdminProfileCard(
                 model = "$BASE_URL/$adminImageUrl",
                 contentScale = ContentScale.FillWidth,
                 loading = {
-                    NetworkImageLoader()
+                    NetworkImageLoader(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(MaterialTheme.sizing.profileImageHeight)
+                    )
                 },
                 errorCompose = {
                     NetworkImageError()

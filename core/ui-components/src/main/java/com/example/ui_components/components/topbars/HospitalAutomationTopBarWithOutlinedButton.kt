@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,6 +24,7 @@ fun HospitalAutomationTopBarWithOutlinedButton(
     title: String,
     buttonText: String,
     onButtonClick:()-> Unit,
+    isButtonEnable: Boolean=true,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -39,6 +39,7 @@ fun HospitalAutomationTopBarWithOutlinedButton(
                     text = buttonText,
                     onClick = onButtonClick,
                     modifier = Modifier.padding(end = MaterialTheme.spacing.medium16),
+                    enabled = isButtonEnable,
                 )
             },
         )

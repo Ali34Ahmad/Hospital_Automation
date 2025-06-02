@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -40,9 +41,10 @@ import com.example.ui.theme.spacing
 fun OptionButton(
     @DrawableRes icon: Int,
     @StringRes text: Int,
-    isSelected : Boolean,
+    isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     val transition = updateTransition(targetState = isSelected, label = "isSelectedTransition")
 
@@ -51,7 +53,7 @@ fun OptionButton(
         transitionSpec = {
             tween(durationMillis = 400)
         }
-        ) { isSelected ->
+    ) { isSelected ->
         if (isSelected) MaterialTheme.colorScheme.primaryContainer
         else MaterialTheme.colorScheme.background
     }
@@ -61,7 +63,7 @@ fun OptionButton(
         transitionSpec = {
             tween(durationMillis = 400)
         }
-    ){ isSelected ->
+    ) { isSelected ->
         if (isSelected) MaterialTheme.colorScheme.primary
         else Color.Transparent
     }
@@ -76,21 +78,31 @@ fun OptionButton(
         else 0.dp
     }
 
+    val baseModifier = modifier
+        .border(width = borderWidth, borderColor, shape = MaterialTheme.shapes.small)
+        .clip(MaterialTheme.shapes.small)
+
+    val optionModifier = if (enabled) {
+        baseModifier
+            .clickable { onClick() }
+    } else {
+        baseModifier
+            .alpha(0.4f)
+    }
+
     Surface(
-        modifier = modifier
-            .height(46.dp)
-            .fillMaxWidth(1f)
-            .border(width = borderWidth, borderColor, shape = MaterialTheme.shapes.small)
-            .clip(MaterialTheme.shapes.small)
-            .clickable { onClick() },
+        modifier =optionModifier,
         color = color,
     ) {
         Row(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(
+                horizontal = MaterialTheme.spacing.small8,
+                vertical = MaterialTheme.spacing.small12
+            ),
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall4),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(painter = painterResource(icon),null)
+            Icon(painter = painterResource(icon), null)
             Text(
                 text = stringResource(text),
                 style = MaterialTheme.typography.bodyMedium

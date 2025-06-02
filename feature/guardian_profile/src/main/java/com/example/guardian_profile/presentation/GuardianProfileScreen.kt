@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constants.enums.Gender
 import com.example.guardian_profile.navigation.UserProfileMode
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.card.custom.CustomGuardianProfileCard
@@ -70,7 +70,7 @@ fun GuardianProfileScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            AnimatedVisibility(uiState.screenState!= FetchingDataState.Success){
+            AnimatedVisibility(uiState.screenState!= ScreenState.Success){
                 GuardianProfileTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     onNavigateUp = onNavigateBack,
@@ -119,20 +119,20 @@ fun GuardianProfileScreen(
                 targetState = uiState.screenState
             ) {state->
                 when(state){
-                    FetchingDataState.IDLE ->{
+                    ScreenState.IDLE ->{
 
                     }
-                    FetchingDataState.LOADING ->{
+                    ScreenState.LOADING ->{
                         FetchingDataItem(
                             modifier = Modifier.fillMaxSize()
                         )
                     }
-                    FetchingDataState.ERROR ->{
+                    ScreenState.ERROR ->{
                         SomeThingWentWrong(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    FetchingDataState.Success -> {
+                    ScreenState.Success -> {
                         uiState.guardianData?.let { data->
                             data.apply {
                                 CustomGuardianProfileCard(

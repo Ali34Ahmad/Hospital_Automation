@@ -15,7 +15,7 @@ import com.example.domain.use_cases.children.GetChildrenAddedByEmployeeUseCase
 import com.example.domain.use_cases.children.GetChildrenByGuardianIdUseCase
 import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.model.helper.IdType
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -76,7 +76,7 @@ class ChildrenViewModel(
             }
             is ChildrenUIAction.UpdateFetchingDataState -> {
                 _uiState.value = _uiState.value.copy(
-                    fetchingDataState = action.newState
+                    screenState = action.newState
                 )
             }
 
@@ -86,14 +86,14 @@ class ChildrenViewModel(
     }
 
     private fun loadUserData() = viewModelScope.launch{
-        onAction(ChildrenUIAction.UpdateFetchingDataState(newState = FetchingDataState.LOADING))
+        onAction(ChildrenUIAction.UpdateFetchingDataState(newState = ScreenState.LOADING))
         val response = getChildrenByGuardianIdUseCase(id)
         response.onSuccess{ data:List<ChildFullData> ->
             _uiState.value = uiState.value.copy(userChildren = data)
-            onAction(ChildrenUIAction.UpdateFetchingDataState(newState = FetchingDataState.Success))
+            onAction(ChildrenUIAction.UpdateFetchingDataState(newState = ScreenState.Success))
 
         }.onError{ error ->
-            onAction(ChildrenUIAction.UpdateFetchingDataState(newState = FetchingDataState.ERROR))
+            onAction(ChildrenUIAction.UpdateFetchingDataState(newState = ScreenState.ERROR))
         }
     }
 

@@ -21,6 +21,7 @@ fun VerifiedAccountCard(
     title:String,
     description:String,
     onButtonClick:()->Unit,
+    isButtonLoading:Boolean,
     modifier: Modifier = Modifier,
 ) {
     IllustrationCard(
@@ -38,6 +39,8 @@ fun VerifiedAccountCard(
                 onClick = onButtonClick,
                 text = stringResource(R.string.next),
                 modifier = Modifier.fillMaxWidth(),
+                enabled = !isButtonLoading,
+                isLoading = isButtonLoading,
             )
         }
     )
@@ -53,6 +56,7 @@ fun VerifiedAccountCardPreview() {
                 onButtonClick={},
                 description = stringResource(R.string.email_verified_description),
                 modifier = Modifier.fillMaxWidth(),
+                isButtonLoading = true
             )
         }
     }

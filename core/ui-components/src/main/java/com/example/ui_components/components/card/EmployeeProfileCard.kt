@@ -27,6 +27,7 @@ import com.example.constants.icons.AppIcons
 import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
@@ -50,6 +51,7 @@ fun EmployeeProfileCard(
     isAccepted: Boolean,
     isResigned: Boolean,
     isSuspended: Boolean,
+    showNavigateUp: Boolean,
     modifier: Modifier = Modifier,
 ) {
 
@@ -66,25 +68,31 @@ fun EmployeeProfileCard(
                 model = "$BASE_URL/$profileImageUrl",
                 contentScale = ContentScale.FillWidth,
                 loading = {
-                    NetworkImageLoader()
+                    NetworkImageLoader(
+                        modifier=Modifier
+                            .fillMaxWidth()
+                            .height(MaterialTheme.sizing.profileImageHeight)
+                    )
                 },
                 errorCompose = {
                     NetworkImageError()
                 },
             )
-            IconButton(
-                onClick = onNavigateUpButtonClick,
-                modifier = Modifier
-                    .padding(MaterialTheme.spacing.extraSmall4)
-                    .clip(MaterialTheme.shapes.small),
-                colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onBackground
-                ),
-            ) {
-                Icon(
-                    painter = painterResource(AppIcons.Outlined.arrowBack),
-                    contentDescription = stringResource(R.string.go_back)
-                )
+            if(showNavigateUp){
+                IconButton(
+                    onClick = onNavigateUpButtonClick,
+                    modifier = Modifier
+                        .padding(MaterialTheme.spacing.extraSmall4)
+                        .clip(MaterialTheme.shapes.small),
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onBackground
+                    ),
+                ) {
+                    Icon(
+                        painter = painterResource(AppIcons.Outlined.arrowBack),
+                        contentDescription = stringResource(R.string.go_back)
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
@@ -179,6 +187,7 @@ fun EmployeeProfileCardAcceptedPreview() {
                 isAccepted = true,
                 isResigned = false,
                 isSuspended = false,
+                showNavigateUp = false,
             )
         }
     }
@@ -205,6 +214,7 @@ fun EmployeeProfileCardNotAcceptedPreview() {
                 isAccepted = false,
                 isResigned = false,
                 isSuspended = false,
+                showNavigateUp = true,
             )
         }
     }
@@ -231,6 +241,7 @@ fun EmployeeProfileCardResignedPreview() {
                 isAccepted = true,
                 isResigned = true,
                 isSuspended = false,
+                showNavigateUp = false,
             )
         }
     }
@@ -257,6 +268,7 @@ fun EmployeeProfileCardSuspendedPreview() {
                 isAccepted = true,
                 isResigned = false,
                 isSuspended = true,
+                showNavigateUp = false,
             )
         }
     }

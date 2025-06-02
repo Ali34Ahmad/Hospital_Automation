@@ -38,6 +38,7 @@ fun OtpInputRow(
     validText: String? = null,
     invalidText: String? = null,
     modifier: Modifier = Modifier,
+    enabled: Boolean=true,
 ) {
     val size = otp.size
     Column(
@@ -59,6 +60,7 @@ fun OtpInputRow(
                     onNumberChange = {
                         onOtpChange(i, it)
                     },
+                    enabled = enabled,
                     onNumberEntered = {
                         onValidate(otp)
                         scoop.launch {
@@ -74,7 +76,6 @@ fun OtpInputRow(
                             focusRequesters[i - 1].requestFocus()
                         }
                     },
-                    enabled = true,
                     isError = isValid!=true
                 )
             }

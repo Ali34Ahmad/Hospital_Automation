@@ -13,6 +13,10 @@ fun mockResetPasswordBusinessUiActions()=object : ResetPasswordBusinessUiActions
 
     }
 
+    override fun onUpdatePasswordVisibility(isVisible: Boolean) {
+
+    }
+
     override fun onShowErrorDialogStateChange(value: Boolean) {
 
     }

@@ -3,6 +3,8 @@ package com.example.ui_components.components.network_image
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +21,7 @@ import com.example.ui_components.R
 
 @Composable
 fun NetworkImage(
-    model: Any,
+    model: Any?,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
     errorCompose: @Composable (SubcomposeAsyncImageScope.(State.Error) -> Unit)? = null,
@@ -31,11 +33,13 @@ fun NetworkImage(
 
 
     if (!isInPreview) {
-        val imageLoader = ImageLoader.Builder(context)
-            .components {
-                add(OkHttpNetworkFetcherFactory())
-            }
-            .build()
+        val imageLoader = remember(model) {
+            ImageLoader.Builder(context)
+                .components {
+                    add(OkHttpNetworkFetcherFactory())
+                }
+                .build()
+        }
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(context)
                 .data(model)

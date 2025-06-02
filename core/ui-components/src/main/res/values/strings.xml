@@ -203,7 +203,6 @@
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_subtitle">Fetching data subtitle</string>
     <string name="search_for_children">Search for children</string>
-    <string name="search_for_children">Search for chilren</string>
     <string name="suspensiong_date">Suspnsion date</string>
     <string name="suspended_by">Suspended by</string>
     <string name="required_field">This field is required</string>
@@ -214,4 +213,7 @@
     <string name="does_not_match_password">Confirmation text does not match the password</string>
     <string name="otp_invalid_length">Invalid length</string>
     <string name="otp_must_be_digits">Otp code must only contains digits</string>
+    <string name="failed_to_verify_your_email">Failed to verify your email. Please try again later.</string>
+    <string name="failed_to_resend_otp_code">Failed to resend otp code. Please try again later.</string>
+    <string name="failed_to_login_try_again">Failed to login. Please try again later.</string>
 </resources>

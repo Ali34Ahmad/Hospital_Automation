@@ -10,6 +10,7 @@ class LoginUiActions(
 interface LoginBusinessUiActions {
     fun onEmailChange(email: String)
     fun onPasswordChange(password: String)
+    fun onUpdatePasswordVisibility(isVisible: Boolean)
     fun onShowErrorDialogStateChange(value: Boolean)
     fun onLoginButtonClick()
 }

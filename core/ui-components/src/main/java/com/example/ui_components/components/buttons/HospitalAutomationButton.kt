@@ -74,6 +74,7 @@ fun HospitalAutomationButton(
             if(isLoading){
                 CircularProgressIndicator(
                     strokeWidth = MaterialTheme.sizing.small2,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(MaterialTheme.sizing.small24)
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium16))
@@ -85,11 +86,13 @@ fun HospitalAutomationButton(
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small8))
             }
-            Text(
-                text,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            if (!isLoading) {
+                Text(
+                    text,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
     }
 }

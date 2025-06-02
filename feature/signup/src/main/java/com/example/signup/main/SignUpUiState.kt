@@ -1,8 +1,8 @@
 package com.example.signup.main
 
+import com.example.model.enums.ScreenState
 import com.example.model.enums.Gender
 import com.example.util.UiText
-import com.example.utility.network.Error
 
 data class SignUpUiState(
     val firstName: String = "",
@@ -26,8 +26,6 @@ data class SignUpUiState(
     val isTermsAndConditionsChecked: Boolean = false,
     val isPersonalDataAccessibilityChecked: Boolean = false,
     val isSignUpButtonEnabled: Boolean = false,
-    val isLoading: Boolean = false,
-    val error: Error? = null,
     val showErrorDialog: Boolean = false,
-    val isSuccessful: Boolean = false,
+    val screenState:ScreenState=ScreenState.IDLE,
 )

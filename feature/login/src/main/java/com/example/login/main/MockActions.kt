@@ -22,6 +22,10 @@ fun mockLoginBusinessUiActions()=object : LoginBusinessUiActions {
 
     }
 
+    override fun onUpdatePasswordVisibility(isVisible: Boolean) {
+
+    }
+
     override fun onShowErrorDialogStateChange(value: Boolean) {
 
     }

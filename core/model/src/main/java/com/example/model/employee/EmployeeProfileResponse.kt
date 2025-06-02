@@ -1,5 +1,6 @@
 package com.example.model.employee
 
+import com.example.model.address.Address
 import com.example.model.enums.Gender
 import com.example.model.user.FullName
 
@@ -15,11 +16,7 @@ data class EmployeeProfile(
     val verifiedResetPassword: Boolean,
     val verifiedAccount: Boolean,
     val phoneNumber: String,
-    val addressGovernorate: String?,
-    val addressCity: String?,
-    val addressRegion: String?,
-    val addressStreet: String?,
-    val addressNote: String?,
+    val address: Address,
     val imageUrl: String?,
     val documentsUrl: String?,
     val gender: Gender?,

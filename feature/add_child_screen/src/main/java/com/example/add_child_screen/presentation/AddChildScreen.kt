@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constants.enums.Gender
 import com.example.ui.theme.spacing
-import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.complex_components.slots.ChildInfoSlot
 import com.example.ui_components.components.complex_components.slots.ParentInfoSlots
@@ -30,12 +29,13 @@ import com.example.util.UiText
 import com.example.utility.validation.validator.TextValidator
 import kotlinx.coroutines.CoroutineScope
 import com.example.ui_components.R
+
 @Composable
 fun AddChildScreen(
     viewModel: AddChildViewModel,
-    onAction: (AddChildUIActions)-> Unit,
+    onAction: (AddChildUIActions) -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AddChildScreen(
         uiState = uiState,
@@ -78,20 +78,21 @@ fun AddChildScreen(
         }
     )
 }
+
 @Composable
 fun AddChildScreen(
     uiState: AddChildUIState,
-    onFirstNameChanged: (String)-> Unit,
-    onLastNameChanged: (String)-> Unit,
-    onDateOfBirthChanged: (String)-> Unit,
-    onGenderChange: (Gender)-> Unit,
-    onFatherFirstNameChange: (String)-> Unit,
-    onFatherLastNameChanged: (String)-> Unit,
-    onMotherFirstNameChange: (String)-> Unit,
-    onMotherLastNameChanged: (String)-> Unit,
+    onFirstNameChanged: (String) -> Unit,
+    onLastNameChanged: (String) -> Unit,
+    onDateOfBirthChanged: (String) -> Unit,
+    onGenderChange: (Gender) -> Unit,
+    onFatherFirstNameChange: (String) -> Unit,
+    onFatherLastNameChanged: (String) -> Unit,
+    onMotherFirstNameChange: (String) -> Unit,
+    onMotherLastNameChanged: (String) -> Unit,
     onNavigateToNextScreen: (childId: Int) -> Unit,
     onDatePickerVisibilityChanged: (Boolean) -> Unit,
-    onSendingData: ()-> Unit,
+    onSendingData: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -103,7 +104,8 @@ fun AddChildScreen(
                 text = stringResource(R.string.send_data),
                 onButtonClick = onSendingData,
                 state = uiState.sendingDataButtonState,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(MaterialTheme.spacing.medium16),
                 onSuccess = {
                     uiState.childId?.let {

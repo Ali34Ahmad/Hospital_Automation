@@ -12,10 +12,6 @@ class SendOtpToEmailUseCase(
     suspend operator fun invoke(
         sendOtpCodeRequest: SendOtpRequest
     ): Result<SendOtpResponse, rootError> {
-        // e.g., validate email format
-        // if (!android.util.Patterns.EMAIL_ADDRESS.matcher(sendOtpCodeRequest.email).matches()) {
-        //     return Result.Error(rootError(message = "Invalid email format"))
-        // }
         return authRepository.sendOtpCodeToEmail(sendOtpCodeRequest)
     }
 }

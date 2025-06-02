@@ -1,6 +1,5 @@
 package com.example.data.repositories.employee_account_management
 
-import com.example.data.mapper.employee.toEmployeeProfileResponse
 import com.example.data.mapper.employee_management.toCheckEmployeePermissionResponse
 import com.example.data.mapper.employee_management.toDeactivateMyEmployeeAccountRequestDto
 import com.example.data.mapper.employee_management.toDeactivateMyEmployeeAccountResponse

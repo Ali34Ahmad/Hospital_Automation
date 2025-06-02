@@ -9,6 +9,7 @@ class ResetPasswordUiActions(
 
 interface ResetPasswordBusinessUiActions {
     fun onPasswordChange(password: String)
+    fun onUpdatePasswordVisibility(isVisible: Boolean)
     fun onShowErrorDialogStateChange(value: Boolean)
     fun onResetPasswordButtonClick()
 }

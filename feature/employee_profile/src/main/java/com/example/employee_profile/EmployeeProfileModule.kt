@@ -1,6 +1,6 @@
 package com.example.employee_profile
 
-import org.koin.core.module.dsl.viewModel
+import com.example.employee_profile.main.EmployeeProfileViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

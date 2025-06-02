@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.constants.icons.AppIcons
+import com.example.model.enums.ScreenState
 import com.example.model.enums.Gender
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -31,13 +32,11 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.OptionButton
-import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.list_items.CheckBoxWithDetails
 import com.example.ui_components.components.screen_section.SectionWithTitle
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithOutlinedButton
-import com.example.utility.network.NetworkError
 
 @Composable
 fun SignUpScreen(
@@ -45,34 +44,22 @@ fun SignUpScreen(
     uiActions: SignUpUiActions,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(uiState.isSuccessful) {
-        if (uiState.isSuccessful) {
+    LaunchedEffect(uiState.screenState) {
+        if (uiState.screenState== ScreenState.Success) {
             uiActions.navigateToEmailVerificationScreen()
         }
     }
 
-    val errorMessage = when (uiState.error) {
-        is NetworkError -> {
-            stringResource(R.string.something_went_wrong)
-        }
-
-        else -> {
-            stringResource(R.string.something_went_wrong)
-        }
-    }
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.signup_error),
-        description = errorMessage,
+        description = stringResource(R.string.something_went_wrong),
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
     )
 
-    LoadingDialog(
-        showDialog = uiState.isLoading,
-        text = stringResource(R.string.submitting)
-    )
+    val isLoading=uiState.screenState== ScreenState.LOADING
 
     val scrollState = rememberScrollState()
     Scaffold(
@@ -80,7 +67,8 @@ fun SignUpScreen(
             HospitalAutomationTopBarWithOutlinedButton(
                 title = stringResource(R.string.signup),
                 buttonText = stringResource(R.string.login),
-                onButtonClick = { uiActions.navigateToLoginScreen() }
+                onButtonClick = { uiActions.navigateToLoginScreen() },
+                isButtonEnable = !isLoading,
             )
         }
     ) { contentPadding ->
@@ -109,6 +97,7 @@ fun SignUpScreen(
                         isError = uiState.firstNameError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
 
                     HospitalAutomationTextFiled(
@@ -121,6 +110,7 @@ fun SignUpScreen(
                         isError = uiState.middleNameError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
 
                     HospitalAutomationTextFiled(
@@ -133,6 +123,7 @@ fun SignUpScreen(
                         isError = uiState.lastNameError != null,
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     HospitalAutomationTextFiled(
                         value = uiState.email,
@@ -148,6 +139,7 @@ fun SignUpScreen(
                         ),
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     HospitalAutomationTextFiled(
                         value = uiState.phoneNumber,
@@ -163,6 +155,7 @@ fun SignUpScreen(
                         ),
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
 
                     HospitalAutomationTextFiled(
@@ -184,7 +177,7 @@ fun SignUpScreen(
                         } else {
                             PasswordVisualTransformation()
                         },
-                        icon = if (uiState.showPasswordText) {
+                        trailingIcon = if (uiState.showPasswordText) {
                             AppIcons.Outlined.visible
                         } else {
                             AppIcons.Outlined.invisible
@@ -192,6 +185,7 @@ fun SignUpScreen(
                         onTrailingIconClick = {
                             uiActions.onUpdatePasswordVisibilityChange(!uiState.showPasswordText)
                         },
+                        enabled = !isLoading,
                     )
 
                     HospitalAutomationTextFiled(
@@ -213,7 +207,7 @@ fun SignUpScreen(
                         } else {
                             PasswordVisualTransformation()
                         },
-                        icon = if (uiState.showConfirmPasswordText) {
+                        trailingIcon = if (uiState.showConfirmPasswordText) {
                             AppIcons.Outlined.visible
                         } else {
                             AppIcons.Outlined.invisible
@@ -221,6 +215,7 @@ fun SignUpScreen(
                         onTrailingIconClick = {
                             uiActions.onUpdateConfirmPasswordVisibilityChange(!uiState.showConfirmPasswordText)
                         },
+                        enabled = !isLoading,
                     )
                 }
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.small8))
@@ -246,6 +241,7 @@ fun SignUpScreen(
                                     uiActions.onGenderChange(Gender.MALE)
                                 },
                                 modifier = Modifier.weight(1f),
+                                enabled = !isLoading,
                             )
                             OptionButton(
                                 icon = AppIcons.Outlined.female,
@@ -255,6 +251,7 @@ fun SignUpScreen(
                                     uiActions.onGenderChange(Gender.FEMALE)
                                 },
                                 modifier = Modifier.weight(1f),
+                                enabled = !isLoading,
                             )
                         }
                     }
@@ -266,6 +263,7 @@ fun SignUpScreen(
                         title = R.string.I_agree,
                         subTitle = R.string.terms_and_conditions,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
 
@@ -275,6 +273,7 @@ fun SignUpScreen(
                         title = R.string.I_agree,
                         subTitle = R.string.personal_data_access,
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !isLoading,
                     )
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
 
@@ -283,6 +282,7 @@ fun SignUpScreen(
                         text = stringResource(R.string.signup),
                         modifier = Modifier.fillMaxWidth(),
                         enabled = uiState.isSignUpButtonEnabled,
+                        isLoading = isLoading,
                     )
 
                 }

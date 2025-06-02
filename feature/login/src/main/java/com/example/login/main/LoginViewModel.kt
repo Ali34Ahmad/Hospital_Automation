@@ -7,15 +7,13 @@ import com.example.domain.use_cases.auth.LoginUseCase
 import com.example.login.validator.LoginValidationResult
 import com.example.login.validator.LoginValidator
 import com.example.model.auth.login.LoginRequest
-import com.example.utility.network.Error
-import com.example.utility.network.Result
+import com.example.model.enums.ScreenState
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
@@ -38,6 +36,10 @@ class LoginViewModel(
 
         override fun onPasswordChange(password: String) {
             updatePasswordText(password)
+        }
+
+        override fun onUpdatePasswordVisibility(isVisible: Boolean) {
+            updatePasswordVisibility(isVisible)
         }
 
         override fun onShowErrorDialogStateChange(value: Boolean) {
@@ -67,20 +69,16 @@ class LoginViewModel(
         updateLoginButtonEnablement()
     }
 
-    private fun updateIsLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
+    private fun updatePasswordVisibility(isVisible: Boolean) {
+        _uiState.update {
+            it.copy(
+                showPassword = isVisible
+            )
+        }
     }
 
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
-    }
-
-    private fun updateIsSuccessfulLoginState(isSuccessful: Boolean) {
-        _uiState.update { it.copy(isSuccessfulLogin = isSuccessful) }
     }
 
     private fun updateLoginButtonEnablement() {
@@ -101,9 +99,17 @@ class LoginViewModel(
         }
     }
 
+    private fun updateScreenState(screenState: ScreenState){
+        _uiState.update {
+            it.copy(
+                screenState=screenState
+            )
+        }
+    }
+
     private fun login() {
         viewModelScope.launch {
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Submitting log in info","LoginViewModel")
             loginUseCase(
                 loginRequest = LoginRequest(
@@ -112,16 +118,12 @@ class LoginViewModel(
                 )
             ).onSuccess{
                 Log.v("Successful log in","LoginViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.Success)
                 updateShowErrorDialogState(false)
-                updateErrorState(null)
-                updateIsSuccessfulLoginState(true)
             }.onError {error->
                 Log.v("Failed log in","LoginViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.ERROR)
                 updateShowErrorDialogState(true)
-                updateErrorState(error)
-                updateIsSuccessfulLoginState(false)
             }
         }
     }

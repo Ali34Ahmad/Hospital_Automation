@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianData
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
@@ -65,7 +65,7 @@ fun GuardiansSearchScreen(
     onQueryDeleted: ()-> Unit,
     onNavigateUp : () -> Unit,
     guardians: LazyPagingItems<GuardianData>,
-    onStateUpdated: (FetchingDataState)-> Unit,
+    onStateUpdated: (ScreenState)-> Unit,
     onNavigateToGuardianDetails: (guardianId:Int,childId: Int?) -> Unit,
     modifier: Modifier = Modifier
 ){
@@ -101,15 +101,15 @@ fun GuardiansSearchScreen(
         //observing the load state changes
         when (guardians.loadState.refresh) {
             is LoadState.Loading -> {
-                onStateUpdated(FetchingDataState.LOADING)
+                onStateUpdated(ScreenState.LOADING)
             }
 
             is LoadState.Error -> {
-                onStateUpdated(FetchingDataState.ERROR)
+                onStateUpdated(ScreenState.ERROR)
             }
 
             is LoadState.NotLoading -> {
-                onStateUpdated(FetchingDataState.Success)
+                onStateUpdated(ScreenState.Success)
             }
         }
 
@@ -117,9 +117,9 @@ fun GuardiansSearchScreen(
             modifier = Modifier
                 .padding(innerPadding)
         ) {
-            when(uiState.fetchingDataState){
-                FetchingDataState.IDLE -> Unit
-                FetchingDataState.LOADING -> {
+            when(uiState.screenState){
+                ScreenState.IDLE -> Unit
+                ScreenState.LOADING -> {
                         Surface (
                             modifier = Modifier.fillMaxSize()
                                 .padding(MaterialTheme.spacing.medium16)
@@ -128,7 +128,7 @@ fun GuardiansSearchScreen(
                         }
 
                 }
-                FetchingDataState.ERROR ->{
+                ScreenState.ERROR ->{
                     Surface(
                         modifier = Modifier.fillMaxWidth()
                             .padding(MaterialTheme.spacing.medium16)
@@ -136,7 +136,7 @@ fun GuardiansSearchScreen(
                         SomeThingWentWrong()
                     }
                 }
-                FetchingDataState.Success ->{
+                ScreenState.Success ->{
 
                     val numberOfGuardians = guardians.itemCount
                     //if no items display this composable.

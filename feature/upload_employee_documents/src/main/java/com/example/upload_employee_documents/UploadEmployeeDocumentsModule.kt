@@ -1,6 +1,6 @@
 package com.example.upload_employee_documents
 
-import org.koin.core.module.dsl.viewModel
+import com.example.upload_employee_documents.main.UploadEmployeeDocumentsViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

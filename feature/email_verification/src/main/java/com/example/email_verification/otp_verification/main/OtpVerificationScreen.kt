@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.constants.icons.AppIcons
 import com.example.ext.clickableTextRange
-import com.example.utility.network.NetworkError
+import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -34,7 +34,6 @@ import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.items.EmailTextWithImageItem
 import com.example.ui_components.components.text_field.OtpInputRow
 import com.example.ui_components.components.texts.ClickableText
-import com.example.util.UiText
 
 @Composable
 fun OtpVerificationScreen(
@@ -42,34 +41,21 @@ fun OtpVerificationScreen(
     uiActions: OtpVerificationUiActions,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(uiState.isSuccessful){
-        if (uiState.isSuccessful) {
+    LaunchedEffect(uiState.screenState) {
+        if (uiState.screenState== ScreenState.Success) {
             uiActions.navigateToEmailVerifiedSuccessfullyScreen()
         }
     }
-    val errorMessage = when (uiState.error) {
-        is NetworkError -> {
-            stringResource(R.string.something_went_wrong)
-        }
-
-        else -> {
-            stringResource(R.string.something_went_wrong)
-        }
-    }
-
     MessageDialog(
         showDialog = uiState.showErrorDialog,
-        title = uiState.errorDialogText,
-        description = errorMessage,
+        title = stringResource(R.string.error),
+        description = uiState.errorDialogText?.asString() ?: "",
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
     )
 
-    LoadingDialog(
-        showDialog = uiState.isLoading,
-        text = uiState.loadingDialogText
-    )
+    val isLoading = uiState.screenState == ScreenState.LOADING
 
 
     Scaffold { contentPadding ->
@@ -125,11 +111,12 @@ fun OtpVerificationScreen(
                     onOtpChange = { index, value ->
                         uiActions.onOtpCodeChange(index, value)
                     },
-                    isValid = uiState.otpCodeError==null,
+                    isValid = uiState.otpCodeError == null,
                     onValidate = {
                     },
                     invalidText = uiState.otpCodeError?.asString(),
                     modifier = Modifier.fillMaxWidth(),
+                    enabled = !isLoading,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
@@ -140,6 +127,7 @@ fun OtpVerificationScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     enabled = uiState.isVerifyButtonEnabled,
+                    isLoading = isLoading,
                 )
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge64))
@@ -158,7 +146,8 @@ fun OtpVerificationScreen(
                     clickableTextRange = clickableText.clickableTextRange(clickableText),
                     onClick = {
                         uiActions.onResendOtpVerificationCode()
-                    }
+                    },
+                    enabled=!isLoading,
                 )
             }
         }

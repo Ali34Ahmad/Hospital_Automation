@@ -26,7 +26,6 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
-import com.example.util.UiText
 
 @Composable
 fun HospitalAutomationTextFiled(
@@ -37,7 +36,7 @@ fun HospitalAutomationTextFiled(
     isRequired: Boolean = false,
     @StringRes label: Int? = null,
     @StringRes placeholder: Int? = null,
-    @DrawableRes icon: Int? = null,
+    @DrawableRes trailingIcon: Int? = null,
     onTrailingIconClick: () -> Unit = {},
     supportingText: String? = null,
     minLines: Int = 1,
@@ -72,9 +71,9 @@ fun HospitalAutomationTextFiled(
             }
         },
         trailingIcon = {
-            if (icon != null) {
+            if (trailingIcon != null) {
                 IconButton(onClick = onTrailingIconClick) {
-                    Icon(painter = painterResource(icon), null)
+                    Icon(painter = painterResource(trailingIcon), null)
                 }
             }
         },
@@ -126,11 +125,11 @@ fun HospitalAutomationTextFiledPreview() {
             },
             modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
-            icon = null,
+            trailingIcon = null,
             isRequired = false,
             supportingText = null,
             enabled = false,
-            onTrailingButtonClick = {}
+            onTrailingIconClick = {}
         )
     }
 }
@@ -150,10 +149,10 @@ fun HospitalAutomationTextFiled2Preview() {
             },
             modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
-            icon = HospitalAutomationIcons.calender,
+            trailingIcon = HospitalAutomationIcons.calender,
             isRequired = true,
             supportingText = stringResource(R.string.supporting_text),
-            onTrailingButtonClick = {}
+            onTrailingIconClick = {}
         )
     }
 }
@@ -172,13 +171,13 @@ fun HospitalAutomationTextFiledErrorPreview() {
             },
             modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
-            icon = HospitalAutomationIcons.calender,
+            trailingIcon = HospitalAutomationIcons.calender,
             isRequired = true,
             supportingText = stringResource(R.string.supporting_text),
             isError = true,
             readOnly = true,
             placeholder = R.string.first_name,
-            onTrailingButtonClick = {}
+            onTrailingIconClick = {}
         )
     }
 }

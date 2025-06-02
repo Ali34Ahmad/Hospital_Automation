@@ -10,8 +10,10 @@ import com.example.email_verification.EmailVerificationNavConstants
 import com.example.email_verification.otp_verification.validator.OtpVerificationValidator
 import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.auth.verify_otp.VerifyEmailOtpRequest
+import com.example.model.enums.ScreenState
+import com.example.ui_components.R
+import com.example.util.UiText
 import com.example.utility.network.Error
-import com.example.utility.network.Result
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,10 +56,6 @@ class OtpVerificationViewModel(
                 updateEmailText(value)
             }
 
-            override fun onOtpSentInitiallyChange(value: Boolean) {
-                updateOtpSentInitially(value)
-            }
-
             override fun onOtpCodeChange(index: Int, value: Int?) {
                 updateOtpCodeText(index, value)
             }
@@ -83,14 +81,6 @@ class OtpVerificationViewModel(
         }
     }
 
-    private fun updateOtpSentInitially(value: Boolean) {
-        _uiState.update {
-            it.copy(
-                otpCodeSentInitially = value
-            )
-        }
-    }
-
     private fun updateOtpCodeText(index: Int, value: Int?) {
         val newOtp = uiState.value.otpCode.toMutableList()
         newOtp[index] = value
@@ -102,28 +92,16 @@ class OtpVerificationViewModel(
         updateLoginButtonEnablement()
     }
 
-    private fun updateIsLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
     private fun updateLoadingDialogText(text: String) {
         _uiState.update { it.copy(loadingDialogText = text) }
     }
 
-    private fun updateErrorDialogText(text: String) {
+    private fun updateErrorDialogText(text: UiText) {
         _uiState.update { it.copy(errorDialogText = text) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
     }
 
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
-    }
-
-    private fun updateIsSuccessfulState(isSuccessful: Boolean) {
-        _uiState.update { it.copy(isSuccessful = isSuccessful) }
     }
 
     private fun updateLoginButtonEnablement() {
@@ -147,10 +125,17 @@ class OtpVerificationViewModel(
         }
     }
 
+    private fun updateScreenState(screenState: ScreenState){
+        _uiState.update {
+            it.copy(
+                screenState=screenState
+            )
+        }
+    }
     private fun verifyOtpCode() {
         viewModelScope.launch {
             updateLoadingDialogText("Verifying otp code")
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Submitting otp verification info", "EmailVerificationViewModel")
             verifyOtpUseCase(
                 verifyEmailOtpRequest = VerifyEmailOtpRequest(
@@ -159,17 +144,13 @@ class OtpVerificationViewModel(
                 )
             ).onSuccess{
                 Log.v("Successful otp verification", "EmailVerificationViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.Success)
                 updateShowErrorDialogState(false)
-                updateErrorState(null)
-                updateIsSuccessfulState(true)
             }.onError {error->
                 Log.v("Failed otp verification", "EmailVerificationViewModel")
-                updateIsLoadingState(false)
-                updateErrorDialogText("Failed to verify your email")
+                updateScreenState(ScreenState.ERROR)
+                updateErrorDialogText(UiText.StringResource(R.string.failed_to_verify_your_email))
                 updateShowErrorDialogState(true)
-                updateErrorState(error)
-                updateIsSuccessfulState(false)
             }
         }
     }
@@ -185,20 +166,18 @@ class OtpVerificationViewModel(
     private fun resendOtpCode() {
         viewModelScope.launch {
             updateLoadingDialogText("Resending otp code")
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Resending otp code", "EmailVerificationViewModel")
             sendOtpService()
                 .onSuccess {
                     Log.v("Otp sent Successfully", "EmailVerificationViewModel")
-                    updateIsLoadingState(false)
+                    updateScreenState(ScreenState.Success)
                     updateShowErrorDialogState(false)
-                    updateErrorState(null)
                 }.onError {error->
                     Log.v("Sending otp failed", "EmailVerificationViewModel")
-                    updateErrorDialogText("Failed to resend otp code")
-                    updateIsLoadingState(false)
+                    updateErrorDialogText(UiText.StringResource(R.string.failed_to_resend_otp_code))
+                    updateScreenState(ScreenState.ERROR)
                     updateShowErrorDialogState(true)
-                    updateErrorState(error)
                 }
         }
     }

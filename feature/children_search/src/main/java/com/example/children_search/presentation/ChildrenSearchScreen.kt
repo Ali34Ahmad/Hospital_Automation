@@ -20,7 +20,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.model.Child
 import com.example.model.child.ChildData
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.card.ChildCard
@@ -67,13 +67,13 @@ fun ChildrenSearchScreen(
     onNavigateToChildProfile: (childId: Int)-> Unit,
     onQueryChanged: (String)-> Unit,
     onQueryDeleted: ()-> Unit,
-    onStateUpdated: (FetchingDataState)-> Unit,
+    onStateUpdated: (ScreenState)-> Unit,
     modifier: Modifier = Modifier,
 ) {
     when(children.loadState.refresh){
-        is LoadState.Error -> onStateUpdated(FetchingDataState.ERROR)
-        LoadState.Loading -> onStateUpdated(FetchingDataState.LOADING)
-        is LoadState.NotLoading -> onStateUpdated(FetchingDataState.Success)
+        is LoadState.Error -> onStateUpdated(ScreenState.ERROR)
+        LoadState.Loading -> onStateUpdated(ScreenState.LOADING)
+        is LoadState.NotLoading -> onStateUpdated(ScreenState.Success)
     }
 
     Scaffold(
@@ -103,14 +103,14 @@ fun ChildrenSearchScreen(
                 .padding(MaterialTheme.sizing.small16)
         ) {
             when(uiState.state){
-                FetchingDataState.IDLE -> Unit
-                FetchingDataState.LOADING ->{
+                ScreenState.IDLE -> Unit
+                ScreenState.LOADING ->{
                     FetchingDataItem(Modifier.fillMaxSize())
                 }
-                FetchingDataState.ERROR ->{
+                ScreenState.ERROR ->{
                     SomeThingWentWrong(Modifier.fillMaxWidth())
                 }
-                FetchingDataState.Success ->{
+                ScreenState.Success ->{
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize(),

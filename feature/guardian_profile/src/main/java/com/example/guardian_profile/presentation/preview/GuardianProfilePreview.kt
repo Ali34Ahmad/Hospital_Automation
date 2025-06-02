@@ -9,7 +9,7 @@ import com.example.constants.enums.Gender
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.presentation.GuardianProfileScreen
 import com.example.guardian_profile.presentation.GuardianProfileUIState
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianFullData
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -37,7 +37,7 @@ fun GuardianProfileSuccessPreview() {
         GuardianProfileUIState(
             guardianData = fakeUser,
             userProfileMode = UserProfileMode.VIEW_ONLY,
-            screenState = FetchingDataState.Success
+            screenState = ScreenState.Success
         )
         )
     }
@@ -62,7 +62,7 @@ fun GuardianProfileErrorPreview() {
             GuardianProfileUIState(
                 guardianData = fakeUser,
                 userProfileMode = UserProfileMode.VIEW_ONLY,
-                screenState = FetchingDataState.ERROR
+                screenState = ScreenState.ERROR
             )
         )
     }
@@ -86,7 +86,7 @@ fun GuardianProfileLoadingPreview() {
             GuardianProfileUIState(
                 guardianData = fakeUser,
                 userProfileMode = UserProfileMode.VIEW_ONLY,
-                screenState = FetchingDataState.LOADING
+                screenState = ScreenState.LOADING
             )
         )
     }
@@ -111,7 +111,7 @@ fun GuardianProfileSetAsGuardianPreview() {
                 guardianData = fakeUser,
                 userProfileMode = UserProfileMode.ADD_AS_GUARDIAN,
                 childId = 1,
-                screenState = FetchingDataState.Success
+                screenState = ScreenState.Success
             )
         )
     }
@@ -135,7 +135,7 @@ fun GuardianProfileAddChildPreview() {
             GuardianProfileUIState(
                 guardianData = fakeUser,
                 userProfileMode = UserProfileMode.ADD_CHILD,
-                screenState = FetchingDataState.Success,
+                screenState = ScreenState.Success,
                 childId = 1
             )
         )

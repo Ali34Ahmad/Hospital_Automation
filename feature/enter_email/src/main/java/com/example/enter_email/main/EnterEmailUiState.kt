@@ -1,5 +1,6 @@
 package com.example.enter_email.main
 
+import com.example.model.enums.ScreenState
 import com.example.util.UiText
 import com.example.utility.network.Error
 
@@ -7,8 +8,6 @@ data class EnterEmailUiState(
     val email: String = "",
     val emailError: UiText? = null,
     val isSendOtpCodeButtonEnabled: Boolean = false,
-    val isLoading: Boolean = false,
-    val error: Error? = null,
     val showErrorDialog: Boolean = false,
-    val isSuccessful: Boolean = false,
+    val screenState: ScreenState= ScreenState.IDLE,
 )

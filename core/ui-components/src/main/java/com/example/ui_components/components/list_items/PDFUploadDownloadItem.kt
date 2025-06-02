@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.constants.enums.FileUploadingState
+import com.example.constants.enums.FileLoadingState
 import com.example.ext.toFileSizeFormatReadable
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -42,7 +42,7 @@ fun PDFUploadDownloadItem(
     onPause: () -> Unit,
     onResume: () -> Unit,
     onOpen: () -> Unit,
-    state: FileUploadingState,
+    state: FileLoadingState,
     modifier: Modifier = Modifier,
 ) {
 
@@ -59,10 +59,10 @@ fun PDFUploadDownloadItem(
         modifier = modifier
             .clickable {
                 when (state) {
-                    FileUploadingState.UPLOADING -> onPause()
-                    FileUploadingState.PAUSED -> onResume()
-                    FileUploadingState.DOWNLOADING -> onPause()
-                    FileUploadingState.COMPLETE -> onOpen()
+                    FileLoadingState.UPLOADING -> onPause()
+                    FileLoadingState.PAUSED -> onResume()
+                    FileLoadingState.DOWNLOADING -> onPause()
+                    FileLoadingState.COMPLETE -> onOpen()
                     else -> {}
                 }
             },
@@ -96,12 +96,12 @@ fun PDFUploadDownloadItem(
                     color = MaterialTheme.additionalColorScheme.onBackgroundVariant
                 )
                 val text = when (state) {
-                    FileUploadingState.UPLOADING -> stringResource(R.string.uploading) + dots
-                    FileUploadingState.PAUSED -> stringResource(R.string.paused)
-                    FileUploadingState.DOWNLOADING -> stringResource(R.string.downloading) + dots
-                    FileUploadingState.COMPLETE -> stringResource(R.string.open)
-                    FileUploadingState.FAILED -> stringResource(R.string.failed)
-                    FileUploadingState.Cancelled -> stringResource(R.string.cancelled)
+                    FileLoadingState.UPLOADING -> stringResource(R.string.uploading) + dots
+                    FileLoadingState.PAUSED -> stringResource(R.string.paused)
+                    FileLoadingState.DOWNLOADING -> stringResource(R.string.downloading) + dots
+                    FileLoadingState.COMPLETE -> stringResource(R.string.open)
+                    FileLoadingState.FAILED -> stringResource(R.string.failed)
+                    FileLoadingState.Cancelled -> stringResource(R.string.cancelled)
                 }
                 Text(
                     text = text,
@@ -113,13 +113,13 @@ fun PDFUploadDownloadItem(
             }
             // Linear progress indicator with percentage
             //when the state of the pdf file is not complete show the linear progress indicator
-            if (state != FileUploadingState.COMPLETE) {
+            if (state != FileLoadingState.COMPLETE) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    val color = if (state == FileUploadingState.PAUSED)
+                    val color = if (state == FileLoadingState.PAUSED)
                         MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     else
                         MaterialTheme.colorScheme.primary
@@ -153,7 +153,7 @@ fun PDFDownloaderDownloadingPreview() {
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 1000014,
                 progress = 70,
-                state = FileUploadingState.DOWNLOADING,
+                state = FileLoadingState.DOWNLOADING,
                 onPause = {},
                 onOpen = {},
                 onResume = {}
@@ -172,7 +172,7 @@ fun PDFDownloaderUploadingPreview() {
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 1014257,
                 progress = 70,
-                state = FileUploadingState.UPLOADING,
+                state = FileLoadingState.UPLOADING,
                 onPause = {},
                 onOpen = {},
                 onResume = {}
@@ -191,7 +191,7 @@ fun PDFDownloaderPausedPreview() {
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 104743037,
                 progress = 70,
-                state = FileUploadingState.PAUSED,
+                state = FileLoadingState.PAUSED,
                 onPause = {},
                 onOpen = {},
                 onResume = {}
@@ -210,7 +210,7 @@ fun PDFDownloadedCompletePreview() {
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 21014525,
                 progress = 100,
-                state = FileUploadingState.COMPLETE,
+                state = FileLoadingState.COMPLETE,
                 onPause = {},
                 onOpen = {},
                 onResume = {}

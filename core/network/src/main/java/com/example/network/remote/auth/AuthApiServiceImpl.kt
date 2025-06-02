@@ -124,7 +124,9 @@ class AuthApiServiceImpl(
 
                 else -> {
                     val errorBody: NetworkMessage = response.body()
+                    val errorBodyText: String = response.bodyAsText()
                     Log.e("Send OTP Code: Out of Range 2xx", errorBody.message)
+                    Log.e("Send OTP Code: Out of Range 2xx", errorBodyText)
                     Result.Error(NetworkError.UNKNOWN)
                 }
             }

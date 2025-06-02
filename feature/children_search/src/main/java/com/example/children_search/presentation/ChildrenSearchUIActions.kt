@@ -1,6 +1,6 @@
 package com.example.children_search.presentation
 
-import com.example.model.enums.FetchingDataState
+import com.example.model.enums.ScreenState
 
 sealed interface ChildrenSearchUIActions {
     // navigation action
@@ -9,5 +9,5 @@ sealed interface ChildrenSearchUIActions {
     //ui action
     data class OnQueryChanged(val newQuery: String): ChildrenSearchUIActions
     object DeleteQuery: ChildrenSearchUIActions
-    data class UpdateState(val newState: FetchingDataState): ChildrenSearchUIActions
+    data class UpdateState(val newState: ScreenState): ChildrenSearchUIActions
 }

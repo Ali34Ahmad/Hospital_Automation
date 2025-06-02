@@ -7,6 +7,7 @@ import com.example.domain.use_cases.auth.SendOtpToEmailUseCase
 import com.example.enter_email.validator.EnterEmailValidationResult
 import com.example.enter_email.validator.EnterEmailValidator
 import com.example.model.auth.send_otp.SendOtpRequest
+import com.example.model.enums.ScreenState
 import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -52,20 +53,8 @@ class EnterEmailViewModel(
         updateSendOtpButtonEnablement()
     }
 
-    private fun updateIsLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
-    }
-
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
-    }
-
-    private fun updateIsOtpCodeSentState(isSent: Boolean) {
-        _uiState.update { it.copy(isSuccessful = isSent) }
     }
 
     private fun updateSendOtpButtonEnablement() {
@@ -84,9 +73,17 @@ class EnterEmailViewModel(
         }
     }
 
+    private fun updateScreenState(screenState: ScreenState){
+        _uiState.update {
+            it.copy(
+                screenState=screenState
+            )
+        }
+    }
+
     private fun sendOtpCode() {
         viewModelScope.launch {
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Sending otp code","EnterEmailViewModel")
             sendOtpCodeToEmailUseCase(
                 sendOtpCodeRequest = SendOtpRequest(
@@ -94,16 +91,12 @@ class EnterEmailViewModel(
                 )
             ).onSuccess{
                 Log.v("Otp code sent successfully","EnterEmailViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.Success)
                 updateShowErrorDialogState(false)
-                updateErrorState(null)
-                updateIsOtpCodeSentState(true)
             }.onError {error->
                 Log.v("Failed to send otp code","EnterEmailViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.ERROR)
                 updateShowErrorDialogState(true)
-                updateErrorState(error)
-                updateIsOtpCodeSentState(false)
             }
         }
     }

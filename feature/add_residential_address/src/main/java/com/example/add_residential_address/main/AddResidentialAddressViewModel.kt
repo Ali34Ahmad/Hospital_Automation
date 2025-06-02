@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.add_residential_address.validator.AddResidentialAddressValidationResult
 import com.example.add_residential_address.validator.AddResidentialAddressValidator
 import com.example.domain.use_cases.add_residential_address.AddResidentialAddressUseCase
+import com.example.model.enums.ScreenState
 import com.example.model.residential_address.AddAddressRequest
 import com.example.utility.network.Error
 import com.example.utility.network.Result
@@ -122,20 +123,8 @@ class AddResidentialAddressViewModel(
         updateSignUpButtonEnablement()
     }
 
-    private fun updateIsLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
-    }
-
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
-    }
-
-    private fun updateIsSuccessfulState(isSuccessful: Boolean) {
-        _uiState.update { it.copy(isSuccessful = isSuccessful) }
     }
 
     private fun updateSignUpButtonEnablement() {
@@ -163,9 +152,17 @@ class AddResidentialAddressViewModel(
         }
     }
 
+    private fun updateScreenState(screenState:ScreenState){
+        _uiState.update {
+            it.copy(
+                screenState = screenState
+            )
+        }
+    }
+
     private fun submitAddress() {
         viewModelScope.launch {
-            updateIsLoadingState(true)
+            updateScreenState(ScreenState.LOADING)
             Log.v("Submitting Address info", "AddResidentialViewModel")
             addResidentialAddressUseCase(
                 addAddressRequest = AddAddressRequest(
@@ -177,16 +174,12 @@ class AddResidentialAddressViewModel(
                 )
             ).onSuccess { result ->
                 Log.v("Address added Successfully", "AddResidentialViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.Success)
                 updateShowErrorDialogState(false)
-                updateErrorState(null)
-                updateIsSuccessfulState(true)
             }.onError { error ->
                 Log.v("Adding Address Failed", "AddResidentialViewModel")
-                updateIsLoadingState(false)
+                updateScreenState(ScreenState.ERROR)
                 updateShowErrorDialogState(true)
-                updateErrorState(error)
-                updateIsSuccessfulState(false)
             }
         }
     }

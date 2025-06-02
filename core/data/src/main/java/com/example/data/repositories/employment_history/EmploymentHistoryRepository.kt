@@ -1,6 +1,5 @@
 package com.example.data.repositories.employment_history
 
-import com.example.data.mapper.employee.toEmployeeProfileResponse
 import com.example.data.mapper.employment_history.toEmploymentHistoryResponse
 import com.example.domain.repositories.EmploymentHistoryRepository
 import com.example.model.employment_history.EmploymentHistoryResponse
