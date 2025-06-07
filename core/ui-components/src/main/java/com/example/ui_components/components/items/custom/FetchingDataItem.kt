@@ -21,7 +21,8 @@ import com.example.ui_components.R
 
 @Composable
 fun FetchingDataItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    subtitle: String = stringResource(R.string.fetching_data_subtitle)
 ) {
     Column(
         modifier = modifier.fillMaxWidth() ,
@@ -39,7 +40,7 @@ fun FetchingDataItem(
             )
         Spacer(Modifier.height(MaterialTheme.spacing.extraSmall4))
         Text(
-            stringResource(R.string.fetching_data_subtitle),
+            subtitle,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline
             )

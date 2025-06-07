@@ -108,7 +108,7 @@ fun GuardianProfileSetAsGuardianPreview() {
         mutableStateOf(
             GuardianProfileUIState(
                 guardianData = fakeUser,
-                userProfileMode = UserProfileMode.ADD_AS_GUARDIAN,
+                userProfileMode = UserProfileMode.SET_AS_GUARDIAN,
                 childId = 1,
                 screenState = ScreenState.SUCCESS
             )

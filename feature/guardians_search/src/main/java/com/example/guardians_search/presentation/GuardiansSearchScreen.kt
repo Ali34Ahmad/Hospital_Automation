@@ -1,5 +1,6 @@
 package com.example.guardians_search.presentation
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -163,8 +164,8 @@ fun GuardiansSearchScreen(
                                     val guardianData = guardians[index]
                                     guardianData?.let{
                                         GuardianListItem(
-                                            onClick = {guardianId->
-                                                navigationActions.navigateToGuardianDetails(guardianId,uiState.childId)
+                                            onClick = {
+                                                navigationActions.navigateToGuardianDetails(it.id,uiState.childId)
                                             },
                                             imageUrl = it.img,
                                             name = it.fullName,

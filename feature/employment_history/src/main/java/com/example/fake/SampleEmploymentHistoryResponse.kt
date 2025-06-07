@@ -4,9 +4,6 @@ import com.example.model.employment_history.EmploymentHistoryResponse
 import com.example.model.employment_history.UserDetails
 import com.example.model.employment_history.UserReference
 import com.example.model.user.FullName
-import com.example.network.model.response.EmploymentHistoryResponseDto
-import com.example.network.model.response.UserDetailsDto
-import com.example.network.model.response.UserReferenceDto
 import java.time.LocalDate
 
 fun createSampleEmploymentHistoryResponse(): EmploymentHistoryResponse {

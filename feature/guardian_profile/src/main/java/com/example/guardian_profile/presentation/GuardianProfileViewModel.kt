@@ -32,7 +32,8 @@ class GuardianProfileViewModel(
     private val _uiState = MutableStateFlow(
         GuardianProfileUIState(
         childId = savedStateHandle.toRoute<GuardianProfileRoute>().childId,
-        guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId
+        guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId,
+            userProfileMode = savedStateHandle.toRoute<GuardianProfileRoute>().userProfileMode
         )
     )
 
@@ -44,7 +45,8 @@ class GuardianProfileViewModel(
             SharingStarted.WhileSubscribed(5000L),
             GuardianProfileUIState(
                 childId = savedStateHandle.toRoute<GuardianProfileRoute>().childId,
-                guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId
+                guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId,
+                userProfileMode = savedStateHandle.toRoute<GuardianProfileRoute>().userProfileMode
             )
         )
 

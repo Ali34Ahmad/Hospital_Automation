@@ -31,14 +31,14 @@ import com.example.ui_components.R
 fun GuardianListItem(
     imageUrl: String?,
     name: String,
-    onClick: (id: Int) -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(8))
             .clickable{
-                onClick
+                onClick()
             }
             .background(MaterialTheme.colorScheme.background)
         ,

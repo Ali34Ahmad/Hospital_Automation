@@ -49,7 +49,7 @@ fun GuardianProfileScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            AnimatedVisibility(uiState.screenState!= ScreenState.SUCCESS){
+            if(uiState.screenState!= ScreenState.SUCCESS){
                 GuardianProfileTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     onNavigateUp = navigationActions::navigateUp,
@@ -57,35 +57,37 @@ fun GuardianProfileScreen(
             }
         },
         bottomBar = {
-            when(uiState.userProfileMode){
-                UserProfileMode.VIEW_ONLY -> Unit
-                UserProfileMode.ADD_AS_GUARDIAN -> {
-                    SendingDataBottomBar(
-                        onSuccess = {
+            AnimatedContent (uiState.userProfileMode) {state->
+                when(state){
+                    UserProfileMode.VIEW_ONLY -> Unit
+                    UserProfileMode.SET_AS_GUARDIAN -> {
+                        SendingDataBottomBar(
+                            onSuccess = {
 
-                        },
-                        onButtonClick = {
-                            onAction(
-                                GuardianProfileActions.SetAsGuardian
-                            )
-                        },
-                        state = uiState.bottomBarState,
-                        modifier = modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.spacing.medium16),
-                        text = stringResource(R.string.set_as_guardian),
-                    )
-                }
-                UserProfileMode.ADD_CHILD ->{
-                    HospitalAutomationButton(
-                        onClick = {
-                            navigationActions.navigateToAddChild(uiState.guardianId)
-                        },
-                        text = stringResource(R.string.add_child),
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(MaterialTheme.spacing.medium16)
-                        ,
-                    )
+                            },
+                            onButtonClick = {
+                                onAction(
+                                    GuardianProfileActions.SetAsGuardian
+                                )
+                            },
+                            state = uiState.bottomBarState,
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(MaterialTheme.spacing.medium16),
+                            text = stringResource(R.string.set_as_guardian),
+                        )
+                    }
+                    UserProfileMode.ADD_CHILD ->{
+                        HospitalAutomationButton(
+                            onClick = {
+                                navigationActions.navigateToAddChild(uiState.guardianId)
+                            },
+                            text = stringResource(R.string.add_child),
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(MaterialTheme.spacing.medium16)
+                            ,
+                        )
+                    }
                 }
             }
         }

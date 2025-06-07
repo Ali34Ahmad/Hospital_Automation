@@ -96,8 +96,8 @@ internal fun GuardiansScreen(
                                     GuardianListItem(
                                         imageUrl = guardian.img,
                                         name = guardian.fullName,
-                                        onClick = {id->
-                                            navigationAction.navigateToGuardianProfile(id)
+                                        onClick = {
+                                            navigationAction.navigateToGuardianProfile(guardian.id)
                                         },
                                         modifier = Modifier.fillMaxWidth()
                                     )

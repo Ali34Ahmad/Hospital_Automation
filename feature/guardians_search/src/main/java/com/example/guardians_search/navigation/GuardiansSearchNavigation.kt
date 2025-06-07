@@ -1,10 +1,8 @@
 package com.example.guardians_search.navigation
 
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.guardians_search.presentation.GuardiansSearchActions
 import com.example.guardians_search.presentation.GuardiansSearchNavigationActions
 import com.example.guardians_search.presentation.GuardiansSearchScreen
 import com.example.guardians_search.presentation.GuardiansSearchViewModel
@@ -33,8 +31,8 @@ fun NavController.navigateToGuardiansSearch(
 }
 
 fun NavGraphBuilder.guardianSearchScreen(
-    onNavigateUp: ()-> Unit,
-    onNavigateToGuardiansSearchRoute: (guardianId: Int,childId: Int?)-> Unit,
+    onNavigateUp: () -> Unit,
+    onNavigateToGuardianProfile:(guardianId: Int, childId: Int?)-> Unit,
 ){
     composable<GuardiansSearchRoute>{
         val viewModel = koinViewModel<GuardiansSearchViewModel>()
@@ -42,7 +40,7 @@ fun NavGraphBuilder.guardianSearchScreen(
         val navigationActions  = object : GuardiansSearchNavigationActions{
             override fun navigateUp() = onNavigateUp()
             override fun navigateToGuardianDetails(guardianId: Int, childId: Int?) =
-                onNavigateToGuardiansSearchRoute(guardianId,childId)
+                onNavigateToGuardianProfile(guardianId,childId)
         }
 
         GuardiansSearchScreen(
