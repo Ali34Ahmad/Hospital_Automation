@@ -12,40 +12,4 @@ import com.example.children.navigation.childrenScreen
 import com.example.model.helper.IdType
 
 @Composable
-fun FakeGraph(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    NavHost(
-        modifier = modifier.fillMaxSize(),
-        navController = navController,
-        startDestination = ChildrenRoute(
-            userId = 66,
-            type = IdType.EMPLOYEE
-        )
-    ){
-        childrenScreen(
-            navigateUp = {
-                navController.navigateUp()
-            },
-            navigateToChildProfile = { childId ->
-                navController.navigateToChildProfile(
-                    childId = childId
-                )
-            }
-        )
-        childProfileScreen(
-            navigateToAddGuardianScreen = {
-
-            },
-            navigateToAddBirthCertificateScreen = {
-
-            },
-            navigateToEmployeeProfileScreen = {
-
-            },
-            navigateToGuardianScreen = {
-
-            },
-            navigateUp = {navController.navigateUp()}
-        )
-    }
-}
+fun FakeGraph(modifier: Modifier = Modifier) {}

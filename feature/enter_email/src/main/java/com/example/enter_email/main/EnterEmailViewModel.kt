@@ -8,7 +8,6 @@ import com.example.enter_email.validator.EnterEmailValidationResult
 import com.example.enter_email.validator.EnterEmailValidator
 import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.enums.ScreenState
-import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,7 +90,7 @@ class EnterEmailViewModel(
                 )
             ).onSuccess{
                 Log.v("Otp code sent successfully","EnterEmailViewModel")
-                updateScreenState(ScreenState.Success)
+                updateScreenState(ScreenState.SUCCESS)
                 updateShowErrorDialogState(false)
             }.onError {error->
                 Log.v("Failed to send otp code","EnterEmailViewModel")

@@ -199,10 +199,13 @@
     <string name="no_items">No Items</string>
     <string name="no_items_subtitle">There are no items</string>
     <string name="no_internet_connection">No internet connection</string>
-    <string name="no_internet_connection_subtitle">No internet connection subtitle please try again later.</string>
+    <string name="no_internet_connection_subtitle">Check your internet connection and try again.</string>
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_subtitle">Fetching data subtitle</string>
     <string name="search_for_children">Search for children</string>
+    <string name="no_matching_result">No matching results</string>
+    <string name="no_children_subtitle">No children with this name were found. Would you like to try another name?</string>
+    <string name="not_provided">Not provided</string>
     <string name="suspensiong_date">Suspnsion date</string>
     <string name="suspended_by">Suspended by</string>
     <string name="required_field">This field is required</string>
@@ -216,4 +219,6 @@
     <string name="failed_to_verify_your_email">Failed to verify your email. Please try again later.</string>
     <string name="failed_to_resend_otp_code">Failed to resend otp code. Please try again later.</string>
     <string name="failed_to_login_try_again">Failed to login. Please try again later.</string>
+    <string name="search_by_name_title">Start Your Search</string>
+    <string name="search_by_name_subtitle"> Type a name to see the results.</string>
 </resources>

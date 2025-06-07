@@ -1,9 +1,11 @@
 package com.example.guardians_search.navigation
 
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.guardians_search.presentation.GuardiansSearchActions
+import com.example.guardians_search.presentation.GuardiansSearchNavigationActions
 import com.example.guardians_search.presentation.GuardiansSearchScreen
 import com.example.guardians_search.presentation.GuardiansSearchViewModel
 import com.example.navigation.extesion.navigateToScreen
@@ -32,21 +34,20 @@ fun NavController.navigateToGuardiansSearch(
 
 fun NavGraphBuilder.guardianSearchScreen(
     onNavigateUp: ()-> Unit,
-    onNavigateToGuardiansSearchRoute: (guardianId: Int,childId: Int?)-> Unit
+    onNavigateToGuardiansSearchRoute: (guardianId: Int,childId: Int?)-> Unit,
 ){
     composable<GuardiansSearchRoute>{
         val viewModel = koinViewModel<GuardiansSearchViewModel>()
+
+        val navigationActions  = object : GuardiansSearchNavigationActions{
+            override fun navigateUp() = onNavigateUp()
+            override fun navigateToGuardianDetails(guardianId: Int, childId: Int?) =
+                onNavigateToGuardiansSearchRoute(guardianId,childId)
+        }
+
         GuardiansSearchScreen(
             viewModel = viewModel,
-            onAction = {action->
-                when(action){
-                    is GuardiansSearchActions.NavigateToGuardianDetails -> {
-                        onNavigateToGuardiansSearchRoute(action.guardianId,action.childId)
-                    }
-                    GuardiansSearchActions.OnNavigateBack -> onNavigateUp()
-                    else -> viewModel.onAction(action)
-                }
-            }
+            navigationActions = navigationActions
         )
     }
 }

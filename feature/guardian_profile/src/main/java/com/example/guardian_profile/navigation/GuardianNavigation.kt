@@ -5,8 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.example.guardian_profile.presentation.GuardianProfileActions
+import com.example.guardian_profile.presentation.GuardianProfileNavigationAction
 import com.example.guardian_profile.presentation.GuardianProfileScreen
 import com.example.guardian_profile.presentation.GuardianProfileViewModel
+import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -39,35 +41,38 @@ fun NavController.navigateToGuardianProfile(
     userProfileMode: UserProfileMode,
     childId: Int? = null
 ){
-    navigate<GuardianProfileRoute>(
+    navigateToScreen(
         GuardianProfileRoute(
             guardianId= guardianId,
             childId = childId,
             userProfileMode = userProfileMode
-        ),
-        navOptions
+        )
     )
 }
 
 fun NavGraphBuilder.guardianProfileScreen(
     onNavigateUp: () -> Unit,
-    onNavigateToChildrenScreen: (guardianId: Int)-> Unit
+    onNavigateToChildrenScreen: (guardianId: Int)-> Unit,
+    onNavigateToAddChildScreen: (guardianId: Int)-> Unit,
+    onOpenEmail: (email: String)-> Unit,
+    onOpenContacts:(phoneNumber: String)-> Unit,
 ){
     composable<GuardianProfileRoute> {
         val viewModel = koinViewModel<GuardianProfileViewModel>()
+        val navigationActions = object : GuardianProfileNavigationAction{
+            override fun navigateUp() = onNavigateUp()
+
+            override fun openEmail(email: String) = onOpenEmail(email)
+
+            override fun openContacts(phone: String) = onOpenContacts(phone)
+
+            override fun navigateToAddChild(guardianId: Int) = onNavigateToAddChildScreen(guardianId)
+
+            override fun navigateToChildren(guardianId: Int) = onNavigateToChildrenScreen(guardianId)
+        }
         GuardianProfileScreen(
             viewModel = viewModel,
-            onAction = {action->
-                when(action){
-                    GuardianProfileActions.NavigateBack -> onNavigateUp()
-                    is GuardianProfileActions.NavigateToChildren ->{
-                        onNavigateToChildrenScreen(action.guardianId)
-                    }
-                    is GuardianProfileActions.Open -> Unit
-                    is GuardianProfileActions.OpenEmail -> Unit
-                    else -> viewModel.onAction(action)
-                }
-            }
+            navigationActions = navigationActions
         )
     }
 }

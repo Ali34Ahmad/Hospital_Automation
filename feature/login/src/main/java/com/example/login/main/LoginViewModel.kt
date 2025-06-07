@@ -118,7 +118,7 @@ class LoginViewModel(
                 )
             ).onSuccess{
                 Log.v("Successful log in","LoginViewModel")
-                updateScreenState(ScreenState.Success)
+                updateScreenState(ScreenState.SUCCESS)
                 updateShowErrorDialogState(false)
             }.onError {error->
                 Log.v("Failed log in","LoginViewModel")

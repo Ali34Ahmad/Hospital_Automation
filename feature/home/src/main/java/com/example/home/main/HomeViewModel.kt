@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import com.example.model.enums.ScreenState
-import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,7 +93,7 @@ class HomeViewModel(
                     if (!isPermissionGranted) {
                         writeShowPermissionCard(true)
                     }
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed CheckingPermission", "HomeViewModel")
                     updateScreenState(ScreenState.ERROR)

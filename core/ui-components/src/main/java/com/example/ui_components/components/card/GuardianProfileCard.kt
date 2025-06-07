@@ -34,13 +34,13 @@ import com.example.ui_components.components.network_image.NetworkImage
 @Composable
 fun GuardianProfileCard(
     name: String,
-    details: (@Composable () -> Unit)? = null,
     onPhoneNumberButtonClick: () -> Unit,
     onEmailButtonClick: () -> Unit,
     phoneNumber: String,
     profileImageUrl: String?,
     onNavigateUpButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    details: (@Composable () -> Unit)? = null,
 ) {
     Column(
         modifier = modifier

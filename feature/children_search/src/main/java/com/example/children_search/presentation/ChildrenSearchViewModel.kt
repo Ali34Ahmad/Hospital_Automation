@@ -1,13 +1,13 @@
 package com.example.children_search.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.example.data.source.childrenSearch.ChildrenSearchPagingSource
-import com.example.domain.model.constants.PagingConstants
-import com.example.domain.use_cases.children.GetChildrenByNameUseCase
+import com.example.children_search.navigation.SearchType
+import com.example.domain.use_cases.children.paged.SearchForChildrenAddedByEmployeeByNameUseCase
+import com.example.domain.use_cases.children.paged.SearchForChildrenByNameUseCase
+import com.example.model.enums.ScreenState
 import com.example.utility.constants.DurationConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -20,33 +20,25 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 class ChildrenSearchViewModel(
-    private val getChildrenByNameUseCase: GetChildrenByNameUseCase
+    private val searchForChildrenByName: SearchForChildrenByNameUseCase,
+    private val searchForChildrenAddedByEmployeeByName: SearchForChildrenAddedByEmployeeByNameUseCase,
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<ChildrenSearchUiState>(ChildrenSearchUiState())
+    private val _uiState = MutableStateFlow<ChildrenSearchUiState>(ChildrenSearchUiState(
+    //savedStateHandle.toRoute<ChildrenSearchRoute>().searchType
+        searchType = SearchType.EMPLOYEE
+    ))
     val uiState: StateFlow<ChildrenSearchUiState> = _uiState
 
-    private var _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val childrenFlow = _uiState.map { it.query }
+        .filter{ it.isNotBlank() }
         .debounce(DurationConstants.SEARCH_DEBOUNCE_DELAY)
         .distinctUntilChanged()
-        .filter{ it.isNotBlank() }
         .flatMapLatest{ query ->
-            onAction(ChildrenSearchUIActions.OnQueryChanged(query))
-                Pager(
-                    config = PagingConfig(
-                        pageSize = PagingConstants.PAGE_SIZE,
-                    ),
-                    pagingSourceFactory = {
-                        ChildrenSearchPagingSource(
-                            getChildrenByName = getChildrenByNameUseCase,
-                            query = query,
-                        )
-                    }
-                ).flow
+            getPagingSourceFactory(query)
         }
         .cachedIn(viewModelScope)
 
@@ -57,6 +49,8 @@ class ChildrenSearchViewModel(
                 _uiState.value = _uiState.value.copy(query = "")
             }
             is ChildrenSearchUIActions.OnQueryChanged -> {
+                if(action.newQuery.isBlank())
+                    _uiState.value = _uiState.value.copy(state = ScreenState.IDLE)
                 _uiState.value = _uiState.value.copy(query = action.newQuery)
             }
             is ChildrenSearchUIActions.UpdateState ->{
@@ -66,4 +60,13 @@ class ChildrenSearchViewModel(
             is ChildrenSearchUIActions.NavigateToChildDetail -> Unit
         }
     }
+    private suspend fun getPagingSourceFactory(query: String)=
+        when(_uiState.value.searchType){
+            SearchType.GLOBAL ->{
+                searchForChildrenByName(query)
+            }
+            SearchType.EMPLOYEE -> {
+                searchForChildrenAddedByEmployeeByName(query)
+            }
+        }
 }

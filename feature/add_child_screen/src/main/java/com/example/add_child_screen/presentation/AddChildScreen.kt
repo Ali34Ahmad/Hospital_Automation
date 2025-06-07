@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.constants.enums.Gender
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.complex_components.slots.ChildInfoSlot
@@ -25,75 +24,28 @@ import com.example.ui_components.components.complex_components.slots.ParentInfoS
 import com.example.ui_components.components.complex_components.slots.SelectGenderSlot
 import com.example.ui_components.components.topbars.custom.AddChildTopBar
 
-import com.example.util.UiText
-import com.example.utility.validation.validator.TextValidator
-import kotlinx.coroutines.CoroutineScope
 import com.example.ui_components.R
 
 @Composable
 fun AddChildScreen(
     viewModel: AddChildViewModel,
-    onAction: (AddChildUIActions) -> Unit,
+    navigationActions: AddChildNavigationAction,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AddChildScreen(
         uiState = uiState,
         modifier = modifier,
-        onFirstNameChanged = {
-            onAction(AddChildUIActions.OnFirstNameChanged(it))
-        },
-        onLastNameChanged = {
-            onAction(AddChildUIActions.OnLastNameChanged(it))
-        },
-        onDateOfBirthChanged = {
-            onAction(AddChildUIActions.OnDateChanged(it))
-        },
-        onGenderChange = {
-            onAction(AddChildUIActions.OnGenderChanged(it))
-        },
-        onFatherFirstNameChange = {
-            onAction(AddChildUIActions.OnFatherFirstNameChanged(it))
-        },
-        onFatherLastNameChanged = {
-            onAction(AddChildUIActions.OnFatherLastNameChanged(it))
-        },
-        onMotherFirstNameChange = {
-            onAction(AddChildUIActions.OnMotherFirstNameChanged(it))
-        },
-        onMotherLastNameChanged = {
-            onAction(AddChildUIActions.OnMotherLastNameChanged(it))
-        },
-        onSendingData = {
-            onAction(AddChildUIActions.SendData)
-        },
-        onNavigateToNextScreen = {
-            onAction(AddChildUIActions.NavigateToNextScreen)
-        },
-        onNavigateBack = {
-            onAction(AddChildUIActions.NavigateBack)
-        },
-        onDatePickerVisibilityChanged = {
-            onAction(AddChildUIActions.ChangeDatePickerVisibility(it))
-        }
+        onAction = viewModel::onAction,
+        navigationActions = navigationActions
     )
 }
 
 @Composable
 fun AddChildScreen(
     uiState: AddChildUIState,
-    onFirstNameChanged: (String) -> Unit,
-    onLastNameChanged: (String) -> Unit,
-    onDateOfBirthChanged: (String) -> Unit,
-    onGenderChange: (Gender) -> Unit,
-    onFatherFirstNameChange: (String) -> Unit,
-    onFatherLastNameChanged: (String) -> Unit,
-    onMotherFirstNameChange: (String) -> Unit,
-    onMotherLastNameChanged: (String) -> Unit,
-    onNavigateToNextScreen: (childId: Int) -> Unit,
-    onDatePickerVisibilityChanged: (Boolean) -> Unit,
-    onSendingData: () -> Unit,
-    onNavigateBack: () -> Unit,
+    navigationActions: AddChildNavigationAction,
+    onAction: (AddChildUIActions)-> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -102,14 +54,18 @@ fun AddChildScreen(
         bottomBar = {
             SendingDataBottomBar(
                 text = stringResource(R.string.send_data),
-                onButtonClick = onSendingData,
+                onButtonClick = {
+                    onAction(
+                        AddChildUIActions.SendData
+                    )
+                },
                 state = uiState.sendingDataButtonState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(MaterialTheme.spacing.medium16),
                 onSuccess = {
                     uiState.childId?.let {
-                        onNavigateToNextScreen(it)
+                        navigationActions.navigateToNextScreen(it)
                     }
                 }
             )
@@ -117,7 +73,7 @@ fun AddChildScreen(
         topBar = {
             AddChildTopBar(
                 modifier = Modifier.fillMaxWidth(),
-                onNavigateBack = onNavigateBack
+                onNavigateBack = navigationActions::navigateUp
             )
         }
     ) { innerPadding ->
@@ -133,35 +89,71 @@ fun AddChildScreen(
         ) {
             ChildInfoSlot(
                 firstName = uiState.firstName,
-                onFirstNameChanged = onFirstNameChanged,
+                onFirstNameChanged = {
+                    onAction(
+                        AddChildUIActions.OnFirstNameChanged(it)
+                    )
+                },
                 lastName = uiState.lastName,
-                onLastNameChanged = onLastNameChanged,
+                onLastNameChanged = {
+                    onAction(
+                        AddChildUIActions.OnLastNameChanged(it)
+                    )
+                },
                 dateOfBirth = uiState.dateOfBirth,
-                onDateOfBirthChanged = onDateOfBirthChanged,
+                onDateOfBirthChanged = {
+                    onAction(
+                        AddChildUIActions.OnDateChanged(it)
+                    )
+                },
                 modifier = Modifier.fillMaxWidth(),
                 firstNameError = uiState.firstNameErrorMessage?.asString(),
                 lastNameError = uiState.lastNameErrorMessage?.asString(),
                 dateOfBirthError = uiState.dateOfBirthErrorMessage?.asString(),
                 isDatePickerShown = uiState.isDatePickerVisible,
-                onDatePickerVisibilityChanged = onDatePickerVisibilityChanged
+                onDatePickerVisibilityChanged = {
+                    onAction(
+                        AddChildUIActions.ChangeDatePickerVisibility(it)
+                    )
+                }
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
             SelectGenderSlot(
                 gender = uiState.gender,
-                onGenderChange = onGenderChange,
+                onGenderChange = {
+                    onAction(
+                        AddChildUIActions.OnGenderChanged(it)
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
             ParentInfoSlots(
                 modifier = Modifier.fillMaxWidth(),
                 fatherFirstName = uiState.fatherFirstName,
-                onFatherFirstNameChange = onFatherFirstNameChange,
+                onFatherFirstNameChange = {
+                    onAction(
+                        AddChildUIActions.OnFatherFirstNameChanged(it)
+                    )
+                },
                 fatherLastName = uiState.fatherLastName,
-                onFatherLastNameChanged = onFatherLastNameChanged,
+                onFatherLastNameChanged = {
+                    onAction(
+                        AddChildUIActions.OnFatherLastNameChanged(it)
+                    )
+                },
                 motherFirstName = uiState.motherFirstName,
-                onMotherFirstNameChange = onMotherFirstNameChange,
+                onMotherFirstNameChange = {
+                    onAction(
+                        AddChildUIActions.OnMotherFirstNameChanged(it)
+                    )
+                },
                 motherLastName = uiState.motherLastName,
-                onMotherLastNameChanged = onMotherLastNameChanged,
+                onMotherLastNameChanged = {
+                    onAction(
+                        AddChildUIActions.OnMotherLastNameChanged(it)
+                    )
+                },
                 fatherFirstNameErrorMessage = uiState.fatherFirstNameErrorMessage?.asString(),
                 fatherLastNameErrorMessage = uiState.fatherLastNameErrorMessage?.asString(),
                 motherFirstNameErrorMessage = uiState.motherFirstNameErrorMessage?.asString(),

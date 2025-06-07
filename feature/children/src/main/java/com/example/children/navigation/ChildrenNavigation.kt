@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.example.children.presentation.ChildrenNavigationAction
 import com.example.children.presentation.ChildrenScreen
 import com.example.children.presentation.ChildrenUIAction
 import com.example.children.presentation.ChildrenViewModel
@@ -19,12 +20,11 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data class ChildrenRoute(
     val userId: Int,
-    val type: IdType,
 )
 fun NavController.navigateToChildrenScreen(
-    userId: Int,idType: IdType
+    userId: Int
 ){
-    navigateToScreen(ChildrenRoute(userId = userId,type = idType))
+    navigateToScreen(ChildrenRoute(userId = userId))
 }
 
 fun NavGraphBuilder.childrenScreen(
@@ -33,15 +33,15 @@ fun NavGraphBuilder.childrenScreen(
 ){
     composable<ChildrenRoute> {
         val viewModel = koinViewModel<ChildrenViewModel>()
+        val navigationAction = object : ChildrenNavigationAction{
+            override fun navigateUp() = navigateUp()
+
+            override fun navigateToChildProfile(childId: Int) =
+                navigateToChildProfile(childId)
+        }
         ChildrenScreen(
             viewModel = viewModel,
-            onAction = { action->
-                when(action){
-                    is ChildrenUIAction.NavigateToChildProfile -> navigateToChildProfile(action.childId)
-                    ChildrenUIAction.NavigateUp -> navigateUp()
-                    else -> viewModel.onAction(action)
-                }
-            },
+            navigationActions = navigationAction
         )
     }
 }

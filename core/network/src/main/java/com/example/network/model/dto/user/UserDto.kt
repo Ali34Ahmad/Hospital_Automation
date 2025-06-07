@@ -15,5 +15,8 @@ data class UserDto(
     val middleName: String,
 
     @SerialName("last_name")
-    val lastName: String
+    val lastName: String,
+
+    @SerialName("imgurl")
+    val imageUrl: String? = null
 )

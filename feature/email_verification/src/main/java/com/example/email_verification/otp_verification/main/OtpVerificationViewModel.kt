@@ -13,7 +13,6 @@ import com.example.model.auth.verify_otp.VerifyEmailOtpRequest
 import com.example.model.enums.ScreenState
 import com.example.ui_components.R
 import com.example.util.UiText
-import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -144,7 +143,7 @@ class OtpVerificationViewModel(
                 )
             ).onSuccess{
                 Log.v("Successful otp verification", "EmailVerificationViewModel")
-                updateScreenState(ScreenState.Success)
+                updateScreenState(ScreenState.SUCCESS)
                 updateShowErrorDialogState(false)
             }.onError {error->
                 Log.v("Failed otp verification", "EmailVerificationViewModel")
@@ -171,7 +170,7 @@ class OtpVerificationViewModel(
             sendOtpService()
                 .onSuccess {
                     Log.v("Otp sent Successfully", "EmailVerificationViewModel")
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                     updateShowErrorDialogState(false)
                 }.onError {error->
                     Log.v("Sending otp failed", "EmailVerificationViewModel")

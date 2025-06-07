@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.child_profile.presentation.ChildProfileNavigationAction
 import com.example.child_profile.presentation.ChildProfileScreen
 import com.example.child_profile.presentation.ChildProfileUIAction
 import com.example.child_profile.presentation.ChildProfileViewModel
@@ -26,42 +27,27 @@ fun NavController.navigateToChildProfile(childId: Int){
 
 fun NavGraphBuilder.childProfileScreen(
     navigateToAddGuardianScreen: (Int)-> Unit,
-    navigateToAddBirthCertificateScreen: (Int)-> Unit,
     navigateToEmployeeProfileScreen: (Int)-> Unit,
     navigateToGuardianScreen: (Int)-> Unit,
     navigateUp: ()-> Unit
 ){
-    composable<ChildProfileRoute>(
-        enterTransition = { fadeIn() + slideIntoContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Right,
-        ) },
-        exitTransition = { fadeOut() + slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Left,
-        ) },
-    ) {
+    composable<ChildProfileRoute> {
         val viewModel = koinViewModel<ChildProfileViewModel>()
+        val navigationActions = object : ChildProfileNavigationAction {
+            override fun navigateUp() = navigateUp()
+
+            override fun navigateToAddGuardianScreen(childId: Int) =
+                navigateToAddGuardianScreen(childId)
+
+            override fun navigateToEmployeeProfileScreen(employeeId: Int) =
+                navigateToEmployeeProfileScreen(employeeId)
+
+            override fun navigateToGuardiansScreen(childId: Int) = navigateToGuardianScreen(childId)
+        }
+
         ChildProfileScreen(
             viewModel = viewModel,
-            onAction = { action->
-                when(action){
-                    is ChildProfileUIAction.NavigateToAddGuardianScreen ->{
-                        navigateToAddGuardianScreen(action.childId)
-                    }
-                    is ChildProfileUIAction.NavigateToBirthCertificateScreen ->{
-                        navigateToAddBirthCertificateScreen(action.childId)
-                    }
-                    is ChildProfileUIAction.NavigateToEmployeeProfileScreen ->{
-                        navigateToEmployeeProfileScreen(action.employeeId)
-                    }
-                    is ChildProfileUIAction.NavigateToGuardiansScreen ->{
-                        navigateToGuardianScreen(action.childId)
-                    }
-                    ChildProfileUIAction.NavigateUp ->{
-                        navigateUp()
-                    }
-                    else -> viewModel.onAction(action)
-                }
-            }
+            navigationActions = navigationActions,
         )
     }
 }

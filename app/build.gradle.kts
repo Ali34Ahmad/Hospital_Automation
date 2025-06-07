@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":feature:add_child_screen"))
     implementation(project(":feature:guardian_profile"))
     implementation(project(":feature:children"))
+    implementation(project(":feature:guardians"))
 
     //data
     implementation(project(":core:data"))

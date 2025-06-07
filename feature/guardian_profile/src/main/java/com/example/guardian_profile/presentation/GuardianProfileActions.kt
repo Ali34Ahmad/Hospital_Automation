@@ -6,20 +6,23 @@ import com.example.model.guardian.GuardianFullData
 
 sealed interface GuardianProfileActions {
 
-    object NavigateBack: GuardianProfileActions
 
     data class UpdateGuardianData(val data: GuardianFullData): GuardianProfileActions
     data class UpdateScreenState(val state: ScreenState): GuardianProfileActions
     data class UpdateBottomBarState(val state: BottomBarState): GuardianProfileActions
 
-    data class OpenEmail(val string: String): GuardianProfileActions
-    data class Open(val phone: String): GuardianProfileActions
+
 
     data object RetryLoadingData: GuardianProfileActions
 
-    data class NavigateToChildren(val guardianId: Int): GuardianProfileActions
     object SetAsGuardian: GuardianProfileActions
 
-    /**Assign the current user as the guardian of the child to be registered in the system on the next screen*/
-    data class NavigateToAddChild(val guardianId: Int)
+}
+
+interface GuardianProfileNavigationAction{
+    fun navigateUp()
+    fun openEmail(email: String)
+    fun openContacts(phone: String)
+    fun navigateToAddChild(guardianId: Int)
+    fun navigateToChildren(guardianId: Int)
 }

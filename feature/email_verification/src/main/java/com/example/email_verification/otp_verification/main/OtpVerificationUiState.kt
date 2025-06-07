@@ -2,7 +2,6 @@ package com.example.email_verification.otp_verification.main
 
 import com.example.model.enums.ScreenState
 import com.example.util.UiText
-import com.example.utility.network.Error
 
 data class OtpVerificationUiState(
     val email: String = "",

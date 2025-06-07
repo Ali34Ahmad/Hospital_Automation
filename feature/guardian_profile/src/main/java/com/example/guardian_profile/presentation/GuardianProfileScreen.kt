@@ -26,54 +26,33 @@ import com.example.ui_components.components.buttons.HospitalAutomationButton
 @Composable
 fun GuardianProfileScreen(
     viewModel: GuardianProfileViewModel,
-    onAction: (GuardianProfileActions) -> Unit,
+    navigationActions: GuardianProfileNavigationAction,
     modifier: Modifier = Modifier
 ){
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
     GuardianProfileScreen(
         uiState = uiState.value,
-        onNavigateBack = {
-            onAction(GuardianProfileActions.NavigateBack)
-        },
-        onOpen = {phoneNumber->
-            onAction(GuardianProfileActions.Open(phoneNumber))
-        },
-        onOpenEmail = {email->
-            onAction(GuardianProfileActions.OpenEmail(email))
-        },
-        onSetAsGuardian = {
-            onAction(GuardianProfileActions.SetAsGuardian)
-        },
-        onNavigateToChildren = {
-            uiState.value.guardianData?.let {
-                onAction(GuardianProfileActions.NavigateToChildren(it.userId))
-            }
-        },
-        onNavigateToAddChild = {
-            onAction(GuardianProfileActions.NavigateToChildren(uiState.value.guardianId))
-        },
+        onAction = viewModel::onAction,
+        navigationActions = navigationActions,
         modifier = modifier
     )
 }
 @Composable
 fun GuardianProfileScreen(
     uiState: GuardianProfileUIState,
-    onNavigateBack: () -> Unit,
-    onOpen: (String)-> Unit,
-    onOpenEmail: (String)-> Unit,
-    onNavigateToChildren: (Int)-> Unit,
-    onNavigateToAddChild: (guardianId: Int)-> Unit,
-    onSetAsGuardian: ()-> Unit,
+    navigationActions: GuardianProfileNavigationAction,
+    onAction: (GuardianProfileActions)-> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            AnimatedVisibility(uiState.screenState!= ScreenState.Success){
+            AnimatedVisibility(uiState.screenState!= ScreenState.SUCCESS){
                 GuardianProfileTopBar(
                     modifier = Modifier.fillMaxWidth(),
-                    onNavigateUp = onNavigateBack,
+                    onNavigateUp = navigationActions::navigateUp,
                 )
             }
         },
@@ -85,7 +64,11 @@ fun GuardianProfileScreen(
                         onSuccess = {
 
                         },
-                        onButtonClick = onSetAsGuardian,
+                        onButtonClick = {
+                            onAction(
+                                GuardianProfileActions.SetAsGuardian
+                            )
+                        },
                         state = uiState.bottomBarState,
                         modifier = modifier
                             .fillMaxWidth()
@@ -96,9 +79,7 @@ fun GuardianProfileScreen(
                 UserProfileMode.ADD_CHILD ->{
                     HospitalAutomationButton(
                         onClick = {
-                            onNavigateToAddChild(
-                                uiState.guardianId
-                            )
+                            navigationActions.navigateToAddChild(uiState.guardianId)
                         },
                         text = stringResource(R.string.add_child),
                         modifier = Modifier.fillMaxWidth()
@@ -132,7 +113,7 @@ fun GuardianProfileScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    ScreenState.Success -> {
+                    ScreenState.SUCCESS -> {
                         uiState.guardianData?.let { data->
                             data.apply {
                                 CustomGuardianProfileCard(
@@ -141,16 +122,16 @@ fun GuardianProfileScreen(
                                     imageUrl = imgUrl?:"",
                                     address = fullAddress,
                                     gender = gender?: Gender.MALE.name.lowercase(),
-                                    onNavigateUp = onNavigateBack,
+                                    onNavigateUp = navigationActions::navigateUp,
                                     onPhoneNumberButtonClick = {
-                                        onOpen(phoneNumber)
+                                        navigationActions.openContacts(phoneNumber)
                                     },
                                     onEmailButtonClick = {
-                                        onOpenEmail(email)
+                                        navigationActions.openEmail(email)
                                     },
                                     modifier = Modifier.fillMaxWidth(),
                                     onChildrenButtonClick = {
-                                        onNavigateToChildren(userId)
+                                        navigationActions.navigateToChildren(userId)
                                     }
                                 )
                             }

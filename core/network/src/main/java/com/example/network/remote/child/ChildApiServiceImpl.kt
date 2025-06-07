@@ -1,7 +1,6 @@
 package com.example.network.remote.child
 
 import android.util.Log
-import com.example.network.model.dto.child.ChildDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.child.AddChildResponse
@@ -22,13 +21,14 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.headers
-import io.ktor.http.parameters
 import io.ktor.util.network.UnresolvedAddressException
 import kotlinx.serialization.SerializationException
 import java.io.File
@@ -44,7 +44,6 @@ internal class ChildApiServiceImpl(
         id: Int,
     ): Result<ChildFullResponse, NetworkError> {
         val response = try {
-            Log.d(TAG,"start fetching data")
             client.get(ApiRoutes.CHILD_BY_ID) {
                 bearerAuth(token)
                 parameter("id", id)
@@ -73,6 +72,7 @@ internal class ChildApiServiceImpl(
                 Result.Error<NetworkError>(NetworkError.UNKNOWN)
             }
         }
+
     }
 
     override suspend fun getChildrenByGuardianId(
@@ -89,6 +89,7 @@ internal class ChildApiServiceImpl(
         }
         return when(response.status){
             HttpStatusCode.OK -> {
+                Log.d(TAG, "getChildrenByGuardianId: success ")
                 val data: GetChildrenByGuardianIdResponse = response.body()
                 Result.Success<GetChildrenByGuardianIdResponse>(data)
             }
@@ -119,17 +120,17 @@ internal class ChildApiServiceImpl(
             }
             return when(response.status){
                 HttpStatusCode.OK -> {
-                    Log.d(TAG,"Success")
+                    Log.d(TAG," getChildrenAddedByEmployee : Success")
                     val data: GetChildrenAddedByEmployeeResponse = response.body()
                     Result.Success<GetChildrenAddedByEmployeeResponse>(data)
                 }
                 else ->{
-                    Log.e(TAG,"error: ${response.status.description}")
+                    Log.e(TAG," getChildrenAddedByEmployee: ${response.status.description}")
                     Result.Error<NetworkError>(NetworkError.UNKNOWN)
                 }
             }
         }catch (e: Exception){
-            Log.e(TAG,"error: ${e.message}")
+            Log.e(TAG,"getChildrenAddedByEmployee: ${e.message}")
             return Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
     }
@@ -148,25 +149,24 @@ internal class ChildApiServiceImpl(
         val response = try {
             client.get(ApiRoutes.CHILDREN_BY_NAME) {
                 //query parameters
-                parameters {
-                    append("page", page.toString())
-                    append("limit", limit.toString())
-                    append("name",name)
-                }
+                parameter("name",name)
+                parameter("page",page)
+                parameter("limit",limit)
                 //auth token
                 bearerAuth(token)
-
             }
         } catch (e: Exception){
-            Log.e(TAG, "uploadChildCertificate: ${e.message}")
+            Log.e(TAG, "getChildrenByName exception: ${e.message}")
             return Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
         return when(response.status) {
             HttpStatusCode.OK -> {
+                Log.d(TAG, "getChildrenByName success ")
                 val children: GetChildrenByNameResponse = response.body()
                 Result.Success<GetChildrenByNameResponse>(children)
             }
             else -> {
+                Log.e(TAG, "getChildrenByName  ${response.status.description} ${response.bodyAsText()} ${response.request.attributes}")
                 Result.Error<NetworkError>(NetworkError.UNKNOWN)
             }
         }
@@ -185,7 +185,6 @@ internal class ChildApiServiceImpl(
     ) : Result<AddChildResponse, NetworkError>{
 
         val response = try {
-            Log.d(TAG, "add child: fetching data")
             client.post(ApiRoutes.ADD_CHILD+"/$guardianId"){
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)
@@ -197,11 +196,12 @@ internal class ChildApiServiceImpl(
         }
         when(response.status){
             HttpStatusCode.OK ->{
+                Log.d(TAG, "addChild: Success")
                 val body : AddChildResponse = response.body()
                 return Result.Success<AddChildResponse>(data = body)
             }
             else -> {
-                Log.e(TAG, "add child: unknown error")
+                Log.e(TAG, "addChild: unknown error")
                 return Result.Error<NetworkError>(error = NetworkError.UNKNOWN)
             }
         }
@@ -214,7 +214,7 @@ internal class ChildApiServiceImpl(
         val response = try {
             client.post(ApiRoutes.UPLOAD_CHILD_CERTIFICATE+"/$id") {
                 headers {
-                    append(HttpHeaders.Authorization, "Bearer $token")
+                    bearerAuth(token)
                     append(HttpHeaders.ContentType, ContentType.Application.Pdf.contentType)
                 }
 
@@ -272,30 +272,28 @@ internal class ChildApiServiceImpl(
     ): Result<GetChildrenByNameResponse, NetworkError> {
         val response = try {
             client.get(ApiRoutes.SEARCH_FOR_CHILDREN_ADDED_BY_EMPLOYEE_BY_NAME) {
-                parameters {
-                    append("name",name)
-                    append("page",page.toString())
-                    append("limit",limit.toString())
-                }
                 bearerAuth(token)
+                parameter("name",name)
+                parameter("page",page)
+                parameter("limit",limit)
             }
 
         }catch (e: Exception){
-            Log.e(TAG,"msg : ${e.message}, cause: ${e.cause?.message}")
+            Log.e(TAG, "searchForChildrenAddedByEmployee message : ${e.message}, cause: ${e.cause?.message}")
             return Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
         return when(response.status){
             HttpStatusCode.OK ->{
-                Log.d(TAG,"success!")
+                Log.d(TAG," searchForChildrenAddedByEmployee : success!")
                 val body : GetChildrenByNameResponse= response.body()
                 Result.Success<GetChildrenByNameResponse>(body)
             }
             HttpStatusCode.UnprocessableEntity ->{
-                Log.d(TAG,"Error description: ${response.status.description}")
+                Log.d(TAG,"searchForChildrenAddedByEmployee : Error description: ${response.status.description}")
                     Result.Error<NetworkError>( error = NetworkError.UNPROCESSABLE_ENTITY)
                 }
             else -> {
-                Log.d(TAG,"Error description: ${response.status.description}")
+                Log.d(TAG,"searchForChildrenAddedByEmployee : Error description: ${response.status.description}")
                 Result.Error<NetworkError>( error = NetworkError.UNKNOWN)
             }
         }

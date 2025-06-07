@@ -1,7 +1,6 @@
 package com.example.home.main
 
 import com.example.model.enums.ScreenState
-import com.example.utility.network.Error
 
 data class HomeUiState(
     val selectedDrawerIndex: Int? = null,

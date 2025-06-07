@@ -46,6 +46,7 @@
             <option value="$PROJECT_DIR$/feature/employment_history" />
             <option value="$PROJECT_DIR$/feature/enter_email" />
             <option value="$PROJECT_DIR$/feature/guardian_profile" />
+            <option value="$PROJECT_DIR$/feature/guardians" />
             <option value="$PROJECT_DIR$/feature/guardians_search" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />

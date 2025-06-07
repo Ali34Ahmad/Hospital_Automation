@@ -45,7 +45,7 @@ fun SignUpScreen(
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(uiState.screenState) {
-        if (uiState.screenState== ScreenState.Success) {
+        if (uiState.screenState== ScreenState.SUCCESS) {
             uiActions.navigateToEmailVerificationScreen()
         }
     }

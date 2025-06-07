@@ -17,6 +17,7 @@ data class ChildFullData(
     val birthCertificateImgUrl: String? = null,
     val gender: String,
     val employeeId: Int? = null,
+    val employeeName: String? = null,
 ){
     val fullName: String
         get() = "$firstName $lastName"

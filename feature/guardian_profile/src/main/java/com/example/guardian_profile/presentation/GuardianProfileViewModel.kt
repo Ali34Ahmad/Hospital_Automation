@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.data.constants.FAKE_ID
 import com.example.domain.use_cases.users.AddGuardianToChildUseCase
 import com.example.domain.use_cases.users.GetGuardianByIdUseCase
 import com.example.guardian_profile.navigation.GuardianProfileRoute
@@ -43,7 +42,10 @@ class GuardianProfileViewModel(
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            GuardianProfileUIState()
+            GuardianProfileUIState(
+                childId = savedStateHandle.toRoute<GuardianProfileRoute>().childId,
+                guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId
+            )
         )
 
     fun onAction(action: GuardianProfileActions){
@@ -55,28 +57,16 @@ class GuardianProfileViewModel(
             //network call to add guardian to child
             GuardianProfileActions.SetAsGuardian -> {
                 _uiState.value.childId?.let {
-                    onAction(
-                        GuardianProfileActions.UpdateBottomBarState(
-                            state = BottomBarState.LOADING
-                        )
-                    )
+                    _uiState.value = _uiState.value.copy(screenState = ScreenState.LOADING)
                     viewModelScope.launch {
                         addGuardianToChildUseCase(
                             childId = it,
                             userId = _uiState.value.guardianId
                         ).onSuccess{
-                            onAction(
-                                GuardianProfileActions.UpdateBottomBarState(
-                                    state = BottomBarState.SUCCESS
-                                )
-                            )
+                            _uiState.value = _uiState.value.copy(screenState = ScreenState.SUCCESS)
                         }
                             .onError {error->
-                                onAction(
-                                    GuardianProfileActions.UpdateBottomBarState(
-                                        state = BottomBarState.FAILURE
-                                    )
-                                )
+                                _uiState.value = _uiState.value.copy(screenState = ScreenState.ERROR)
                                 setErrorMessage(error)
                                 delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
                                 resetButtonState()
@@ -100,34 +90,19 @@ class GuardianProfileViewModel(
                     guardianData = action.data
                 )
             }
-            // need navigation
-            GuardianProfileActions.NavigateBack -> Unit
-            is GuardianProfileActions.Open -> Unit
-            is GuardianProfileActions.OpenEmail -> Unit
-            is GuardianProfileActions.NavigateToChildren -> Unit
 
         }
     }
 
     private fun loadInitialData(){
-        onAction(
-            GuardianProfileActions.UpdateScreenState(
-                state = ScreenState.LOADING
-            )
-        )
+        _uiState.value = _uiState.value.copy(screenState = ScreenState.LOADING)
         viewModelScope.launch {
-            guardianProfileUseCase(FAKE_ID)
+            guardianProfileUseCase(savedStateHandle.toRoute<GuardianProfileRoute>().guardianId)
                 .onSuccess{ data->
                     onAction(GuardianProfileActions.UpdateGuardianData(data))
-                    onAction(
-                        GuardianProfileActions
-                            .UpdateScreenState(state = ScreenState.Success)
-                    )
+                    _uiState.value = _uiState.value.copy(screenState = ScreenState.SUCCESS)
                 }.onError {
-                    onAction(
-                        GuardianProfileActions
-                            .UpdateScreenState(state = ScreenState.ERROR)
-                    )
+                    _uiState.value = _uiState.value.copy(screenState = ScreenState.ERROR)
                 }
         }
     }

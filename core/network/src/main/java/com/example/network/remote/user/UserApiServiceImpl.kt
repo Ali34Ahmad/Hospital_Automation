@@ -2,7 +2,6 @@ package com.example.network.remote.user
 
 import android.util.Log
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.dto.user.UserFullDto
 import com.example.network.model.response.relations.ChildGuardianRelationResponse
 import com.example.network.model.response.user.GetGuardianByChildIdResponse
 import com.example.network.model.response.user.GetGuardianByIdResponse
@@ -16,10 +15,10 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.http.parameters
 
 private const val TAG = "UserApiServiceImpl"
 internal class UserApiServiceImpl(
@@ -35,20 +34,21 @@ internal class UserApiServiceImpl(
 
                 when(response.status){
                 HttpStatusCode.OK -> {
+                    Log.d(TAG, "getUserProfile : Success")
                     val user: GetGuardianByIdResponse = response.body()
                     Result.Success<GetGuardianByIdResponse>(user)
                 }
                 HttpStatusCode.BadRequest -> {
-                    Log.e("Get User Profile", "status: ${response.status.description}")
+                    Log.e(TAG, "getUserProfile status: ${response.status.description}")
                     Result.Error<NetworkError>(NetworkError.BAD_REQUEST)
                 }
                 else -> {
-                    Log.e("Get User Profile", "status: ${response.status.description}")
+                    Log.e(TAG, "getUserProfile status: ${response.status.description}")
                     Result.Error<NetworkError>(NetworkError.UNKNOWN)
                 }
             }
         }catch (e: Exception){
-            Log.e("Get User Profile", "getUserProfile: ${e.message}")
+            Log.e(TAG, "getUserProfile: ${e.message}")
             Result.Error<NetworkError>(NetworkError.UNKNOWN)
         }
 
@@ -67,6 +67,7 @@ internal class UserApiServiceImpl(
         }
         return when(response.status){
             HttpStatusCode.OK  -> {
+                Log.d(TAG,"addGuardianToChild : Success")
                 val body: ChildGuardianRelationResponse = response.body()
                 Result.Success<ChildGuardianRelationResponse>(body)
             }
@@ -85,7 +86,6 @@ internal class UserApiServiceImpl(
                 Result.Error<NetworkError>(NetworkError.UNKNOWN)
             }
         }
-
     }
 
     override suspend fun getUsersByName(
@@ -96,12 +96,9 @@ internal class UserApiServiceImpl(
     ): Result<GetUsersByNameResponse, NetworkError> {
         val response = try {
             client.get(ApiRoutes.USERS_BY_NAME){
-                parameters {
-                    append("page", page.toString())
-                    append("limit", limit.toString())
-                    append("name",name)
-                }
-
+                parameter("name",name)
+                parameter("page",page)
+                parameter("limit",limit)
                 bearerAuth(token)
 
             }
@@ -111,21 +108,23 @@ internal class UserApiServiceImpl(
         }
         return when(response.status){
             HttpStatusCode.OK -> {
+                Log.d(TAG, "getUsersByName: ${response.status}" )
                 val body: GetUsersByNameResponse = response.body()
                 Result.Success<GetUsersByNameResponse>(body)
             }
             else -> {
+                Log.e(TAG,"getUsersByName: ${response.status}")
                 Result.Error<NetworkError>(NetworkError.UNKNOWN)
             }
         }
     }
 
-    override suspend fun getGuardianByChildId(
+    override suspend fun getGuardiansByChildId(
         token: String,
         childId: Int,
     ): Result<GetGuardianByChildIdResponse, NetworkError> {
         val response = try {
-            client.post(ApiRoutes.GUARDIANS_BY_CHILD_ID+"/$childId") {
+            client.get(ApiRoutes.GUARDIANS_BY_CHILD_ID+"/$childId") {
                 bearerAuth(token)
             }
         }catch (e: Exception){
@@ -134,10 +133,12 @@ internal class UserApiServiceImpl(
         }
         return when(response.status){
             HttpStatusCode.OK -> {
+                Log.d(TAG, "getGuardianByChildId: success " )
                 val body: GetGuardianByChildIdResponse = response.body()
                 Result.Success<GetGuardianByChildIdResponse>(body)
             }
             else -> {
+                Log.e(TAG, "getGuardianByChildId: ${response.status}" )
                 Result.Error<NetworkError>(NetworkError.UNKNOWN)
             }
         }

@@ -9,7 +9,6 @@ import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.auth.signup.SignUpCredentials
 import com.example.model.enums.ScreenState
 import com.example.model.enums.Gender
-import com.example.network.constants.Role
 import com.example.signup.validator.SignUpValidationResult
 import com.example.signup.validator.SignUpValidator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -256,12 +255,12 @@ class SignUpViewModel(
                     phoneNumber = uiState.value.phoneNumber.trim(),
                     password = uiState.value.password.trim(),
                     gender = uiState.value.gender ?: Gender.MALE,
-                    role = Role.EMPLOYEE.name.lowercase().trim()
+                    role = TODO("don't use network any where except the data module")
                 )
             ).onSuccess { response ->
                 Log.v("Successful sign up", "SignUpViewModel")
                 sendOtpService()
-                updateScreenState(ScreenState.Success)
+                updateScreenState(ScreenState.SUCCESS)
                 updateShowErrorDialogState(false)
             }.onError { error ->
                 Log.v("Failed sign up", "SignUpViewModel")
