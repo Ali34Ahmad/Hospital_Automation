@@ -71,14 +71,6 @@ fun HospitalAutomationButton(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    strokeWidth = MaterialTheme.sizing.small2,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(MaterialTheme.sizing.small24)
-                )
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium16))
-            }
             if (icon != null) {
                 Icon(
                     painter = painterResource(icon),
@@ -86,13 +78,22 @@ fun HospitalAutomationButton(
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small8))
             }
-            if (!isLoading) {
+
+            if(isLoading){
+                CircularProgressIndicator(
+                    strokeWidth = MaterialTheme.sizing.small2,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(MaterialTheme.sizing.small24)
+                )
+            }else{
                 Text(
                     text,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
+
+
         }
     }
 }

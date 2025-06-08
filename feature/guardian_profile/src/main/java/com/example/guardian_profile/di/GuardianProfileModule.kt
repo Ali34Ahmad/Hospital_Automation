@@ -9,7 +9,5 @@ import org.koin.dsl.module
 
 
 val guardianProfileModule = module {
-    singleOf(::AddGuardianToChildUseCase)
-    singleOf(::GetGuardianByIdUseCase)
     viewModelOf(::GuardianProfileViewModel)
 }

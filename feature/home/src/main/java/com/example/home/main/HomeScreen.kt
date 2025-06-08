@@ -38,7 +38,6 @@ import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
-import com.example.utility.network.NetworkError
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -233,7 +232,7 @@ fun HomeScreenPermissionRequiredPreview() {
             HomeScreen(
                 uiState = HomeUiState(
                     isPermissionGranted = false,
-                    screenState = ScreenState.Success,
+                    screenState = ScreenState.SUCCESS,
                 ),
                 uiActions = HomeUiActions(
                     navigationActions = mockHomeNavigationUiActions(),
@@ -271,7 +270,7 @@ fun HomeScreenHidePermissionCardPreview() {
             HomeScreen(
                 uiState = HomeUiState(
                     showPermissionCard = false,
-                    screenState = ScreenState.Success,
+                    screenState = ScreenState.SUCCESS,
                 ),
                 uiActions = HomeUiActions(
                     navigationActions = mockHomeNavigationUiActions(),

@@ -8,7 +8,6 @@ import com.example.domain.use_cases.auth.LoginUseCase
 import com.example.email_verification.EmailVerificationNavConstants
 import com.example.model.auth.login.LoginRequest
 import com.example.model.enums.ScreenState
-import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,7 +77,7 @@ class EmailVerifiedSuccessfullyViewModel(
                 )
             ).onSuccess {
                 Log.v("Successful log in", "EmailVerifiedSuccessfullyViewModel")
-                updateScreenState(ScreenState.Success)
+                updateScreenState(ScreenState.SUCCESS)
                 updateShowErrorDialogState(false)
             }.onError { error ->
                 Log.v("Failed log in", "EmailVerifiedSuccessfullyViewModel")

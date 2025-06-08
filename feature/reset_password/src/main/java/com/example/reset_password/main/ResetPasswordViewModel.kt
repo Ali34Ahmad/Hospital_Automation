@@ -12,7 +12,6 @@ import com.example.model.auth.reset_password.ResetPasswordRequest
 import com.example.model.enums.ScreenState
 import com.example.reset_password.validator.ResetPasswordValidationResult
 import com.example.reset_password.validator.ResetPasswordValidator
-import com.example.utility.network.Error
 import com.example.utility.network.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -122,7 +121,7 @@ class ResetPasswordViewModel(
                 is Result.Success -> {
                     Log.v("Successful Reset Password", "ResetPasswordViewModel")
                     login()
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                     updateShowErrorDialogState(false)
                 }
 

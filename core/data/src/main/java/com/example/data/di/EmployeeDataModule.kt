@@ -13,6 +13,7 @@ import com.example.data.repositories.residential_address.AddResidentialAddressRe
 import com.example.data.repositories.upload_child_file.UploadChildDocumentsRepositoryImpl
 import com.example.data.repositories.user.UserRepositoryImp
 import com.example.datastore.di.dataStoreModule
+import com.example.domain.di.domainModules.employeeDomainModule
 import com.example.domain.repositories.AddResidentialAddressRepository
 import com.example.domain.repositories.AdminProfileRepository
 import com.example.domain.repositories.AuthRepository
@@ -30,8 +31,9 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val dataModule = module {
-    includes(networkModule, dataStoreModule)
+val employeeDataModule = module {
+    includes(networkModule, dataStoreModule, employeeDomainModule)
+
     single<UserRepository> { UserRepositoryImp(get(), get()) }
     single<ChildRepository> { ChildRepositoryImp(get(), get()) }
 

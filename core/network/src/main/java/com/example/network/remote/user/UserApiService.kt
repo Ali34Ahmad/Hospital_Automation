@@ -1,6 +1,5 @@
 package com.example.network.remote.user
 
-import com.example.network.model.dto.user.UserFullDto
 import com.example.network.model.response.relations.ChildGuardianRelationResponse
 import com.example.network.model.response.user.GetGuardianByChildIdResponse
 import com.example.network.model.response.user.GetGuardianByIdResponse
@@ -12,7 +11,7 @@ interface UserApiService {
 
     suspend fun getUserProfile(token: String, id: Int) : Result<GetGuardianByIdResponse, NetworkError>
 
-    suspend fun getGuardianByChildId(
+    suspend fun getGuardiansByChildId(
         token: String,
         childId: Int
     ): Result<GetGuardianByChildIdResponse, NetworkError>

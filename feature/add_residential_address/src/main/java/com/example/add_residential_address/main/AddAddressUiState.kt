@@ -2,7 +2,6 @@ package com.example.add_residential_address.main
 
 import com.example.model.enums.ScreenState
 import com.example.util.UiText
-import com.example.utility.network.Error
 
 
 data class AddAddressUiState(

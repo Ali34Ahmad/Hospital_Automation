@@ -29,7 +29,6 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.items.EmailTextWithImageItem
 import com.example.ui_components.components.text_field.OtpInputRow
@@ -42,7 +41,7 @@ fun OtpVerificationScreen(
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(uiState.screenState) {
-        if (uiState.screenState== ScreenState.Success) {
+        if (uiState.screenState== ScreenState.SUCCESS) {
             uiActions.navigateToEmailVerifiedSuccessfullyScreen()
         }
     }

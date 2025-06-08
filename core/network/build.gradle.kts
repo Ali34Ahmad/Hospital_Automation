@@ -47,5 +47,5 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(project(":core:datastore"))
-    api(project(":core:utility"))
+    implementation(project(":core:utility"))
 }

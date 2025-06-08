@@ -123,8 +123,6 @@ class AddChildViewModel(
                 }
                 _uiState.value = AddChildUIState(sendingDataButtonState = bottomBarState )
             }
-            AddChildUIActions.NavigateBack -> Unit
-            AddChildUIActions.NavigateToNextScreen -> Unit
         }
     }
 

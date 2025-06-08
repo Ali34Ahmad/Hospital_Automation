@@ -87,12 +87,14 @@ dependencies {
 
 
     //features
+    implementation(project(":feature:guardians"))
     implementation(project(":feature:guardians_search"))
+    implementation(project(":feature:guardian_profile"))
+
     implementation(project(":feature:children_search"))
     implementation(project(":feature:child_profile"))
-    implementation(project(":feature:add_child_screen"))
-    implementation(project(":feature:guardian_profile"))
     implementation(project(":feature:children"))
+    implementation(project(":feature:add_child_screen"))
 
     //data
     implementation(project(":core:data"))

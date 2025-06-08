@@ -41,21 +41,7 @@ fun HospitalAutomationTopBarWithSearchBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-
-                IconButton(
-                    modifier = Modifier.fillMaxHeight() ,
-                    onClick = onNavigationIconCLick
-                ) {
-                    Icon(
-                        painterResource(navigationIcon),
-                        contentDescription = null
-                    )
-                }
-                HospitalAutomationSearchBar(
+            HospitalAutomationSearchBar(
                     modifier = Modifier.fillMaxWidth(1f),
                     query = query,
                     onQueryChange = onQueryChange,
@@ -64,8 +50,17 @@ fun HospitalAutomationTopBarWithSearchBar(
                     trailingIcon = trailingIcon,
                     onSearch = onSearch
                 )
+        },
+        navigationIcon = {
+            IconButton(
+                modifier = Modifier.fillMaxHeight() ,
+                onClick = onNavigationIconCLick
+            ) {
+                Icon(
+                    painterResource(navigationIcon),
+                    contentDescription = null
+                )
             }
-
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color(0xffEFF1FC)

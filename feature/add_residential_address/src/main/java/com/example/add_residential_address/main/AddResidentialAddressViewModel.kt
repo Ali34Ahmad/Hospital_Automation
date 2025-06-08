@@ -8,8 +8,6 @@ import com.example.add_residential_address.validator.AddResidentialAddressValida
 import com.example.domain.use_cases.add_residential_address.AddResidentialAddressUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.residential_address.AddAddressRequest
-import com.example.utility.network.Error
-import com.example.utility.network.Result
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -174,7 +172,7 @@ class AddResidentialAddressViewModel(
                 )
             ).onSuccess { result ->
                 Log.v("Address added Successfully", "AddResidentialViewModel")
-                updateScreenState(ScreenState.Success)
+                updateScreenState(ScreenState.SUCCESS)
                 updateShowErrorDialogState(false)
             }.onError { error ->
                 Log.v("Adding Address Failed", "AddResidentialViewModel")

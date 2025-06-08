@@ -4,5 +4,5 @@ enum class ScreenState {
     IDLE,
     LOADING,
     ERROR,
-    Success,
+    SUCCESS,
 }

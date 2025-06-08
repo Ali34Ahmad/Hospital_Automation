@@ -7,13 +7,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.guardians_search.presentation.GuardiansSearchNavigationActions
 import com.example.guardians_search.presentation.GuardiansSearchScreen
 import com.example.guardians_search.presentation.GuardiansSearchUiState
 import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianData
+import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -42,7 +43,12 @@ private val emptyResult = flowOf(
     PagingData.from(emptyList<GuardianData>())
 )
 
-@Preview
+private val mockNavigationActions = object : GuardiansSearchNavigationActions{
+    override fun navigateUp() {}
+    override fun navigateToGuardianDetails(guardianId: Int, childId: Int?) {}
+}
+
+@DarkAndLightModePreview
 @Composable
 fun GuardiansSearchScreenPreview() {
     Hospital_AutomationTheme {
@@ -50,38 +56,32 @@ fun GuardiansSearchScreenPreview() {
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
             uiState = uiState,
-            onNavigateUp = {},
-            onQueryChange = {},
-            onQueryDeleted = {},
-            onNavigateToGuardianDetails = {guardianId,childId->},
-            onStateUpdated = {},
+            navigationActions = mockNavigationActions,
+            onAction = {},
             guardians = emptyResult.collectAsLazyPagingItems()
         )
     }
 
 }
 
-@Preview
+@DarkAndLightModePreview
 @Composable
 fun GuardiansSearchScreenEmptyPreview() {
     Hospital_AutomationTheme {
         val uiState by remember { mutableStateOf(GuardiansSearchUiState(
             searchQuery = "Ali",
-            screenState = ScreenState.Success
+            screenState = ScreenState.SUCCESS
         )) }
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
             uiState = uiState,
-            onNavigateUp = {},
-            onQueryChange = {},
-            onQueryDeleted = {},
-            onNavigateToGuardianDetails = {guardianId,childId->},
-            onStateUpdated = {},
+            navigationActions = mockNavigationActions,
+            onAction = {},
             guardians = emptyResult.collectAsLazyPagingItems()
         )
     }
 }
-@Preview
+@DarkAndLightModePreview
 @Composable
 fun GuardiansSearchScreenLoadingPreview() {
     Hospital_AutomationTheme {
@@ -92,37 +92,31 @@ fun GuardiansSearchScreenLoadingPreview() {
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
             uiState = uiState,
-            onNavigateUp = {},
-            onQueryChange = {},
-            onQueryDeleted = {},
-            onNavigateToGuardianDetails = {guardianId,childId->},
-            onStateUpdated = {},
+            navigationActions = mockNavigationActions,
+            onAction = {},
             guardians = emptyResult.collectAsLazyPagingItems()
         )
     }
 }
-@Preview
+@DarkAndLightModePreview
 @Composable
 fun GuardiansSearchScreenSuccessPreview() {
     Hospital_AutomationTheme {
         var uiState by remember { mutableStateOf(GuardiansSearchUiState(
             searchQuery = "Ali",
-            screenState = ScreenState.Success
+            screenState = ScreenState.SUCCESS
         )) }
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
             uiState = uiState,
-            onNavigateUp = {},
-            onQueryChange = {},
-            onQueryDeleted = {},
-            onNavigateToGuardianDetails = {guardianId,childId->},
-            onStateUpdated = {},
+            navigationActions = mockNavigationActions,
+            onAction = {},
             guardians = fakeGuardians.collectAsLazyPagingItems()
         )
     }
 
 }
-@Preview
+@DarkAndLightModePreview
 @Composable
 fun GuardiansSearchScreenErrorPreview() {
     Hospital_AutomationTheme {
@@ -133,14 +127,29 @@ fun GuardiansSearchScreenErrorPreview() {
         GuardiansSearchScreen(
             modifier = Modifier.fillMaxSize(),
             uiState = uiState,
-            onNavigateUp = {},
-            onQueryChange = {},
-            onQueryDeleted = {},
-            onNavigateToGuardianDetails = {guardianId,childId->},
-            onStateUpdated = {},
+            navigationActions = mockNavigationActions,
+            onAction = {},
             guardians = fakeGuardians.collectAsLazyPagingItems()
         )
     }
 
 }
+@DarkAndLightModePreview
+@Composable
+fun GuardiansSearchScreenIdlePreview() {
+    Hospital_AutomationTheme {
+        val uiState by remember { mutableStateOf(GuardiansSearchUiState(
+            searchQuery = "",
+            screenState = ScreenState.IDLE
+        )) }
+        GuardiansSearchScreen(
+            modifier = Modifier.fillMaxSize(),
+            uiState = uiState,
+            navigationActions = mockNavigationActions,
+            onAction = {},
+            guardians = null
+        )
+    }
+}
+
 

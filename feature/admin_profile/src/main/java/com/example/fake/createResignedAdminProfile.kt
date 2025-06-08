@@ -5,7 +5,6 @@ import com.example.model.admin_account.AdminProfile
 import com.example.model.admin_account.AdminProfileResponse
 import com.example.model.enums.Gender
 import com.example.model.user.FullName
-import com.example.network.model.response.AdminProfileDto
 
 fun createSampleAdminProfile(): AdminProfileResponse {
     return AdminProfileResponse(

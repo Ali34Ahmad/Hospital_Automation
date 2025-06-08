@@ -29,7 +29,6 @@ fun SendingDataBottomBar(
     state: BottomBarState,
     onSuccess:()->Unit,
     modifier: Modifier = Modifier,
-    loadingText: String = stringResource(id = R.string.wait),
     failureText:String = stringResource(id = R.string.error),
     successContent: @Composable () -> Unit = {},
 ) {
@@ -56,7 +55,7 @@ fun SendingDataBottomBar(
             BottomBarState.LOADING ->{
                 HospitalAutomationButton(
                     onClick = onButtonClick,
-                    text = "$loadingText...",
+                    text = text,
                     modifier = modifier,
                     isLoading = true,
                     enabled = false,
@@ -84,17 +83,14 @@ fun SendingDataBottomBar(
 @Composable
 fun SendingDataBottomBarPreview() {
     Hospital_AutomationTheme {
-        var state by remember { mutableStateOf(BottomBarState.IDLE) }
-        var index = 0
         Scaffold(
             bottomBar = {
                 SendingDataBottomBar(
                     onSuccess = {},
                     text = stringResource(R.string.send_data),
                     onButtonClick = {
-                        state = BottomBarState.entries[index++ % BottomBarState.entries.size]
                     },
-                    state = state,
+                    state = BottomBarState.LOADING,
                     modifier = Modifier.fillMaxWidth().padding(
                         MaterialTheme.spacing.medium16
                     ),

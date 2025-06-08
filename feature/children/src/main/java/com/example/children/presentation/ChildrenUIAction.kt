@@ -4,9 +4,11 @@ import com.example.model.enums.ScreenState
 
 
 sealed interface ChildrenUIAction {
-    object NavigateUp: ChildrenUIAction
     object Retry: ChildrenUIAction
-
     data class UpdateFetchingDataState(val newState: ScreenState): ChildrenUIAction
-    data class NavigateToChildProfile(val childId: Int): ChildrenUIAction
+}
+
+interface ChildrenNavigationAction{
+    fun navigateUp()
+    fun navigateToChildProfile(childId: Int)
 }

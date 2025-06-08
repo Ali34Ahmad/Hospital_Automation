@@ -21,10 +21,9 @@ internal fun ChildDto.toChildData() =
     )
 
 internal fun ChildFullResponse.toChildFullData(): ChildFullData {
-    val child = this.child
 
     return ChildFullData(
-        numberOfGuardians = this.numOfGuardians ,
+        numberOfGuardians = numOfGuardians ,
         childId = child.childId,
         firstName = child.firstName,
         lastName = child.lastName,
@@ -62,7 +61,7 @@ internal fun AddChildResponse.toChildFullData(): ChildFullData =
         motherLastName = child.motherLastName,
         dateOfBirth = child.dateOfBirth,
         gender = child.gender,
-        employeeId = child.employeeId
+        employeeId = child.employeeId,
     )
 
 internal fun ChildFullDto.toChildFullData(): ChildFullData = ChildFullData(
@@ -76,5 +75,6 @@ internal fun ChildFullDto.toChildFullData(): ChildFullData = ChildFullData(
     dateOfBirth = dateOfBirth,
     birthCertificateImgUrl = birthCertificateImgUrl,
     gender = gender,
-    employeeId = employeeId
+    employeeId = employeeId,
+    employeeName = user?.let {user-> "${user.firstName} ${user.lastName}" }
 )

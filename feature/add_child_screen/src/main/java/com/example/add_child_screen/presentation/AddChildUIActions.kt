@@ -25,8 +25,10 @@ sealed interface AddChildUIActions {
 
     data class ChangeDatePickerVisibility(val isVisible: Boolean): AddChildUIActions
 
-    //navigation
-    object NavigateBack: AddChildUIActions
-    object NavigateToNextScreen: AddChildUIActions
 
+}
+
+interface AddChildNavigationAction{
+    fun navigateUp()
+    fun navigateToNextScreen(childId: Int)
 }

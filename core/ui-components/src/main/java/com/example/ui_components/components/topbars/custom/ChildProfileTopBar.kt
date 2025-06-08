@@ -1,6 +1,7 @@
 package com.example.ui_components.components.topbars.custom
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -43,14 +44,6 @@ fun ChildProfileTopBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            val animation = rememberInfiniteTransition()
-            val alpha = animation.animateFloat(
-                initialValue = 0.5f,
-                targetValue = 1f,
-                animationSpec =  infiniteRepeatable(
-                    tween(600), RepeatMode.Reverse
-                )
-            )
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
@@ -73,26 +66,13 @@ fun ChildProfileTopBar(
                     )
                 }
                 Spacer(Modifier.width(MaterialTheme.spacing.medium16))
-                AnimatedContent(name == null) {
-                    when(it){
-                        true->{
-                            Box(
-                                modifier = Modifier.height(MaterialTheme.sizing.small12)
-                                    .fillMaxWidth(0.5f)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.outline.copy(alpha = alpha.value)
-                                    )
-                            )
-                        }
-                        false->{
-                            name?.let {
-                                Text(
-                                    text = it,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                        }
+                AnimatedVisibility(name!=null) {
+                    name?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }

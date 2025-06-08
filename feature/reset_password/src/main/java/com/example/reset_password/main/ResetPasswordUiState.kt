@@ -2,7 +2,6 @@ package com.example.reset_password.main
 
 import com.example.model.enums.ScreenState
 import com.example.util.UiText
-import com.example.utility.network.Error
 
 data class ResetPasswordUiState(
     val email: String = "",

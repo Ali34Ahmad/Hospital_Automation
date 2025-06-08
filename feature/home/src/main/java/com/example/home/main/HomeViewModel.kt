@@ -96,7 +96,7 @@ class HomeViewModel(
                     if (!isPermissionGranted) {
                         writeShowPermissionCard(true)
                     }
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed CheckingPermission", "HomeViewModel")
                     updateScreenState(ScreenState.ERROR)

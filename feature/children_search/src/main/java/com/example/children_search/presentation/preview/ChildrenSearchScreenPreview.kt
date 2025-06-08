@@ -47,6 +47,9 @@ internal val fakeChildren = flowOf(
         )
     )
 )
+internal val emptyResult = flowOf(
+    PagingData.empty<ChildData>()
+)
 @DarkAndLightModePreview
 @Composable
 fun ChildrenSearchScreenSuccessPreview(){
@@ -57,7 +60,7 @@ fun ChildrenSearchScreenSuccessPreview(){
             onStateUpdated = {},
             onNavigateToChildProfile = {},
             onQueryChanged = {},
-            uiState = ChildrenSearchUiState(state = ScreenState.Success),
+            uiState = ChildrenSearchUiState(state = ScreenState.SUCCESS),
             children = fakeChildren.collectAsLazyPagingItems()
         )
     }
@@ -74,6 +77,37 @@ fun ChildrenSearchScreenErrorPreview(){
             onQueryChanged = {},
             uiState = ChildrenSearchUiState(state = ScreenState.ERROR),
             children = fakeChildren.collectAsLazyPagingItems()
+        )
+    }
+}
+@DarkAndLightModePreview
+@Composable
+fun ChildrenSearchScreenIdlePreview(){
+    Hospital_AutomationTheme {
+        ChildrenSearchScreen(
+            onNavigateBack = {},
+            onQueryDeleted = {},
+            onStateUpdated = {},
+            onNavigateToChildProfile = {},
+            onQueryChanged = {},
+            uiState = ChildrenSearchUiState(state = ScreenState.IDLE),
+            children =null
+        )
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun ChildrenSearchScreenEmptyPreview(){
+    Hospital_AutomationTheme {
+        ChildrenSearchScreen(
+            onNavigateBack = {},
+            onQueryDeleted = {},
+            onStateUpdated = {},
+            onNavigateToChildProfile = {},
+            onQueryChanged = {},
+            uiState = ChildrenSearchUiState(state = ScreenState.SUCCESS),
+            children = emptyResult.collectAsLazyPagingItems()
         )
     }
 }

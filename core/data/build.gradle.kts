@@ -40,6 +40,7 @@ dependencies {
     api(project(":core:datastore"))
     api(project(":core:domain"))
     api(project(":core:model"))
+    api(project(":core:utility"))
 
     implementation(libs.androidx.paging.runtime)
 

@@ -28,13 +28,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.example.constants.icons.AppIcons
 import com.example.model.enums.ScreenState
-import com.example.utility.network.NetworkError
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 import com.example.ui_components.R
@@ -47,7 +45,7 @@ fun ResetPasswordScreen(
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(uiState.screenState) {
-        if (uiState.screenState== ScreenState.Success) {
+        if (uiState.screenState== ScreenState.SUCCESS) {
             uiActions.navigateToHomeScreen()
         }
     }
