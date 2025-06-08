@@ -1,12 +1,16 @@
 package com.example.home.main
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,9 +19,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
@@ -30,6 +36,7 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.utility.network.NetworkError
 import kotlinx.coroutines.launch
@@ -43,12 +50,24 @@ fun HomeScreen(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let {
+            Toast.makeText(
+                context,
+                it.asString(context),
+                Toast.LENGTH_SHORT
+            ).show()
+            uiActions.clearToastMessage()
+        }
+    }
 
     val drawerButtons = listOf(
         DrawerButton(
             text = R.string.profile,
             image = AppIcons.Outlined.accountCircle,
-            badgeCount = 24,
             onClick = {
                 uiActions.navigateToEmployeeProfileScreen()
             }
@@ -74,9 +93,8 @@ fun HomeScreen(
         state = drawerState,
         title = R.string.medicare,
         buttons = drawerButtons,
-        selectedIndex = uiState.selectedDrawerIndex,
+        selectedIndex = null,
         onItemSelected = {
-            uiActions.onUpdateSelectedDrawerIndex(it)
             drawerButtons[it].onClick()
             scope.launch {
                 drawerState.close()
@@ -112,7 +130,6 @@ fun HomeScreen(
             ) {
                 Column(
                     modifier = Modifier,
-//                    .verticalScroll(scrollState),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -125,38 +142,64 @@ fun HomeScreen(
                             ),
                         contentAlignment = Alignment.Center,
                     ) {
-                        if (uiState.screenState== ScreenState.LOADING) {
+                        if (uiState.screenState == ScreenState.LOADING) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(
                                     MaterialTheme.sizing.circularProgressIndicatorSize,
                                 )
                             )
-                        } else if (uiState.screenState== ScreenState.ERROR) {
-                            IllustrationCard(
-                                title = stringResource(R.string.network_error),
-                                description = stringResource(R.string.could_not_check_your_permissions),
-                                illustration = {
-                                    Image(
-                                        painter = painterResource(R.drawable.ill_error),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
+                        } else if (uiState.screenState == ScreenState.ERROR) {
+                            PullToRefreshBox(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = { uiActions.onRefresh() }
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(scrollState),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                ) {
+                                    IllustrationCard(
+                                        title = stringResource(R.string.network_error),
+                                        description = stringResource(R.string.could_not_check_your_permissions),
+                                        illustration = {
+                                            Image(
+                                                painter = painterResource(R.drawable.ill_error),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
+                                            )
+                                        }
                                     )
                                 }
-                            )
-                        } else {
-                            HomeScreenSuccess(
-                                showPermissionCard = uiState.showPermissionCard,
-                                permissionGranted = uiState.isPermissionGranted,
-                                onStartButtonClick = {
-                                    uiActions.onStartButtonClick()
-                                },
-                                navigateToAddChildScreen = {
-                                    uiActions.navigateToAddChildScreen()
-                                },
-                                navigateToAddGuardianScreen = {
-                                    uiActions.navigateToAddGuardianScreen()
+                            }
+                        } else if (uiState.screenState == ScreenState.Success) {
+                            PullToRefreshBox(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = { uiActions.onRefresh() }
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(scrollState),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                ) {
+                                    HomeScreenSuccess(
+                                        showPermissionCard = uiState.showPermissionCard,
+                                        permissionGranted = uiState.isPermissionGranted,
+                                        onStartButtonClick = {
+                                            uiActions.onStartButtonClick()
+                                        },
+                                        navigateToAddChildScreen = {
+                                            uiActions.navigateToAddChildScreen()
+                                        },
+                                        navigateToAddGuardianScreen = {
+                                            uiActions.navigateToAddGuardianScreen()
+                                        }
+                                    )
                                 }
-                            )
+                            }
                         }
                     }
                 }

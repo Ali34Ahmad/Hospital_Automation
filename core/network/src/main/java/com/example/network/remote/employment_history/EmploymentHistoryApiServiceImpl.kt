@@ -39,12 +39,12 @@ class EmploymentHistoryApiServiceImpl(
 
             else -> {
                 val errorMessage: NetworkMessage = response.body()
-                Log.v("EmploymentHistoryApi:Out of Range 2xx", errorMessage.message)
+                Log.e("EmploymentHistoryApi:Out of Range 2xx", errorMessage.message)
                 Result.Error(NetworkError.UNKNOWN)
             }
         }
     } catch (e: Exception) {
-        Log.v("EmploymentHistoryApi:Exception", e.message?:"Unknown")
+        Log.e("EmploymentHistoryApi:Exception", e.message?:"Unknown")
         Result.Error(NetworkError.UNKNOWN)
     }
 }

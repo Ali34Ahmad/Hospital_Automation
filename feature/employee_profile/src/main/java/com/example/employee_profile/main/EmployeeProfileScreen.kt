@@ -1,5 +1,6 @@
 package com.example.employee_profile.main
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,11 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.employee_profile.navigation.EmployeeProfilePreviousDestination
+import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
 import com.example.fake.createSampleEmployeeProfileResponse
 import com.example.hospital_automation.core.components.card.IllustrationCard
-import com.example.utility.network.NetworkError
+import com.example.model.enums.Gender
+import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -35,7 +37,8 @@ import com.example.ui_components.components.card.EmployeeProfileActionsCard
 import com.example.ui_components.components.card.EmployeeProfileCard
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
-import com.example.model.enums.Gender
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 
 @Composable
 fun EmployeeProfileScreen(
@@ -43,6 +46,19 @@ fun EmployeeProfileScreen(
     uiActions: EmployeeProfileUiActions,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let {
+            Toast.makeText(
+                context,
+                it.asString(context),
+                Toast.LENGTH_SHORT
+            ).show()
+            uiActions.clearToastMessage()
+        }
+    }
+
     LaunchedEffect(uiState.isLoggedOutSuccessfully) {
         if (uiState.isLoggedOutSuccessfully) {
             uiActions.navigateToLoginScreen()
@@ -52,7 +68,7 @@ fun EmployeeProfileScreen(
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.network_error),
-        description = uiState.errorDialogText,
+        description = uiState.errorDialogText?.asString() ?: "",
         onConfirm = { uiActions.hideErrorDialog() },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
@@ -60,10 +76,11 @@ fun EmployeeProfileScreen(
 
     LoadingDialog(
         showDialog = uiState.showLoadingDialog,
-        text = uiState.loadingDialogText
+        text = uiState.loadingDialogText?.asString()
     )
 
     val isAddedChildrenEnabled = uiState.userInfo?.profile?.acceptedBy != null
+    val isEmploymentEnabled = uiState.userInfo?.profile?.acceptedBy != null
 
     val isResigned = uiState.userInfo?.profile?.isResigned == true
     val isAccepted = uiState.userInfo?.profile?.acceptedBy != null
@@ -73,17 +90,29 @@ fun EmployeeProfileScreen(
     val showDeactivationItem = !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
 
 
-    val context = LocalContext.current
-
     val scrollState = rememberScrollState()
-    Scaffold { contentPadding ->
+    Scaffold(
+        topBar = {
+            if (uiState.profileScreenState == ScreenState.ERROR ||
+                uiState.profileScreenState == ScreenState.LOADING
+            ) {
+                HospitalAutomationTopBar(
+                    title = "",
+                    onNavigationIconClick = { uiActions.navigateUp() },
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationIcon = AppIcons.Outlined.arrowBack,
+                    imageUrl = null,
+                )
+            }
+        }
+    ) { contentPadding ->
         Surface(
             modifier = modifier
                 .fillMaxSize()
                 .padding(contentPadding),
         ) {
 
-            if (uiState.isLoadingProfile) {
+            if (uiState.profileScreenState == ScreenState.LOADING) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
@@ -92,88 +121,108 @@ fun EmployeeProfileScreen(
                         modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize)
                     )
                 }
-            } else if (uiState.fetchingProfileError != null) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    IllustrationCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.spacing.medium16),
-                        illustration = {
-                            Image(
-                                painter = painterResource(R.drawable.ill_error),
-                                contentDescription = null,
-                                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
-                            )
-                        },
-                        title = stringResource(R.string.network_error),
-                        description = stringResource(R.string.something_went_wrong),
-                    )
-                }
-            }
-            if (uiState.userInfo != null) {
-                val name = uiState.userInfo.profile.fullName.toAppropriateFormat()
-                val subject = stringResource(R.string.medicare)
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState),
+            } else if (uiState.profileScreenState == ScreenState.ERROR) {
+                PullToRefreshBox(
+                    refreshing = uiState.isRefreshing,
+                    onRefresh = { uiActions.onRefresh() }
                 ) {
                     Column(
-                        modifier = modifier.padding(
-                            MaterialTheme.spacing.medium16
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                     ) {
-                        EmployeeProfileCard(
-                            name = name,
-                            onNavigateUpButtonClick = {
-                                uiActions.navigateUp()
-                            },
-                            onEmailButtonClick = {
-                                uiActions.navigateToEmail(
-                                    context = context,
-                                    email = uiState.userInfo.profile.email,
-                                    subject = subject
+                        IllustrationCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(MaterialTheme.spacing.medium16),
+                            illustration = {
+                                Image(
+                                    painter = painterResource(R.drawable.ill_error),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
                                 )
                             },
-                            onPhoneNumberButtonClick = {
-                                uiActions.navigateToCallApp(
-                                    context = context,
-                                    phoneNumber = uiState.userInfo.profile.phoneNumber
+                            title = stringResource(R.string.network_error),
+                            description = stringResource(R.string.something_went_wrong),
+                        )
+                    }
+                }
+            }
+            if (uiState.profileScreenState == ScreenState.Success &&
+                uiState.userInfo != null
+            ) {
+                val name = uiState.userInfo.profile.fullName.toAppropriateFormat()
+                val subject = stringResource(R.string.medicare)
+                PullToRefreshBox(
+                    refreshing = uiState.isRefreshing,
+                    onRefresh = { uiActions.onRefresh() }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Column(
+                            modifier = modifier.padding(
+                                MaterialTheme.spacing.medium16
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
+                        ) {
+                            EmployeeProfileCard(
+                                name = name,
+                                onNavigateUpButtonClick = {
+                                    uiActions.navigateUp()
+                                },
+                                onEmailButtonClick = {
+                                    uiActions.navigateToEmail(
+                                        context = context,
+                                        email = uiState.userInfo.profile.email,
+                                        subject = subject
+                                    )
+                                },
+                                onPhoneNumberButtonClick = {
+                                    uiActions.navigateToCallApp(
+                                        context = context,
+                                        phoneNumber = uiState.userInfo.profile.phoneNumber
+                                    )
+                                },
+                                phoneNumber = uiState.userInfo.profile.phoneNumber,
+                                profileImageUrl = uiState.userInfo.profile.imageUrl ?: "",
+                                address = uiState.userInfo.profile.address.toAppropriateFormat(),
+                                gender = uiState.userInfo.profile.gender ?: Gender.MALE,
+                                email = uiState.userInfo.profile.email,
+                                isResigned = uiState.userInfo.profile.isResigned,
+                                isSuspended = uiState.userInfo.profile.isSuspended,
+                                isAccepted = uiState.userInfo.profile.acceptedBy != null,
+                                showNavigateUp = true
+                            )
+                            if (uiState.userInfo.isAccessedByOwner) {
+                                EmployeeProfileActionsCard(
+                                    onAddedChildrenItemClick = {
+                                        uiActions.navigateToAddedChildrenScreen()
+                                    },
+                                    isAddedChildrenEnabled = isAddedChildrenEnabled,
+                                    onEmploymentHistoryItemClick = {
+                                        uiActions.navigateToEmploymentHistoryScreen()
+                                    },
+                                    isEmploymentEnabled = isEmploymentEnabled,
+                                    onDeactivateAccountItemClick = {
+                                        uiActions.onDeactivateMyAccount()
+                                    },
+                                    onReactivateAccountItemClick = {
+                                        uiActions.onReactivateMyAccount()
+                                    },
+                                    showDeactivateMyAccountItem = showDeactivationItem,
+                                    isAccountDeactivated = isSuspended,
+                                    onLogoutItemClick = {
+                                        uiActions.onLogout()
+                                    },
                                 )
-                            },
-                            phoneNumber = uiState.userInfo.profile.phoneNumber,
-                            profileImageUrl = uiState.userInfo.profile.imageUrl ?: "",
-                            address = uiState.userInfo.profile.address.toAppropriateFormat(),
-                            gender = uiState.userInfo.profile.gender ?: Gender.MALE,
-                            email = uiState.userInfo.profile.email,
-                            isResigned = uiState.userInfo.profile.isResigned,
-                            isSuspended = uiState.userInfo.profile.isSuspended,
-                            isAccepted = uiState.userInfo.profile.acceptedBy != null,
-                            showNavigateUp = true
-                        )
-                        EmployeeProfileActionsCard(
-                            onAddedChildrenItemClick = {
-                                uiActions.navigateToAddedChildrenScreen()
-                            },
-                            isAddedChildrenEnabled = isAddedChildrenEnabled,
-                            onEmploymentHistoryItemClick = {
-                                uiActions.navigateToEmploymentHistoryScreen()
-                            },
-                            onDeactivateAccountItemClick = {
-                                uiActions.onDeactivateMyAccount()
-                            },
-                            onReactivateAccountItemClick = {
-                                uiActions.onReactivateMyAccount()
-                            },
-                            showDeactivateMyAccountItem = showDeactivationItem,
-                            isAccountDeactivated = isSuspended,
-                            onLogoutItemClick = {
-                                uiActions.onLogout()
-                            },
-                        )
+                            }
+                        }
                     }
                 }
             }
@@ -183,12 +232,13 @@ fun EmployeeProfileScreen(
 
 @DarkAndLightModePreview
 @Composable
-fun LoginScreenPreview() {
+fun EmployeeProfileOwnerScreenPreview() {
     Hospital_AutomationTheme {
         Surface {
             EmployeeProfileScreen(
                 uiState = EmployeeProfileUiState(
-                    userInfo = createSampleEmployeeProfileResponse()
+                    userInfo = createSampleEmployeeProfileResponse()[0],
+                    profileScreenState = ScreenState.Success,
                 ),
                 uiActions = EmployeeProfileUiActions(
                     navigationActions = mockEmployeeProfileNavigationUiActions(),
@@ -202,13 +252,33 @@ fun LoginScreenPreview() {
 
 @DarkAndLightModePreview
 @Composable
+fun EmployeeProfileAnotherEmployeeScreenPreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            EmployeeProfileScreen(
+                uiState = EmployeeProfileUiState(
+                    userInfo = createSampleEmployeeProfileResponse()[1],
+                    profileScreenState = ScreenState.Success,
+                ),
+                uiActions = EmployeeProfileUiActions(
+                    navigationActions = mockEmployeeProfileNavigationUiActions(),
+                    businessActions = mockEmployeeProfileBusinessUiActions(),
+                ),
+                modifier = Modifier,
+            )
+        }
+    }
+}
+
+
+@DarkAndLightModePreview
+@Composable
 fun LoginScreenErrorFetchingProfilePreview() {
     Hospital_AutomationTheme {
         Surface {
             EmployeeProfileScreen(
                 uiState = EmployeeProfileUiState(
-                    fetchingProfileError = NetworkError.UNKNOWN,
-                    isLoadingProfile = false,
+                    profileScreenState = ScreenState.ERROR,
                 ),
                 uiActions = EmployeeProfileUiActions(
                     navigationActions = mockEmployeeProfileNavigationUiActions(),

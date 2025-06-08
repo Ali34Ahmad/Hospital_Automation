@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import com.example.model.enums.ScreenState
+import com.example.ui_components.R
+import com.example.util.UiText
 import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -39,18 +41,18 @@ class HomeViewModel(
             viewModelScope.launch { writeShowPermissionCard(false) }
         }
 
-        override fun onUpdateSelectedDrawerIndex(index: Int) {
-            updateSelectedDrawerIndex(index)
-        }
-
         override fun onChangeTheme() {
             changeTheme()
         }
 
-    }
+        override fun onRefresh() {
+            refreshData()
+        }
 
-    private fun updateSelectedDrawerIndex(index: Int) {
-        _uiState.update { it.copy(selectedDrawerIndex = index) }
+        override fun clearToastMessage() {
+            updateToastMessage(null)
+        }
+
     }
 
     private fun updateShowPermissionCard(showPermissionCard: Boolean) {
@@ -74,10 +76,10 @@ class HomeViewModel(
         _uiState.update { it.copy(isPermissionGranted = isPermissionGranted) }
     }
 
-    private fun updateScreenState(screenState: ScreenState){
+    private fun updateScreenState(screenState: ScreenState) {
         _uiState.update {
             it.copy(
-                screenState=screenState
+                screenState = screenState
             )
         }
     }
@@ -124,5 +126,35 @@ class HomeViewModel(
         _uiState.update { it.copy(isDarkTheme = isDarkTheme) }
     }
 
+    private fun updateIsRefreshing(isRefreshing: Boolean) {
+        _uiState.update { it.copy(isRefreshing = isRefreshing) }
+    }
+
+    private fun refreshData() {
+        viewModelScope.launch {
+            updateIsRefreshing(true)
+            Log.v("Refreshing Employee Permission", "HomeViewModel")
+            checkEmployeePermissionUseCase()
+                .onSuccess { data ->
+                    Log.v("Successful Refresh Employee Permission", "HomeViewModel")
+                    val isPermissionGranted = data.permissionGranted
+                    updateIsPermissionGranted(isPermissionGranted)
+                    if (!isPermissionGranted) {
+                        writeShowPermissionCard(true)
+                    }
+                    updateIsRefreshing(false)
+                    updateScreenState(ScreenState.Success)
+                }.onError { error ->
+                    Log.v("Failed Refreshing Permission", "HomeViewModel")
+                    updateIsRefreshing(false)
+                    updateIsPermissionGranted(false)
+                    updateToastMessage(UiText.StringResource(R.string.something_went_wrong))
+                }
+        }
+    }
+
+    private fun updateToastMessage(uiText: UiText?) {
+        _uiState.update { it.copy(toastMessage=uiText) }
+    }
 }
 

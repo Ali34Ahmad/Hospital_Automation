@@ -9,6 +9,9 @@ import java.time.LocalDate
 data class EmploymentHistoryResponseDto(
     val currentUser: UserDetailsDto,
 
+    @SerialName("fileSize")
+    val employeeDocumentsFileSize: Long?,
+
     @SerialName("resigned_by")
     val resignedBy: UserReferenceDto?,
 
@@ -56,6 +59,9 @@ data class UserDetailsDto(
     @Serializable(with = LocalDateSerializer::class)
     @SerialName("work_end_date")
     val workEndDate: LocalDate?,
+
+    @SerialName("medical_license_img_url")
+    val documentsFileUrl: String?,
 )
 
 @Serializable

@@ -18,8 +18,8 @@ import com.example.email_verification.email_verified_successfully.navigation.ema
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
 import com.example.email_verification.otp_verification.naviation.navigateToEmailOtpVerificationScreen
-import com.example.employee_profile.navigation.EmployeeProfilePreviousDestination
 import com.example.employee_profile.navigation.EmployeeProfileRoute
+import com.example.employee_profile.navigation.ProfileAccessType
 import com.example.employee_profile.navigation.employeeProfileScreen
 import com.example.employee_profile.navigation.navigateToEmployeeProfileScreen
 import com.example.employment_history.navigation.employmentHistoryScreen
@@ -183,9 +183,9 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
                             },
                             onNavigateToEmployeeProfileScreen = {
-                                navController.switchToTap(
-                                    route = EmployeeProfileRoute,
-                                    startDestination = HomeRoute
+                                navController.navigateToEmployeeProfileScreen(
+                                    profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                                    employeeId = null
                                 )
                             },
                             onNavigateToRequestsScreen = {
@@ -216,14 +216,18 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         onNavigateToAcceptedByAdminProfileScreen = { adminId ->
                             navController.navigateToAdminProfileScreen(adminId)
                         },
-                        onNavigateToToResignedByAdminProfileScreen = { adminId ->
-                            navController.navigateToAdminProfileScreen(adminId)
+                        onNavigateToToResignedByAdminProfileScreen = { resignedById ->
+                            navController.navigateToAdminProfileScreen(resignedById)
                         },
                         onNavigateUp = {
                             navController.navigateUp()
                         },
-                        onNavigateToToSuspendedByAdminProfileScreen = { adminId ->
-                            navController.navigateToAdminProfileScreen(adminId)
+                        onNavigateToToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+                            if (suspendedById != currentEmployeeId) {
+                                navController.navigateToAdminProfileScreen(suspendedById)
+                            } else {
+                                navController.navigateUp()
+                            }
                         }
                     )
 

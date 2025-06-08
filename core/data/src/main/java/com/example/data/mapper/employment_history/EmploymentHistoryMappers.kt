@@ -8,10 +8,12 @@ import com.example.model.user.FullName
 import com.example.network.model.response.EmploymentHistoryResponseDto
 import com.example.network.model.response.UserDetailsDto
 import com.example.network.model.response.UserReferenceDto
+import com.example.network.utility.ApiRoutes
 
 fun EmploymentHistoryResponseDto.toEmploymentHistoryResponse(): EmploymentHistoryResponse {
     return EmploymentHistoryResponse(
         currentUser = this.currentUser.toUserDetails(),
+        employeeDocumentsFileSize=this.employeeDocumentsFileSize,
         resignedBy = this.resignedBy?.toUserReference(),
         suspendedBy = this.suspendedBy?.toUserReference(),
         acceptedBy = this.acceptedBy?.toUserReference()
@@ -30,9 +32,10 @@ fun UserDetailsDto.toUserDetails(): UserDetails {
         acceptedBy = this.acceptedBy,
         suspendedBy = this.suspendedBy,
         resignedBy = this.resignedBy,
-        imageUrl = this.imageUrl,
+        imageUrl = "${ApiRoutes.BASE_URL}/${ this.imageUrl }",
         workStartDate = this.workStartDate,
-        workEndDate = this.workEndDate
+        workEndDate = this.workEndDate,
+        documentsFileUrl = "${ApiRoutes.BASE_URL}/${this.documentsFileUrl}"
     )
 }
 

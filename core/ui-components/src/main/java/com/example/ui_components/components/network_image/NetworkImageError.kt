@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import com.example.constants.icons.AppIcons
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
@@ -47,6 +48,7 @@ fun NetworkImageError(
             text = stringResource(R.string.failed_to_load_image),
             style = textStyle,
             color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
         )
     }
 }

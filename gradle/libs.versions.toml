@@ -17,7 +17,6 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.8.2"
 composeBom = "2024.04.01"
 appcompat = "1.7.0"
-#logbackClassic = "1.5.18"
 material = "1.12.0"
 androidxNavigation = "2.8.9"
 kotlinxSerialization = "2.1.20"
@@ -26,12 +25,14 @@ kotlinCompilerExtension = "1.5.15"
 ktor = "3.1.2"
 kotlinSerializationJson = "3.1.2"
 datastorePreferences = "1.1.4"
+materialVersion = "1.8.2"
 pagingRuntime = "3.3.6"
 uiGraphicsAndroid = "1.6.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 calendar = { module = "com.maxkeppeler.sheets-compose-dialogs:calendar", version.ref = "core" }

@@ -51,6 +51,7 @@
             <option value="$PROJECT_DIR$/feature/login" />
             <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
+            <option value="$PROJECT_DIR$/feature/upload_child_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_profile_image" />
           </set>

@@ -7,11 +7,13 @@ import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.user.FullName
 import com.example.network.model.response.EmployeeProfileDto
 import com.example.network.model.response.EmployeeProfileResponseDto
+import com.example.network.utility.ApiRoutes
 
 
 fun EmployeeProfileResponseDto.toEmployeeProfileResponse(): EmployeeProfileResponse =
     EmployeeProfileResponse(
-        profile = this.profile.toEmployeeProfile()
+        profile = this.profile.toEmployeeProfile(),
+        isAccessedByOwner = true,
     )
 
 fun EmployeeProfileDto.toEmployeeProfile(): EmployeeProfile =
@@ -34,7 +36,7 @@ fun EmployeeProfileDto.toEmployeeProfile(): EmployeeProfile =
             street = this.addressStreet,
             note = this.addressNote
         ),
-        imageUrl = this.imageUrl,
+        imageUrl = "${ApiRoutes.BASE_URL}/${this.imageUrl}",
         documentsUrl = this.documentsUrl,
         gender = this.gender?.toGender(),
         isSuspended = this.isSuspended,

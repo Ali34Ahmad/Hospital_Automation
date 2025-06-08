@@ -124,7 +124,7 @@ fun EnterEmailScreen(
                         text = stringResource(R.string.send_otp_code),
                         modifier = Modifier
                             .fillMaxWidth(),
-                        enabled = uiState.isSendOtpCodeButtonEnabled,
+                        enabled = uiState.isSendOtpCodeButtonEnabled && !isLoading,
                         isLoading = isLoading,
                     )
 

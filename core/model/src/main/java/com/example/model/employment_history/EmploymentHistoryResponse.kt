@@ -6,6 +6,8 @@ import java.time.LocalDate
 data class EmploymentHistoryResponse(
     val currentUser: UserDetails,
 
+    val employeeDocumentsFileSize: Long?,
+
     val resignedBy: UserReference?,
 
     val suspendedBy: UserReference?,
@@ -31,6 +33,8 @@ data class UserDetails(
     val workStartDate: LocalDate?,
 
     val workEndDate: LocalDate?,
+
+    val documentsFileUrl: String?,
 )
 
 data class UserReference(

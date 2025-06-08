@@ -203,7 +203,7 @@
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_subtitle">Fetching data subtitle</string>
     <string name="search_for_children">Search for children</string>
-    <string name="suspensiong_date">Suspnsion date</string>
+    <string name="suspension_date">Suspension date</string>
     <string name="suspended_by">Suspended by</string>
     <string name="required_field">This field is required</string>
     <string name="invalid_email">Invalid email</string>
@@ -216,4 +216,18 @@
     <string name="failed_to_verify_your_email">Failed to verify your email. Please try again later.</string>
     <string name="failed_to_resend_otp_code">Failed to resend otp code. Please try again later.</string>
     <string name="failed_to_login_try_again">Failed to login. Please try again later.</string>
+    <string name="close">Close</string>
+    <string name="failed_to_log_out">Failed to logout. Please try again later</string>
+    <string name="failed_to_deactivate_account">Failed to deactivate your account. Please try again later</string>
+    <string name="failed_to_reactivate_account">Failed to reactivate your account. Please try again later.</string>
+    <string name="logging_out">Logging out…</string>
+    <string name="deactivating">Deactivating…</string>
+    <string name="reactivating">Reactivating...</string>
+    <string name="uploading_cancelled">Uploading cancelled</string>
+    <string name="file_too_big">File is too big to be used in out system.</string>
+    <string name="file_not_found">File can not be found. Please try again.</string>
+    <string name="check_internet_connection">Please check your internet connection and try again later.</string>
+    <string name="download">Download</string>
+    <string name="pending_with_dots">Pending</string>
+    <string name="downloading_with_dots">Downloading...</string>
 </resources>

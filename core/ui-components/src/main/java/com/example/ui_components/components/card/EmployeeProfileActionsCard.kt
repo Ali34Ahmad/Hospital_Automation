@@ -21,6 +21,7 @@ fun EmployeeProfileActionsCard(
     onAddedChildrenItemClick: () -> Unit,
     isAddedChildrenEnabled: Boolean,
     onEmploymentHistoryItemClick: () -> Unit,
+    isEmploymentEnabled: Boolean,
     onDeactivateAccountItemClick: () -> Unit,
     onReactivateAccountItemClick: () -> Unit,
     showDeactivateMyAccountItem: Boolean,
@@ -61,6 +62,7 @@ fun EmployeeProfileActionsCard(
             iconRes = AppIcons.Outlined.employmentHistory,
             title = stringResource(R.string.employment_history),
             showUnderline = true,
+            enabled = isEmploymentEnabled,
         )
         if (showDeactivateMyAccountItem){
             ProfileActionsItem(
@@ -105,6 +107,7 @@ fun EmployeeProfileActionsCardPreview() {
                     showDeactivateMyAccountItem = false,
                     isAccountDeactivated = false,
                     onReactivateAccountItemClick = {},
+                    isEmploymentEnabled=true,
                 )
             }
         }
@@ -127,6 +130,7 @@ fun EmployeeProfileActionsCardDeactivatedAccountPreview() {
                     showDeactivateMyAccountItem = false,
                     isAccountDeactivated = true,
                     onReactivateAccountItemClick = {},
+                    isEmploymentEnabled=false,
                 )
             }
         }

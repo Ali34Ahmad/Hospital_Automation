@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
@@ -54,7 +55,7 @@ fun EditableAppointmentTypeCard(
     @DrawableRes deleteIcon: Int = HospitalAutomationIcons.delete,
     warningMessage: String = stringResource(R.string.description_not_added),
     @DrawableRes noteLeadingIcon: Int = HospitalAutomationIcons.problem,
-    @DrawableRes noteTrailingIcon : Int = HospitalAutomationIcons.add
+    @DrawableRes noteTrailingIcon : Int = AppIcons.Outlined.add
 ) {
     var showWarningMessage by remember{mutableStateOf(description.isNullOrBlank())}
     Card(

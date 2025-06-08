@@ -126,7 +126,7 @@ fun OtpVerificationScreen(
                     text = stringResource(R.string.submit),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    enabled = uiState.isVerifyButtonEnabled,
+                    enabled = uiState.isVerifyButtonEnabled && !isLoading,
                     isLoading = isLoading,
                 )
 

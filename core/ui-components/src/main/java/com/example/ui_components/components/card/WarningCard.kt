@@ -124,7 +124,7 @@ fun WaringCardPreview() {
             WarningCard(
                 text = stringResource(R.string.description_not_added),
                 leadingIcon = AppIcons.Outlined.errorMessage,
-                trailingIcon = HospitalAutomationIcons.add,
+                trailingIcon = AppIcons.Outlined.add,
                 onTrailingIconClick = {},
                 modifier = Modifier.fillMaxWidth()
             )
@@ -140,7 +140,7 @@ fun WaringCardWithClickableTextPreview() {
             WarningCard(
                 text = stringResource(R.string.description_not_added),
                 leadingIcon = AppIcons.Outlined.errorMessage,
-                trailingIcon = HospitalAutomationIcons.add,
+                trailingIcon = AppIcons.Outlined.add,
                 onTrailingIconClick = {},
                 modifier = Modifier.fillMaxWidth(),
                 onTextClick = {},

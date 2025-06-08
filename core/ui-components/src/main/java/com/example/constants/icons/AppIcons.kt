@@ -31,6 +31,7 @@ sealed interface AppIcons {
         val search2 = R.drawable.search2
         val file = R.drawable.ic_file
         val check = R.drawable.ic_check
+        val refresh = R.drawable.ic_refresh
         val email = R.drawable.ic_email
         val employmentHistory = R.drawable.ic_employement_history
         val delete = R.drawable.ic_delete

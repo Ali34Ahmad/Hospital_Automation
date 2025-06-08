@@ -47,12 +47,14 @@ fun createSampleEmploymentHistoryResponse(): EmploymentHistoryResponse {
         imageUrl = "",
         workStartDate = LocalDate.of(2020, 12, 2),
         workEndDate = LocalDate.of(2022, 12, 2),
+        documentsFileUrl = null
     )
 
     return EmploymentHistoryResponse(
         currentUser = sampleCurrentUser,
         resignedBy = sampleResignedByManager,
         suspendedBy = sampleSuspendedByManager,
-        acceptedBy = sampleAcceptedByManager
+        acceptedBy = sampleAcceptedByManager,
+        employeeDocumentsFileSize = 1214525
     )
 }

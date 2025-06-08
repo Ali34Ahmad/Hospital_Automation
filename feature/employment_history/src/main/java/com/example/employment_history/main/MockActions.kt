@@ -21,11 +21,31 @@ fun mockEmploymentHistoryNavigationUiActions() = object : EmploymentHistoryNavig
 }
 
 fun mockEmploymentHistoryBusinessUiActions() = object : EmploymentHistoryBusinessUiActions {
-    override fun onRefreshProfile() {
+    override fun onReloadEmploymentHistory() {
 
     }
 
-    override fun hideErrorDialog() {
+    override fun onHideFileDownloaderDialog() {
+
+    }
+
+    override fun onDownloadFile() {
+
+    }
+
+    override fun onCancelFileDownloading() {
+
+    }
+
+    override fun onShowFileDownloaderDialog() {
+
+    }
+
+    override fun onRefresh() {
+
+    }
+
+    override fun clearToastMessage() {
 
     }
 

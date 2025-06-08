@@ -9,7 +9,15 @@ fun mockAdminProfileNavigationUiActions() = object : AdminProfileNavigationUiAct
 }
 
 fun mockAdminProfileBusinessUiActions() = object : AdminProfileBusinessUiActions {
-    override fun onRefreshProfile() {
+    override fun onGetAdminProfile() {
+
+    }
+
+    override fun onRefresh() {
+
+    }
+
+    override fun clearToastMessage() {
 
     }
 

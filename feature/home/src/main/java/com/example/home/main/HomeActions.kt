@@ -9,8 +9,9 @@ class HomeUiActions(
 
 interface HomeBusinessUiActions {
     fun onStartButtonClick()
-    fun onUpdateSelectedDrawerIndex(index: Int)
     fun onChangeTheme()
+    fun onRefresh()
+    fun clearToastMessage()
 }
 
 interface HomeNavigationUiActions {

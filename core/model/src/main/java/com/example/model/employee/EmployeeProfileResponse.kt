@@ -5,7 +5,8 @@ import com.example.model.enums.Gender
 import com.example.model.user.FullName
 
 data class EmployeeProfileResponse(
-    val profile: EmployeeProfile
+    val profile: EmployeeProfile,
+    val isAccessedByOwner: Boolean,
 )
 
 data class EmployeeProfile(
@@ -13,8 +14,8 @@ data class EmployeeProfile(
     val role: String,
     val email: String,
     val fullName: FullName,
-    val verifiedResetPassword: Boolean,
-    val verifiedAccount: Boolean,
+    val verifiedResetPassword: Boolean?,
+    val verifiedAccount: Boolean?,
     val phoneNumber: String,
     val address: Address,
     val imageUrl: String?,
@@ -23,8 +24,8 @@ data class EmployeeProfile(
     val isSuspended: Boolean,
     val suspendingReason: String?,
     val isResigned: Boolean,
-    val createdAt: String,
-    val updatedAt: String,
+    val createdAt: String?,
+    val updatedAt: String?,
     val resignedBy: Int?,
     val suspendedBy: Int?,
     val acceptedBy: Int?

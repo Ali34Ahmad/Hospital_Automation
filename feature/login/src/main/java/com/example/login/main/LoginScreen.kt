@@ -169,7 +169,7 @@ fun LoginScreen(
                         text = stringResource(R.string.login),
                         modifier = Modifier
                             .fillMaxWidth(),
-                        enabled = uiState.isLoginButtonEnabled,
+                        enabled = uiState.isLoginButtonEnabled && !isLoading,
                         isLoading = isLoading,
                     )
 

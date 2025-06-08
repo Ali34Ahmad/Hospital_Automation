@@ -8,8 +8,13 @@ class EmploymentHistoryUiActions(
 
 
 interface EmploymentHistoryBusinessUiActions {
-    fun onRefreshProfile()
-    fun hideErrorDialog()
+    fun onReloadEmploymentHistory()
+    fun onHideFileDownloaderDialog()
+    fun onDownloadFile()
+    fun onCancelFileDownloading()
+    fun onShowFileDownloaderDialog()
+    fun onRefresh()
+    fun clearToastMessage()
 }
 
 interface EmploymentHistoryNavigationUiActions {

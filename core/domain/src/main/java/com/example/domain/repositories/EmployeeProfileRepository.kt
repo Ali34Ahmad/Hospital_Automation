@@ -6,4 +6,6 @@ import com.example.utility.network.rootError
 
 interface EmployeeProfileRepository {
     suspend fun getEmployeeInfo(): Result<EmployeeProfileResponse, rootError>
+
+    suspend fun getEmployeeInfoById(id: Int): Result<EmployeeProfileResponse, rootError>
 }

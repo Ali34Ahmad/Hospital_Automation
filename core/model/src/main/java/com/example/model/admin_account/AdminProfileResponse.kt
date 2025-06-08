@@ -16,5 +16,6 @@ data class AdminProfile(
     val address: Address,
     val gender: Gender?,
     val isSuspended: Boolean,
-    val isResigned: Boolean
+    val isResigned: Boolean,
+    val imageUrl: String,
 )

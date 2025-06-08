@@ -15,6 +15,8 @@ interface EmployeeProfileBusinessUiActions {
     fun onReactivateMyAccount()
     fun onLogout()
     fun hideErrorDialog()
+    fun onRefresh()
+    fun clearToastMessage()
 }
 
 interface EmployeeProfileNavigationUiActions:AppNavigationUiAction {

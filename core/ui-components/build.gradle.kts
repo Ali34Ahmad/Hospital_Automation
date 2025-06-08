@@ -53,7 +53,6 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(project(":core:model"))
-//    implementation(libs.accompanist.systemuicontroller)
-
+    implementation(libs.androidx.material)
     implementation(libs.androidx.foundation.layout)
 }

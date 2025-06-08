@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EmployeeProfileResponseDto(
-    val profile: EmployeeProfileDto
+    val profile: EmployeeProfileDto,
 )
 
 @Serializable

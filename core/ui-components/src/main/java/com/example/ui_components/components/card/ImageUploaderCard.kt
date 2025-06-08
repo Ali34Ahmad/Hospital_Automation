@@ -27,9 +27,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.constants.icons.AppIcons
-import com.example.model.File
+import com.example.model.FileInfo
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -44,23 +44,23 @@ import com.example.ui_components.components.network_image.NetworkImageLoader
 @Composable
 fun ImageUploaderCard(
     imageUri: Uri,
-    fileLoadingState: FileLoadingState,
-    file: File,
+    fileUploadingState: FileUploadingState,
+    fileInfo: FileInfo,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
     enableNextButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val icon = when (fileLoadingState) {
-        FileLoadingState.UPLOADING -> {
+    val icon = when (fileUploadingState) {
+        FileUploadingState.UPLOADING -> {
             AppIcons.Outlined.pause
         }
 
-        FileLoadingState.PAUSED -> {
+        FileUploadingState.PAUSED -> {
             AppIcons.Outlined.download
         }
 
-        FileLoadingState.COMPLETE -> {
+        FileUploadingState.COMPLETE -> {
             AppIcons.Outlined.check
         }
 
@@ -109,7 +109,7 @@ fun ImageUploaderCard(
                 )
             }
             CircularProgressIndicator(
-                progress = { file.uploadingProgress.toFloat()/100 },
+                progress = { fileInfo.uploadingProgress.toFloat()/100 },
                 modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize36)
                     .padding(MaterialTheme.spacing.extraSmall4),
                 strokeWidth = 3.dp,
@@ -148,8 +148,8 @@ fun ImageUploaderCardPreview() {
         Surface {
             ImageUploaderCard(
                 imageUri = "".toUri(),
-                fileLoadingState = FileLoadingState.UPLOADING,
-                file = File(
+                fileUploadingState = FileUploadingState.UPLOADING,
+                fileInfo = FileInfo(
                     uploadingProgress = 50,
                     fileSizeWithBytes = 0,
                     fileName = ""

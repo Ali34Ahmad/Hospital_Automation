@@ -5,7 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.model.Notification
 import com.example.ui.fake.createSampleNotifications
 import com.example.ui.helper.DarkAndLightModePreview
@@ -22,7 +22,7 @@ fun RequestSentNotification(
     onPause: () -> Unit,
     onResume: () -> Unit,
     onOpen: () -> Unit,
-    state: FileLoadingState,
+    state: FileUploadingState,
     modifier: Modifier = Modifier,
 ) {
     NotificationWrapperCard(
@@ -52,7 +52,7 @@ fun RequestNotificationPreview() {
                 fileName = "Cam-Scanner-152314",
                 fileSizeWithBytes = 21455,
                 progress = 10,
-                state = FileLoadingState.COMPLETE,
+                state = FileUploadingState.COMPLETE,
                 onPause = {},
                 onOpen = {},
                 onResume = {},
@@ -72,7 +72,7 @@ fun RequestNotificationExpiredPreview() {
                 fileName = "Cam-Scanner-152314",
                 fileSizeWithBytes = 215847,
                 progress = 10,
-                state = FileLoadingState.UPLOADING,
+                state = FileUploadingState.UPLOADING,
                 onPause = {},
                 onOpen = {},
                 onResume = {},

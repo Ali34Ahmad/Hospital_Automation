@@ -155,7 +155,7 @@ fun ResetPasswordScreen(
                         text = stringResource(R.string.reset_password),
                         modifier = Modifier
                             .fillMaxWidth(),
-                        enabled = uiState.isResetPasswordButtonEnabled,
+                        enabled = uiState.isResetPasswordButtonEnabled && !isLoading,
                         isLoading = isLoading,
                     )
 

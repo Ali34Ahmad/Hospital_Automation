@@ -12,5 +12,7 @@ val  useCasesModule= module {
         employmentHistoryUseCasesModule,
         uploadEmployeeDocumentsUseCasesModule,
         uploadEmployeeProfileImageUseCasesModule,
+        uploadChildDocumentsUseCase,
+        downloaderUseCaseModule,
     )
 }

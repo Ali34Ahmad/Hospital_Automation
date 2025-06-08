@@ -1,5 +1,6 @@
 package com.example.admin_profile.main
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,17 +22,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
 import com.example.fake.createSampleAdminProfile
 import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.model.enums.Gender
+import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.profile.AdminProfileCard
-import com.example.utility.network.NetworkError
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 
 @Composable
 fun AdminProfileScreen(
@@ -39,24 +43,48 @@ fun AdminProfileScreen(
     uiActions: AdminProfileUiActions,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(uiState.adminId) {
-        if (uiState.adminId != null) {
-            uiActions.onRefreshProfile()
+    val context = LocalContext.current
+
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let {
+            Toast.makeText(
+                context,
+                it.asString(context),
+                Toast.LENGTH_SHORT
+            ).show()
+            uiActions.clearToastMessage()
         }
     }
 
-
-    val context = LocalContext.current
+    LaunchedEffect(uiState.adminId) {
+        if (uiState.adminId != null) {
+            uiActions.onGetAdminProfile()
+        }
+    }
 
     val scrollState = rememberScrollState()
-    Scaffold { contentPadding ->
+    Scaffold(
+        topBar = {
+            if (uiState.screenState == ScreenState.ERROR ||
+                uiState.screenState == ScreenState.LOADING
+            ) {
+                HospitalAutomationTopBar(
+                    title = "",
+                    onNavigationIconClick = { uiActions.navigateUp() },
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationIcon = AppIcons.Outlined.arrowBack,
+                    imageUrl = null,
+                )
+            }
+        }
+    ) { contentPadding ->
         Surface(
             modifier = modifier
                 .fillMaxSize()
                 .padding(contentPadding),
         ) {
 
-            if (uiState.isLoadingProfile) {
+            if (uiState.screenState == ScreenState.LOADING) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
@@ -65,67 +93,83 @@ fun AdminProfileScreen(
                         modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize)
                     )
                 }
-            } else if (uiState.fetchingProfileError != null) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    IllustrationCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.spacing.medium16),
-                        illustration = {
-                            Image(
-                                painter = painterResource(R.drawable.ill_error),
-                                contentDescription = null,
-                                modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
-                            )
-                        },
-                        title = stringResource(R.string.network_error),
-                        description = stringResource(R.string.something_went_wrong),
-                    )
-                }
-            }
-            if (uiState.userInfo != null) {
-                val name = uiState.userInfo.admin.fullName.toAppropriateFormat()
-                val subject = stringResource(R.string.medicare)
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(scrollState),
+            } else if (uiState.screenState == ScreenState.ERROR) {
+                PullToRefreshBox(
+                    refreshing = uiState.isRefreshing,
+                    onRefresh = { uiActions.onRefresh() }
                 ) {
                     Column(
-                        modifier = modifier.padding(
-                            MaterialTheme.spacing.medium16
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                     ) {
-                        AdminProfileCard(
-                            name = name,
-                            onNavigateUpButtonClick = {
-                                uiActions.navigateUp()
-                            },
-                            onEmailButtonClick = {
-                                uiActions.navigateToEmail(
-                                    context = context,
-                                    email = uiState.userInfo.admin.email,
-                                    subject = subject
+                        IllustrationCard(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(MaterialTheme.spacing.medium16),
+                            illustration = {
+                                Image(
+                                    painter = painterResource(R.drawable.ill_error),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
                                 )
                             },
-                            onPhoneNumberButtonClick = {
-                                uiActions.navigateToCallApp(
-                                    context = context,
-                                    phoneNumber = uiState.userInfo.admin.phoneNumber
-                                )
-                            },
-                            phoneNumber = uiState.userInfo.admin.phoneNumber,
-                            adminImageUrl = "uiState.userInfo.admin.imageUrl ?: ",
-                            address = uiState.userInfo.admin.address.toAppropriateFormat(),
-                            gender = uiState.userInfo.admin.gender ?: Gender.MALE,
-                            email = uiState.userInfo.admin.email,
-                            isResigned = uiState.userInfo.admin.isResigned,
-                            isSuspended = uiState.userInfo.admin.isSuspended,
+                            title = stringResource(R.string.network_error),
+                            description = stringResource(R.string.something_went_wrong),
                         )
+                    }
+                }
+            }
+            if (uiState.userInfo != null &&
+                uiState.screenState == ScreenState.Success
+            ) {
+                val name = uiState.userInfo.admin.fullName.toAppropriateFormat()
+                val subject = stringResource(R.string.medicare)
+                PullToRefreshBox(
+                    refreshing = uiState.isRefreshing,
+                    onRefresh = { uiActions.onRefresh() }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(scrollState),
+                    ) {
+                        Column(
+                            modifier = modifier.padding(
+                                MaterialTheme.spacing.medium16
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
+                        ) {
+                            AdminProfileCard(
+                                name = name,
+                                onNavigateUpButtonClick = {
+                                    uiActions.navigateUp()
+                                },
+                                onEmailButtonClick = {
+                                    uiActions.navigateToEmail(
+                                        context = context,
+                                        email = uiState.userInfo.admin.email,
+                                        subject = subject
+                                    )
+                                },
+                                onPhoneNumberButtonClick = {
+                                    uiActions.navigateToCallApp(
+                                        context = context,
+                                        phoneNumber = uiState.userInfo.admin.phoneNumber
+                                    )
+                                },
+                                phoneNumber = uiState.userInfo.admin.phoneNumber,
+                                adminImageUrl = uiState.userInfo.admin.imageUrl,
+                                address = uiState.userInfo.admin.address.toAppropriateFormat(),
+                                gender = uiState.userInfo.admin.gender ?: Gender.MALE,
+                                email = uiState.userInfo.admin.email,
+                                isResigned = uiState.userInfo.admin.isResigned,
+                                isSuspended = uiState.userInfo.admin.isSuspended,
+                            )
 
+                        }
                     }
                 }
             }
@@ -140,7 +184,8 @@ fun LoginScreenPreview() {
         Surface {
             AdminProfileScreen(
                 uiState = AdminProfileUiState(
-                    userInfo = createSampleAdminProfile()
+                    userInfo = createSampleAdminProfile(),
+                    screenState = ScreenState.Success,
                 ),
                 uiActions = AdminProfileUiActions(
                     navigationActions = mockAdminProfileNavigationUiActions(),
@@ -159,8 +204,7 @@ fun LoginScreenErrorFetchingProfilePreview() {
         Surface {
             AdminProfileScreen(
                 uiState = AdminProfileUiState(
-                    fetchingProfileError = NetworkError.UNKNOWN,
-                    isLoadingProfile = false,
+                    screenState = ScreenState.ERROR
                 ),
                 uiActions = AdminProfileUiActions(
                     navigationActions = mockAdminProfileNavigationUiActions(),

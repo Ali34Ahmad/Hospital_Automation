@@ -10,7 +10,9 @@ class AdminProfileUiActions(
 
 
 interface AdminProfileBusinessUiActions {
-    fun onRefreshProfile()
+    fun onGetAdminProfile()
+    fun onRefresh()
+    fun clearToastMessage()
 }
 
 interface AdminProfileNavigationUiActions:AppNavigationUiAction {

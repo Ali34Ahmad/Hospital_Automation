@@ -71,7 +71,7 @@ fun HospitalAutomationButton(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if(isLoading){
+            if (isLoading) {
                 CircularProgressIndicator(
                     strokeWidth = MaterialTheme.sizing.small2,
                     color = MaterialTheme.colorScheme.onPrimary,
@@ -82,7 +82,7 @@ fun HospitalAutomationButton(
             if (icon != null) {
                 Icon(
                     painter = painterResource(icon),
-                    contentDescription =  null,
+                    contentDescription = null,
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small8))
             }
@@ -134,6 +134,7 @@ fun HospitalAutomationButtonLoadingPreview() {
         )
     }
 }
+
 @DarkAndLightModePreview
 @Composable
 fun HospitalAutomationButtonDisabledPreview() {

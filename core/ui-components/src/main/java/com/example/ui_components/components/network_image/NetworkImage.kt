@@ -58,7 +58,8 @@ fun NetworkImage(
                     errorCompose(errorState)
                 }
             },
-            contentScale = contentScale
+            contentScale = contentScale,
+            modifier = modifier,
         )
     } else {
         Image(

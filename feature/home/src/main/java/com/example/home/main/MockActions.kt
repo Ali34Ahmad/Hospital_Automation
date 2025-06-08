@@ -28,11 +28,11 @@ fun mockHomeBusinessUiActions()=object : HomeBusinessUiActions {
 
     }
 
-    override fun onUpdateSelectedDrawerIndex(index: Int) {
+    override fun onChangeTheme() {
 
     }
 
-    override fun onChangeTheme() {
+    override fun onRefresh() {
 
     }
 

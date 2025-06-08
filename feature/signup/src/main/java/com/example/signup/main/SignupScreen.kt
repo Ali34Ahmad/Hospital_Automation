@@ -281,7 +281,7 @@ fun SignUpScreen(
                         onClick = { uiActions.onSignUpButtonClick() },
                         text = stringResource(R.string.signup),
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = uiState.isSignUpButtonEnabled,
+                        enabled = uiState.isSignUpButtonEnabled && !isLoading,
                         isLoading = isLoading,
                     )
 

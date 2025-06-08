@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -48,7 +48,7 @@ fun UploadEmployeeProfileImageScreen(
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.uploading_file_failed),
-        description = uiState.errorDialogText,
+        description = uiState.errorDialogText?.asString()?:"",
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
@@ -71,7 +71,7 @@ fun UploadEmployeeProfileImageScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
-                if (uiState.uri == null || uiState.imageFile == null) {
+                if (uiState.uri == null || uiState.imageFileInfo == null) {
                     IllustrationCard(
                         title = stringResource(R.string.upload_profile_image),
                         modifier = Modifier.fillMaxWidth(),
@@ -96,9 +96,9 @@ fun UploadEmployeeProfileImageScreen(
                         imageUri = uiState.uri,
                         onNextButtonClick = { uiActions.navigateToHomeScreenScreen() },
                         onReplaceFileButtonClick = { filePickerLauncher.launch("image/*") },
-                        file = uiState.imageFile,
-                        fileLoadingState = uiState.uploadingState,
-                        enableNextButton=uiState.uploadingState== FileLoadingState.COMPLETE,
+                        fileInfo = uiState.imageFileInfo,
+                        fileUploadingState = uiState.uploadingState,
+                        enableNextButton=uiState.uploadingState== FileUploadingState.COMPLETE,
                     )
                 }
             }

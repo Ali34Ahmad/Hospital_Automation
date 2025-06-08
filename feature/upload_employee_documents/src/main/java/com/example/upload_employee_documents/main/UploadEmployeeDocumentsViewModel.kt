@@ -4,11 +4,11 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.domain.use_cases.upload_employee_documents.UploadEmployeeDocumentsUseCase
-import com.example.model.File
-import com.example.utility.network.Error
-import com.example.utility.network.NetworkError
+import com.example.model.FileInfo
+import com.example.ui_components.R
+import com.example.util.UiText
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,19 +40,19 @@ class UploadEmployeeDocumentsViewModel(
     private fun getBusinessUiActions(): UploadEmployeeDocumentsBusinessUiActions =
         object : UploadEmployeeDocumentsBusinessUiActions {
             override fun onFileUploadingPause() {
-                TODO("Not yet implemented")
+
             }
 
             override fun onFileUploadingOpen() {
-                TODO("Not yet implemented")
+
             }
 
             override fun onFileUploadingResume() {
-                TODO("Not yet implemented")
+
             }
 
             override fun onUploadFileButtonClick() {
-                TODO("Not yet implemented")
+
             }
 
             override fun onUploadFile(uri: Uri) {
@@ -69,20 +69,8 @@ class UploadEmployeeDocumentsViewModel(
 
         }
 
-    private fun updateIsUploadingState(isUploadingLoading: Boolean) {
-        _uiState.update { it.copy(isUploading = isUploadingLoading) }
-    }
-
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
-    }
-
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
-    }
-
-    private fun updateErrorDialogDescription(value: String) {
-        _uiState.update { it.copy(errorDialogText = value) }
     }
 
     fun uploadFile(uri: Uri) {
@@ -109,24 +97,24 @@ class UploadEmployeeDocumentsViewModel(
             .catch { cause ->
                 val message = when (cause) {
                     is OutOfMemoryError -> {
-                        "File is too big to be used in out system."
+                        UiText.StringResource(R.string.file_too_big)
                     }
 
                     is FileNotFoundException -> {
-                        "File can not be found. Please try again."
+                        UiText.StringResource(R.string.file_not_found)
                     }
 
                     is UnresolvedAddressException -> {
-                        "Please check your internet connection and try again later."
+                        UiText.StringResource(R.string.check_internet_connection)
                     }
 
                     else -> {
-                        "Something went wrong. Please try again later.${cause.message}"
+                        UiText.StringResource(R.string.something_went_wrong)
                     }
                 }
 
-                setFailureState()
-                Log.v("Uploading File:","Exception")
+                setFailureState(message)
+                Log.v("Uploading File:",cause.message?:"Unknown Error")
             }
             .launchIn(viewModelScope)
     }
@@ -136,15 +124,11 @@ class UploadEmployeeDocumentsViewModel(
         _uiState.update {
             it.copy(
                 fileUri = null,
-                fileUiInfo = null,
-                fileLoadingState = FileLoadingState.UPLOADING,
+                fileInfo = null,
+                fileUploadingState = FileUploadingState.UPLOADING,
                 isNextButtonEnabled = false,
-                isUploading = false,
-                error = null,
                 showErrorDialog = false,
-                errorDialogText = "",
-                isUploadingComplete = false,
-                isUploadingCancelled = true,
+                errorDialogText = UiText.StringResource(R.string.uploading_cancelled),
             )
         }
     }
@@ -152,13 +136,10 @@ class UploadEmployeeDocumentsViewModel(
     private fun setStartUploadingState(uri: Uri) {
         _uiState.update {
             it.copy(
-                isUploading = true,
-                isUploadingComplete = false,
-                error = null,
                 showErrorDialog = false,
                 fileUri = uri,
-                fileLoadingState = FileLoadingState.UPLOADING,
-                fileUiInfo = File(
+                fileUploadingState = FileUploadingState.UPLOADING,
+                fileInfo = FileInfo(
                     uploadingProgress = 0,
                     fileSizeWithBytes = 0,
                     fileName = "FileName"
@@ -170,7 +151,7 @@ class UploadEmployeeDocumentsViewModel(
     private fun updateUploadingProgressState(uploadingProgress: Long, fileSize: Long) {
         _uiState.update {
             it.copy(
-                fileUiInfo = uiState.value.fileUiInfo?.copy(
+                fileInfo = uiState.value.fileInfo?.copy(
                     uploadingProgress = uploadingProgress.toInt(),
                     fileSizeWithBytes = fileSize,
                     fileName = "FileName",
@@ -182,9 +163,7 @@ class UploadEmployeeDocumentsViewModel(
     private fun setSuccessfulUploadingState() {
         _uiState.update {
             it.copy(
-                isUploading = false,
-                isUploadingComplete = true,
-                fileLoadingState = FileLoadingState.COMPLETE,
+                fileUploadingState = FileUploadingState.COMPLETE,
             )
         }
     }
@@ -192,25 +171,19 @@ class UploadEmployeeDocumentsViewModel(
     private fun setCancelUploadingState() {
         _uiState.update {
             it.copy(
-                isUploading = false,
-                isUploadingComplete = false,
-                isUploadingCancelled = true,
-                fileLoadingState = FileLoadingState.Cancelled,
+                fileUploadingState = FileUploadingState.CANCELLED,
                 showErrorDialog = true,
-                errorDialogText = "Cancelled uploading"
+                errorDialogText = UiText.StringResource(R.string.uploading_cancelled)
             )
         }
     }
 
-    private fun setFailureState() {
+    private fun setFailureState(error: UiText?) {
         _uiState.update {
             it.copy(
-                isUploading = false,
-                isUploadingComplete = false,
-                isUploadingCancelled = true,
-                fileLoadingState = FileLoadingState.FAILED,
+                fileUploadingState = FileUploadingState.FAILED,
                 showErrorDialog = true,
-                error = NetworkError.UNKNOWN,
+                errorDialogText = error,
             )
         }
     }

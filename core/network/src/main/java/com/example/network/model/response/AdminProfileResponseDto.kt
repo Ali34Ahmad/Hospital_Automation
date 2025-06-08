@@ -35,5 +35,7 @@ data class AdminProfileDto(
     @SerialName("is_suspended")
     val isSuspended: Boolean,
     @SerialName("is_resigned")
-    val isResigned: Boolean
+    val isResigned: Boolean,
+    @SerialName("imgurl")
+    val imageUrl: String?,
 )

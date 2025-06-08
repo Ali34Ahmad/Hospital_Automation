@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(project(":core:ui-components"))
+    implementation(project(":core:utility"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

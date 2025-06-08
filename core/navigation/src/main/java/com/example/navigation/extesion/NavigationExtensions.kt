@@ -1,5 +1,6 @@
 package com.example.navigation.extesion
 
+import androidx.navigation.NavAction
 import androidx.navigation.NavController
 
 
@@ -15,7 +16,7 @@ import androidx.navigation.NavController
  *  @author Ali Mansoura
  */
 fun  NavController.navigateToScreen(
-    route :  Any
+    route :  Any,
 ){
     navigate(
         route = route

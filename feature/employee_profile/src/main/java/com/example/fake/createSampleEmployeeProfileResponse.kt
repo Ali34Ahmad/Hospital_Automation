@@ -6,7 +6,7 @@ import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.enums.Gender
 import com.example.model.user.FullName
 
-fun createSampleEmployeeProfileResponse(): EmployeeProfileResponse {
+fun createSampleEmployeeProfileResponse(): List<EmployeeProfileResponse> {
     val sampleProfile = EmployeeProfile(
         userId = 101,
         role = "developer",
@@ -39,5 +39,8 @@ fun createSampleEmployeeProfileResponse(): EmployeeProfileResponse {
         acceptedBy = 12 // Example: ID of an admin who accepted
     )
 
-    return EmployeeProfileResponse(profile = sampleProfile)
+    return listOf(
+        EmployeeProfileResponse(profile = sampleProfile, isAccessedByOwner = true),
+        EmployeeProfileResponse(profile = sampleProfile, isAccessedByOwner = false),
+    )
 }

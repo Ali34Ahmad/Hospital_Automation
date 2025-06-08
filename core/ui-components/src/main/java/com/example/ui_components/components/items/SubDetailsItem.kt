@@ -31,7 +31,7 @@ fun SubDetailsItem(
     Column(modifier = modifier
         .clip(MaterialTheme.shapes.extraSmall)
         .background(
-            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f),
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
         )
         .clickable { onClick() }
         .padding(MaterialTheme.spacing.small8)

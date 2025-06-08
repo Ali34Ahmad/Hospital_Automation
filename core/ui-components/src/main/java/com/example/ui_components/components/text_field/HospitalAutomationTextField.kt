@@ -72,7 +72,10 @@ fun HospitalAutomationTextFiled(
         },
         trailingIcon = {
             if (trailingIcon != null) {
-                IconButton(onClick = onTrailingIconClick) {
+                IconButton(
+                    onClick = onTrailingIconClick,
+                    enabled = enabled
+                ) {
                     Icon(painter = painterResource(trailingIcon), null)
                 }
             }

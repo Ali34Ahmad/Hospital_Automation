@@ -43,7 +43,7 @@ val surfaceContainerHighestLight = Color(0xFFD8D9E0) // Slightly darker than sur
 // Dark Theme Colors (Generated from Light Theme)
 val primaryDark = Color(0xFF9FC9FF) // Lighter, less saturated version of primaryLight
 val onPrimaryDark = Color(0xFF002E6B) // Darker version of primaryLight
-val primaryContainerDark = Color(0xFF021028) // Darker version of primaryLight
+val primaryContainerDark = Color(0xFF2D3D4B) // Darker version of primaryLight
 val onPrimaryContainerDark = Color(0xFFDCE2FF) // Lighter version of primaryLight
 val secondaryDark = Color(0xFF96F2E0) // Lighter, less saturated version of secondaryLight
 val onSecondaryDark = Color(0xFF004E40) // Darker version of secondaryLight

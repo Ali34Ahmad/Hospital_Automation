@@ -21,9 +21,9 @@ fun NavController.navigateToEmploymentHistoryScreen() {
 
 fun NavGraphBuilder.employmentHistoryScreen(
     onNavigateToAcceptedByAdminProfileScreen: (adminId: Int) -> Unit,
-    onNavigateToToResignedByAdminProfileScreen: (adminId: Int) -> Unit,
+    onNavigateToToResignedByAdminProfileScreen: (resignedById: Int) -> Unit,
     onNavigateUp:()->Unit,
-    onNavigateToToSuspendedByAdminProfileScreen: (adminId: Int) -> Unit,
+    onNavigateToToSuspendedByAdminProfileScreen: (acceptedById: Int, currentEmployeeId: Int) -> Unit,
 ) {
     composable<EmploymentHistoryRoute> {
         val viewModel = koinViewModel<EmploymentHistoryViewModel>()
@@ -40,14 +40,16 @@ fun NavGraphBuilder.employmentHistoryScreen(
             override fun navigateToToResignedByAdminProfileScreen() {
                 onNavigateToToResignedByAdminProfileScreen(
                     uiState.value.employmentHistory?.resignedBy?.userId
-                        ?: -1
+                        ?: -1,
                 )
             }
 
             override fun navigateToToSuspendedByAdminProfileScreen() {
                 onNavigateToToSuspendedByAdminProfileScreen(
                     uiState.value.employmentHistory?.suspendedBy?.userId
-                        ?: -1
+                        ?: -1,
+                    uiState.value.employmentHistory?.currentUser?.userId
+                        ?: -1,
                 )
             }
 

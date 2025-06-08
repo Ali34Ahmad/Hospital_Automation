@@ -16,4 +16,10 @@ class EmployeeProfileRepositoryImpl(
             .map { employeeProfileResponseDto->
                 employeeProfileResponseDto.toEmployeeProfileResponse()
             }
+
+    override suspend fun getEmployeeInfoById(id: Int): Result<EmployeeProfileResponse, rootError> =
+        employeeProfileService.getEmployeeInfoById(id)
+            .map { employeeProfileByIdResponseDto->
+                employeeProfileByIdResponseDto.toEmployeeProfileResponse()
+            }
 }

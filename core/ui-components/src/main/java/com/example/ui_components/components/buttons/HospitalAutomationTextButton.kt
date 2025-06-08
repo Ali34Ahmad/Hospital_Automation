@@ -25,7 +25,8 @@ fun HospitalAutomationTextButton(
     ) {
         Text(
             stringResource(text),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }

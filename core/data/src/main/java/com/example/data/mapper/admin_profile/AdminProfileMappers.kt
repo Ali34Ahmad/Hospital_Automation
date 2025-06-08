@@ -7,6 +7,7 @@ import com.example.model.address.Address
 import com.example.model.user.FullName
 import com.example.network.model.response.AdminProfileDto
 import com.example.network.model.response.AdminProfileResponseDto
+import com.example.network.utility.ApiRoutes
 
 
 fun AdminProfileResponseDto.toAdminProfileResponse(): AdminProfileResponse {
@@ -32,8 +33,9 @@ fun AdminProfileDto.toAdminProfile(): AdminProfile {
             street = this.addressStreet,
             note = this.addressNote
         ),
-        gender = this.gender?.toGender(), // Using the GenderDto to Gender mapper
+        gender = this.gender?.toGender(),
         isSuspended = this.isSuspended,
-        isResigned = this.isResigned
+        isResigned = this.isResigned,
+        imageUrl = "${ApiRoutes.BASE_URL}/${this.imageUrl}",
     )
 }

@@ -1,6 +1,6 @@
 package com.example.model
 
-data class File(
+data class FileInfo(
     val uploadingProgress:Int,
     val fileSizeWithBytes: Long,
     val fileName:String,

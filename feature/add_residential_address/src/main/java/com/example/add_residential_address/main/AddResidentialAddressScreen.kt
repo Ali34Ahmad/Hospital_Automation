@@ -170,7 +170,7 @@ fun AddResidentialAddressScreen(
                         onClick = { uiActions.onSubmitButtonClick() },
                         text = stringResource(R.string.submit),
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = uiState.isSubmitButtonEnabled,
+                        enabled = uiState.isSubmitButtonEnabled && !isLoading,
                         isLoading = isLoading,
                     )
                 }

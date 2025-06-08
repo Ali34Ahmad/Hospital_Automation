@@ -4,11 +4,11 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.domain.use_cases.upload_employee_profile_image.UploadEmployeeProfileImageUseCase
-import com.example.model.File
-import com.example.utility.network.Error
-import com.example.utility.network.NetworkError
+import com.example.model.FileInfo
+import com.example.ui_components.R
+import com.example.util.UiText
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,16 +53,8 @@ class UploadEmployeeProfileImageViewModel(
 
         }
 
-    private fun updateErrorState(error: Error?) {
-        _uiState.update { it.copy(error = error) }
-    }
-
     private fun updateShowErrorDialogState(isShown: Boolean) {
         _uiState.update { it.copy(showErrorDialog = isShown) }
-    }
-
-    private fun updateErrorDialogDescription(value: String) {
-        _uiState.update { it.copy(errorDialogText = value) }
     }
 
     private fun uploadImage(uri: Uri) {
@@ -89,24 +81,24 @@ class UploadEmployeeProfileImageViewModel(
             .catch { cause ->
                 val message = when (cause) {
                     is OutOfMemoryError -> {
-                        "Image is too big to be used in out system."
+                        UiText.StringResource(R.string.file_too_big)
                     }
 
                     is FileNotFoundException -> {
-                        "Image can not be found. Please try again."
+                        UiText.StringResource(R.string.file_not_found)
                     }
 
                     is UnresolvedAddressException -> {
-                        "Please check your internet connection and try again later."
+                        UiText.StringResource(R.string.check_internet_connection)
                     }
 
                     else -> {
-                        "Something went wrong. Please try again later.${cause.message}"
+                        UiText.StringResource(R.string.something_went_wrong)
                     }
                 }
 
-                setFailureState(NetworkError.UNKNOWN, message)
-                Log.v("Uploading Image:", "Exception")
+                setFailureState(message)
+                Log.v("Uploading File:",cause.message?:"Unknown Error")
             }
             .launchIn(viewModelScope)
     }
@@ -114,14 +106,12 @@ class UploadEmployeeProfileImageViewModel(
     private fun updateUploadingProgressState(uploadingProgress: Int, fileSize: Long) {
         _uiState.update {
             it.copy(
-                imageFile = File(
+                imageFileInfo = FileInfo(
                     uploadingProgress = uploadingProgress,
                     fileSizeWithBytes = fileSize,
                     fileName = "FileName"
                 ),
-                error = null,
                 showErrorDialog = false,
-                isLoading = true,
             )
         }
     }
@@ -130,29 +120,25 @@ class UploadEmployeeProfileImageViewModel(
         _uiState.update {
             it.copy(
                 uri = uri,
-                imageFile = File(
+                imageFileInfo = FileInfo(
                     uploadingProgress = 0,
                     fileSizeWithBytes = 0,
                     fileName = "FileName"
                 ),
-                error = null,
                 showErrorDialog = false,
-                isLoading = true,
-                uploadingState = FileLoadingState.UPLOADING,
+                uploadingState = FileUploadingState.UPLOADING,
             )
         }
     }
 
-    private fun setFailureState(error: Error?, message: String) {
+    private fun setFailureState(message: UiText?) {
         _uiState.update {
             it.copy(
                 uri = null,
-                imageFile = null,
-                error = error,
+                imageFileInfo = null,
                 errorDialogText = message,
                 showErrorDialog = true,
-                isLoading = true,
-                uploadingState = FileLoadingState.FAILED,
+                uploadingState = FileUploadingState.FAILED,
             )
         }
     }
@@ -165,12 +151,10 @@ class UploadEmployeeProfileImageViewModel(
     private fun setCancelUploadingState() {
         _uiState.update {
             it.copy(
-                isLoading = false,
                 uri = null,
-                imageFile = null,
-                error = null,
+                imageFileInfo = null,
                 showErrorDialog = false,
-                uploadingState = FileLoadingState.Cancelled,
+                uploadingState = FileUploadingState.CANCELLED,
             )
         }
     }
@@ -178,9 +162,7 @@ class UploadEmployeeProfileImageViewModel(
     private fun setSuccessfulUploadingState() {
         _uiState.update {
             it.copy(
-                uploadingState = FileLoadingState.COMPLETE,
-                isLoading = false,
-                error = null,
+                uploadingState = FileUploadingState.COMPLETE,
                 showErrorDialog = false,
                 isUploadButtonEnabled = true,
             )

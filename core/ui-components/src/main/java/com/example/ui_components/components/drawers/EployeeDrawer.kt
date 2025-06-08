@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -33,6 +34,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.icons.HospitalAutomationIcons
 import com.example.model.DrawerButton
+import com.example.ui.theme.spacing
 
 @Composable
 fun EmployeeDrawer(
@@ -51,10 +53,11 @@ fun EmployeeDrawer(
         modifier = modifier,
         drawerContent = {
             ModalDrawerSheet(
-                drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow
+                drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                modifier = Modifier.fillMaxWidth(0.8f),
             ) {
                 Column(
-                    modifier = Modifier.padding(12.dp),
+                    modifier = Modifier.padding(MaterialTheme.spacing.small12),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start,
                 ) {
@@ -86,7 +89,7 @@ fun EmployeeDrawer(
                     }
                     buttons.forEachIndexed { currentIndex, item ->
                         NavigationDrawerItem(
-                            modifier = Modifier.padding(bottom = 8.dp),
+                            modifier = Modifier.padding(bottom = MaterialTheme.spacing.small8),
                             selected = currentIndex == selectedIndex,
                             onClick = {
                                 item.onClick
@@ -126,7 +129,7 @@ fun EmployeeDrawer(
                         )
                     }
                     HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 8.dp),
+                        modifier = Modifier.padding(vertical = MaterialTheme.spacing.small8),
                         color = MaterialTheme.colorScheme.outlineVariant
                     )
                 }

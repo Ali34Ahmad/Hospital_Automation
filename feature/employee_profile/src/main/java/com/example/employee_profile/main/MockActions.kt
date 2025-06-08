@@ -41,4 +41,12 @@ fun mockEmployeeProfileBusinessUiActions()=object : EmployeeProfileBusinessUiAct
 
     }
 
+    override fun onRefresh() {
+
+    }
+
+    override fun clearToastMessage() {
+
+    }
+
 }

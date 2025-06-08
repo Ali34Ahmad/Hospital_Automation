@@ -1,7 +1,6 @@
 package com.example.network.remote.upload_employee_profile_image
 
 import android.net.Uri
-import android.system.Os.close
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.network.constants.Role
@@ -17,20 +16,18 @@ import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import java.io.File
 
 
-class UploadEmployeeProfileImageApiImpl(
+class UploadImageApiImpl(
     private val client: HttpClient,
     private val fileReader: FileReader,
     private val userPreferencesRepository: UserPreferencesRepository,
-) : UploadEmployeeProfileImageApi {
+) : UploadImageApi {
 
-    override fun uploadImage(uri: Uri): Flow<ProgressUpdateDto> = channelFlow {
+    override fun uploadImage(uri: Uri,endPoint: String): Flow<ProgressUpdateDto> = channelFlow {
         val info = fileReader.uriToFileInfo(uri)
 
         val token = userPreferencesRepository.userPreferencesFlow.first().token
@@ -44,7 +41,7 @@ class UploadEmployeeProfileImageApiImpl(
 
         try {
             val response = client.submitFormWithBinaryData(
-                url = ApiRoutes.UPLOAD_EMPLOYEE_PROFILE_IMAGE,
+                url = endPoint,
                 formData = formData {
                     append(
                         "request_type",

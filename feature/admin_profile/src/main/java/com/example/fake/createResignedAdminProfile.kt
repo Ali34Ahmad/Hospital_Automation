@@ -27,7 +27,8 @@ fun createSampleAdminProfile(): AdminProfileResponse {
             ),
             gender = Gender.MALE,
             isSuspended = false,
-            isResigned = true // Example of a resigned admin)
+            isResigned = true ,
+            imageUrl = ""
         )
     )
 }

@@ -21,9 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.constants.BASE_URL
-import com.example.model.enums.Gender
 import com.example.constants.icons.AppIcons
+import com.example.model.enums.Gender
 import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -65,7 +64,7 @@ fun EmployeeProfileCard(
     ) {
         Box(modifier = Modifier) {
             NetworkImage(
-                model = "$BASE_URL/$profileImageUrl",
+                model = profileImageUrl,
                 contentScale = ContentScale.FillWidth,
                 loading = {
                     NetworkImageLoader(

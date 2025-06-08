@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -40,7 +40,7 @@ fun UploadEmployeeDocumentsScreen(
     MessageDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.uploading_file_failed),
-        description = uiState.errorDialogText,
+        description = uiState.errorDialogText?.asString()?:"",
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
@@ -66,8 +66,8 @@ fun UploadEmployeeDocumentsScreen(
                 FileUploadingCard(
                     title = stringResource(R.string.document_upload_is_required),
                     description = stringResource(R.string.upload_employee_document_description),
-                    file = uiState.fileUiInfo,
-                    loadingState=uiState.fileLoadingState,
+                    fileInfo = uiState.fileInfo,
+                    loadingState=uiState.fileUploadingState,
                     onFileUploadingPause = { },
                     onFileUploadingOpen = { },
                     onFileUploadingResume = {},
@@ -81,7 +81,7 @@ fun UploadEmployeeDocumentsScreen(
                     onNextButtonClick = {
                         uiActions.navigateToAddResidentialAddressScreen()
                     },
-                    enableNextButton=uiState.fileLoadingState== FileLoadingState.COMPLETE,
+                    enableNextButton=uiState.fileUploadingState== FileUploadingState.COMPLETE,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

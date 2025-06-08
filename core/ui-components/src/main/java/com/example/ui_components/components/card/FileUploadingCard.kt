@@ -10,11 +10,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.FileLoadingState
+import com.example.constants.enums.FileUploadingState
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.hospital_automation.core.components.card.IllustrationCard
-import com.example.model.File
+import com.example.model.FileInfo
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
@@ -26,14 +26,14 @@ import com.example.ui_components.components.list_items.PDFUploadDownloadItem
 fun FileUploadingCard(
     title: String,
     description: String,
-    file: File? = null,
+    fileInfo: FileInfo? = null,
     onFileUploadingPause: () -> Unit,
     onFileUploadingOpen: () -> Unit,
     onFileUploadingResume: () -> Unit,
     onUploadFileButtonClick: () -> Unit,
     onReplaceFileButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
-    loadingState: FileLoadingState,
+    loadingState: FileUploadingState,
     enableNextButton:Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -43,7 +43,7 @@ fun FileUploadingCard(
         titleColor = MaterialTheme.colorScheme.onBackground,
         description = description,
         actionButtonsSection = {
-            if (file == null) {
+            if (fileInfo == null) {
                 HospitalAutomationOutLinedButton(
                     onClick = onUploadFileButtonClick,
                     text = stringResource(R.string.upload_file),
@@ -51,11 +51,11 @@ fun FileUploadingCard(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            file?.let {
+            fileInfo?.let {
                 PDFUploadDownloadItem(
-                    name = file.fileName,
-                    fileSizeWithBytes = file.fileSizeWithBytes,
-                    progress = file.uploadingProgress,
+                    name = fileInfo.fileName,
+                    fileSizeWithBytes = fileInfo.fileSizeWithBytes,
+                    progress = fileInfo.uploadingProgress,
                     state = loadingState,
                     onPause = onFileUploadingPause,
                     onOpen = onFileUploadingOpen,
@@ -91,7 +91,7 @@ fun FileUploadingCardPreview() {
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.child_birth_certification_is_required),
                 description = stringResource(R.string.upload_file_description),
-                file = File(
+                fileInfo = FileInfo(
                     uploadingProgress = 70,
                     fileSizeWithBytes = 17572444,
                     fileName = "Cam-Scanner-152314",
@@ -102,7 +102,7 @@ fun FileUploadingCardPreview() {
                 onFileUploadingPause = {},
                 onFileUploadingOpen = {},
                 onNextButtonClick = {},
-                loadingState = FileLoadingState.UPLOADING,
+                loadingState = FileUploadingState.UPLOADING,
                 enableNextButton=true,
             )
         }
@@ -124,7 +124,7 @@ fun FileUploadingCardInit2Preview() {
                 onFileUploadingOpen = {},
                 onNextButtonClick = {},
                 onReplaceFileButtonClick = {},
-                loadingState = FileLoadingState.UPLOADING,
+                loadingState = FileUploadingState.UPLOADING,
                 enableNextButton=false,
             )
         }

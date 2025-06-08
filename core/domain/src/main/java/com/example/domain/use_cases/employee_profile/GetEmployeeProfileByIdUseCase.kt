@@ -5,10 +5,10 @@ import com.example.model.employee.EmployeeProfileResponse
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
-class GetEmployeeProfileUseCase(
+class GetEmployeeProfileByIdUseCase(
     private val employeeProfileRepository: EmployeeProfileRepository
 ) {
-    suspend operator fun invoke(): Result<EmployeeProfileResponse, rootError> {
-        return employeeProfileRepository.getEmployeeInfo()
+    suspend operator fun invoke(id: Int): Result<EmployeeProfileResponse, rootError> {
+        return employeeProfileRepository.getEmployeeInfoById(id)
     }
 }
