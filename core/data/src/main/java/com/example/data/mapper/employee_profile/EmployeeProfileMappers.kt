@@ -1,6 +1,7 @@
 package com.example.data.mapper.employee_profile
 
 import com.example.data.mapper.enums.toGender
+import com.example.data.mapper.enums.toRole
 import com.example.model.address.Address
 import com.example.model.employee.EmployeeProfile
 import com.example.model.employee.EmployeeProfileResponse
@@ -19,7 +20,7 @@ fun EmployeeProfileResponseDto.toEmployeeProfileResponse(): EmployeeProfileRespo
 fun EmployeeProfileDto.toEmployeeProfile(): EmployeeProfile =
     EmployeeProfile(
         userId = this.userId,
-        role = this.role,
+        role = this.role.toRole(),
         email = this.email,
         fullName = FullName(
             firstName = this.firstName,

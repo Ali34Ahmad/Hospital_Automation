@@ -4,12 +4,13 @@ import com.example.model.address.Address
 import com.example.model.employee.EmployeeProfile
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.enums.Gender
+import com.example.model.enums.Role
 import com.example.model.user.FullName
 
 fun createSampleEmployeeProfileResponse(): List<EmployeeProfileResponse> {
     val sampleProfile = EmployeeProfile(
         userId = 101,
-        role = "developer",
+        role = Role.EMPLOYEE,
         email = "jane.doe@example.com",
         fullName = FullName(
             firstName = "Jane",

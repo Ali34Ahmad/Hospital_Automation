@@ -4,7 +4,6 @@ import android.net.Uri
 import android.system.Os.close
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
-import com.example.network.constants.Role
 import com.example.network.model.response.ProgressUpdateDto
 import com.example.network.remote.upload_employee_profile_image.UploadImageApi
 import com.example.network.utility.ApiRoutes

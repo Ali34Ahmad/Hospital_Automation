@@ -95,6 +95,7 @@ dependencies {
     implementation(project(":feature:child_profile"))
     implementation(project(":feature:children"))
     implementation(project(":feature:add_child_screen"))
+    implementation(project(":feature:upload_child_documents"))
 
     //data
     implementation(project(":core:data"))

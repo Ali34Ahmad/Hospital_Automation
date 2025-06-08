@@ -4,7 +4,11 @@ import android.net.Uri
 
 
 fun mockUploadEmployeeDocumentsNavigationUiActions()=object : UploadChildDocumentsNavigationUiActions {
-    override fun navigateToAddResidentialAddressScreen() {
+    override fun navigateToSearchGuardiansScreen() {
+
+    }
+
+    override fun navigateToHomeScreen() {
 
     }
 }
@@ -27,6 +31,10 @@ fun mockUploadEmployeeDocumentsBusinessUiActions()=object : UploadChildDocuments
     }
 
     override fun onUploadFile(uri: Uri) {
+
+    }
+
+    override fun showSuccessCard() {
 
     }
 

@@ -2,13 +2,14 @@ package com.example.network.model.request
 
 import android.annotation.SuppressLint
 import com.example.network.model.enums.GenderDto
+import com.example.network.model.enums.RoleDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @SuppressLint("UnsafeOptInUsageError")
 @Serializable
 data class RegistrationRequestDto(
-    val role: String,
+    val role: RoleDto,
     val email: String,
     @SerialName("first_name") val firstName: String,
     @SerialName("middle_name") val middleName: String,

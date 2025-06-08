@@ -22,23 +22,28 @@ fun NavController.navigateToUploadChildDocumentsScreen(id: Int?) {
 }
 
 fun NavGraphBuilder.uploadChildDocumentsScreen(
-    onNavigateToAddResidentialAddressScreen: () -> Unit,
+    onNavigateToSearchGuardiansScreen: (childId: Int?) -> Unit,
+    onNavigateToHomeScreen: () -> Unit,
 ) {
     composable<UploadChildDocumentsRoute> {
-        val uploadChildDocumentsViewModel =
+        val viewModel =
             koinViewModel<UploadChildDocumentsViewModel>()
-        val uploadChildDocumentsUiState =
-            uploadChildDocumentsViewModel.uiState.collectAsState()
+        val uiState =
+            viewModel.uiState.collectAsState()
 
         val navActions = object : UploadChildDocumentsNavigationUiActions {
-            override fun navigateToAddResidentialAddressScreen() {
-                onNavigateToAddResidentialAddressScreen()
+            override fun navigateToSearchGuardiansScreen() {
+                onNavigateToSearchGuardiansScreen(uiState.value.childId)
+            }
+
+            override fun navigateToHomeScreen() {
+                onNavigateToHomeScreen()
             }
         }
 
         UploadChildDocumentsScreen(
-            uiState = uploadChildDocumentsUiState.value,
-            uiActions = uploadChildDocumentsViewModel.getUiActions(navActions)
+            uiState = uiState.value,
+            uiActions = viewModel.getUiActions(navActions)
         )
     }
 }

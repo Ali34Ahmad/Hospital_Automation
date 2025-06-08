@@ -1,5 +1,7 @@
 package com.example.network.model.response
 
+import com.example.network.model.enums.GenderDto
+import com.example.network.model.enums.RoleDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +15,7 @@ data class RegistrationResponseDto(
 data class UserDataDto(
     @SerialName("userId")
     val userId: Int,
-    val role: String,
+    val role: RoleDto,
     val email: String,
     @SerialName("first_name")
     val firstName: String,
@@ -42,7 +44,7 @@ data class UserDataDto(
     val imageUrl: String?, // Can be null
     @SerialName("medical_license_img_url")
     val medicalLicenseImgUrl: String?, // Can be null
-    val gender: String,
+    val gender: GenderDto,
     @SerialName("is_suspended")
     val isSuspended: Boolean,
     @SerialName("suspending_reason")

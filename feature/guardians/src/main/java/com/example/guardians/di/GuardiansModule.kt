@@ -8,5 +8,6 @@ import org.koin.dsl.module
 
 val guardiansModule = module {
     singleOf(::GetGuardiansByChildIdUseCase)
+
     viewModelOf(::GuardiansViewModel)
 }

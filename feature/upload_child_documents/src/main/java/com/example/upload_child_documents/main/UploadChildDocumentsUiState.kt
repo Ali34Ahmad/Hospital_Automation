@@ -13,4 +13,5 @@ data class UploadChildDocumentsUiState(
     val isNextButtonEnabled: Boolean = false,
     val showErrorDialog: Boolean = false,
     val errorDialogText: UiText? = null,
+    val showSuccessCard: Boolean = false,
 )

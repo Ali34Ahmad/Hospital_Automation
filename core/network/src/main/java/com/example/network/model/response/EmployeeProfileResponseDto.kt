@@ -1,6 +1,7 @@
 package com.example.network.model.response
 
 import com.example.network.model.enums.GenderDto
+import com.example.network.model.enums.RoleDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,7 +13,7 @@ data class EmployeeProfileResponseDto(
 @Serializable
 data class EmployeeProfileDto(
     val userId: Int,
-    val role: String,
+    val role: RoleDto,
     val email: String,
     @SerialName("first_name")
     val firstName: String,

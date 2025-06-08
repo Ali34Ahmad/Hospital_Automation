@@ -15,10 +15,12 @@ interface UploadChildDocumentsBusinessUiActions {
     fun onFileUploadingResume()
     fun onUploadFileButtonClick()
     fun onUploadFile(uri: Uri)
+    fun showSuccessCard()
     fun onShowErrorDialogStateChange(value: Boolean)
     fun onCancelFileUpload()
 }
 
 interface UploadChildDocumentsNavigationUiActions {
-    fun navigateToAddResidentialAddressScreen()
+    fun navigateToSearchGuardiansScreen()
+    fun navigateToHomeScreen()
 }

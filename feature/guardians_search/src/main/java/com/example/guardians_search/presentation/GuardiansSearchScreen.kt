@@ -55,6 +55,7 @@ fun GuardiansSearchScreen(
         guardians = guardians
     )
 }
+
 @Composable
 fun GuardiansSearchScreen(
     uiState: GuardiansSearchUiState,

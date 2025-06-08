@@ -19,6 +19,7 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
+import com.example.ui_components.components.card.ChildAddedSuccessfullyCard
 import com.example.ui_components.components.card.FileUploadingCard
 import com.example.ui_components.components.dialog.MessageDialog
 
@@ -63,27 +64,41 @@ fun UploadChildDocumentsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
-                FileUploadingCard(
-                    title = stringResource(R.string.child_birth_certification_is_required),
-                    description = stringResource(R.string.upload_employee_document_description),
-                    fileInfo = uiState.fileInfo,
-                    loadingState=uiState.fileUploadingState,
-                    onFileUploadingPause = { },
-                    onFileUploadingOpen = { },
-                    onFileUploadingResume = {},
-                    onUploadFileButtonClick = {
-                        filePickerLauncher.launch("application/pdf")
-                    },
-                    onReplaceFileButtonClick = {
-                        uiActions.onCancelFileUpload()
-                        filePickerLauncher.launch("application/pdf")
-                    },
-                    onNextButtonClick = {
-                        uiActions.navigateToAddResidentialAddressScreen()
-                    },
-                    enableNextButton=uiState.fileUploadingState== FileUploadingState.COMPLETE,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                if (!uiState.showSuccessCard){
+                    FileUploadingCard(
+                        title = stringResource(R.string.child_birth_certification_is_required),
+                        description = stringResource(R.string.upload_employee_document_description),
+                        fileInfo = uiState.fileInfo,
+                        loadingState = uiState.fileUploadingState,
+                        onFileUploadingPause = { },
+                        onFileUploadingOpen = { },
+                        onFileUploadingResume = {},
+                        onUploadFileButtonClick = {
+                            filePickerLauncher.launch("application/pdf")
+                        },
+                        onReplaceFileButtonClick = {
+                            uiActions.onCancelFileUpload()
+                            filePickerLauncher.launch("application/pdf")
+                        },
+                        onNextButtonClick = {
+                            uiActions.showSuccessCard()
+                        },
+                        enableNextButton = uiState.fileUploadingState == FileUploadingState.COMPLETE,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }else{
+                    ChildAddedSuccessfullyCard(
+                        title = stringResource(R.string.child_added_successfully),
+                        description = stringResource(R.string.child_added_successfully_description),
+                        onAddGuardianButtonClick = {
+                            uiActions.navigateToSearchGuardiansScreen()
+                        },
+                        onBackToHomeButtonClick = {
+                            uiActions.navigateToHomeScreen()
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
         }
     }

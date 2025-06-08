@@ -1,5 +1,7 @@
 package com.example.model.auth.signup
 
+import com.example.model.enums.Gender
+import com.example.model.enums.Role
 
 
 data class RegistrationResponse(
@@ -8,7 +10,7 @@ data class RegistrationResponse(
 
 data class UserData(
     val userId: Int,
-    val role: String,
+    val role: Role,
     val email: String,
     val firstName: String,
     val lastName: String,
@@ -24,7 +26,7 @@ data class UserData(
     val specialty: String?, // Can be null
     val imageUrl: String?, // Can be null
     val medicalLicenseImgUrl: String?, // Can be null
-    val gender: String,
+    val gender: Gender,
     val isSuspended: Boolean,
     val suspendingReason: String?, // Can be null
     val isResigned: Boolean,

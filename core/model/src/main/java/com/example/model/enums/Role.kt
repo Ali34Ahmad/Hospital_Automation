@@ -1,8 +1,7 @@
-package com.example.network.constants
+package com.example.model.enums
 
 enum class Role {
     EMPLOYEE,
     DOCTOR,
     ADMIN,
-    PATIENT,
 }

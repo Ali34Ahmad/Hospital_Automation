@@ -4,8 +4,8 @@ import com.example.data.mapper.enums.toGender
 import com.example.model.address.Address
 import com.example.model.employee.EmployeeProfile
 import com.example.model.employee.EmployeeProfileResponse
+import com.example.model.enums.Role
 import com.example.model.user.FullName
-import com.example.network.constants.Role
 import com.example.network.model.response.employee.GetEmployeeByIdDto
 import com.example.network.model.response.employee.GetEmployeeProfileByIdResponseDto
 import com.example.network.utility.ApiRoutes
@@ -20,7 +20,7 @@ fun GetEmployeeProfileByIdResponseDto.toEmployeeProfileResponse(): EmployeeProfi
 fun GetEmployeeByIdDto.toEmployeeProfile(): EmployeeProfile {
     return EmployeeProfile(
         userId = this.userId,
-        role = Role.EMPLOYEE.name,
+        role = Role.EMPLOYEE,
         email = this.email,
         fullName = FullName(
             firstName = this.firstName,

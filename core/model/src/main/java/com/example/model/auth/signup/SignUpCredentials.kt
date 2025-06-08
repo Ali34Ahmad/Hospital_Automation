@@ -1,9 +1,10 @@
 package com.example.model.auth.signup
 
 import com.example.model.enums.Gender
+import com.example.model.enums.Role
 
 data class SignUpCredentials(
-    val role: String,
+    val role: Role,
     val email: String,
     val firstName: String,
     val middleName: String,

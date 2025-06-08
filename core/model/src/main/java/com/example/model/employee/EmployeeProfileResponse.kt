@@ -2,6 +2,7 @@ package com.example.model.employee
 
 import com.example.model.address.Address
 import com.example.model.enums.Gender
+import com.example.model.enums.Role
 import com.example.model.user.FullName
 
 data class EmployeeProfileResponse(
@@ -11,7 +12,7 @@ data class EmployeeProfileResponse(
 
 data class EmployeeProfile(
     val userId: Int,
-    val role: String,
+    val role: Role,
     val email: String,
     val fullName: FullName,
     val verifiedResetPassword: Boolean?,

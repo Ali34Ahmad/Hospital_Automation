@@ -3,7 +3,7 @@ package com.example.network.remote.upload_employee_profile_image
 import android.net.Uri
 import android.util.Log
 import com.example.datastore.repositories.UserPreferencesRepository
-import com.example.network.constants.Role
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.ProgressUpdateDto
 import com.example.network.utility.ApiRoutes
 import com.example.network.utility.file.FileReader
@@ -45,7 +45,7 @@ class UploadImageApiImpl(
                 formData = formData {
                     append(
                         "request_type",
-                        Role.EMPLOYEE.name.lowercase()
+                        RoleDto.EMPLOYEE.name.lowercase()
                     )
                     append(
                         "image",

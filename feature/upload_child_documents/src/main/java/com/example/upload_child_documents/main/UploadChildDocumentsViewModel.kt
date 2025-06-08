@@ -70,6 +70,10 @@ class UploadChildDocumentsViewModel(
                 uploadFile(uri)
             }
 
+            override fun showSuccessCard() {
+                updateShowSuccessCard(true)
+            }
+
             override fun onShowErrorDialogStateChange(value: Boolean) {
                 updateShowErrorDialogState(value)
             }
@@ -83,9 +87,9 @@ class UploadChildDocumentsViewModel(
         _uiState.update { it.copy(showErrorDialog = isShown) }
     }
 
-//    private fun updateErrorDialogDescription(value: UiText?) {
-//        _uiState.update { it.copy(errorDialogText = value) }
-//    }
+    private fun updateShowSuccessCard(value: Boolean) {
+        _uiState.update { it.copy(showSuccessCard = value) }
+    }
 
     fun uploadFile(uri: Uri) {
         val childId=uiState.value.childId

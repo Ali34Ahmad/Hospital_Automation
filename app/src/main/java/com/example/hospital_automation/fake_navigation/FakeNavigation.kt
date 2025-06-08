@@ -81,20 +81,20 @@ fun FakeGraph(modifier: Modifier = Modifier) {
 //            navigateUp = navController::navigateUp
 //        )
         //6.
-        guardiansScreen(
-            onNavigateUp = navController::navigateUp,
-            onNavigateToGuardianProfile = {guardianId->
-                navController.navigateToGuardianProfile(
-                    guardianId = guardianId,
-                    userProfileMode = UserProfileMode.VIEW_ONLY,
-                    childId = null
-                )
-            }
-        )
+//        guardiansScreen(
+//            onNavigateUp = navController::navigateUp,
+//            onNavigateToGuardianProfile = {guardianId->
+//                navController.navigateToGuardianProfile(
+//                    guardianId = guardianId,
+//                    userProfileMode = UserProfileMode.VIEW_ONLY,
+//                    childId = null
+//                )
+//            }
+//        )
         //7.
-        childrenSearchScreen(
-            onNavigateUp = navController::navigateUp,
-            onNavigateToChildDetail = navController::navigateToChildProfile
-        )
+//        childrenSearchScreen(
+//            onNavigateUp = navController::navigateUp,
+//            onNavigateToChildDetail = navController::navigateToChildProfile
+//        )
     }
 }
