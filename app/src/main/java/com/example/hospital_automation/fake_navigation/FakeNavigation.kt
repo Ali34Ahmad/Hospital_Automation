@@ -38,48 +38,48 @@ fun FakeGraph(modifier: Modifier = Modifier) {
             }
         )
         //1.
-        guardianSearchScreen(
-            onNavigateUp = navController::navigateUp,
-            onNavigateToGuardianProfile = { guardianId, childId->
-                navController.navigateToGuardianProfile(
-                    guardianId = guardianId,
-                    userProfileMode = when(childId){
-                            null -> UserProfileMode.ADD_CHILD
-                            else -> UserProfileMode.SET_AS_GUARDIAN
-                        }
-                    ,
-                    childId = childId
-                )
-            }
-        )
+//        guardianSearchScreen(
+//            onNavigateUp = navController::navigateUp,
+//            onNavigateToGuardianProfile = { guardianId, childId->
+//                navController.navigateToGuardianProfile(
+//                    guardianId = guardianId,
+//                    userProfileMode = when(childId){
+//                            null -> UserProfileMode.ADD_CHILD
+//                            else -> UserProfileMode.SET_AS_GUARDIAN
+//                        }
+//                    ,
+//                    childId = childId
+//                )
+//            }
+//        )
         //2.
-        guardianProfileScreen(
-            onNavigateUp = navController::navigateUp,
-            onNavigateToChildrenScreen = {guardianId->
-                navController.navigateToChildrenScreen(guardianId)
-            }
-        ) { guardianId ->
-            navController.navigateToAddChild(
-                guardianId
-            )
-        }
+//        guardianProfileScreen(
+//            onNavigateUp = navController::navigateUp,
+//            onNavigateToChildrenScreen = {guardianId->
+//                navController.navigateToChildrenScreen(guardianId)
+//            }
+//        ) { guardianId ->
+//            navController.navigateToAddChild(
+//                guardianId
+//            )
+//        }
         //3.
-        childrenScreen(
-            navigateToChildProfile = navController::navigateToChildProfile,
-            navigateUp = navController::navigateUp
-        )
+//        childrenScreen(
+//            navigateToChildProfile = navController::navigateToChildProfile,
+//            navigateUp = navController::navigateUp
+//        )
         //4.
-        addChildScreen(
-            onNavigateUp = navController::navigateUp,
-            onNavigateToAddChildCertificate = { TODO("navigate to add certificate screen") }
-        )
+//        addChildScreen(
+//            onNavigateUp = navController::navigateUp,
+//            onNavigateToAddChildCertificate = { TODO("navigate to add certificate screen") }
+//        )
         //5.
-        childProfileScreen(
-            navigateToAddGuardianScreen = navController::navigateToGuardiansScreen,
-            navigateToEmployeeProfileScreen = { TODO("navigate to employee profile") },
-            navigateToGuardianScreen = navController::navigateToGuardiansScreen,
-            navigateUp = navController::navigateUp
-        )
+//        childProfileScreen(
+//            navigateToAddGuardianScreen = navController::navigateToGuardiansScreen,
+//            navigateToEmployeeProfileScreen = { TODO("navigate to employee profile") },
+//            navigateToGuardianScreen = navController::navigateToGuardiansScreen,
+//            navigateUp = navController::navigateUp
+//        )
         //6.
         guardiansScreen(
             onNavigateUp = navController::navigateUp,

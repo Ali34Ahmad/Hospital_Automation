@@ -16,21 +16,21 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class ChildProfileRoute(
-    val childId : Int
+    val childId: Int
 )
 
-fun NavController.navigateToChildProfile(childId: Int){
+fun NavController.navigateToChildProfile(childId: Int) {
     navigateToScreen(
         route = ChildProfileRoute(childId = childId),
     )
 }
 
 fun NavGraphBuilder.childProfileScreen(
-    navigateToAddGuardianScreen: (Int)-> Unit,
-    navigateToEmployeeProfileScreen: (Int)-> Unit,
-    navigateToGuardianScreen: (Int)-> Unit,
-    navigateUp: ()-> Unit
-){
+    navigateToAddGuardianScreen: (Int) -> Unit,
+    navigateToEmployeeProfileScreen: (employeeId: Int) -> Unit,
+    navigateToGuardianScreen: (Int) -> Unit,
+    navigateUp: () -> Unit
+) {
     composable<ChildProfileRoute> {
         val viewModel = koinViewModel<ChildProfileViewModel>()
         val navigationActions = object : ChildProfileNavigationAction {

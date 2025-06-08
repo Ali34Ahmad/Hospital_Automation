@@ -10,10 +10,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.example.add_child_screen.navigation.addChildScreen
+import com.example.add_child_screen.navigation.navigateToAddChild
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.admin_profile.navigation.adminProfileScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
+import com.example.child_profile.navigation.childProfileScreen
+import com.example.child_profile.navigation.navigateToChildProfile
+import com.example.children.navigation.childrenScreen
+import com.example.children.navigation.navigateToChildrenScreen
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
@@ -26,6 +32,12 @@ import com.example.employment_history.navigation.employmentHistoryScreen
 import com.example.employment_history.navigation.navigateToEmploymentHistoryScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
+import com.example.guardian_profile.navigation.UserProfileMode
+import com.example.guardian_profile.navigation.guardianProfileScreen
+import com.example.guardian_profile.navigation.navigateToGuardianProfile
+import com.example.guardians.navigation.navigateToGuardiansScreen
+import com.example.guardians_search.navigation.guardianSearchScreen
+import com.example.guardians_search.navigation.navigateToGuardiansSearch
 import com.example.home.navigation.HomeRoute
 import com.example.home.navigation.homeScreen
 import com.example.home.navigation.navigateToHomeScreen
@@ -177,7 +189,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     ) {
                         homeScreen(
                             onNavigateToAddChildScreen = {
-
+                                navController.navigateToGuardiansSearch()
                             },
                             onNavigateToAddGuardianScreen = {
 
@@ -236,6 +248,55 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             navController.navigateUp()
                         },
                     )
+
+                    guardianSearchScreen(
+                        onNavigateUp = navController::navigateUp,
+                        onNavigateToGuardianProfile = { guardianId, childId ->
+                            navController.navigateToGuardianProfile(
+                                guardianId = guardianId,
+                                userProfileMode = when (childId) {
+                                    null -> UserProfileMode.ADD_CHILD
+                                    else -> UserProfileMode.SET_AS_GUARDIAN
+                                },
+                                childId = childId
+                            )
+                        }
+                    )
+
+                    guardianProfileScreen(
+                        onNavigateUp = navController::navigateUp,
+                        onNavigateToChildrenScreen = { guardianId ->
+                            navController.navigateToChildrenScreen(guardianId)
+                        },
+                        onNavigateToAddChildScreen = { guardianId ->
+                            navController.navigateToAddChild(
+                                guardianId
+                            )
+                        }
+                    )
+
+                    childrenScreen(
+                        navigateToChildProfile = navController::navigateToChildProfile,
+                        navigateUp = navController::navigateUp
+                    )
+
+                    addChildScreen(
+                        onNavigateUp = navController::navigateUp,
+                        onNavigateToAddChildCertificate = { TODO("navigate to add certificate screen") }
+                    )
+
+                    childProfileScreen(
+                        navigateToAddGuardianScreen = navController::navigateToGuardiansScreen,
+                        navigateToEmployeeProfileScreen = {
+                            navController.navigateToEmployeeProfileScreen(
+                                profileAccessType = ProfileAccessType.ID_ACCESS,
+                                employeeId = -1
+                            )
+                        },
+                        navigateToGuardianScreen = navController::navigateToGuardiansScreen,
+                        navigateUp = navController::navigateUp
+                    )
+
                 }
             }
         }

@@ -108,7 +108,7 @@ class EmployeeProfileViewModel(
             getCurrentEmployeeProfileUseCase()
                 .onSuccess { data ->
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
-                    updateProfileScreenState(ScreenState.Success)
+                    updateProfileScreenState(ScreenState.SUCCESS)
                     updateProfileInfoState(data)
                 }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
@@ -127,7 +127,7 @@ class EmployeeProfileViewModel(
             getEmployeeProfileByIdUseCase(employeeId)
                 .onSuccess { data ->
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
-                    updateProfileScreenState(ScreenState.Success)
+                    updateProfileScreenState(ScreenState.SUCCESS)
                     updateProfileInfoState(data)
                 }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
@@ -267,7 +267,7 @@ class EmployeeProfileViewModel(
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    updateProfileScreenState(ScreenState.Success)
+                    updateProfileScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
@@ -287,7 +287,7 @@ class EmployeeProfileViewModel(
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    updateProfileScreenState(ScreenState.Success)
+                    updateProfileScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)

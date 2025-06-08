@@ -5,14 +5,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.AdminProfileNavConstants
 import com.example.admin_profile.navigation.AdminProfileRoute
 import com.example.domain.use_cases.admin_profile.GetAdminProfileByIdUseCase
 import com.example.model.admin_account.AdminProfileResponse
 import com.example.model.enums.ScreenState
 import com.example.ui_components.R
 import com.example.util.UiText
-import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -77,7 +75,7 @@ class AdminProfileViewModel(
             getAdminProfileByIdUseCase(uiState.value.adminId ?: -1)
                 .onSuccess { data ->
                     Log.v("AdminProfile fetched Successfully", "AdminProfileViewModel")
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                     updateProfileInfoState(data)
                 }.onError { error ->
                     Log.v("Failed to fetch AdminProfile", "AdminProfileViewModel")
@@ -103,7 +101,7 @@ class AdminProfileViewModel(
                     Log.v("AdminProfile fetched Successfully", "AdminProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed to fetch AdminProfile", "AdminProfileViewModel")
                     updateIsRefreshing(false)

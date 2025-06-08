@@ -8,7 +8,6 @@ import com.example.domain.use_cases.employee_account_management.CheckEmployeePer
 import com.example.model.enums.ScreenState
 import com.example.ui_components.R
 import com.example.util.UiText
-import com.example.utility.network.Error
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -143,7 +142,7 @@ class HomeViewModel(
                         writeShowPermissionCard(true)
                     }
                     updateIsRefreshing(false)
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed Refreshing Permission", "HomeViewModel")
                     updateIsRefreshing(false)

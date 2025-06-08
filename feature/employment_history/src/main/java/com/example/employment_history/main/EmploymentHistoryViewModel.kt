@@ -117,7 +117,7 @@ class EmploymentHistoryViewModel(
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateEmploymentHistory(data)
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed to fetch EmploymentHistory", "EmploymentHistoryViewModel")
                     updateEmploymentHistory(null)
@@ -195,7 +195,7 @@ class EmploymentHistoryViewModel(
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)
                     updateEmploymentHistory(data)
-                    updateScreenState(ScreenState.Success)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError { error ->
                     Log.v("Failed to fetch EmploymentHistory", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)

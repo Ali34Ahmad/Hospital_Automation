@@ -123,7 +123,7 @@ fun AdminProfileScreen(
                 }
             }
             if (uiState.userInfo != null &&
-                uiState.screenState == ScreenState.Success
+                uiState.screenState == ScreenState.SUCCESS
             ) {
                 val name = uiState.userInfo.admin.fullName.toAppropriateFormat()
                 val subject = stringResource(R.string.medicare)
@@ -185,7 +185,7 @@ fun LoginScreenPreview() {
             AdminProfileScreen(
                 uiState = AdminProfileUiState(
                     userInfo = createSampleAdminProfile(),
-                    screenState = ScreenState.Success,
+                    screenState = ScreenState.SUCCESS,
                 ),
                 uiActions = AdminProfileUiActions(
                     navigationActions = mockAdminProfileNavigationUiActions(),

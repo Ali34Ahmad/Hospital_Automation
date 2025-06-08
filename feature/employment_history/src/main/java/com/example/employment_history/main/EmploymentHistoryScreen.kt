@@ -139,7 +139,7 @@ fun EmploymentHistoryScreen(
                 }
             }
             if (uiState.employmentHistory != null
-                && uiState.screenState == ScreenState.Success
+                && uiState.screenState == ScreenState.SUCCESS
             ) {
                 PullToRefreshBox(
                     refreshing = uiState.isRefreshing,

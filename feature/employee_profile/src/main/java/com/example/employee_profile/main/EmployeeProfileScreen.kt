@@ -150,7 +150,7 @@ fun EmployeeProfileScreen(
                     }
                 }
             }
-            if (uiState.profileScreenState == ScreenState.Success &&
+            if (uiState.profileScreenState == ScreenState.SUCCESS &&
                 uiState.userInfo != null
             ) {
                 val name = uiState.userInfo.profile.fullName.toAppropriateFormat()
@@ -238,7 +238,7 @@ fun EmployeeProfileOwnerScreenPreview() {
             EmployeeProfileScreen(
                 uiState = EmployeeProfileUiState(
                     userInfo = createSampleEmployeeProfileResponse()[0],
-                    profileScreenState = ScreenState.Success,
+                    profileScreenState = ScreenState.SUCCESS,
                 ),
                 uiActions = EmployeeProfileUiActions(
                     navigationActions = mockEmployeeProfileNavigationUiActions(),
@@ -258,7 +258,7 @@ fun EmployeeProfileAnotherEmployeeScreenPreview() {
             EmployeeProfileScreen(
                 uiState = EmployeeProfileUiState(
                     userInfo = createSampleEmployeeProfileResponse()[1],
-                    profileScreenState = ScreenState.Success,
+                    profileScreenState = ScreenState.SUCCESS,
                 ),
                 uiActions = EmployeeProfileUiActions(
                     navigationActions = mockEmployeeProfileNavigationUiActions(),
