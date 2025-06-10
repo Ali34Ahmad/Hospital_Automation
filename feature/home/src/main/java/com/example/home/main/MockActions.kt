@@ -36,4 +36,8 @@ fun mockHomeBusinessUiActions()=object : HomeBusinessUiActions {
 
     }
 
+    override fun clearToastMessage() {
+
+    }
+
 }

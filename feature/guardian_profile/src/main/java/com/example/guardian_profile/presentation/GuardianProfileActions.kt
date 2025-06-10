@@ -3,6 +3,7 @@ package com.example.guardian_profile.presentation
 import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianFullData
+import com.example.util.UiText
 
 sealed interface GuardianProfileActions {
 
@@ -13,10 +14,10 @@ sealed interface GuardianProfileActions {
 
 
 
-    data object RetryLoadingData: GuardianProfileActions
-
     object SetAsGuardian: GuardianProfileActions
-
+    data class UpdateRefreshState(val isRefreshing: Boolean): GuardianProfileActions
+    data object Refresh : GuardianProfileActions
+    data class ShowToast(val message: UiText): GuardianProfileActions
 }
 
 interface GuardianProfileNavigationAction{

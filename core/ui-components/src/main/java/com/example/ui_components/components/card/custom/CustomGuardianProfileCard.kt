@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -21,7 +23,6 @@ import com.example.ui_components.R
 import com.example.ui_components.components.card.GuardianProfileCard
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.items.ProfileActionsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
 
 @Composable
 fun CustomGuardianProfileCard(
@@ -85,7 +86,7 @@ fun CustomGuardianProfileCard(
         ProfileActionsItem(
             onClick = onChildrenButtonClick,
             modifier = Modifier.fillMaxWidth(),
-            iconRes = HospitalAutomationIcons.child,
+            iconRes = AppIcons.Outlined.child,
             title = stringResource(R.string.children),
         )
     }

@@ -2,6 +2,7 @@ package com.example.guardians_search.presentation
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +32,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 
 @Composable
 fun GuardiansSearchScreen(
@@ -123,22 +127,23 @@ fun GuardiansSearchScreen(
                         )
                     }
                     ScreenState.LOADING -> {
-                        Surface (
-                            modifier = Modifier.fillMaxSize()
-                                .padding(MaterialTheme.spacing.medium16)
-                        ){
-                            FetchingDataItem()
-                        }
-
+                        FetchingDataItem(Modifier.fillMaxSize())
                     }
                     ScreenState.ERROR ->{
-                       Surface(
-                           modifier = Modifier.padding(MaterialTheme.spacing.medium16)
-                       ) {
-                           SomeThingWentWrong(
-                               modifier = Modifier.fillMaxWidth()
-                           )
-                       }
+                        PullToRefreshColumn(
+                            refreshing = uiState.isRefreshing,
+                            modifier = Modifier.fillMaxSize(),
+                            onRefresh = {
+                                onAction(GuardiansSearchActions.Refresh)
+                            },
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            ErrorComponent(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(MaterialTheme.spacing.medium16)
+                            )
+                        }
                     }
                     ScreenState.SUCCESS -> guardians?.let{
 
@@ -146,31 +151,58 @@ fun GuardiansSearchScreen(
                         //if no items display this composable.
                         if(numberOfGuardians == 0){
 
-                            CenteredMessage(
+                            PullToRefreshColumn(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = {
+                                    onAction(
+                                        GuardiansSearchActions.Refresh
+                                    )
+                                },
                                 modifier = Modifier.fillMaxSize(),
-                                title =stringResource( R.string.no_items),
-                                subtitle = stringResource(R.string.no_items_subtitle)
-                            )
-                        }else{
-                            LazyColumn(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(MaterialTheme.spacing.medium16),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                                verticalArrangement = Arrangement.Center,
                             ) {
-                                items(numberOfGuardians) { index ->
-                                    val guardianData = guardians[index]
-                                    guardianData?.let{
-                                        GuardianListItem(
-                                            onClick = {
-                                                navigationActions.navigateToGuardianDetails(it.id,uiState.childId)
-                                            },
-                                            imageUrl = it.img,
-                                            name = it.fullName,
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
-                                        Spacer(modifier = Modifier.height(MaterialTheme.sizing.small8))
+
+                                ErrorComponent(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(MaterialTheme.spacing.medium16),
+                                    title = stringResource(R.string.no_matching_result),
+                                    description = stringResource(R.string.no_children_subtitle)
+                                )
+                            }
+                        }else{
+                            PullToRefreshBox(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = {
+                                    onAction(
+                                        GuardiansSearchActions.Refresh
+                                    )
+                                },
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                LazyColumn(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(MaterialTheme.spacing.medium16),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                                ) {
+                                    items(numberOfGuardians) { index ->
+                                        val guardianData = guardians[index]
+                                        guardianData?.let {
+                                            GuardianListItem(
+                                                onClick = {
+                                                    navigationActions.navigateToGuardianDetails(
+                                                        it.id,
+                                                        uiState.childId
+                                                    )
+                                                },
+                                                imageUrl = it.img,
+                                                name = it.fullName,
+                                                modifier = Modifier.fillMaxWidth()
+                                            )
+                                            Spacer(modifier = Modifier.height(MaterialTheme.sizing.small8))
+                                        }
                                     }
                                 }
                             }

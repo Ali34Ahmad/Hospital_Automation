@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import com.example.constants.enums.FileUploadingState
-import com.example.hospital_automation.core.components.card.IllustrationCard
+import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing

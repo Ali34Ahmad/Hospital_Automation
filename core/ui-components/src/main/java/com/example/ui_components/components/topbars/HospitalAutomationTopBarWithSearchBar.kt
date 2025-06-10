@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -23,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,8 +36,8 @@ fun HospitalAutomationTopBarWithSearchBar(
     onNavigationIconCLick: () -> Unit,
     onSearch: (String)-> Unit,
     modifier: Modifier = Modifier,
-    @DrawableRes navigationIcon: Int = HospitalAutomationIcons.arrowBack,
-    @DrawableRes trailingIcon: Int? = HospitalAutomationIcons.close,
+    @DrawableRes navigationIcon: Int = AppIcons.Outlined.arrowBack,
+    @DrawableRes trailingIcon: Int? = AppIcons.Outlined.close,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -63,7 +64,7 @@ fun HospitalAutomationTopBarWithSearchBar(
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color(0xffEFF1FC)
+            containerColor = MaterialTheme.colorScheme.surface
         ),
     )
 }

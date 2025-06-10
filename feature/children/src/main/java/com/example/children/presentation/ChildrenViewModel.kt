@@ -6,8 +6,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.children.navigation.ChildrenRoute
 import com.example.domain.use_cases.children.GetChildrenByGuardianIdUseCase
+import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
 import com.example.model.enums.ScreenState
+import com.example.ui_components.R
+import com.example.util.UiText
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +24,6 @@ class ChildrenViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getChildrenByGuardianIdUseCase: GetChildrenByGuardianIdUseCase,
 ): ViewModel() {
-    //need to replace it with real one
     val id : Int = savedStateHandle.toRoute<ChildrenRoute>().userId
 
     private val _uiState = MutableStateFlow(ChildrenUIState(guardianId = id))
@@ -43,22 +45,60 @@ class ChildrenViewModel(
             ChildrenUIAction.Retry -> {
                 loadUserData()
             }
-            is ChildrenUIAction.UpdateFetchingDataState -> {
-                _uiState.value = _uiState.value.copy(
-                    screenState = action.newState
-                )
+            is ChildrenUIAction.UpdateScreenState -> {
+                updateScreenState(action.newState)
+            }
+
+            ChildrenUIAction.Refresh -> {
+                refreshData()
+            }
+            is ChildrenUIAction.ShowToast -> {
+                showToast(action.message)
+            }
+            is ChildrenUIAction.UpdateRefreshState -> {
+                updateRefreshState(action.isRefreshing)
             }
         }
     }
-
+    private fun updateScreenState(newState: ScreenState){
+        _uiState.value = _uiState.value.copy(
+            screenState = newState
+        )
+    }
+    private fun updateRefreshState(isRefreshing: Boolean){
+        _uiState.value = _uiState.value.copy(isRefreshing = isRefreshing)
+    }
     private fun loadUserData() = viewModelScope.launch{
-        onAction(ChildrenUIAction.UpdateFetchingDataState(newState = ScreenState.LOADING))
+        updateScreenState(ScreenState.LOADING)
         val response = getChildrenByGuardianIdUseCase(id)
         response.onSuccess{ data:List<ChildFullData> ->
             _uiState.value = uiState.value.copy(userChildren = data)
-            onAction(ChildrenUIAction.UpdateFetchingDataState(newState = ScreenState.SUCCESS))
+            updateScreenState(ScreenState.SUCCESS)
         }.onError{ error ->
-            onAction(ChildrenUIAction.UpdateFetchingDataState(newState = ScreenState.ERROR))
+            updateScreenState(ScreenState.ERROR)
+        }
+    }
+    private fun showToast(message: UiText) {
+        _uiState.value = _uiState.value.copy(toastMessage = message)
+    }
+    private fun updateChildren(children: List<ChildFullData>){
+        _uiState.value = _uiState.value.copy(userChildren = children)
+    }
+    private fun refreshData(){
+        viewModelScope.launch{
+            updateRefreshState(true)
+            getChildrenByGuardianIdUseCase(id)
+                .onSuccess{ result->
+                    updateRefreshState(false)
+                    showToast(UiText.StringResource(R.string.data_updated_successfully))
+                    updateChildren(result)
+                    if(uiState.value.screenState == ScreenState.ERROR){
+                        updateScreenState(ScreenState.SUCCESS)
+                    }
+                }.onError {
+                    updateRefreshState(false)
+                    showToast(UiText.StringResource(R.string.something_went_wrong))
+                }
         }
     }
 

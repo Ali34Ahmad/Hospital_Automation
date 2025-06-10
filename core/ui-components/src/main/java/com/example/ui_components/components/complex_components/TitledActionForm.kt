@@ -27,12 +27,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
-import com.example.ui_components.icons.HospitalAutomationIcons
 import com.example.model.TextFieldData
 
 @Composable
@@ -105,7 +105,7 @@ fun TitledActionFormPreview() {
         var text2 by remember { mutableStateOf("") }
         TitledActionForm(
             title = R.string.interactions,
-            icon = HospitalAutomationIcons.add,
+            icon = AppIcons.Outlined.add,
             onActionClick = {},
             textFields = listOf(
                 TextFieldData(

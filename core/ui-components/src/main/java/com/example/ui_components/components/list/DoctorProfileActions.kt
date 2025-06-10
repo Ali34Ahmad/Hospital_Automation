@@ -9,7 +9,7 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.ui_components.components.items.ProfileActionsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @Composable
 fun DoctorProfileActions(
@@ -33,21 +33,21 @@ fun DoctorProfileActions(
         ProfileActionsItem(
             onClick = onPrescriptionsClick,
             modifier = Modifier.fillMaxWidth(),
-            iconRes = HospitalAutomationIcons.prescription,
+            iconRes = AppIcons.Outlined.prescription,
             title = stringResource(R.string.appointments),
             showUnderline = true,
         )
         ProfileActionsItem(
             onClick = onMedicalRecordsClick,
             modifier = Modifier.fillMaxWidth(),
-            iconRes = HospitalAutomationIcons.certificate,
+            iconRes = AppIcons.Outlined.certificate,
             title = stringResource(R.string.medical_records),
             showUnderline = true,
         )
         ProfileActionsItem(
             onClick = onEmploymentHistoryClick,
             modifier = Modifier.fillMaxWidth(),
-            iconRes = HospitalAutomationIcons.employment_history,
+            iconRes = AppIcons.Outlined.employmentHistory,
             title = stringResource(R.string.employment_history),
             showUnderline = true,
         )

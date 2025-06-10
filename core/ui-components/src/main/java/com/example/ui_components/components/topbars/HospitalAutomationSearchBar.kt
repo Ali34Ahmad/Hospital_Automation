@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +97,7 @@ fun HospitalAutomationSearchBar(
 @Preview()
 @Composable
 fun HospitalAutomationSearchBarPreview() {
-    Hospital_AutomationTheme {
+    Hospital_AutomationTheme(darkTheme = true) {
         var query by remember { mutableStateOf("") }
         HospitalAutomationSearchBar(
             modifier = Modifier.width(340.dp),
@@ -106,7 +106,7 @@ fun HospitalAutomationSearchBarPreview() {
                 query = it
             },
             placeholderText = R.string.search_for_guardians,
-            trailingIcon = HospitalAutomationIcons.close,
+            trailingIcon = AppIcons.Outlined.close,
             onTrailingIconClick = {
                 query = ""
             },

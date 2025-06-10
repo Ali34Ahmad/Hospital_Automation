@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,7 +27,11 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.sizing
 import com.example.ui_components.R
+import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @Composable
 fun GuardianListItem(
@@ -36,7 +42,7 @@ fun GuardianListItem(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(8))
+            .clip(RoundedCornerShape(MaterialTheme.sizing.small8))
             .clickable{
                 onClick()
             }
@@ -45,31 +51,25 @@ fun GuardianListItem(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if(imageUrl.isNullOrBlank()){
-            Image(
+            NetworkImage(
+                model = imageUrl,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(16.dp)
-                    .clip(CircleShape)
-                    .size(40.dp)
-                ,
-                painter = painterResource(R.drawable.doctor1),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                    .padding(MaterialTheme.sizing.small16)
+                    .size(MaterialTheme.sizing.medium40)
+                    .clip(CircleShape),
+                loading = {
+                    NetworkImageLoader(
+                        modifier=Modifier
+                            .clip(CircleShape)
+                            .padding(MaterialTheme.sizing.small16)
+                            .size(MaterialTheme.sizing.medium40)
+                    )
+                },
+                errorCompose = {
+                    NetworkImageError()
+                },
             )
-        }else{
-            AsyncImage(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clip(CircleShape)
-                    .size(40.dp),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        }
 
         Text(
             text = name,

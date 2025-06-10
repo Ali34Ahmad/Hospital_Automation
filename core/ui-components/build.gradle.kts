@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.android
-
 plugins {
     alias(libs.plugins.common.android.library)
     alias(libs.plugins.common.android.library.compose)
@@ -18,14 +17,9 @@ android {
             )
         }
     }
-
     kotlinOptions {
         jvmTarget = "11"
     }
-    defaultConfig {
-        minSdk = 27
-    }
-    compileSdk = 35
 
 }
 
@@ -50,7 +44,6 @@ dependencies {
     implementation(libs.duration)
     implementation(libs.option)
 
-    implementation(project(":core:model"))
 
     implementation(project(":core:model"))
     implementation(libs.androidx.material)

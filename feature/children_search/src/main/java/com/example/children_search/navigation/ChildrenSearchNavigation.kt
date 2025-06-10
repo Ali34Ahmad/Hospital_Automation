@@ -3,6 +3,7 @@ package com.example.children_search.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.children_search.presentation.ChildrenSearchNavigationActions
 import com.example.children_search.presentation.ChildrenSearchScreen
 import com.example.children_search.presentation.ChildrenSearchUIActions
 import com.example.children_search.presentation.ChildrenSearchViewModel
@@ -38,23 +39,13 @@ fun NavGraphBuilder.childrenSearchScreen(
 ){
     composable<ChildrenSearchRoute> {
         val viewModel = koinViewModel<ChildrenSearchViewModel>()
-
+        val navigationActions = object : ChildrenSearchNavigationActions{
+            override fun navigateUp() = onNavigateUp()
+            override fun navigateToChildProfile(childId: Int) = onNavigateToChildDetail(childId)
+        }
         ChildrenSearchScreen(
             viewModel = viewModel,
-            onAction ={action->
-                when(action){
-                    ChildrenSearchUIActions.NavigateBack -> {
-                        onNavigateUp()
-                    }
-                    is ChildrenSearchUIActions.NavigateToChildDetail ->{
-                        onNavigateToChildDetail(action.id)
-                    }
-                    else -> {
-                        viewModel.onAction(action)
-                    }
-
-                }
-            },
+            navigationActions = navigationActions
         )
     }
 }

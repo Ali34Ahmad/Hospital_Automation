@@ -6,7 +6,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.child_profile.navigation.ChildProfileRoute
 import com.example.domain.use_cases.children.GetChildByIdUseCase
+import com.example.model.child.ChildData
+import com.example.model.child.ChildFullData
 import com.example.model.enums.ScreenState
+import com.example.util.UiText
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-
+import com.example.ui_components.R
 class ChildProfileViewModel (
     private val getChildByIdUseCase: GetChildByIdUseCase,
     savedStateHandle: SavedStateHandle
@@ -36,41 +39,70 @@ class ChildProfileViewModel (
 
     private fun loadData() {
         viewModelScope.launch{
-            //1. loading ..
-            onAction(
-                ChildProfileUIAction.UpdateState(
-                    newState = ScreenState.LOADING
-                )
-            )
+            updateScreenState(ScreenState.LOADING)
             getChildByIdUseCase(childId)
                 .onSuccess{ result->
-                    //2. success
-                    onAction(ChildProfileUIAction.UpdateChild(result))
-                    onAction(
-                        ChildProfileUIAction.UpdateState(
-                            newState = ScreenState.SUCCESS
-                        )
-                    )
+                    updateChild(result)
+                    updateScreenState(ScreenState.SUCCESS)
                 }.onError {
-                    //3.failure
-                    onAction(
-                        ChildProfileUIAction.UpdateState(
-                            newState = ScreenState.ERROR
-                        )
-                    )
+                    updateScreenState(ScreenState.ERROR)
                 }
-
         }
     }
 
     fun onAction(action: ChildProfileUIAction){
         when(action){
+
             is ChildProfileUIAction.UpdateChild ->{
-                _uiState.value = _uiState.value.copy(child = action.child)
+                updateChild(action.child)
             }
             is ChildProfileUIAction.UpdateState ->{
-                _uiState.value = _uiState.value.copy(state = action.newState)
+                updateScreenState(action.newState)
             }
+
+            is ChildProfileUIAction.UpdateRefreshState -> {
+                updateRefreshState(action.isRefreshing)
+            }
+
+            ChildProfileUIAction.Refresh -> {
+                refreshData()
+            }
+            is ChildProfileUIAction.ShowToast ->{
+                showToast(action.message)
+            }
+        }
+    }
+    private fun updateScreenState(newState: ScreenState) {
+        _uiState.value = _uiState.value.copy(state = newState)
+    }
+
+    private fun showToast(message: UiText) {
+        _uiState.value = _uiState.value.copy(toastMessage = message)
+    }
+
+    private fun updateRefreshState(isRefreshing: Boolean) {
+        _uiState.value = _uiState.value.copy(isRefreshing = isRefreshing)
+    }
+
+    private fun updateChild(child: ChildFullData) {
+        _uiState.value = _uiState.value.copy(child)
+    }
+
+    private fun refreshData(){
+        viewModelScope.launch{
+            updateRefreshState(true)
+            getChildByIdUseCase(childId)
+                .onSuccess{ result->
+                    updateRefreshState(false)
+                    showToast(UiText.StringResource(R.string.data_updated_successfully))
+                    updateChild(result)
+                    if(uiState.value.state == ScreenState.ERROR){
+                        updateScreenState(ScreenState.SUCCESS)
+                    }
+                }.onError {
+                    updateRefreshState(false)
+                    showToast(UiText.StringResource(R.string.something_went_wrong))
+                }
         }
     }
 

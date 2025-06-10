@@ -11,4 +11,5 @@ interface UserPreferencesRepository {
     suspend fun updateShowPermissionCard(showPermissionCard:Boolean)
 
     suspend fun updateToken(token:String)
+
 }

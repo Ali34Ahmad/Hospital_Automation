@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.hospital_automation.core.components.card.IllustrationCard
+import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui.theme.sizing
 import com.example.ui_components.components.card.PermissionGrantedCard
 import com.example.ui_components.R

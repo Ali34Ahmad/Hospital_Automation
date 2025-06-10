@@ -30,12 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
 
 @Composable
 fun PrescriptionCard(
@@ -45,8 +45,8 @@ fun PrescriptionCard(
     date: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    @DrawableRes medicinesIcon: Int = HospitalAutomationIcons.bloodType,
-    @DrawableRes dateIcon: Int = HospitalAutomationIcons.date
+    @DrawableRes medicinesIcon: Int = AppIcons.Outlined.bloodType,
+    @DrawableRes dateIcon: Int = AppIcons.Outlined.date
 ) {
     Card(
         modifier = modifier.clickable{onClick()},
@@ -94,7 +94,7 @@ fun PrescriptionCard(
                     ) {
                         Icon(
                             modifier = Modifier.fillMaxSize(0.8f),
-                            painter = painterResource(HospitalAutomationIcons.father),
+                            painter = painterResource(AppIcons.Outlined.father),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )

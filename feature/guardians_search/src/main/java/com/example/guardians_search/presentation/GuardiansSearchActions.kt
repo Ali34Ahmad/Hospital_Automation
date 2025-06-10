@@ -6,6 +6,8 @@ sealed interface GuardiansSearchActions {
     data class OnQueryChange(val query: String) : GuardiansSearchActions
     data class UpdateFetchingDataState(val newState: ScreenState): GuardiansSearchActions
     object OnDeleteQuery: GuardiansSearchActions
+    data class UpdateRefreshState(val isRefreshing: Boolean): GuardiansSearchActions
+    data object Refresh : GuardiansSearchActions
 }
 
 interface GuardiansSearchNavigationActions{

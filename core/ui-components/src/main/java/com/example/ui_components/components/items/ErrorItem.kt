@@ -30,7 +30,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 import com.example.ui_components.R
 
 
@@ -88,7 +88,7 @@ fun ErrorItemPreview() {
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
                 title = R.string.no_internet_connection,
                 subtitle = R.string.no_internet_connection_subtitle,
-                icon = HospitalAutomationIcons.wifi_off
+                icon = AppIcons.Outlined.wifi_off
             )
         }
     }

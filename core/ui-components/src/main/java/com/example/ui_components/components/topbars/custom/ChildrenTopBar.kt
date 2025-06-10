@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.ui_components.R
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @Composable
 fun ChildrenTopBar(
@@ -16,6 +16,6 @@ fun ChildrenTopBar(
         title = stringResource(R.string.children),
         onNavigationIconClick = onNavigateUp,
         modifier = modifier,
-        navigationIcon = HospitalAutomationIcons.arrowBack
+        navigationIcon = AppIcons.Outlined.arrowBack
     )
 }

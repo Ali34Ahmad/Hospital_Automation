@@ -23,12 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.OutlinedTagItem
 import com.example.ui_components.components.items.DetailsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
 
 
 @Composable
@@ -71,7 +71,7 @@ fun AppointmentCard(
             }
             else{
                 Icon(
-                    painter = painterResource(HospitalAutomationIcons.father),
+                    painter = painterResource(AppIcons.Outlined.father),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
@@ -97,7 +97,7 @@ fun AppointmentCard(
         }
 
         DetailsItem(
-            iconRes = HospitalAutomationIcons.calender,
+            iconRes = AppIcons.Outlined.calender,
             title = stringResource(dateTitle),
             description = date,
         )

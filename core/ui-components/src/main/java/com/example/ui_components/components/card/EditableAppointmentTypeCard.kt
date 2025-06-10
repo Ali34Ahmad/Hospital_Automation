@@ -1,7 +1,6 @@
 package com.example.ui_components.components.card
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +38,6 @@ import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
 
 @Composable
 fun EditableAppointmentTypeCard(
@@ -52,9 +50,9 @@ fun EditableAppointmentTypeCard(
     description: String?,
     onDescriptionChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    @DrawableRes deleteIcon: Int = HospitalAutomationIcons.delete,
+    @DrawableRes deleteIcon: Int = AppIcons.Outlined.delete,
     warningMessage: String = stringResource(R.string.description_not_added),
-    @DrawableRes noteLeadingIcon: Int = HospitalAutomationIcons.problem,
+    @DrawableRes noteLeadingIcon: Int = AppIcons.Outlined.errorMessage,
     @DrawableRes noteTrailingIcon : Int = AppIcons.Outlined.add
 ) {
     var showWarningMessage by remember{mutableStateOf(description.isNullOrBlank())}

@@ -26,17 +26,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
+
 
 @Composable
 fun MedicalRecordCard(
@@ -48,8 +48,8 @@ fun MedicalRecordCard(
     onPrescriptionsClick: () -> Unit,
     onAppointmentsClick: () -> Unit,
     modifier: Modifier = Modifier,
-    @DrawableRes prescriptionsIcon: Int = HospitalAutomationIcons.prescription,
-    @DrawableRes appointmentsIcon: Int = HospitalAutomationIcons.prescription
+    @DrawableRes prescriptionsIcon: Int = AppIcons.Outlined.prescription,
+    @DrawableRes appointmentsIcon: Int = AppIcons.Outlined.prescription
 ) {
     Card(
         modifier = modifier.clickable{onClick()},
@@ -97,7 +97,7 @@ fun MedicalRecordCard(
                     ) {
                         Icon(
                             modifier = Modifier.fillMaxSize(0.8f),
-                            painter = painterResource(HospitalAutomationIcons.child),
+                            painter = painterResource(AppIcons.Outlined.child),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )

@@ -158,16 +158,7 @@ fun OtpVerificationScreen(
 fun OtpVerificationScreenPreview() {
     Hospital_AutomationTheme {
         Surface {
-            OtpVerificationScreen(
-                uiState = OtpVerificationUiState(
-                    email = "aliahmad@gmail.com"
-                ),
-                uiActions = OtpVerificationUiActions(
-                    navigationActions = mockEmailVerificationNavigationUiActions(),
-                    businessActions = mockEmailVerificationBusinessUiActions(),
-                ),
-                modifier = Modifier,
-            )
+
         }
     }
 }

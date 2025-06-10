@@ -18,4 +18,5 @@ data class EmploymentHistoryUiState(
 
     val isRefreshing: Boolean=false,
     val toastMessage: UiText?=null,
+
 )

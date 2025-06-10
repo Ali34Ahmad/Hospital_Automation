@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.hospital_automation.core.components.card.IllustrationCard
+import com.example.ui_components.components.card.IllustrationCard
 import com.example.model.DrawerButton
 import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview

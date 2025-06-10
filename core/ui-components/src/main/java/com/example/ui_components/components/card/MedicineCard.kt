@@ -32,13 +32,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.icons.HospitalAutomationIcons
 
 @Composable
 fun MedicineCard(
@@ -52,7 +52,7 @@ fun MedicineCard(
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     currency: String = "S.P",
-    @DrawableRes secondaryIcon: Int = HospitalAutomationIcons.location,
+    @DrawableRes secondaryIcon: Int = AppIcons.Outlined.location,
     @StringRes buttonText: Int = R.string.add_to_prescription
 ) {
     Card(
@@ -156,7 +156,7 @@ fun MedicineCard(
                 Spacer(Modifier.width(MaterialTheme.spacing.large36))
                 Icon(
                     modifier = Modifier.size(MaterialTheme.sizing.small18),
-                    painter = painterResource(HospitalAutomationIcons.chevronRight),
+                    painter = painterResource(AppIcons.Outlined.chevronRight),
                     contentDescription = null,
                     tint = MaterialTheme.additionalColorScheme.onBackgroundVariant
                 )
