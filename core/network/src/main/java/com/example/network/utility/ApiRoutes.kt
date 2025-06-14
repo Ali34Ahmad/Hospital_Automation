@@ -4,6 +4,7 @@ object ApiRoutes {
 
     const val BASE_URL = "https://dispensary-hkz3.onrender.com"
     private const val EMPLOYEE = "$BASE_URL/employee"
+    private const val DOCTOR = "$BASE_URL/doctor"
 
 
     const val SEARCH_FOR_CHILD = "$EMPLOYEE/searchFor-child"
@@ -40,5 +41,7 @@ object ApiRoutes {
     const val EMPLOYMENT_HISTORY = "$EMPLOYEE/employment-history"
 
     const val ADMIN_PROFILE_BY_ID = "$EMPLOYEE/find-admin-by-id"
+
+    const val SHOW_APPOINTMENTS = "$DOCTOR/show-appointments"
 
 }

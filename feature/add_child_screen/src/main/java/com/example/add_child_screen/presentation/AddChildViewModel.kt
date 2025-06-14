@@ -19,6 +19,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.ui_components.R
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 
 class AddChildViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -29,6 +37,16 @@ class AddChildViewModel(
         guardianId = savedStateHandle.toRoute<AddChildRoute>().guardianId
     ))
     val uiState: StateFlow<AddChildUIState> = _uiState
+        .onStart {
+            validateOnEachEmission()
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            AddChildUIState(
+                guardianId = savedStateHandle.toRoute<AddChildRoute>().guardianId
+            )
+        )
+
 
     fun onAction(action: AddChildUIActions){
         when(action){
@@ -79,7 +97,9 @@ class AddChildViewModel(
                        motherFirstNameErrorMessage,motherLastNameErrorMessage
                    ).all{it == null}
                     _uiState.value = _uiState.value.copy(isValid = isValid)
+                    if(isValid) _uiState.value = _uiState.value.copy(sendingDataButtonState = BottomBarState.IDLE)
                 }
+
             }
             is AddChildUIActions.ChangeDatePickerVisibility->{
                 _uiState.value = _uiState.value.copy(isDatePickerVisible = action.isVisible)
@@ -176,4 +196,80 @@ class AddChildViewModel(
         }
     }
 
+    @OptIn(FlowPreview::class)
+    private fun validateOnEachEmission(){
+        viewModelScope.launch {
+            uiState.map { it.firstName }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateFirstName()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+            uiState.map { it.lastName }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateLastName()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+            uiState.map { it.dateOfBirth }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateDateOfBirth()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+            uiState.map { it.fatherFirstName }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateFatherFirstName()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+            uiState.map { it.fatherLastName }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateFatherLastName()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+            uiState.map { it.motherFirstName }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateMotherFirstName()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+            uiState.map { it.motherLastName }
+                .distinctUntilChanged()
+                .debounce(500L)
+                .onEach {
+                    validateMotherLastName()
+                }.collect {
+
+                }
+        }
+        viewModelScope.launch {
+
+        }
+    }
 }

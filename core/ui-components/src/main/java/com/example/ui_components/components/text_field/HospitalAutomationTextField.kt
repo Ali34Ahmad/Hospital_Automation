@@ -86,12 +86,8 @@ fun HospitalAutomationTextFiled(
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             errorIndicatorColor = Color.Transparent,
-            errorLabelColor = MaterialTheme.colorScheme.error,
-            errorCursorColor = MaterialTheme.colorScheme.error,
-            errorSupportingTextColor = MaterialTheme.colorScheme.error,
-            errorContainerColor = MaterialTheme.colorScheme.background,
+            disabledIndicatorColor = Color.Transparent,
             errorTextColor = MaterialTheme.colorScheme.onBackground,
-            errorPlaceholderColor = MaterialTheme.colorScheme.error,
         ),
         placeholder = {
             placeholder?.let {

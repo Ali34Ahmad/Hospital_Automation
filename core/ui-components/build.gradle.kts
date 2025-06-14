@@ -22,14 +22,11 @@ android {
     }
 
 }
-
-
 dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
-    implementation(libs.composepininput)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -39,13 +36,13 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.core)
-    implementation(libs.calendar)
-    implementation(libs.duration)
-    implementation(libs.option)
+    api(libs.core)
+    api(libs.calendar)
+    api(libs.duration)
+    api(libs.option)
 
 
     implementation(project(":core:model"))
-    implementation(libs.androidx.material)
-    implementation(libs.androidx.foundation.layout)
+    api(libs.androidx.material)
+    api(libs.androidx.foundation.layout)
 }

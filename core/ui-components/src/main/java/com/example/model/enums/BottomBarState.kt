@@ -4,5 +4,6 @@ enum class BottomBarState {
     IDLE,
     LOADING,
     SUCCESS,
-    FAILURE
+    FAILURE,
+    DISABLED
 }

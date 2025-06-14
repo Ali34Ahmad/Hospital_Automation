@@ -13,12 +13,9 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="ChildProfileScreenSuccessPreview - DarkAndLightModePreview 1">
+      <SelectionState runConfigName="doctor_app">
         <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="MainActivity (3)">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-06-09T15:05:31.714048800Z">
+        <DropdownSelection timestamp="2025-06-13T08:42:51.656395400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ASUS\.android\avd\Resizable_Experimental_API_33.avd" />

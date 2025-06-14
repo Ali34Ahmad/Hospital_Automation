@@ -237,4 +237,8 @@
     <string name="pending_with_dots">Pending</string>
     <string name="downloading_with_dots">Downloading...</string>
     <string name="data_updated_successfully">Data updated successfully</string>
+    <string name="schedule">Schedule</string>
+    <string name="appointment_type">Appointment type</string>
+    <string name="today">Today</string>
+    <string name="no_appointment_subtitle">please try another query</string>
 </resources>

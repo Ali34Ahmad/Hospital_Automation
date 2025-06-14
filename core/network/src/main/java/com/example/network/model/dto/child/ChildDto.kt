@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 data class ChildDto(
     @SerialName("childId") val childId: Int,
     @SerialName("first_name") val firstName: String,
+    @SerialName("last_name") val lastName: String,
     @SerialName("father_first_name") val fatherFirstName: String,
     @SerialName("father_last_name") val fatherLastName: String,
-    @SerialName("last_name") val lastName: String,
     @SerialName("mother_first_name") val motherFirstName: String,
     @SerialName("mother_last_name") val motherLastName: String,
     @SerialName("date_of_birth") val dateOfBirth: String,
@@ -17,5 +17,6 @@ data class ChildDto(
     @SerialName("employee_id") val employeeId: Int,
     val updatedAt: String,
     val createdAt: String,
-    @SerialName("birth_certificate_img_url") val birthCertificateImgUrl: String? = null
+    @SerialName("birth_certificate_img_url")
+    val birthCertificateImgUrl: String? = null
 )

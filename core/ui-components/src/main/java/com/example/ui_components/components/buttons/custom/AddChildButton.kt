@@ -19,6 +19,7 @@ fun AddChildButton(
         BottomBarState.LOADING -> stringResource(R.string.sending)
         BottomBarState.FAILURE-> stringResource(R.string.error)
         BottomBarState.SUCCESS  -> stringResource(R.string.next)
+        BottomBarState.DISABLED -> stringResource(R.string.send_data)
     }
 
     val isLoading = bottomBarState == BottomBarState.LOADING

@@ -33,10 +33,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    defaultConfig {
-        minSdk = 27
-    }
-    compileSdk = 35
 }
 
 dependencies {

@@ -2,8 +2,8 @@ package com.example.network.di
 
 import android.app.DownloadManager
 import com.example.network.downloader.DownloadCompletedReceiver
-import com.example.network.downloader.FileDownloaderServiceImpl
 import com.example.network.downloader.FileDownloaderService
+import com.example.network.downloader.FileDownloaderServiceImpl
 import com.example.network.remote.account_management.EmployeeAccountManagementApiService
 import com.example.network.remote.account_management.EmployeeAccountManagementApiServiceImpl
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiService
@@ -14,6 +14,8 @@ import com.example.network.remote.auth.AuthApiService
 import com.example.network.remote.auth.AuthApiServiceImpl
 import com.example.network.remote.child.ChildApiService
 import com.example.network.remote.child.ChildApiServiceImpl
+import com.example.network.remote.doctor.DoctorApiService
+import com.example.network.remote.doctor.DoctorApiServiceImpl
 import com.example.network.remote.employee_profile.EmployeeProfileApiService
 import com.example.network.remote.employee_profile.EmployeeProfileApiServiceImpl
 import com.example.network.remote.employment_history.EmploymentHistoryApiService
@@ -48,6 +50,7 @@ import org.koin.dsl.module
 
 
 val networkModule = module {
+
     //ktor client
     single<HttpClient> {
         HttpClient(Android) {
@@ -64,7 +67,8 @@ val networkModule = module {
             }
         }
     }
-
+    //doctor api service
+    singleOf(::DoctorApiServiceImpl){bind<DoctorApiService>()}
     //child api service
     singleOf(::ChildApiServiceImpl) { bind<ChildApiService>() }
 
