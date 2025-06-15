@@ -12,6 +12,8 @@ import com.example.network.remote.admin_profile.AdminProfileApiService
 import com.example.network.remote.admin_profile.AdminProfileApiServiceImpl
 import com.example.network.remote.auth.AuthApiService
 import com.example.network.remote.auth.AuthApiServiceImpl
+import com.example.network.remote.auth.singup.generic.BaseSignUpApiService
+import com.example.network.remote.auth.singup.generic.BaseSignUpApiServiceImpl
 import com.example.network.remote.child.ChildApiService
 import com.example.network.remote.child.ChildApiServiceImpl
 import com.example.network.remote.employee_profile.EmployeeProfileApiService
@@ -20,14 +22,14 @@ import com.example.network.remote.employment_history.EmploymentHistoryApiService
 import com.example.network.remote.employment_history.EmploymentHistoryApiServiceImpl
 import com.example.network.remote.upload_child_document.UploadChildDocumentsApi
 import com.example.network.remote.upload_child_document.UploadChildDocumentsApiImpl
-import com.example.network.remote.upload_employee_documents.UploadEmployeeDocumentsApi
-import com.example.network.remote.upload_employee_documents.UploadEmployeeDocumentsApiImpl
-import com.example.network.remote.upload_employee_profile_image.UploadImageApi
-import com.example.network.remote.upload_employee_profile_image.UploadImageApiImpl
+import com.example.network.remote.upload_employee_documents.UploadEmploymentDocumentsApi
+import com.example.network.remote.upload_employee_documents.UploadEmploymentDocumentsApiImpl
+import com.example.network.remote.upload_image.UploadImageApi
+import com.example.network.remote.upload_image.UploadImageApiImpl
 import com.example.network.remote.upload_file.UploadFileApiService
 import com.example.network.remote.upload_file.UploadFileApiServiceImpl
-import com.example.network.remote.upload_image.UploadEmployeeProfileImageApi
-import com.example.network.remote.upload_image.UploadEmployeeProfileImageApiImpl
+import com.example.network.remote.upload_profile_image.UploadEmployeeProfileImageApi
+import com.example.network.remote.upload_profile_image.UploadEmployeeProfileImageApiImpl
 import com.example.network.remote.user.UserApiService
 import com.example.network.remote.user.UserApiServiceImpl
 import com.example.network.utility.file.FileReader
@@ -70,7 +72,7 @@ val networkModule = module {
 
     singleOf(::UserApiServiceImpl) { bind<UserApiService>() }
 
-    singleOf(::UploadEmployeeDocumentsApiImpl) { bind<UploadEmployeeDocumentsApi>() }
+    singleOf(::UploadEmploymentDocumentsApiImpl) { bind<UploadEmploymentDocumentsApi>() }
 
     singleOf(::UploadEmployeeProfileImageApiImpl) { bind<UploadEmployeeProfileImageApi>() }
 
@@ -81,6 +83,8 @@ val networkModule = module {
     }
 
     singleOf(::AddResidentialAddressApiServiceImpl) { bind<AddResidentialAddressApiService>() }
+
+    singleOf(::BaseSignUpApiServiceImpl) { bind<BaseSignUpApiService>() }
 
     singleOf(::AuthApiServiceImpl) { bind<AuthApiService>() }
 

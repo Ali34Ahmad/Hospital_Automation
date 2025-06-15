@@ -2,9 +2,8 @@ package com.example.network.remote.upload_file
 
 import android.net.Uri
 import android.util.Log
-import com.example.datastore.repositories.UserPreferencesRepository
+import com.example.datastore.service.UserPreferencesService
 import com.example.network.model.response.ProgressUpdateDto
-import com.example.network.utility.ApiRoutes
 import com.example.network.utility.file.FileReader
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -22,20 +21,9 @@ import kotlinx.coroutines.flow.first
 class UploadFileApiServiceImpl(
     private val client: HttpClient,
     private val fileReader: FileReader,
-    private val userPreferencesRepository: UserPreferencesRepository,
 ) : UploadFileApiService {
-    override fun uploadFile(uri: Uri, endPoint: String): Flow<ProgressUpdateDto> = channelFlow {
+    override fun uploadFile(token: String,uri: Uri, endPoint: String): Flow<ProgressUpdateDto> = channelFlow {
         val info = fileReader.uriToFileInfo(uri)
-
-        val token = userPreferencesRepository.userPreferencesFlow.first().token
-
-        if (token.isNullOrBlank()) {
-            close(IllegalStateException("Bearer token is not available."))
-            return@channelFlow
-        }
-
-        println("AuthToken: $token")
-
         try {
             val response = client.submitFormWithBinaryData(
                 url = endPoint,

@@ -8,6 +8,7 @@ import com.example.enter_email.validator.EnterEmailValidationResult
 import com.example.enter_email.validator.EnterEmailValidator
 import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class EnterEmailViewModel(
     private val sendOtpCodeToEmailUseCase: SendOtpToEmailUseCase,
     private val enterEmailValidator: EnterEmailValidator,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EnterEmailUiState())
     val uiState = _uiState.asStateFlow()
@@ -87,6 +89,7 @@ class EnterEmailViewModel(
             sendOtpCodeToEmailUseCase(
                 sendOtpCodeRequest = SendOtpRequest(
                     email = uiState.value.email,
+                    role = roleAppConfig.role,
                 )
             ).onSuccess{
                 Log.v("Otp code sent successfully","EnterEmailViewModel")

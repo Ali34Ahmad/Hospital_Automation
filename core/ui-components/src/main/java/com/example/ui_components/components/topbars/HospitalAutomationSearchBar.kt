@@ -66,7 +66,7 @@ fun HospitalAutomationSearchBar(
             focusedTrailingIconColor= MaterialTheme.colorScheme.onPrimaryContainer,
             unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
             focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.6f),
+            unfocusedContainerColor = MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),

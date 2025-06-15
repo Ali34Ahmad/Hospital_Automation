@@ -13,8 +13,10 @@ import com.example.domain.use_cases.employee_profile.GetEmployeeProfileByIdUseCa
 import com.example.employee_profile.navigation.EmployeeProfileRoute
 import com.example.employee_profile.navigation.ProfileAccessType
 import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
+import com.example.model.auth.logout.LogoutRequest
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.network.Error
@@ -33,6 +35,7 @@ class EmployeeProfileViewModel(
     private val getCurrentEmployeeProfileUseCase: GetCurrentEmployeeProfileUseCase,
     private val getEmployeeProfileByIdUseCase: GetEmployeeProfileByIdUseCase,
     private val savedStateHandle: SavedStateHandle,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EmployeeProfileUiState())
     val uiState = _uiState.asStateFlow()
@@ -137,7 +140,7 @@ class EmployeeProfileViewModel(
         }
     }
 
-    private fun getEmployeeProfile(){
+    private fun getEmployeeProfile() {
         when (uiState.value.profileAccessType) {
             ProfileAccessType.TOKEN_ACCESS -> getCurrentEmployeeProfile()
             ProfileAccessType.ID_ACCESS -> getEmployeeProfileById()
@@ -165,7 +168,11 @@ class EmployeeProfileViewModel(
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.logging_out))
             Log.v("Logging out", "ProfileViewModel")
-            logoutUseCase()
+            logoutUseCase(
+                logoutRequest = LogoutRequest(
+                    role = roleAppConfig.role,
+                )
+            )
                 .onSuccess { data ->
                     Log.v("Logged out Successfully", "EmployeeProfileViewModel")
                     setLoadingDialogState(false, null)
@@ -196,7 +203,10 @@ class EmployeeProfileViewModel(
             setLoadingDialogState(true, UiText.StringResource(R.string.deactivating))
             Log.v("Deactivating Account", "ProfileViewModel")
             deactivateMyEmployeeAccountUseCase(
-                deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest("Feeling Sick")
+                deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest(
+                    deactivationReason = "Feeling Sick",
+                    role =roleAppConfig.role,
+                )
             ).onSuccess {
                 Log.v("Account Deactivated Successfully", "EmployeeProfileViewModel")
                 setLoadingDialogState(false, null)
@@ -221,7 +231,9 @@ class EmployeeProfileViewModel(
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.reactivating))
             Log.v("Reactivating Account", "ProfileViewModel")
-            val result = reactivateMyEmployeeAccountUseCase()
+            val result = reactivateMyEmployeeAccountUseCase(
+                role = roleAppConfig.role
+            )
             when (result) {
                 is Result.Success -> {
                     Log.v("Account Reactivated Successfully", "EmployeeProfileViewModel")
@@ -250,7 +262,7 @@ class EmployeeProfileViewModel(
         _uiState.update { it.copy(isRefreshing = isRefreshing) }
     }
 
-    private fun refreshData(){
+    private fun refreshData() {
         when (uiState.value.profileAccessType) {
             ProfileAccessType.TOKEN_ACCESS -> refreshCurrentEmployeeData()
             ProfileAccessType.ID_ACCESS -> refreshEmployeeByIdData()
@@ -267,7 +279,9 @@ class EmployeeProfileViewModel(
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    updateProfileScreenState(ScreenState.SUCCESS)
+                    if (uiState.value.profileScreenState == ScreenState.ERROR) {
+                        updateProfileScreenState(ScreenState.SUCCESS)
+                    }
                 }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
@@ -287,7 +301,9 @@ class EmployeeProfileViewModel(
                     Log.v("EmployeeProfile fetched Successfully", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    updateProfileScreenState(ScreenState.SUCCESS)
+                    if (uiState.value.profileScreenState == ScreenState.ERROR) {
+                        updateProfileScreenState(ScreenState.SUCCESS)
+                    }
                 }.onError { error ->
                     Log.v("Failed to fetch EmployeeProfile", "EmployeeProfileViewModel")
                     updateIsRefreshing(false)
@@ -297,7 +313,7 @@ class EmployeeProfileViewModel(
     }
 
     private fun updateToastMessage(uiText: UiText?) {
-        _uiState.update { it.copy(toastMessage=uiText) }
+        _uiState.update { it.copy(toastMessage = uiText) }
     }
 
 }

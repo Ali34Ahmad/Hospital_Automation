@@ -101,7 +101,9 @@ class AdminProfileViewModel(
                     Log.v("AdminProfile fetched Successfully", "AdminProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    updateScreenState(ScreenState.SUCCESS)
+                    if (uiState.value.screenState== ScreenState.ERROR) {
+                        updateScreenState(ScreenState.SUCCESS)
+                    }
                 }.onError { error ->
                     Log.v("Failed to fetch AdminProfile", "AdminProfileViewModel")
                     updateIsRefreshing(false)

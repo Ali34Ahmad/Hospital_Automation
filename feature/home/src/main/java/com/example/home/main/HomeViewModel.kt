@@ -3,9 +3,12 @@ package com.example.home.main
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
+import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
+import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
+import com.example.domain.use_cases.user_preferences.UpdateShowPermissionCardUseCase
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.network.onError
@@ -16,8 +19,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
+    private val updateShowPermissionCardUseCase: UpdateShowPermissionCardUseCase,
     private val checkEmployeePermissionUseCase: CheckEmployeePermissionUseCase,
+    private val roleAppConfig:RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -60,7 +66,7 @@ class HomeViewModel(
 
     private fun readShowPermissionCard() {
         viewModelScope.launch {
-            userPreferencesRepository.userPreferencesFlow.collect { userPreference ->
+            getUserPreferencesUseCase().collect { userPreference ->
                 updateShowPermissionCard(userPreference.showPermissionCard)
             }
         }
@@ -68,7 +74,7 @@ class HomeViewModel(
 
 
     private suspend fun writeShowPermissionCard(showPermissionCard: Boolean) {
-        userPreferencesRepository.updateShowPermissionCard(showPermissionCard)
+        updateShowPermissionCardUseCase(showPermissionCard)
     }
 
     private fun updateIsPermissionGranted(isPermissionGranted: Boolean) {
@@ -87,7 +93,7 @@ class HomeViewModel(
         viewModelScope.launch {
             updateScreenState(ScreenState.LOADING)
             Log.v("Checking Employee Permission", "HomeViewModel")
-            checkEmployeePermissionUseCase()
+            checkEmployeePermissionUseCase(role = roleAppConfig.role)
                 .onSuccess { data ->
                     Log.v("Successful Check Employee Permission", "HomeViewModel")
                     val isPermissionGranted = data.permissionGranted
@@ -107,7 +113,7 @@ class HomeViewModel(
 
     private fun changeTheme() {
         viewModelScope.launch {
-            userPreferencesRepository.updateIsDarkTheme(
+            updateIsDarkThemeUseCase(
                 !uiState.value.isDarkTheme
             )
         }
@@ -115,7 +121,7 @@ class HomeViewModel(
 
     private fun readTheme() {
         viewModelScope.launch {
-            userPreferencesRepository.userPreferencesFlow.collect { userPreference ->
+            getUserPreferencesUseCase().collect { userPreference ->
                 updateIsDarkTheme(userPreference.isDarkTheme)
             }
         }
@@ -133,7 +139,7 @@ class HomeViewModel(
         viewModelScope.launch {
             updateIsRefreshing(true)
             Log.v("Refreshing Employee Permission", "HomeViewModel")
-            checkEmployeePermissionUseCase()
+            checkEmployeePermissionUseCase(role = roleAppConfig.role)
                 .onSuccess { data ->
                     Log.v("Successful Refresh Employee Permission", "HomeViewModel")
                     val isPermissionGranted = data.permissionGranted
@@ -142,7 +148,9 @@ class HomeViewModel(
                         writeShowPermissionCard(true)
                     }
                     updateIsRefreshing(false)
-                    updateScreenState(ScreenState.SUCCESS)
+                    if (uiState.value.screenState == ScreenState.ERROR) {
+                        updateScreenState(ScreenState.SUCCESS)
+                    }
                 }.onError { error ->
                     Log.v("Failed Refreshing Permission", "HomeViewModel")
                     updateIsRefreshing(false)
@@ -153,7 +161,7 @@ class HomeViewModel(
     }
 
     private fun updateToastMessage(uiText: UiText?) {
-        _uiState.update { it.copy(toastMessage=uiText) }
+        _uiState.update { it.copy(toastMessage = uiText) }
     }
 }
 

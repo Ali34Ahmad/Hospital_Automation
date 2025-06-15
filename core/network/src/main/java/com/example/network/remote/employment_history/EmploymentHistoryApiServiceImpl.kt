@@ -1,9 +1,9 @@
 package com.example.network.remote.employment_history
 
 import android.util.Log
-import com.example.datastore.repositories.UserPreferencesRepository
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.EmploymentHistoryResponseDto
+import com.example.network.model.response.profile.EmploymentHistoryResponseDto
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
@@ -15,17 +15,13 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.first
 
 class EmploymentHistoryApiServiceImpl(
     private val client: HttpClient,
-    private val userPreferencesRepository: UserPreferencesRepository,
 ) : EmploymentHistoryApiService {
-    override suspend fun getEmploymentHistory(): Result<EmploymentHistoryResponseDto, rootError> = try {
-        val response = client.get(ApiRoutes.EMPLOYMENT_HISTORY) {
+    override suspend fun getEmploymentHistory(token: String,role: RoleDto): Result<EmploymentHistoryResponseDto, rootError> = try {
+        val response = client.get(ApiRoutes.employmentHistoryEndPointFor(role)) {
             contentType(ContentType.Application.Json)
-            val token = userPreferencesRepository.userPreferencesFlow.first().token
-            if (token == null) return@get
             bearerAuth(token)
         }
         when (response.status.value) {

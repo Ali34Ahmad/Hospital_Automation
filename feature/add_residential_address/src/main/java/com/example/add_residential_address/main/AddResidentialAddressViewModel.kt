@@ -8,6 +8,7 @@ import com.example.add_residential_address.validator.AddResidentialAddressValida
 import com.example.domain.use_cases.add_residential_address.AddResidentialAddressUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.residential_address.AddAddressRequest
+import com.example.model.role_config.RoleAppConfig
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class AddResidentialAddressViewModel(
     private val addResidentialAddressUseCase: AddResidentialAddressUseCase,
     private val addResidentialAddressValidator: AddResidentialAddressValidator,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AddAddressUiState())
     val uiState = _uiState.asStateFlow()
@@ -169,6 +171,7 @@ class AddResidentialAddressViewModel(
                     region = uiState.value.region,
                     street = uiState.value.street,
                     note = uiState.value.note,
+                    role = roleAppConfig.role,
                 )
             ).onSuccess { result ->
                 Log.v("Address added Successfully", "AddResidentialViewModel")

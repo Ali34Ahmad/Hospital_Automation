@@ -12,10 +12,6 @@ class VerifyEmailUseCase(
     suspend operator fun invoke(
         verifyEmailOtpRequest: VerifyEmailOtpRequest
     ): Result<VerifyEmailOtpResponse, rootError> {
-        // e.g., check if OTP format is valid locally before sending
-        // if (verifyEmailOtpRequest.otp.length != 6) {
-        //     return Result.Error(rootError(message = "OTP must be 6 digits"))
-        // }
         return authRepository.verifyEmail(verifyEmailOtpRequest)
     }
 }

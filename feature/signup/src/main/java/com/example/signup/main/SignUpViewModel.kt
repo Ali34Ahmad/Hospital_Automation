@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.auth.SendOtpToEmailUseCase
-import com.example.domain.use_cases.auth.SignupUseCase
+import com.example.domain.use_cases.auth.sing_up.BaseSignupUseCase
 import com.example.model.auth.send_otp.SendOtpRequest
+import com.example.model.auth.signup.BaseRegistrationRequest
 import com.example.model.auth.signup.SignUpCredentials
 import com.example.model.enums.ScreenState
 import com.example.model.enums.Gender
 import com.example.model.enums.Role
+import com.example.model.role_config.RoleAppConfig
 import com.example.signup.validator.SignUpValidationResult
 import com.example.signup.validator.SignUpValidator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +23,9 @@ import com.example.utility.network.onSuccess
 
 class SignUpViewModel(
     private val signUpValidator: SignUpValidator,
-    private val signupUseCase: SignupUseCase,
+    private val baseSignupUseCase: BaseSignupUseCase,
     private val sendOtpToEmailUseCase: SendOtpToEmailUseCase,
+    private val roleAppConfig:RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
@@ -247,8 +250,8 @@ class SignUpViewModel(
         viewModelScope.launch {
             updateScreenState(ScreenState.LOADING)
             Log.v("Submitting sign up info", "SignUpViewModel")
-            signupUseCase(
-                registrationRequest = SignUpCredentials(
+            baseSignupUseCase(
+                baseRegistrationRequest = BaseRegistrationRequest(
                     firstName = uiState.value.firstName.trim(),
                     middleName = uiState.value.middleName.trim(),
                     lastName = uiState.value.lastName.trim(),
@@ -256,7 +259,7 @@ class SignUpViewModel(
                     phoneNumber = uiState.value.phoneNumber.trim(),
                     password = uiState.value.password.trim(),
                     gender = uiState.value.gender ?: Gender.MALE,
-                    role = Role.EMPLOYEE,
+                    role = roleAppConfig.role,
                 )
             ).onSuccess { response ->
                 Log.v("Successful sign up", "SignUpViewModel")
@@ -283,6 +286,7 @@ class SignUpViewModel(
         sendOtpToEmailUseCase(
             sendOtpCodeRequest = SendOtpRequest(
                 email = uiState.value.email.trim(),
+                role=roleAppConfig.role,
             )
         )
 }

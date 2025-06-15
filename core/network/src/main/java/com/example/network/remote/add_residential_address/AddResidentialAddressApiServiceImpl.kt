@@ -1,7 +1,8 @@
 package com.example.network.remote.add_residential_address
 
 import android.util.Log
-import com.example.datastore.repositories.UserPreferencesRepository
+import com.example.datastore.service.UserPreferencesService
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.AddressRequestDto
 import com.example.network.model.response.AddAddressResponseDto
 import com.example.network.utility.ApiRoutes
@@ -20,18 +21,14 @@ import com.example.utility.network.rootError
 
 class AddResidentialAddressApiServiceImpl(
     private val client: HttpClient,
-    private val userPreferencesRepository: UserPreferencesRepository,
 ) : AddResidentialAddressApiService {
     override suspend fun addResidentialAddress(
-        addAddressRequestDto: AddressRequestDto
+        token: String,
+        addAddressRequestDto: AddressRequestDto,
+        role: RoleDto,
     ): Result<AddAddressResponseDto, rootError> = try {
-        val response = client.post(ApiRoutes.ADD_RESIDENTIAL_ADDRESS) {
+        val response = client.post(ApiRoutes.addResidentialAddressEndPointFor(role)) {
             contentType(ContentType.Application.Json)
-            val token = userPreferencesRepository.userPreferencesFlow.first().token
-            if (token==null){
-                return@post
-                Log.e("Token","Token is null")
-            }
             bearerAuth(token)
             setBody(addAddressRequestDto)
         }

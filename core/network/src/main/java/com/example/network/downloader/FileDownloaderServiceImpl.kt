@@ -6,21 +6,13 @@ import android.database.Cursor
 import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
-import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.network.model.dto.downloader.DownloadProgressDto
 import com.example.utility.url.getFileNameFromUrl
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
-import java.io.File
-import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
-import kotlin.collections.remove
-import kotlin.compareTo
-import kotlin.text.ifEmpty
 
 class FileDownloaderServiceImpl(
     private val context: Context,

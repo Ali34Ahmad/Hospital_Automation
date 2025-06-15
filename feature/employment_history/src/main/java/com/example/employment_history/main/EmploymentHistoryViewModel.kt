@@ -12,6 +12,7 @@ import com.example.model.download_file.DownloadProgress
 import com.example.model.employment_history.EmploymentHistoryResponse
 import com.example.model.enums.FileDownloadingState
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.network.onError
@@ -28,6 +29,7 @@ class EmploymentHistoryViewModel(
     private val downloadFileHistoryUseCase: DownloadFileUseCase,
     private val observeFileDownloadProgressUseCase: ObserveFileDownloadProgressUseCase,
     private val cancelFileDownloadUseCase: CancelFileDownloadUseCase,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EmploymentHistoryUiState())
     val uiState = _uiState.asStateFlow()
@@ -113,7 +115,7 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             updateScreenState(ScreenState.LOADING)
             Log.v("Getting EmploymentHistory", "EmploymentHistoryViewModel")
-            getEmploymentHistoryUseCase()
+            getEmploymentHistoryUseCase(roleAppConfig.role)
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateEmploymentHistory(data)
@@ -190,13 +192,14 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             updateIsRefreshing(true)
             Log.v("Getting EmploymentHistory", "EmploymentHistoryViewModel")
-            getEmploymentHistoryUseCase()
+            getEmploymentHistoryUseCase(roleAppConfig.role)
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)
                     updateEmploymentHistory(data)
-                    updateScreenState(ScreenState.SUCCESS)
-                }.onError { error ->
+                    if (uiState.value.screenState== ScreenState.ERROR) {
+                        updateScreenState(ScreenState.SUCCESS)
+                    }                }.onError { error ->
                     Log.v("Failed to fetch EmploymentHistory", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)
                     updateToastMessage(UiText.StringResource(R.string.something_went_wrong))

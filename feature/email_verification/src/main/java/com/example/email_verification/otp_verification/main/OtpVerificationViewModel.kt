@@ -11,6 +11,7 @@ import com.example.email_verification.otp_verification.validator.OtpVerification
 import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.auth.verify_otp.VerifyEmailOtpRequest
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.network.onError
@@ -25,6 +26,7 @@ class OtpVerificationViewModel(
     private val sendOtpToEmailUseCase: SendOtpToEmailUseCase,
     private val otpVerificationValidator: OtpVerificationValidator,
     private val savedStateHandle: SavedStateHandle,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OtpVerificationUiState())
     val uiState = _uiState.asStateFlow()
@@ -140,6 +142,7 @@ class OtpVerificationViewModel(
                 verifyEmailOtpRequest = VerifyEmailOtpRequest(
                     email = uiState.value.email.trim(),
                     otp = uiState.value.otpCode.joinToString(separator = "").trim(),
+                    role = roleAppConfig.role,
                 )
             ).onSuccess{
                 Log.v("Successful otp verification", "EmailVerificationViewModel")
@@ -158,6 +161,7 @@ class OtpVerificationViewModel(
         sendOtpToEmailUseCase(
             sendOtpCodeRequest = SendOtpRequest(
                 email = uiState.value.email,
+                role = roleAppConfig.role
             )
         )
 

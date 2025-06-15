@@ -4,11 +4,14 @@ import com.example.data.mapper.employee_management.toCheckEmployeePermissionResp
 import com.example.data.mapper.employee_management.toDeactivateMyEmployeeAccountRequestDto
 import com.example.data.mapper.employee_management.toDeactivateMyEmployeeAccountResponse
 import com.example.data.mapper.employee_management.toReactivateMyEmployeeAccountResponse
+import com.example.data.mapper.enums.toRoleDto
 import com.example.domain.repositories.EmployeeAccountManagementRepository
+import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.account_management.CheckEmployeePermissionResponse
 import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
 import com.example.model.account_management.DeactivateMyEmployeeAccountResponse
 import com.example.model.account_management.ReactivateMyEmployeeAccountResponse
+import com.example.model.enums.Role
 import com.example.network.remote.account_management.EmployeeAccountManagementApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
@@ -16,26 +19,41 @@ import com.example.utility.network.rootError
 
 class EmployeeAccountManagementRepositoryImpl(
     private val employeeAccountManagementApiService: EmployeeAccountManagementApiService,
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : EmployeeAccountManagementRepository {
     override suspend fun deactivateMyEmployeeAccount(deactivateMyEmployeeAccountRequest: DeactivateMyEmployeeAccountRequest):
             Result<DeactivateMyEmployeeAccountResponse, rootError> =
-        employeeAccountManagementApiService.deactivateMyEmployeeAccount(
-            deactivateMyEmployeeAccountRequest.toDeactivateMyEmployeeAccountRequestDto()
-        )
-            .map { deactivateMyEmployeeAccountResponseDto ->
+        userPreferencesRepository.executeWithValidToken { token ->
+            employeeAccountManagementApiService.deactivateMyEmployeeAccount(
+                deactivateMyEmployeeAccountRequest.toDeactivateMyEmployeeAccountRequestDto(),
+                token = token,
+                role = deactivateMyEmployeeAccountRequest.role.toRoleDto(),
+            ).map { deactivateMyEmployeeAccountResponseDto ->
                 deactivateMyEmployeeAccountResponseDto.toDeactivateMyEmployeeAccountResponse()
             }
+        }
 
-    override suspend fun reactivateMyEmployeeAccount(): Result<ReactivateMyEmployeeAccountResponse, rootError> =
-        employeeAccountManagementApiService.reactivateMyEmployeeAccount()
-            .map { reactivateMyEmployeeAccountResponseDto ->
-                reactivateMyEmployeeAccountResponseDto.toReactivateMyEmployeeAccountResponse()
-            }
 
-    override suspend fun checkEmployeePermission(): Result<CheckEmployeePermissionResponse, rootError> =
-        employeeAccountManagementApiService.checkEmployeePermission()
-            .map { checkEmployeePermissionResponseDto ->
-                checkEmployeePermissionResponseDto.toCheckEmployeePermissionResponse()
-            }
+    override suspend fun reactivateMyEmployeeAccount(role: Role): Result<ReactivateMyEmployeeAccountResponse, rootError> =
+        userPreferencesRepository.executeWithValidToken { token ->
+            employeeAccountManagementApiService.reactivateMyEmployeeAccount(
+                token = token,
+                role = role.toRoleDto()
+            )
+                .map { reactivateMyEmployeeAccountResponseDto ->
+                    reactivateMyEmployeeAccountResponseDto.toReactivateMyEmployeeAccountResponse()
+                }
+        }
+
+    override suspend fun checkEmployeePermission(
+        role: Role,
+    ): Result<CheckEmployeePermissionResponse, rootError> =
+        userPreferencesRepository.executeWithValidToken { token ->
+            employeeAccountManagementApiService.checkEmployeePermission(token=token,
+                role = role.toRoleDto())
+                .map { checkEmployeePermissionResponseDto ->
+                    checkEmployeePermissionResponseDto.toCheckEmployeePermissionResponse()
+                }
+        }
 
 }

@@ -1,9 +1,10 @@
 package com.example.domain.repositories
 
 import android.net.Uri
+import com.example.model.enums.Role
 import com.example.model.file.ProgressUpdate
 import kotlinx.coroutines.flow.Flow
 
 interface UploadEmployeeProfileImageRepository {
-    fun uploadImage(uri: Uri): Flow<ProgressUpdate>
+    suspend fun uploadImage(uri: Uri,role: Role): Flow<ProgressUpdate>
 }

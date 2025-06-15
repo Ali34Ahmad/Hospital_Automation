@@ -1,12 +1,12 @@
 package com.example.network.remote.account_management
 
 import android.util.Log
-import com.example.datastore.repositories.UserPreferencesRepository
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.DeactivateMyEmployeeAccountRequestDto
-import com.example.network.model.response.CheckEmployeePermissionResponseDto
-import com.example.network.model.response.DeactivateMyEmployeeAccountResponseDto
+import com.example.network.model.response.profile.CheckEmployeePermissionResponseDto
+import com.example.network.model.response.profile.DeactivateMyEmployeeAccountResponseDto
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.ReactivateMyEmployeeAccountResponseDto
+import com.example.network.model.response.profile.ReactivateMyEmployeeAccountResponseDto
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
 import com.example.utility.network.rootError
@@ -17,35 +17,34 @@ import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.first
 import com.example.utility.network.Result
 import io.ktor.client.request.get
 import io.ktor.client.request.setBody
 
 class EmployeeAccountManagementApiServiceImpl(
     private val client: HttpClient,
-    private val userPreferencesRepository: UserPreferencesRepository,
 ) : EmployeeAccountManagementApiService {
 
-    override suspend fun deactivateMyEmployeeAccount(deactivateMyEmployeeAccountRequestDto: DeactivateMyEmployeeAccountRequestDto):
+    override suspend fun deactivateMyEmployeeAccount(
+        deactivateMyEmployeeAccountRequestDto: DeactivateMyEmployeeAccountRequestDto,
+        token: String,
+        role: RoleDto
+    ):
             Result<DeactivateMyEmployeeAccountResponseDto, rootError> =
         try {
-            val response: HttpResponse = client.post(ApiRoutes.DEACTIVATE_MY_ACCOUNT) {
-                contentType(ContentType.Application.Json)
-                val token=userPreferencesRepository.userPreferencesFlow.first().token
-                if (token.isNullOrBlank()){
-                    return@post
+            val response: HttpResponse =
+                client.post(ApiRoutes.deactivateMyAccountEndPointFor(role)) {
+                    contentType(ContentType.Application.Json)
+                    bearerAuth(token)
+                    setBody(deactivateMyEmployeeAccountRequestDto)
                 }
-                Log.v("MyToken",token)
-                bearerAuth(token)
-                setBody(deactivateMyEmployeeAccountRequestDto)
-            }
             when (response.status.value) {
                 in 200..299 -> {
                     val responseBody: DeactivateMyEmployeeAccountResponseDto = response.body()
-                    val responseBodyText: String = response.body()
-                    Log.v("DeactivateAccount: In Range 2xx", "Successfully Deactivated ${responseBody.updatedData}")
-                    Log.v("DeactivateAccount: Body", responseBodyText)
+                    Log.v(
+                        "DeactivateAccount: In Range 2xx",
+                        "Successfully Deactivated ${responseBody.updatedData}"
+                    )
                     Result.Success(data = responseBody)
                 }
 
@@ -60,22 +59,24 @@ class EmployeeAccountManagementApiServiceImpl(
             Result.Error(NetworkError.UNKNOWN)
         }
 
-    override suspend fun reactivateMyEmployeeAccount(): Result<ReactivateMyEmployeeAccountResponseDto, rootError> =
+    override suspend fun reactivateMyEmployeeAccount(
+        token: String,
+        role: RoleDto
+    ): Result<ReactivateMyEmployeeAccountResponseDto, rootError> =
         try {
-            val response: HttpResponse = client.post(ApiRoutes.REACTIVATE_MY_ACCOUNT) {
-                contentType(ContentType.Application.Json)
-                val token=userPreferencesRepository.userPreferencesFlow.first().token
-                if (token.isNullOrBlank()){
-                    return@post
+            val response: HttpResponse =
+                client.post(ApiRoutes.reactivateMyAccountEndPointFor(role)) {
+                    contentType(ContentType.Application.Json)
+                    bearerAuth(token)
                 }
-                Log.v("MyToken",token)
-                bearerAuth(token)
-            }
             when (response.status.value) {
                 in 200..299 -> {
                     val responseBody: ReactivateMyEmployeeAccountResponseDto = response.body()
                     val responseBodyText: String = response.body()
-                    Log.v("ReactivateAccount: In Range 2xx", "Successfully Deactivated ${responseBody.updatedData}")
+                    Log.v(
+                        "ReactivateAccount: In Range 2xx",
+                        "Successfully Deactivated ${responseBody.updatedData}"
+                    )
                     Log.v("ReactivateAccount: Body", responseBodyText)
                     Result.Success(data = responseBody)
                 }
@@ -91,20 +92,22 @@ class EmployeeAccountManagementApiServiceImpl(
             Result.Error(NetworkError.UNKNOWN)
         }
 
-    override suspend fun checkEmployeePermission(): Result<CheckEmployeePermissionResponseDto, rootError> =
+    override suspend fun checkEmployeePermission(
+        token: String,
+        role: RoleDto
+    ): Result<CheckEmployeePermissionResponseDto, rootError> =
         try {
-            val response: HttpResponse = client.get(ApiRoutes.CHECK_EMPLOYEE_PERMISSION) {
+            val response: HttpResponse = client.get(ApiRoutes.checkPermissionEndPointFor(role = role)) {
                 contentType(ContentType.Application.Json)
-                val token=userPreferencesRepository.userPreferencesFlow.first().token
-                if (token.isNullOrBlank()){
-                    return@get
-                }
                 bearerAuth(token)
             }
             when (response.status.value) {
                 in 200..299 -> {
                     val responseBody: CheckEmployeePermissionResponseDto = response.body()
-                    Log.v("Check Employee Permission: In Range 2xx", "Successfully Checked ${responseBody.permissionGranted}")
+                    Log.v(
+                        "Check Employee Permission: In Range 2xx",
+                        "Successfully Checked ${responseBody.permissionGranted}"
+                    )
                     Result.Success(data = responseBody)
                 }
 

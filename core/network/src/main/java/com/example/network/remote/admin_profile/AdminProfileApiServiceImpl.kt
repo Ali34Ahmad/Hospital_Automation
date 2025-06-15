@@ -1,8 +1,7 @@
 package com.example.network.remote.admin_profile
 
 import android.util.Log
-import com.example.datastore.repositories.UserPreferencesRepository
-import com.example.network.model.response.AdminProfileResponseDto
+import com.example.network.model.response.profile.AdminProfileResponseDto
 import com.example.network.model.response.NetworkMessage
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
@@ -14,17 +13,13 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.first
 
 class AdminProfileApiServiceImpl(
     private val client: HttpClient,
-    private val userPreferencesRepository: UserPreferencesRepository,
 ) : AdminProfileApiService {
-    override suspend fun getAdminInfoById(adminId: Int): Result<AdminProfileResponseDto, rootError> = try {
+    override suspend fun getAdminInfoById(adminId: Int,token: String): Result<AdminProfileResponseDto, rootError> = try {
         val response = client.get("${ApiRoutes.ADMIN_PROFILE_BY_ID}/$adminId") {
             contentType(ContentType.Application.Json)
-            val token = userPreferencesRepository.userPreferencesFlow.first().token
-            if (token == null) return@get
             bearerAuth(token)
         }
         when (response.status.value) {

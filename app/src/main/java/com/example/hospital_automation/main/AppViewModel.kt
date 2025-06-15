@@ -2,14 +2,14 @@ package com.example.hospital_automation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.datastore.repositories.UserPreferencesRepository
+import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AppViewModel(
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AppUiState())
     val uiState = _uiState.asStateFlow()
@@ -20,7 +20,7 @@ class AppViewModel(
 
     private fun readAppTheme() {
         viewModelScope.launch {
-            userPreferencesRepository.userPreferencesFlow.collect { userPreference ->
+            getUserPreferencesUseCase().collect { userPreference ->
                 updateIsDarkTheme(userPreference.isDarkTheme)
             }
         }

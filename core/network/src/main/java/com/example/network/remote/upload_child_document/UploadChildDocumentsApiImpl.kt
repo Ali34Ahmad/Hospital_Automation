@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
 class UploadChildDocumentsApiImpl(
     private val uploadFileApi: UploadFileApiService,
 ) : UploadChildDocumentsApi {
-    override fun uploadFile(uri: Uri, id: Int): Flow<ProgressUpdateDto> =
-        uploadFileApi.uploadFile(uri = uri, endPoint = "${ApiRoutes.UPLOAD_CHILD_CERTIFICATE}/$id")
+    override fun uploadFile(token: String, uri: Uri, id: Int): Flow<ProgressUpdateDto> =
+        uploadFileApi.uploadFile(token=token,uri = uri, endPoint = "${ApiRoutes.UPLOAD_CHILD_CERTIFICATE}/$id")
 }

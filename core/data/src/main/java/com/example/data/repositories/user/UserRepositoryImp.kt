@@ -3,11 +3,10 @@ package com.example.data.repositories.user
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.user.toGuardianData
 import com.example.data.mapper.user.toGuardianFullData
 import com.example.data.source.GuardiansPagingSource
-import com.example.datastore.repositories.UserPreferencesRepository
+import com.example.datastore.service.UserPreferencesService
 import com.example.domain.model.constants.PagingConstants
 import com.example.domain.repositories.UserRepository
 import com.example.model.guardian.GuardianData
@@ -22,12 +21,12 @@ import kotlinx.coroutines.flow.first
 
 internal class UserRepositoryImp(
     private val userApiService: UserApiService,
-    private val dataStore: UserPreferencesRepository,
+    private val dataStore: UserPreferencesService,
 ): UserRepository  {
 
 
     override suspend fun getGuardianById(id: Int): Result<GuardianFullData, NetworkError> {
-        val token: String? = dataStore.userPreferencesFlow.first().token
+        val token: String? = dataStore.userPreferencesDataStoreFlow.first().token
         if(token == null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
 
@@ -44,7 +43,7 @@ internal class UserRepositoryImp(
         childId: Int,
         userId: Int,
     ): Result<Int, NetworkError> {
-        val token: String? = dataStore.userPreferencesFlow.first().token
+        val token: String? = dataStore.userPreferencesDataStoreFlow.first().token
         if(token == null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
         return userApiService.addGuardianToChild(
@@ -57,7 +56,7 @@ internal class UserRepositoryImp(
     }
 
     override suspend fun getGuardiansByChildId(childId: Int): Result<List<GuardianData>, NetworkError> {
-        val token: String? = dataStore.userPreferencesFlow.first().token
+        val token: String? = dataStore.userPreferencesDataStoreFlow.first().token
         if(token == null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
 
@@ -73,7 +72,7 @@ internal class UserRepositoryImp(
     }
 
     override suspend fun getGuardiansByNamePagingData(query: String): Flow<PagingData<GuardianData>> {
-        val token = dataStore.userPreferencesFlow.first().token
+        val token = dataStore.userPreferencesDataStoreFlow.first().token
         return Pager(
             config = PagingConfig(
                 pageSize = PagingConstants.PAGE_SIZE,

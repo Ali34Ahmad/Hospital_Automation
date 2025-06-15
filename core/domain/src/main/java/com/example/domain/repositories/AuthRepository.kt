@@ -2,6 +2,7 @@ package com.example.domain.repositories
 
 import com.example.model.auth.login.LoginRequest
 import com.example.model.auth.login.LoginResponse
+import com.example.model.auth.logout.LogoutRequest
 import com.example.model.auth.logout.LogoutResponse
 import com.example.model.auth.reset_password.ResetPasswordRequest
 import com.example.model.auth.reset_password.ResetPasswordResponse
@@ -15,10 +16,6 @@ import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface AuthRepository {
-    suspend fun signup(
-        registrationRequest: SignUpCredentials
-    ): Result<RegistrationResponse, rootError>
-
     suspend fun login(
         loginRequest: LoginRequest
     ): Result<LoginResponse, rootError>
@@ -36,6 +33,7 @@ interface AuthRepository {
     ): Result<ResetPasswordResponse, rootError>
 
     suspend fun logout(
+        logoutRequest: LogoutRequest,
     ): Result<LogoutResponse, rootError>
 
 }

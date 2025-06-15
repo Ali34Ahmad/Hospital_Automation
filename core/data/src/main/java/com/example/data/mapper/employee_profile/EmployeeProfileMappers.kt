@@ -6,8 +6,8 @@ import com.example.model.address.Address
 import com.example.model.employee.EmployeeProfile
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.user.FullName
-import com.example.network.model.response.EmployeeProfileDto
-import com.example.network.model.response.EmployeeProfileResponseDto
+import com.example.network.model.response.profile.EmployeeProfileDto
+import com.example.network.model.response.profile.EmployeeProfileResponseDto
 import com.example.network.utility.ApiRoutes
 
 

@@ -8,6 +8,7 @@ import com.example.domain.use_cases.auth.LoginUseCase
 import com.example.email_verification.EmailVerificationNavConstants
 import com.example.model.auth.login.LoginRequest
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class EmailVerifiedSuccessfullyViewModel(
     private val loginUseCase: LoginUseCase,
     private val savedStateHandle: SavedStateHandle,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EmailVerifiedSuccessfullyUiState())
     val uiState = _uiState.asStateFlow()
@@ -74,6 +76,7 @@ class EmailVerifiedSuccessfullyViewModel(
                 loginRequest = LoginRequest(
                     email = uiState.value.email,
                     password = uiState.value.password,
+                    role=roleAppConfig.role,
                 )
             ).onSuccess {
                 Log.v("Successful log in", "EmailVerifiedSuccessfullyViewModel")

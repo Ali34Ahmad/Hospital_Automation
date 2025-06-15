@@ -1,42 +1,46 @@
 package com.example.network.remote.auth
 
-import com.example.network.model.request.LoginRequestDto
-import com.example.network.model.request.RegistrationRequestDto
-import com.example.network.model.request.ResetPasswordRequestDto
-import com.example.network.model.request.SendOtpRequestDto
-import com.example.network.model.request.VerifyEmailOtpRequestDto
-import com.example.network.model.response.LoginResponseDto
-import com.example.network.model.response.LogoutResponseDto
-import com.example.network.model.response.RegistrationResponseDto
-import com.example.network.model.response.ResetPasswordResponseDto
-import com.example.network.model.response.SendOtpResponseDto
-import com.example.network.model.response.VerifyEmailOtpResponseDto
+import com.example.network.model.enums.RoleDto
+import com.example.network.model.request.auth.LoginRequestDto
+import com.example.network.model.request.auth.LogoutRequestDto
+import com.example.network.model.request.auth.signup.BaseRegistrationRequestDto
+import com.example.network.model.request.auth.ResetPasswordRequestDto
+import com.example.network.model.request.auth.SendOtpRequestDto
+import com.example.network.model.request.auth.VerifyEmailOtpRequestDto
+import com.example.network.model.response.auth.LoginResponseDto
+import com.example.network.model.response.auth.LogoutResponseDto
+import com.example.network.model.response.auth.signup.BaseRegistrationResponseDto
+import com.example.network.model.response.auth.ResetPasswordResponseDto
+import com.example.network.model.response.auth.SendOtpResponseDto
+import com.example.network.model.response.auth.VerifyEmailOtpResponseDto
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface AuthApiService {
-    suspend fun signup(
-        registrationRequestDto: RegistrationRequestDto
-    ): Result<RegistrationResponseDto, rootError >
-
     suspend fun login(
-        loginRequestDto: LoginRequestDto
+        loginRequestDto: LoginRequestDto,
+        role: RoleDto
     ): Result<LoginResponseDto, rootError>
 
 
     suspend fun verifyEmail(
-        verifyEmailOtpRequestDto: VerifyEmailOtpRequestDto
+        verifyEmailOtpRequestDto: VerifyEmailOtpRequestDto,
+        role: RoleDto
     ): Result<VerifyEmailOtpResponseDto, rootError>
 
     suspend fun sendOtpCodeToEmail(
-        sendOtpCodeRequest: SendOtpRequestDto
+        sendOtpCodeRequest: SendOtpRequestDto,
+        role: RoleDto
     ): Result<SendOtpResponseDto, rootError>
 
     suspend fun resetPassword(
-        resetPasswordRequestDto: ResetPasswordRequestDto
+        resetPasswordRequestDto: ResetPasswordRequestDto,
+        role: RoleDto
     ): Result<ResetPasswordResponseDto, rootError>
 
     suspend fun logout(
+        token:String,
+        role: RoleDto,
     ): Result<LogoutResponseDto, rootError>
 
 }

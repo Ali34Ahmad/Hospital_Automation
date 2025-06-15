@@ -10,6 +10,7 @@ import com.example.domain.use_cases.auth.ResetPasswordUseCase
 import com.example.model.auth.login.LoginRequest
 import com.example.model.auth.reset_password.ResetPasswordRequest
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.reset_password.validator.ResetPasswordValidationResult
 import com.example.reset_password.validator.ResetPasswordValidator
 import com.example.utility.network.Result
@@ -23,6 +24,7 @@ class ResetPasswordViewModel(
     private val loginUseCase: LoginUseCase,
     private val resetPasswordValidator: ResetPasswordValidator,
     private val savedStateHandle: SavedStateHandle,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ResetPasswordUiState())
     val uiState = _uiState.asStateFlow()
@@ -115,6 +117,7 @@ class ResetPasswordViewModel(
                 resetPasswordRequest = ResetPasswordRequest(
                     email = uiState.value.email,
                     password = uiState.value.password,
+                    role = roleAppConfig.role,
                 )
             )
             when (result) {
@@ -138,6 +141,7 @@ class ResetPasswordViewModel(
         loginRequest = LoginRequest(
             email = uiState.value.email,
             password = uiState.value.password,
+            role= roleAppConfig.role,
         )
     )
 

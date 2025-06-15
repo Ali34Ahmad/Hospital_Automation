@@ -5,5 +5,5 @@ import com.example.network.model.response.ProgressUpdateDto
 import kotlinx.coroutines.flow.Flow
 
 interface UploadFileApiService {
-    fun uploadFile(uri: Uri, endPoint: String): Flow<ProgressUpdateDto>
+    fun uploadFile(token: String,uri: Uri, endPoint: String): Flow<ProgressUpdateDto>
 }

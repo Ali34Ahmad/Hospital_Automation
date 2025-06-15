@@ -5,8 +5,8 @@ import com.example.model.admin_account.AdminProfile
 import com.example.model.admin_account.AdminProfileResponse
 import com.example.model.address.Address
 import com.example.model.user.FullName
-import com.example.network.model.response.AdminProfileDto
-import com.example.network.model.response.AdminProfileResponseDto
+import com.example.network.model.response.profile.AdminProfileDto
+import com.example.network.model.response.profile.AdminProfileResponseDto
 import com.example.network.utility.ApiRoutes
 
 

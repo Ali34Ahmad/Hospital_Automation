@@ -16,3 +16,4 @@ enum class NetworkError : Error {
     EMPTY_TOKEN,
     BAD_REQUEST
 }
+

@@ -8,6 +8,7 @@ import com.example.login.validator.LoginValidationResult
 import com.example.login.validator.LoginValidator
 import com.example.model.auth.login.LoginRequest
 import com.example.model.enums.ScreenState
+import com.example.model.role_config.RoleAppConfig
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
     private val loginValidator: LoginValidator,
+    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
@@ -115,6 +117,7 @@ class LoginViewModel(
                 loginRequest = LoginRequest(
                     email = uiState.value.email,
                     password = uiState.value.password,
+                    role = roleAppConfig.role
                 )
             ).onSuccess{
                 Log.v("Successful log in","LoginViewModel")

@@ -5,5 +5,5 @@ import com.example.model.file.ProgressUpdate
 import kotlinx.coroutines.flow.Flow
 
 interface UploadChildDocumentsRepository {
-    fun uploadFile(uri: Uri,id: Int): Flow<ProgressUpdate>
+    suspend fun uploadFile(uri: Uri,id: Int): Flow<ProgressUpdate>
 }

@@ -12,10 +12,6 @@ class ResetPasswordUseCase(
     suspend operator fun invoke(
         resetPasswordRequest: ResetPasswordRequest
     ): Result<ResetPasswordResponse, rootError> {
-        // e.g., ensure new password and confirm password match, and meet complexity rules
-        // if (resetPasswordRequest.newPassword != resetPasswordRequest.confirmPassword) {
-        //    return Result.Error(rootError(message = "Passwords do not match"))
-        // }
         return authRepository.resetPassword(resetPasswordRequest)
     }
 }

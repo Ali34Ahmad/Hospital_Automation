@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.FileNotFoundException
 import java.nio.channels.UnresolvedAddressException
 
@@ -92,51 +93,53 @@ class UploadChildDocumentsViewModel(
     }
 
     fun uploadFile(uri: Uri) {
-        val childId=uiState.value.childId
-        if (childId==null) return
-        uploadJob = uploadChildDocumentsUseCase(uri,childId)
-            .onStart {
-                setStartUploadingState(uri)
-                Log.v("Uploading File:","Started")
-            }
-            .onEach {
-                updateUploadingProgressState(
-                    uploadingProgress = ((it.bytesSent.toFloat() / it.totalBytes.toFloat()) * 100).toLong(),
-                    fileSize = it.totalBytes,
-                )
-                Log.v("Uploading File:","New Emit")
-            }
-            .onCompletion { cause ->
-                if (cause == null) {
-                    setSuccessfulUploadingState()
-                } else if (cause is CancellationException) {
-                    setCancelUploadingState()
+        viewModelScope.launch{
+            val childId = uiState.value.childId
+            if (childId == null) return@launch
+            uploadJob = uploadChildDocumentsUseCase(uri, childId)
+                .onStart {
+                    setStartUploadingState(uri)
+                    Log.v("Uploading File:", "Started")
                 }
-                Log.v("Uploading File:","Complete $cause")
-            }
-            .catch { cause ->
-                val message = when (cause) {
-                    is OutOfMemoryError -> {
-                        UiText.StringResource(R.string.file_too_big)
-                    }
-
-                    is FileNotFoundException -> {
-                        UiText.StringResource(R.string.file_not_found)
-                    }
-
-                    is UnresolvedAddressException -> {
-                        UiText.StringResource(R.string.check_internet_connection)
-                    }
-
-                    else -> {
-                        UiText.StringResource(R.string.something_went_wrong)
-                    }
+                .onEach {
+                    updateUploadingProgressState(
+                        uploadingProgress = ((it.bytesSent.toFloat() / it.totalBytes.toFloat()) * 100).toLong(),
+                        fileSize = it.totalBytes,
+                    )
+                    Log.v("Uploading File:", "New Emit")
                 }
+                .onCompletion { cause ->
+                    if (cause == null) {
+                        setSuccessfulUploadingState()
+                    } else if (cause is CancellationException) {
+                        setCancelUploadingState()
+                    }
+                    Log.v("Uploading File:", "Complete $cause")
+                }
+                .catch { cause ->
+                    val message = when (cause) {
+                        is OutOfMemoryError -> {
+                            UiText.StringResource(R.string.file_too_big)
+                        }
 
-                setFailureState(message)
-                Log.v("Uploading File:",cause.message?:"Unknown Error")
-            }
-            .launchIn(viewModelScope)
+                        is FileNotFoundException -> {
+                            UiText.StringResource(R.string.file_not_found)
+                        }
+
+                        is UnresolvedAddressException -> {
+                            UiText.StringResource(R.string.check_internet_connection)
+                        }
+
+                        else -> {
+                            UiText.StringResource(R.string.something_went_wrong)
+                        }
+                    }
+
+                    setFailureState(message)
+                    Log.v("Uploading File:", cause.message ?: "Unknown Error")
+                }
+                .launchIn(viewModelScope)
+        }
     }
 
     private fun cancelUpload() {

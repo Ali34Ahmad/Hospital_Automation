@@ -1,9 +1,8 @@
 package com.example.network.remote.employee_profile
 
 import android.util.Log
-import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.network.model.response.NetworkMessage
-import com.example.network.model.response.EmployeeProfileResponseDto
+import com.example.network.model.response.profile.EmployeeProfileResponseDto
 import com.example.network.model.response.employee.GetEmployeeProfileByIdResponseDto
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
@@ -15,17 +14,13 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.first
 
 class EmployeeProfileApiServiceImpl(
     private val client: HttpClient,
-    private val userPreferencesRepository: UserPreferencesRepository,
 ) : EmployeeProfileApiService {
-    override suspend fun getEmployeeInfo(): Result<EmployeeProfileResponseDto, rootError> = try {
+    override suspend fun getEmployeeInfo(token: String): Result<EmployeeProfileResponseDto, rootError> = try {
         val response = client.get(ApiRoutes.EMPLOYEE_PROFILE) {
             contentType(ContentType.Application.Json)
-            val token = userPreferencesRepository.userPreferencesFlow.first().token
-            if (token == null) return@get
             bearerAuth(token)
         }
         when (response.status.value) {
@@ -46,12 +41,10 @@ class EmployeeProfileApiServiceImpl(
         Result.Error(NetworkError.UNKNOWN)
     }
 
-    override suspend fun getEmployeeInfoById(id: Int): Result<GetEmployeeProfileByIdResponseDto, rootError> =
+    override suspend fun getEmployeeInfoById(token: String,id: Int): Result<GetEmployeeProfileByIdResponseDto, rootError> =
         try {
             val response = client.get("${ApiRoutes.FIND_EMPLOYEE_BY_ID}/$id") {
                 contentType(ContentType.Application.Json)
-                val token = userPreferencesRepository.userPreferencesFlow.first().token
-                if (token == null) return@get
                 bearerAuth(token)
             }
             when (response.status.value) {
