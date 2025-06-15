@@ -5,6 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.data.mapper.child.toAddChildRequest
 import com.example.data.mapper.child.toChildFullData
+import com.example.data.paging_sources.childrenSearch.ChildrenByEmployeeSearchPagingSource
+import com.example.data.paging_sources.childrenSearch.ChildrenSearchPagingSource
+import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.data.source.childrenSearch.ChildrenByEmployeeSearchPagingSource
 import com.example.data.source.childrenSearch.ChildrenSearchPagingSource
 import com.example.datastore.service.UserPreferencesService
@@ -16,17 +19,16 @@ import com.example.network.remote.child.ChildApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import com.example.utility.network.rootError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class ChildRepositoryImp(
     private val childApiService: ChildApiService,
-    private val dataStore: UserPreferencesService
+    private val dataStore: UserPreferencesRepository
 ): ChildRepository {
     override suspend fun searchForChildrenByName(name: String): Flow<PagingData<ChildData>> {
-        val token = dataStore.userPreferencesDataStoreFlow.map { it.token }.first()
+        val token = dataStore.userPreferencesFlow.map { it.token }.first()
 
         return Pager(
             config = PagingConfig(
@@ -41,7 +43,7 @@ class ChildRepositoryImp(
     }
 
     override suspend fun getChildById(childId: Int): Result<ChildFullData, NetworkError> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
+        val token = dataStore.userPreferencesFlow.first().token
 
         if (token==null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
@@ -58,7 +60,7 @@ class ChildRepositoryImp(
         guardianId: Int,
         child: ChildFullData,
     ): Result<ChildFullData, NetworkError> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
+        val token = dataStore.userPreferencesFlow.first().token
 
         if (token==null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
@@ -74,7 +76,7 @@ class ChildRepositoryImp(
 
 
     override suspend fun getChildrenByGuardianId(guardianId: Int): Result<List<ChildFullData>, NetworkError> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
+        val token = dataStore.userPreferencesFlow.first().token
 
         if (token==null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
@@ -91,8 +93,9 @@ class ChildRepositoryImp(
     override suspend fun searchForChildrenAddedByEmployeeByName(
         name: String
     ): Flow<PagingData<ChildData>> {
-        val token = dataStore.userPreferencesDataStoreFlow.map { it.token }.first()
+        val token = dataStore.userPreferencesFlow.map { it.token }.first()
         return Pager(
+
             config = PagingConfig(
                 pageSize = PagingConstants.PAGE_SIZE
             ),

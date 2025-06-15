@@ -28,7 +28,7 @@ data class AddChildUIState(
     val isDatePickerVisible: Boolean = false,
     val isValid: Boolean = false,
 
-    val sendingDataButtonState: BottomBarState = BottomBarState.IDLE,
+    val sendingDataButtonState: BottomBarState = BottomBarState.DISABLED,
     val isSendingDataButtonVisible: Boolean = true,
     val childId: Int? = null
 )

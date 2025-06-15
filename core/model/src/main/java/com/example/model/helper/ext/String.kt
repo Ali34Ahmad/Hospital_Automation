@@ -4,9 +4,12 @@ import com.example.model.helper.Age
 import com.example.model.helper.AgeUnit
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.Period
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 fun String.toCapitalizedString():String = lowercase().replaceFirstChar { it.uppercase() }
 //converts from data to age
@@ -54,6 +57,21 @@ fun String.toAgeFromDate()
         }
     }
 
-fun main() {
-    println("2005-11-11".toAgeFromDate())
+fun String.toLocalDate(
+    pattern: String = "yyyy-MM-dd"
+):  LocalDate{
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    return LocalDate.parse(this, formatter)
 }
+fun String.toLocalTime(
+    pattern: String = "HH:mm:ss"
+): LocalTime {
+    val formatter = DateTimeFormatter.ofPattern(pattern)
+    return LocalTime.parse(this, formatter)
+}
+
+fun main() {
+    val dateTime = LocalDateTime.of(LocalDate.of(2025,10,10), LocalTime.of(10,10,10))
+    println(dateTime.format(DateTimeFormatter.ofPattern("dd MMM - hh:ss a",Locale.ENGLISH)))
+}
+

@@ -75,6 +75,17 @@ fun SendingDataBottomBar(
             BottomBarState.SUCCESS ->{
                 successContent
             }
+
+            BottomBarState.DISABLED ->{
+                HospitalAutomationButton(
+                    onClick = onButtonClick,
+                    text = text,
+                    modifier = modifier,
+                    isLoading = false,
+                    enabled = false,
+                    hasError = false
+                )
+            }
         }
     }
 }
