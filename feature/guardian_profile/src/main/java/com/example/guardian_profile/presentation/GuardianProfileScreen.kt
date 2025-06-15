@@ -1,13 +1,18 @@
 package com.example.guardian_profile.presentation
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constants.enums.Gender
@@ -21,6 +26,8 @@ import com.example.ui_components.components.items.custom.SomeThingWentWrong
 import com.example.ui_components.components.topbars.custom.GuardianProfileTopBar
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
+import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 
 @Composable
 fun GuardianProfileScreen(
@@ -44,6 +51,13 @@ fun GuardianProfileScreen(
     onAction: (GuardianProfileActions)-> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val toastMessage = uiState.toastMessage
+    LaunchedEffect(toastMessage) {
+        if(toastMessage != null){
+            Toast.makeText(context, toastMessage.asString(context), Toast.LENGTH_SHORT).show()
+        }
+    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
@@ -82,7 +96,8 @@ fun GuardianProfileScreen(
                                 navigationActions.navigateToAddChild(uiState.guardianId)
                             },
                             text = stringResource(R.string.add_child),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(MaterialTheme.spacing.medium16)
                             ,
                         )
@@ -110,31 +125,49 @@ fun GuardianProfileScreen(
                         )
                     }
                     ScreenState.ERROR ->{
-                        SomeThingWentWrong(
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        PullToRefreshColumn(
+                            refreshing = uiState.isRefreshing,
+                            modifier = Modifier.fillMaxSize(),
+                            onRefresh = {
+                                onAction(GuardianProfileActions.Refresh)
+                            },
+                            verticalArrangement = Arrangement.Center
+                        ){
+                            ErrorComponent(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
                     ScreenState.SUCCESS -> {
                         uiState.guardianData?.let { data->
                             data.apply {
-                                CustomGuardianProfileCard(
-                                    fullName = fullName,
-                                    phoneNumber = phoneNumber,
-                                    imageUrl = imgUrl?:"",
-                                    address = fullAddress,
-                                    gender = gender?: Gender.MALE.name.lowercase(),
-                                    onNavigateUp = navigationActions::navigateUp,
-                                    onPhoneNumberButtonClick = {
-                                        navigationActions.openContacts(phoneNumber)
-                                    },
-                                    onEmailButtonClick = {
-                                        navigationActions.openEmail(email)
+                                PullToRefreshColumn(
+                                    refreshing = uiState.isRefreshing,
+                                    onRefresh = {
+                                        onAction(GuardianProfileActions.Refresh)
                                     },
                                     modifier = Modifier.fillMaxWidth(),
-                                    onChildrenButtonClick = {
-                                        navigationActions.navigateToChildren(userId)
-                                    }
-                                )
+                                ) {
+                                    CustomGuardianProfileCard(
+                                        fullName = fullName,
+                                        phoneNumber = phoneNumber,
+                                        imageUrl = imgUrl ?: "",
+                                        address = fullAddress,
+                                        gender = gender ?: Gender.MALE.name.lowercase(),
+                                        onNavigateUp = navigationActions::navigateUp,
+                                        onPhoneNumberButtonClick = {
+                                            navigationActions.openContacts(phoneNumber)
+                                        },
+                                        onEmailButtonClick = {
+                                            navigationActions.openEmail(email)
+                                        },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onChildrenButtonClick = {
+                                            navigationActions.navigateToChildren(userId)
+                                        }
+                                    )
+                                }
                             }
                         }
                     }

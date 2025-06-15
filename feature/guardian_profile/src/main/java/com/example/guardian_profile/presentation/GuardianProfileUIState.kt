@@ -11,8 +11,9 @@ data class GuardianProfileUIState(
     val guardianData: GuardianFullData? = null,
     val screenState: ScreenState = ScreenState.IDLE,
     val bottomBarState: BottomBarState = BottomBarState.IDLE,
-    val errorMessage: UiText? = null,
     val childId: Int? = null,
     val guardianId: Int = -1,
-    val userProfileMode: UserProfileMode = UserProfileMode.VIEW_ONLY
+    val userProfileMode: UserProfileMode = UserProfileMode.VIEW_ONLY,
+    val isRefreshing: Boolean = false,
+    val toastMessage: UiText? = null,
 )

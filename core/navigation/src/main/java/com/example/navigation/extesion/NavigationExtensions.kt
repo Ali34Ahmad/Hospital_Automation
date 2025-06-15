@@ -1,6 +1,5 @@
 package com.example.navigation.extesion
 
-import androidx.navigation.NavAction
 import androidx.navigation.NavController
 
 
@@ -41,7 +40,7 @@ fun  NavController.navigateToScreen(
  *
  * @author Ali Mansoura
  */
-fun NavController.switchToTap(
+fun NavController.switchToTab(
     route: Any,
     startDestination: Any
 ){

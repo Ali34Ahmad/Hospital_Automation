@@ -23,6 +23,7 @@ data class Sizing(
     val circularProgressIndicatorSize36: Dp = 36.dp,
     val medium40: Dp = 40.dp,
     val medium44: Dp = 44.dp,
+    val medium56: Dp = 56.dp,
     val circularProgressIndicatorSize: Dp = 48.dp,
     val profileImageFailureIconSize: Dp = 110.dp,
     val illustrationImageSize: Dp = 124.dp,

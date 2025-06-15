@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,8 +32,13 @@ import coil3.request.crossfade
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 import com.example.model.ActionIcon
+import com.example.ui.theme.sizing
+import com.example.ui.theme.spacing
+import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +48,7 @@ fun HospitalAutomationTopBar(
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int? = null,
     imageUrl: String? = null,
-    @DrawableRes imagePlaceholder: Int = HospitalAutomationIcons.child,
+    @DrawableRes imagePlaceholder: Int = AppIcons.Outlined.child,
     actionIcons: List<ActionIcon> = emptyList()
     ) {
     TopAppBar(
@@ -57,33 +63,30 @@ fun HospitalAutomationTopBar(
             }else{
                 Row(
                     modifier = Modifier.fillMaxWidth(1f),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if(!LocalInspectionMode.current){
-                        AsyncImage(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.onSecondaryContainer),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(imageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                        )
-                    }else{
-                        Image(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.onSecondaryContainer),
-                            painter = painterResource(imagePlaceholder),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                        )
-                    }
+                    NetworkImage(
+                            model = imageUrl,
+                        modifier = Modifier
+                            .size(MaterialTheme.sizing.medium56)
+                            .padding(MaterialTheme.spacing.small8)
+                            .clip(CircleShape)
+                        ,
+                        contentScale = ContentScale.Crop,
+                            loading = {
+                                NetworkImageLoader(
+                                    modifier=Modifier
+                                        .clip(CircleShape)
+                                        .padding(MaterialTheme.sizing.small16)
+                                        .size(MaterialTheme.sizing.medium40)
+                                )
+                            },
+                            errorCompose = {
+                                NetworkImageError()
+                            },
+                    )
+
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
@@ -125,7 +128,7 @@ fun HospitalAutomationTopBarPreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
             title = "Mail",
-            navigationIcon = HospitalAutomationIcons.menu,
+            navigationIcon = AppIcons.Outlined.menu,
             onNavigationIconClick = {},
             imageUrl = null
         )
@@ -138,7 +141,7 @@ fun HospitalAutomationTopBarWithImagePreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
             title = "Mail",
-            navigationIcon = HospitalAutomationIcons.menu,
+            navigationIcon = AppIcons.Outlined.menu,
             onNavigationIconClick = {},
             imageUrl ="example"
         )
@@ -150,16 +153,16 @@ fun HospitalAutomationTopBarActionsPreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
             title ="Mail",
-            navigationIcon = HospitalAutomationIcons.menu,
+            navigationIcon = AppIcons.Outlined.menu,
             onNavigationIconClick = {},
             imageUrl = null,
             actionIcons = listOf(
                 ActionIcon(
-                    icon = HospitalAutomationIcons.calender,
+                    icon = AppIcons.Outlined.calender,
                     onCLick = {}
                 ),
                 ActionIcon(
-                    icon = HospitalAutomationIcons.search,
+                    icon = AppIcons.Outlined.search,
                     onCLick = {}
                 )
             )

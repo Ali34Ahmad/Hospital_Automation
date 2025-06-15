@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.items.DetailsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 import com.example.ui_components.R
 import com.example.ui_components.components.texts.IndexedText
 import com.example.ui_components.components.texts.TitleWithSubtitle
@@ -57,7 +57,7 @@ fun VaccineDetails(
             horizontalAlignment = Alignment.Start,
         ) {
             DetailsItem(
-                iconRes = HospitalAutomationIcons.fromAge,
+                iconRes = AppIcons.Outlined.fromAge,
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.from_age),
@@ -65,7 +65,7 @@ fun VaccineDetails(
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
             DetailsItem(
-                iconRes = HospitalAutomationIcons.toAge,
+                iconRes = AppIcons.Outlined.toAge,
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.to_age),
@@ -73,7 +73,7 @@ fun VaccineDetails(
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
             DetailsItem(
-                iconRes = HospitalAutomationIcons.vaccines,
+                iconRes = AppIcons.Outlined.vaccines,
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.quantity),

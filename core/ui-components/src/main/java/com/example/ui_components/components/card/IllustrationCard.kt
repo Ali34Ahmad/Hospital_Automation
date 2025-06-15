@@ -1,4 +1,4 @@
-package com.example.hospital_automation.core.components.card
+package com.example.ui_components.components.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

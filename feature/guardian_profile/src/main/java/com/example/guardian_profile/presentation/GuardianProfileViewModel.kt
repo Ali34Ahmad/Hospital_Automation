@@ -9,6 +9,7 @@ import com.example.domain.use_cases.users.GetGuardianByIdUseCase
 import com.example.guardian_profile.navigation.GuardianProfileRoute
 import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
+import com.example.model.guardian.GuardianFullData
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.constants.DurationConstants
@@ -52,23 +53,19 @@ class GuardianProfileViewModel(
 
     fun onAction(action: GuardianProfileActions){
         when(action){
-
-            GuardianProfileActions.RetryLoadingData->{
-                loadInitialData()
-            }
             //network call to add guardian to child
             GuardianProfileActions.SetAsGuardian -> {
                 _uiState.value.childId?.let {
-                    _uiState.value = _uiState.value.copy(screenState = ScreenState.LOADING)
+                    updateScreenState(ScreenState.LOADING)
                     viewModelScope.launch {
                         addGuardianToChildUseCase(
                             childId = it,
                             userId = _uiState.value.guardianId
                         ).onSuccess{
-                            _uiState.value = _uiState.value.copy(screenState = ScreenState.SUCCESS)
+                            updateScreenState(ScreenState.SUCCESS)
                         }
                             .onError {error->
-                                _uiState.value = _uiState.value.copy(screenState = ScreenState.ERROR)
+                                updateScreenState(ScreenState.ERROR)
                                 setErrorMessage(error)
                                 delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
                                 resetButtonState()
@@ -76,11 +73,8 @@ class GuardianProfileViewModel(
                     }
                 }
             }
-
             is GuardianProfileActions.UpdateScreenState -> {
-                _uiState.value = _uiState.value.copy(
-                    screenState = action.state
-                )
+                updateScreenState(action.state)
             }
             is GuardianProfileActions.UpdateBottomBarState ->{
                 _uiState.value = _uiState.value.copy(
@@ -88,14 +82,29 @@ class GuardianProfileViewModel(
                 )
             }
             is GuardianProfileActions.UpdateGuardianData ->{
-                _uiState.value = _uiState.value.copy(
-                    guardianData = action.data
-                )
+                updateGuardian(action.data)
             }
 
+            GuardianProfileActions.Refresh ->{
+                refreshData()
+            }
+            is GuardianProfileActions.ShowToast -> {
+                showToast(action.message)
+            }
+            is GuardianProfileActions.UpdateRefreshState ->{
+                updateRefreshState(action.isRefreshing)
+            }
         }
     }
-
+    private fun showToast(message: UiText){
+        _uiState.value = _uiState.value.copy(toastMessage = message)
+    }
+    private fun updateScreenState(newState: ScreenState){
+        _uiState.value = _uiState.value.copy(screenState = newState)
+    }
+    private fun updateRefreshState(isRefreshing: Boolean) {
+        _uiState.value = _uiState.value.copy(isRefreshing = isRefreshing)
+    }
     private fun loadInitialData(){
         _uiState.value = _uiState.value.copy(screenState = ScreenState.LOADING)
         viewModelScope.launch {
@@ -110,26 +119,49 @@ class GuardianProfileViewModel(
     }
     private fun resetButtonState(){
         _uiState.value = _uiState.value.copy(
-            errorMessage = null,
+            toastMessage = null,
             bottomBarState = BottomBarState.IDLE
+        )
+    }
+    private fun updateGuardian(guardian: GuardianFullData){
+        _uiState.value = _uiState.value.copy(
+            guardianData = guardian
         )
     }
     private fun setErrorMessage(error: NetworkError){
         when(error){
             NetworkError.GUARDIAN_ALREADY_ASSIGNED -> {
                 _uiState.value = _uiState.value.copy(
-                    errorMessage = UiText.StringResource(
+                    toastMessage = UiText.StringResource(
                         R.string.guardian_already_assigned
                     )
                 )
             }
             else -> {
                 _uiState.value = _uiState.value.copy(
-                    errorMessage = UiText.StringResource(
+                    toastMessage = UiText.StringResource(
                         R.string.network_error
                     )
                 )
             }
+        }
+    }
+    private fun refreshData(){
+        viewModelScope.launch{
+            updateRefreshState(true)
+            guardianProfileUseCase(_uiState.value.guardianId)
+                .onSuccess{ result->
+                    updateRefreshState(false)
+                    showToast(UiText.StringResource(R.string.data_updated_successfully))
+                    updateGuardian(result)
+                    if(uiState.value.screenState == ScreenState.ERROR){
+                        updateScreenState(ScreenState.SUCCESS)
+                    }
+                }.onError {
+                    updateRefreshState(false)
+                    showToast(UiText.StringResource(R.string.something_went_wrong))
+                }
+
         }
     }
 }

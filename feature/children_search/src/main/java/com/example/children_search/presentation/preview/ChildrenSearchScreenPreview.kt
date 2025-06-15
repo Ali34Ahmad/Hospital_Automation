@@ -1,8 +1,12 @@
 package com.example.children_search.presentation.preview
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.children_search.presentation.ChildrenSearchNavigationActions
 import com.example.children_search.presentation.ChildrenSearchScreen
 import com.example.children_search.presentation.ChildrenSearchUiState
 import com.example.model.child.ChildData
@@ -11,6 +15,10 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import kotlinx.coroutines.flow.flowOf
 
+internal val mockActions = object : ChildrenSearchNavigationActions{
+    override fun navigateUp() {}
+    override fun navigateToChildProfile(childId: Int) {}
+}
 internal val fakeChildren = flowOf(
     PagingData.from(
         listOf(
@@ -55,11 +63,8 @@ internal val emptyResult = flowOf(
 fun ChildrenSearchScreenSuccessPreview(){
     Hospital_AutomationTheme {
         ChildrenSearchScreen(
-            onNavigateBack = {},
-            onQueryDeleted = {},
-            onStateUpdated = {},
-            onNavigateToChildProfile = {},
-            onQueryChanged = {},
+            onAction = {},
+            navigationActions = mockActions,
             uiState = ChildrenSearchUiState(state = ScreenState.SUCCESS),
             children = fakeChildren.collectAsLazyPagingItems()
         )
@@ -70,11 +75,8 @@ fun ChildrenSearchScreenSuccessPreview(){
 fun ChildrenSearchScreenErrorPreview(){
     Hospital_AutomationTheme {
         ChildrenSearchScreen(
-            onNavigateBack = {},
-            onQueryDeleted = {},
-            onStateUpdated = {},
-            onNavigateToChildProfile = {},
-            onQueryChanged = {},
+            onAction = {},
+            navigationActions = mockActions,
             uiState = ChildrenSearchUiState(state = ScreenState.ERROR),
             children = fakeChildren.collectAsLazyPagingItems()
         )
@@ -85,12 +87,9 @@ fun ChildrenSearchScreenErrorPreview(){
 fun ChildrenSearchScreenIdlePreview(){
     Hospital_AutomationTheme {
         ChildrenSearchScreen(
-            onNavigateBack = {},
-            onQueryDeleted = {},
-            onStateUpdated = {},
-            onNavigateToChildProfile = {},
-            onQueryChanged = {},
-            uiState = ChildrenSearchUiState(state = ScreenState.IDLE),
+            onAction = {},
+            navigationActions = mockActions,
+            uiState = ChildrenSearchUiState(),
             children =null
         )
     }
@@ -101,11 +100,8 @@ fun ChildrenSearchScreenIdlePreview(){
 fun ChildrenSearchScreenEmptyPreview(){
     Hospital_AutomationTheme {
         ChildrenSearchScreen(
-            onNavigateBack = {},
-            onQueryDeleted = {},
-            onStateUpdated = {},
-            onNavigateToChildProfile = {},
-            onQueryChanged = {},
+            onAction = {},
+            navigationActions = mockActions,
             uiState = ChildrenSearchUiState(state = ScreenState.SUCCESS),
             children = emptyResult.collectAsLazyPagingItems()
         )
@@ -117,11 +113,8 @@ fun ChildrenSearchScreenEmptyPreview(){
 fun ChildrenSearchScreenLoadingPreview(){
     Hospital_AutomationTheme {
         ChildrenSearchScreen(
-            onNavigateBack = {},
-            onQueryDeleted = {},
-            onStateUpdated = {},
-            onNavigateToChildProfile = {},
-            onQueryChanged = {},
+            onAction = {},
+            navigationActions = mockActions,
             uiState = ChildrenSearchUiState(state = ScreenState.LOADING),
             children = fakeChildren.collectAsLazyPagingItems()
         )

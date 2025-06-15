@@ -32,7 +32,7 @@ import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +60,7 @@ fun ChildProfileTopBar(
                 ) {
                     Icon(
                         modifier = Modifier.size(MaterialTheme.sizing.medium32),
-                        painter = painterResource(HospitalAutomationIcons.child),
+                        painter = painterResource(AppIcons.Outlined.child),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -85,7 +85,7 @@ fun ChildProfileTopBar(
                 onNavigateUpClick
             ) {
                 Icon(
-                    painter = painterResource(HospitalAutomationIcons.arrowBack),
+                    painter = painterResource(AppIcons.Outlined.arrowBack),
                     contentDescription = null
                 )
             }

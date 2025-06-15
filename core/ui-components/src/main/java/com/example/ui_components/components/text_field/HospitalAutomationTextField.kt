@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @Composable
 fun HospitalAutomationTextFiled(
@@ -152,7 +152,7 @@ fun HospitalAutomationTextFiled2Preview() {
             },
             modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
-            trailingIcon = HospitalAutomationIcons.calender,
+            trailingIcon = AppIcons.Outlined.calender,
             isRequired = true,
             supportingText = stringResource(R.string.supporting_text),
             onTrailingIconClick = {}
@@ -174,7 +174,7 @@ fun HospitalAutomationTextFiledErrorPreview() {
             },
             modifier = Modifier.fillMaxWidth(),
             label = R.string.first_name,
-            trailingIcon = HospitalAutomationIcons.calender,
+            trailingIcon = AppIcons.Outlined.calender,
             isRequired = true,
             supportingText = stringResource(R.string.supporting_text),
             isError = true,

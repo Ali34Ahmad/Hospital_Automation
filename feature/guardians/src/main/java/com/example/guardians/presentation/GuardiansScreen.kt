@@ -1,7 +1,9 @@
 package com.example.guardians.presentation
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,8 +26,13 @@ import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.items.custom.SomeThingWentWrong
 import com.example.ui_components.components.list_items.GuardianListItem
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
-import com.example.ui_components.icons.HospitalAutomationIcons
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import com.example.constants.icons.AppIcons
+import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
+
 @Composable
 fun GuardiansScreen(
     viewModel: GuardiansViewModel,
@@ -47,6 +55,13 @@ internal fun GuardiansScreen(
     navigationAction: GuardianNavigationAction,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val toastMessage = uiState.toastMessage?.asString()
+    LaunchedEffect(toastMessage) {
+        if (toastMessage != null){
+            Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+        }
+    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
@@ -57,7 +72,7 @@ internal fun GuardiansScreen(
                     navigationAction.navigateUp()
                 },
                 modifier = Modifier.fillMaxWidth(),
-                navigationIcon = HospitalAutomationIcons.arrowBack,
+                navigationIcon = AppIcons.Outlined.arrowBack,
             )
         }
     ) {  innerPadding->
@@ -77,30 +92,62 @@ internal fun GuardiansScreen(
                         }
                     }
                     ScreenState.ERROR -> {
-                        SomeThingWentWrong(
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        PullToRefreshColumn(
+                            refreshing = uiState.isRefreshing,
+                            modifier = Modifier.fillMaxSize(),
+                            onRefresh = {
+                                onAction(GuardiansUIActions.Refresh)
+                            },
+                            verticalArrangement = Arrangement.Center
+                        ){
+                            ErrorComponent(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            )
+                        }
                     }
                     ScreenState.SUCCESS ->{
                         if(uiState.data.isEmpty()){
-                            CenteredMessage(
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }else{
-                            LazyColumn(
-                                modifier = Modifier,
-                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ){
-                                items(uiState.data) { guardian->
-                                    GuardianListItem(
-                                        imageUrl = guardian.img,
-                                        name = guardian.fullName,
-                                        onClick = {
-                                            navigationAction.navigateToGuardianProfile(guardian.id)
-                                        },
-                                        modifier = Modifier.fillMaxWidth()
+                            PullToRefreshColumn(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = {
+                                    onAction(
+                                        GuardiansUIActions.Refresh
                                     )
+                                },
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                ErrorComponent(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    title = stringResource(R.string.no_matching_result),
+                                    description = stringResource(R.string.no_children_subtitle)
+                                )
+                            }
+                        }else{
+                            PullToRefreshBox(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = {
+                                    onAction(GuardiansUIActions.Refresh)
+                                },
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                LazyColumn(
+                                    modifier = Modifier,
+                                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    items(uiState.data) { guardian ->
+                                        GuardianListItem(
+                                            imageUrl = guardian.img,
+                                            name = guardian.fullName,
+                                            onClick = {
+                                                navigationAction.navigateToGuardianProfile(guardian.id)
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
                                 }
                             }
                         }

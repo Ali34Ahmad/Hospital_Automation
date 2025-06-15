@@ -35,7 +35,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.dialog.DatePickerDialog
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 
 @Composable
@@ -100,7 +100,7 @@ fun ChildInfoSlot(
             onTrailingIconClick = {
                 onDatePickerVisibilityChanged(true)
             },
-            trailingIcon = HospitalAutomationIcons.calender,
+            trailingIcon = AppIcons.Outlined.calender,
             isRequired = true,
             label = R.string.date_of_birth,
             readOnly = true

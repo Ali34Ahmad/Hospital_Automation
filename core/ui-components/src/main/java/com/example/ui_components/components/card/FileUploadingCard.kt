@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import com.example.constants.enums.FileUploadingState
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
-import com.example.hospital_automation.core.components.card.IllustrationCard
 import com.example.model.FileInfo
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing

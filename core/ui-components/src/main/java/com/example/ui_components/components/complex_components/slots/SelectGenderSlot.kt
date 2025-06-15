@@ -18,14 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.enums.Gender
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.OptionButton
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @Composable
 fun SelectGenderSlot(
@@ -51,14 +50,14 @@ fun SelectGenderSlot(
                 text = R.string.male,
                 isSelected = gender == Gender.MALE,
                 onClick = { onGenderChange(Gender.MALE) },
-                icon = HospitalAutomationIcons.man,
+                icon = AppIcons.Outlined.man,
                 modifier = Modifier.weight(1f)
             )
             OptionButton(
                 text = R.string.female,
                 isSelected = gender == Gender.FEMALE,
                 onClick = { onGenderChange(Gender.FEMALE) },
-                icon = HospitalAutomationIcons.woman,
+                icon = AppIcons.Outlined.female,
                 modifier = Modifier.weight(1f)
             )
         }

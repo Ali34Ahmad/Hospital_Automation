@@ -32,7 +32,6 @@ import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
 import com.example.model.DrawerButton
 import com.example.ui.theme.spacing
 
@@ -147,18 +146,18 @@ fun EmployeeDrawerPreview() {
         val buttons = listOf<DrawerButton>(
             DrawerButton(
                 text = R.string.profile,
-                image = HospitalAutomationIcons.accountCircle,
+                image = AppIcons.Outlined.accountCircle,
                 badgeCount = 24,
                 onClick = {}
             ),
             DrawerButton(
                 text = R.string.requests,
-                image = HospitalAutomationIcons.send,
+                image = AppIcons.Outlined.send,
                 onClick = {}
             ),
             DrawerButton(
                 text = R.string.add_children,
-                image = HospitalAutomationIcons.notification,
+                image = AppIcons.Outlined.notification,
                 onClick = {}
             ),
         )

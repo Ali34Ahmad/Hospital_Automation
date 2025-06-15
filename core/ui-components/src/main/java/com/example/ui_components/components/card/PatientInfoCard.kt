@@ -31,13 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
-import com.example.ui_components.icons.HospitalAutomationIcons
 
 @Composable
 fun PatientInfoCard(
@@ -98,7 +98,7 @@ fun PatientInfoCard(
                     ) {
                         Icon(
                             modifier = Modifier.fillMaxSize(0.8f),
-                            painter = painterResource(HospitalAutomationIcons.child),
+                            painter = painterResource(AppIcons.Outlined.child),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -146,8 +146,8 @@ fun MedicalRecordCardPreview() {
             secondSubtitle = "1",
             modifier = Modifier.fillMaxWidth(),
             onClick = {},
-            firstIcon = HospitalAutomationIcons.prescription,
-            secondIcon = HospitalAutomationIcons.prescription
+            firstIcon = AppIcons.Outlined.prescription,
+            secondIcon = AppIcons.Outlined.prescription
         )
     }
 }
@@ -164,8 +164,8 @@ fun PrescriptionCardCardPreview() {
             secondSubtitle = "23/3/2025",
             modifier = Modifier.fillMaxWidth(),
             onClick = {},
-            firstIcon = HospitalAutomationIcons.bloodType,
-            secondIcon = HospitalAutomationIcons.pending
+            firstIcon = AppIcons.Outlined.bloodType,
+            secondIcon = AppIcons.Outlined.pending
         )
     }
 }

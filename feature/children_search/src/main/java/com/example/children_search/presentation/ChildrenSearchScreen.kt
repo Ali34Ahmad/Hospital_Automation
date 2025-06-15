@@ -28,15 +28,17 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.components.card.ChildCard
 import com.example.ui_components.components.items.custom.CenteredMessage
 import com.example.ui_components.components.items.custom.FetchingDataItem
-import com.example.ui_components.components.items.custom.SomeThingWentWrong
 import com.example.ui_components.components.topbars.custom.ChildrenSearchBar
 import kotlin.Unit
 import com.example.ui_components.R
+import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 
 @Composable
 fun ChildrenSearchScreen(
     viewModel: ChildrenSearchViewModel,
-    onAction: (ChildrenSearchUIActions)-> Unit,
+    navigationActions: ChildrenSearchNavigationActions,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -47,21 +49,8 @@ fun ChildrenSearchScreen(
         modifier = modifier,
         uiState = uiState,
         children= children,
-    onNavigateBack= {
-        onAction(ChildrenSearchUIActions.NavigateBack)
-    },
-    onNavigateToChildProfile = {
-        onAction(ChildrenSearchUIActions.NavigateToChildDetail(it))
-    },
-    onQueryChanged = {
-        onAction(ChildrenSearchUIActions.OnQueryChanged(it))
-    },
-    onQueryDeleted={
-        onAction(ChildrenSearchUIActions.DeleteQuery)
-    },
-    onStateUpdated = {
-        onAction(ChildrenSearchUIActions.UpdateState(it))
-    },
+        navigationActions = navigationActions,
+        onAction = viewModel::onAction
     )
 }
 
@@ -69,19 +58,17 @@ fun ChildrenSearchScreen(
 fun ChildrenSearchScreen(
     uiState: ChildrenSearchUiState,
     children: LazyPagingItems<ChildData>?,
-    onNavigateBack: () -> Unit,
-    onNavigateToChildProfile: (childId: Int)-> Unit,
-    onQueryChanged: (String)-> Unit,
-    onQueryDeleted: ()-> Unit,
-    onStateUpdated: (ScreenState)-> Unit,
+    navigationActions: ChildrenSearchNavigationActions,
+    onAction:(ChildrenSearchUIActions)-> Unit,
     modifier: Modifier = Modifier,
 ) {
+
     //observing the load state changes
     children?.let {
         when(it.loadState.refresh){
-            is LoadState.Error -> onStateUpdated(ScreenState.ERROR)
-            LoadState.Loading -> onStateUpdated(ScreenState.LOADING)
-            is LoadState.NotLoading -> onStateUpdated(ScreenState.SUCCESS)
+            is LoadState.Error -> onAction(ChildrenSearchUIActions.UpdateState(ScreenState.ERROR))
+            LoadState.Loading ->onAction(ChildrenSearchUIActions.UpdateState(ScreenState.LOADING))
+            is LoadState.NotLoading -> onAction(ChildrenSearchUIActions.UpdateState(ScreenState.SUCCESS))
         }
     }
 
@@ -91,15 +78,17 @@ fun ChildrenSearchScreen(
             ChildrenSearchBar(
                     query = uiState.query,
                     onQueryChange = { newQuery ->
-                        onQueryChanged(newQuery)
+                        onAction(
+                            ChildrenSearchUIActions.OnQueryChanged(newQuery)
+                        )
                     },
                     onTrailingIconClick = {
-                        onQueryDeleted()
+                        onAction(
+                            ChildrenSearchUIActions.DeleteQuery
+                        )
                     },
                     onSearch = {},
-                    onNavigateUp = {
-                        onNavigateBack()
-                    },
+                    onNavigateUp = navigationActions::navigateUp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -114,7 +103,7 @@ fun ChildrenSearchScreen(
                 .padding(innerPadding)
                 .padding(MaterialTheme.sizing.small16)
         ) {
-            when(uiState.state){
+            when (uiState.state) {
                 ScreenState.IDLE -> {
                     CenteredMessage(
                         modifier = Modifier.fillMaxSize(),
@@ -122,60 +111,98 @@ fun ChildrenSearchScreen(
                         subtitle = stringResource(R.string.search_by_name_subtitle)
                     )
                 }
-                ScreenState.LOADING ->{
+
+                ScreenState.LOADING -> {
                     FetchingDataItem(Modifier.fillMaxSize())
                 }
-                ScreenState.ERROR ->{
-                    SomeThingWentWrong(Modifier.fillMaxWidth())
-                }
-                ScreenState.SUCCESS ->children?.let{ children->
-                    val count = children.itemCount
-                    if(count == 0) {
-                        CenteredMessage(
-                            modifier = Modifier.fillMaxSize()
-                                .padding(MaterialTheme.spacing.small8),
-                            title = stringResource(R.string.no_matching_result),
-                            subtitle = stringResource(R.string.no_children_subtitle),
-                        )
-                    }else {
-                        LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+
+                ScreenState.ERROR -> {
+                    PullToRefreshColumn(
+                        refreshing = uiState.isRefreshing,
+                        modifier = Modifier.fillMaxSize(),
+                        onRefresh = {
+                            onAction(ChildrenSearchUIActions.Refresh)
+                        },
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        items(count) { index ->
-                            val childData = children[index]
-                            childData?.let { data->
-                                ChildCard(
-                                    child = Child(
-                                        id = data.id,
-                                        name = data.fullName,
-                                        age = data.age,
-                                        fatherName = data.fatherFullName,
-                                        motherName = data.motherFullName
-                                    ),
-                                    onClick = {
-                                        onNavigateToChildProfile(data.id)
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
+                        ErrorComponent(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+
+                ScreenState.SUCCESS -> children?.let { children ->
+                    val count = children.itemCount
+                    if (count == 0) {
+                        PullToRefreshColumn(
+                            refreshing = uiState.isRefreshing,
+                            onRefresh = {
+                                onAction(
+                                    ChildrenSearchUIActions.Refresh
                                 )
-                            }
+                            },
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+
+                            ErrorComponent(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                title = stringResource(R.string.no_matching_result),
+                                description = stringResource(R.string.no_children_subtitle)
+                            )
                         }
-                        if(children.loadState.append == LoadState.Loading){
-                            item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ){
-                                    CircularProgressIndicator()
+                    } else {
+                        PullToRefreshBox(
+                            refreshing = uiState.isRefreshing,
+                            onRefresh = {
+                                onAction(
+                                    ChildrenSearchUIActions.Refresh
+                                )
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                            ) {
+                                items(count) { index ->
+                                    val childData = children[index]
+                                    childData?.let { data ->
+                                        ChildCard(
+                                            child = Child(
+                                                id = data.id,
+                                                name = data.fullName,
+                                                age = data.age,
+                                                fatherName = data.fatherFullName,
+                                                motherName = data.motherFullName
+                                            ),
+                                            onClick = {
+                                                navigationActions.navigateToChildProfile(data.id)
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
+                                }
+                                if (children.loadState.append == LoadState.Loading) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            CircularProgressIndicator()
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                    }
 
+                        }
+
+                    }
                 }
             }
         }

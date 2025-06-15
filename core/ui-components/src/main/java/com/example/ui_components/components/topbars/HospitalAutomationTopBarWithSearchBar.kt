@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.icons.HospitalAutomationIcons
+import com.example.constants.icons.AppIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,8 +36,8 @@ fun HospitalAutomationTopBarWithSearchBar(
     onNavigationIconCLick: () -> Unit,
     onSearch: (String)-> Unit,
     modifier: Modifier = Modifier,
-    @DrawableRes navigationIcon: Int = HospitalAutomationIcons.arrowBack,
-    @DrawableRes trailingIcon: Int? = HospitalAutomationIcons.close,
+    @DrawableRes navigationIcon: Int = AppIcons.Outlined.arrowBack,
+    @DrawableRes trailingIcon: Int? = AppIcons.Outlined.close,
 ) {
     TopAppBar(
         modifier = modifier,
