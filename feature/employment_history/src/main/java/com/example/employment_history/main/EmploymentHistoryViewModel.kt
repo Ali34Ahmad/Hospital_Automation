@@ -26,7 +26,7 @@ import com.example.utility.url.getFileNameFromUrl
 
 class EmploymentHistoryViewModel(
     private val getEmploymentHistoryUseCase: GetEmploymentHistoryUseCase,
-    private val downloadFileHistoryUseCase: DownloadFileUseCase,
+    private val downloadFileUseCase: DownloadFileUseCase,
     private val observeFileDownloadProgressUseCase: ObserveFileDownloadProgressUseCase,
     private val cancelFileDownloadUseCase: CancelFileDownloadUseCase,
     private val roleAppConfig: RoleAppConfig,
@@ -84,7 +84,7 @@ class EmploymentHistoryViewModel(
             )
         }
         val url = uiState.value.employmentHistory?.currentUser?.documentsFileUrl
-        val fileInfo = employmentHistory?.let {
+        val fileInfo = uiState.value.employmentHistory?.let {
             FileInfo(
                 fileName = getFileNameFromUrl(url) ?: "",
                 fileSizeWithBytes = uiState.value.employmentHistory?.employeeDocumentsFileSize
@@ -145,7 +145,7 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             val fileUrl = uiState.value.employmentHistory?.currentUser?.documentsFileUrl
             if (fileUrl == null) return@launch
-            val downloadId = downloadFileHistoryUseCase(url = fileUrl)
+            val downloadId = downloadFileUseCase(url = fileUrl)
             if (downloadId == -1L) return@launch
 
             observeFileDownloadProgressUseCase(downloadId)

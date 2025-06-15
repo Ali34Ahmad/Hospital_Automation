@@ -33,6 +33,7 @@ import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
@@ -41,6 +42,8 @@ import com.example.ui_components.components.flow_row.TagsFlowRow
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.list.AvailabilityScheduleLazyRow
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 import com.example.ui_components.components.screen_section.SectionWithTitle
 
 @Composable
@@ -89,7 +92,18 @@ fun DoctorProfileCard(
         Box(modifier = Modifier) {
             NetworkImage(
                 model = profileImageUrl,
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
+                loading = {
+                    NetworkImageLoader(
+                        modifier=Modifier
+                            .fillMaxWidth()
+                            .height(MaterialTheme.sizing.profileImageHeight)
+                    )
+                },
+                errorCompose = {
+                    NetworkImageError()
+                },
             )
             IconButton(
                 onClick = onNavigateUpButtonClick,

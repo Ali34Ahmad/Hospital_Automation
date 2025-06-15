@@ -65,9 +65,10 @@ fun AdminProfileCard(
             NetworkImage(
                 model = adminImageUrl,
                 contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
                 loading = {
                     NetworkImageLoader(
-                        modifier = Modifier
+                        modifier=Modifier
                             .fillMaxWidth()
                             .height(MaterialTheme.sizing.profileImageHeight)
                     )

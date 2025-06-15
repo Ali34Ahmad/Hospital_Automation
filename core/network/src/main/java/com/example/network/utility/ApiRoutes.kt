@@ -160,7 +160,6 @@ object ApiRoutes {
         }
     }
 
-
     fun employmentHistoryEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_EMPLOYMENT_HISTORY

@@ -66,6 +66,7 @@ fun EmployeeProfileCard(
             NetworkImage(
                 model = profileImageUrl,
                 contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
                 loading = {
                     NetworkImageLoader(
                         modifier=Modifier

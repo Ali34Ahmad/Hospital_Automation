@@ -17,12 +17,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ext.toDate
 import com.example.ext.toGender
+import com.example.model.FileInfo
 import com.example.model.enums.ScreenState
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.custom.AddGuardianButton
 import com.example.ui_components.components.card.ChildProfileCard
 import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.dialog.FileDownloaderDialog
 import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.topbars.custom.ChildProfileTopBar
@@ -51,12 +53,40 @@ fun ChildProfileScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val toastMessage = uiState.toastMessage
-    LaunchedEffect(toastMessage) {
-        if(toastMessage != null){
-            Toast.makeText(context, toastMessage.asString(context), Toast.LENGTH_SHORT).show()
+//    val toastMessage = uiState.toastMessage
+//    LaunchedEffect(toastMessage) {
+//        if(toastMessage != null){
+//            Toast.makeText(context, toastMessage.asString(context), Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+    LaunchedEffect(uiState.toastMessage) {
+        uiState.toastMessage?.let {
+            Toast.makeText(
+                context,
+                it.asString(context),
+                Toast.LENGTH_SHORT
+            ).show()
+            onAction(ChildProfileUIAction.ClearToastMessage)
         }
     }
+
+    FileDownloaderDialog(
+        showDialog = uiState.showFileDownloaderDialog,
+        onDismiss = {
+            onAction(ChildProfileUIAction.HideFileDownloaderDialog)
+        },
+        userFullName = uiState.child?.fullName?:"",
+        fileDownloadingState = uiState.fileDownloadingState,
+        fileInfo = uiState.fileInfo ?: FileInfo(0, 0, "NULL"),
+        profileImageUrl = uiState.child?.birthCertificateImgUrl?: "",
+        onDownload = {
+            onAction(ChildProfileUIAction.DownloadFile)
+        },
+        onCancelDownload = {
+            onAction(ChildProfileUIAction.CancelFileDownloading)
+        }
+    )
 
     val child = uiState.child
     var name = ""
@@ -134,7 +164,7 @@ fun ChildProfileScreen(
                                         ?: stringResource(R.string.not_provided),
                                     guardiansNumber = child.numberOfGuardians ?: 1,
                                     onBirthCertificateItemClick = {
-                                        TODO("not yet implemented")
+                                        onAction(ChildProfileUIAction.ShowFileDownloaderDialog)
                                     },
                                     onBirthCertificateItemDescriptionClick = {
                                         child.employeeId?.let {

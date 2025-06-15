@@ -52,7 +52,7 @@ fun FileDownloaderDialog(
     showDialog: Boolean,
     fileDownloadingState: FileDownloadingState,
     fileInfo: FileInfo,
-    userFullName: FullName?,
+    userFullName: String,
     onDismiss: () -> Unit,
     onDownload: () -> Unit,
     onCancelDownload: () -> Unit,
@@ -219,7 +219,7 @@ fun FileDownloaderDialog(
 
                         ) {
                             Text(
-                                text = userFullName?.toAppropriateFormat() ?: "",
+                                text = userFullName,
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 maxLines = 1,
@@ -285,11 +285,7 @@ fun FileDownloaderDialogPreview() {
                 ),
                 onDismiss = {},
                 profileImageUrl = "",
-                userFullName = FullName(
-                    "Ali",
-                    "Shafik",
-                    "Ahmad"
-                ),
+                userFullName = "Ali Shafik Ahmad",
                 onDownload = {},
                 onCancelDownload = {},
             )

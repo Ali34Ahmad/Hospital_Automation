@@ -24,12 +24,15 @@ import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @Composable
 fun GuardianProfileCard(
@@ -52,6 +55,17 @@ fun GuardianProfileCard(
             NetworkImage(
                 model = profileImageUrl,
                 contentScale = ContentScale.FillWidth,
+                modifier = Modifier.fillMaxWidth(),
+                loading = {
+                    NetworkImageLoader(
+                        modifier=Modifier
+                            .fillMaxWidth()
+                            .height(MaterialTheme.sizing.profileImageHeight)
+                    )
+                },
+                errorCompose = {
+                    NetworkImageError()
+                },
             )
             IconButton(
                 onClick = onNavigateUpButtonClick,

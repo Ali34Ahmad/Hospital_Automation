@@ -10,6 +10,11 @@ sealed interface ChildProfileUIAction {
     data class UpdateRefreshState(val isRefreshing: Boolean): ChildProfileUIAction
     data object Refresh : ChildProfileUIAction
     data class ShowToast(val message: UiText): ChildProfileUIAction
+    data object ClearToastMessage: ChildProfileUIAction
+    data object ShowFileDownloaderDialog: ChildProfileUIAction
+    data object HideFileDownloaderDialog: ChildProfileUIAction
+    data object DownloadFile: ChildProfileUIAction
+    data object CancelFileDownloading: ChildProfileUIAction
 }
 
 interface ChildProfileNavigationAction{

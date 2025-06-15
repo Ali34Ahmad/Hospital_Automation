@@ -62,7 +62,7 @@ fun EmploymentHistoryScreen(
         onDismiss = {
             uiActions.onHideFileDownloaderDialog()
         },
-        userFullName = uiState.employmentHistory?.currentUser?.fullName,
+        userFullName = uiState.employmentHistory?.currentUser?.fullName?.toAppropriateFormat()?:"",
         fileDownloadingState = uiState.fileDownloadingState,
         fileInfo = uiState.fileInfo ?: FileInfo(0, 0, "NULL"),
         profileImageUrl = uiState.employmentHistory?.currentUser?.imageUrl ?: "",
