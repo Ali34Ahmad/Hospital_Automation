@@ -5,9 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.data.constants.FAKE_TOKEN
 import com.example.data.paging_sources.appointment.AppointmentPagingSource
-import com.example.datastore.repositories.UserPreferencesRepository
 import com.example.domain.model.constants.PagingConstants
 import com.example.domain.repositories.DoctorRepository
+import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
@@ -15,7 +15,6 @@ import com.example.model.doctor.appointment.SortType
 import com.example.network.remote.doctor.DoctorApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import java.time.LocalDate
 
 class DoctorRepositoryImp(
     private val dataStore: UserPreferencesRepository,
@@ -28,7 +27,7 @@ class DoctorRepositoryImp(
         dateFilter: String?
     ): Flow<PagingData<AppointmentData>> {
         //don't forget use the real token
-        val token = dataStore.userPreferencesFlow.first().token
+        val token = dataStore.userPreferencesDataStoreFlow.first().token
 
         //decide the sort type depending on appointment state.
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)

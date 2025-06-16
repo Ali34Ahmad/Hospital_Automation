@@ -19,7 +19,7 @@ fun NavController.navigateToUploadEmployeeDocumentsScreen() {
     navigateToScreen(UploadEmployeeDocumentsRoute)
 }
 
-fun NavGraphBuilder.uploadEmployeeDocumentsScreen(
+fun NavGraphBuilder.uploadEmploymentDocumentsScreen(
     onNavigateToAddResidentialAddressScreen: () -> Unit,
 ) {
     composable<UploadEmployeeDocumentsRoute> {

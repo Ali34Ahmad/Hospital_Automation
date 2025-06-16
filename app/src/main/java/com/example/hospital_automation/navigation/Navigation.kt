@@ -1,8 +1,6 @@
 package com.example.hospital_automation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
@@ -40,8 +38,6 @@ import com.example.guardians_search.navigation.navigateToGuardiansSearch
 import com.example.home.navigation.HomeRoute
 import com.example.home.navigation.homeScreen
 import com.example.home.navigation.navigateToHomeScreen
-import com.example.hospital_automation.AuthGraphRoute
-import com.example.hospital_automation.MainGraphRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
 import com.example.reset_password.navigation.navigateToResetPasswordScreen
@@ -52,7 +48,7 @@ import com.example.signup.navigation.signUpScreen
 import com.example.upload_child_documents.navigation.navigateToUploadChildDocumentsScreen
 import com.example.upload_child_documents.navigation.uploadChildDocumentsScreen
 import com.example.upload_employee_documents.navigation.navigateToUploadEmployeeDocumentsScreen
-import com.example.upload_employee_documents.navigation.uploadEmployeeDocumentsScreen
+import com.example.upload_employee_documents.navigation.uploadEmploymentDocumentsScreen
 import com.example.upload_employee_profile_image.navigation.navigateToUploadEmployeeProfileImageScreen
 import com.example.upload_employee_profile_image.navigation.uploadEmployeeProfileImageScreen
 
@@ -96,7 +92,7 @@ fun Navigation() {
                 }
             )
 
-            uploadEmployeeDocumentsScreen(
+            uploadEmploymentDocumentsScreen(
                 onNavigateToAddResidentialAddressScreen = {
                     navController.navigateToAddResidentialAddressScreen()
                 }

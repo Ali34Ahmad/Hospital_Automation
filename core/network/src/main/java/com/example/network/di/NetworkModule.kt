@@ -98,7 +98,6 @@ val networkModule = module {
 
     singleOf(::AdminProfileApiServiceImpl) { bind<AdminProfileApiService>() }
 
-    singleOf(::ChildApiServiceImpl) { bind<ChildApiService>() }
 
     singleOf(::UploadChildDocumentsApiImpl) { bind<UploadChildDocumentsApi>() }
 

@@ -21,27 +21,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.EditableAppointmentTypeCard
 
-
-data class AppointmentTypeData(
-    val title: String,
-    val subtitle: String,
-    val description: String? = null,
-)
 @Composable
 fun AppointmentTypesList(
     items: List<AppointmentTypeData>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onTitleChange: (index:Int,newTitle:String) -> Unit,
-    onSubtitleClick: (index:Int) -> Unit,
+    onTitleChange: (index: Int, newTitle: String) -> Unit,
+    onSubtitleClick: (index: Int) -> Unit,
     onDescriptionChanged: (index: Int, newDescription: String) -> Unit,
-    onDelete: (index: Int) ->Unit,
+    onDelete: (index: Int) -> Unit,
     @StringRes title: Int = R.string.appointments,
     @DrawableRes actionIcon: Int = R.drawable.add,
 ) {
@@ -51,7 +46,9 @@ fun AppointmentTypesList(
     ) {
         item {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = MaterialTheme.spacing.medium16),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = MaterialTheme.spacing.medium16),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -79,25 +76,26 @@ fun AppointmentTypesList(
         itemsIndexed(items) { index, data ->
             EditableAppointmentTypeCard(
                 index = index,
-                title = data.title,
+                title = data.name,
                 onTitleChanged = { newTitle ->
-                    onTitleChange(index,newTitle)
+                    onTitleChange(index, newTitle)
                 },
-                subtitle = data.subtitle,
+                subtitle = data.description,
                 onDelete = {
                     onDelete(index)
                 },
                 description = data.description,
-                onDescriptionChanged = {newDescription ->
-                    onDescriptionChanged(index,newDescription)
+                onDescriptionChanged = { newDescription ->
+                    onDescriptionChanged(index, newDescription)
                 },
                 onSubtitleClick = {
                     onSubtitleClick(index)
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(bottom = MaterialTheme.spacing.small8),
 
-            )
+                )
         }
     }
 
@@ -111,27 +109,40 @@ fun AppointmentsTypesListPreview() {
             AppointmentTypesList(
                 items = listOf(
                     AppointmentTypeData(
-                        title = "Check up",
-                        subtitle = "15 min",
-                    ),
-                    AppointmentTypeData(
-                        title = "Review",
-                        subtitle = "10 min",
+                        name = "Check up",
                         description = """
                         A Review uses a special type of energy to create pictures of the inside of your body.
                          It's like taking a photograph, but instead of light, it uses invisible rays to see 
                          what's happening inside. A Review uses a special type of energy to create pictures 
                          of the inside of your body. It's like taking a photograph, but instead of light, 
                          it uses invisible rays to see what's happening inside.
-                    """.trimIndent()
+                    """.trimIndent(),
+                        id = 1,
+                        standardDurationInMinutes = 10,
+                        doctorId = 1,
+                    ),
+                    AppointmentTypeData(
+                        name = "Review",
+                        description = """
+                        A Review uses a special type of energy to create pictures of the inside of your body.
+                         It's like taking a photograph, but instead of light, it uses invisible rays to see 
+                         what's happening inside. A Review uses a special type of energy to create pictures 
+                         of the inside of your body. It's like taking a photograph, but instead of light, 
+                         it uses invisible rays to see what's happening inside.
+                    """.trimIndent(),
+                        id = 1,
+                        standardDurationInMinutes = 15,
+                        doctorId = 1,
                     )
                 ),
                 onClick = {},
-                modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.medium16),
-                onTitleChange = {index,newTitle->},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium16),
+                onTitleChange = { index, newTitle -> },
                 onSubtitleClick = {},
-                onDescriptionChanged = {index,newDescription->},
-                onDelete ={},
+                onDescriptionChanged = { index, newDescription -> },
+                onDelete = {},
             )
         }
 

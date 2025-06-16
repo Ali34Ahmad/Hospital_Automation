@@ -30,6 +30,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -57,12 +58,35 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //navigation
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.compose)
+
     //data
     implementation(project(":core:data"))
     implementation(project(":core:ui-components"))
 
     //features
+    // remove network, data and datastore modules
+    implementation(project(":core:network"))
+    implementation(project(":core:datastore"))
+    implementation(project(":core:navigation"))
+
+    //Auth features
+    implementation(project(":feature:doctor_signup"))
+    implementation(project(":feature:email_verification"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:upload_employee_documents"))
+    implementation(project(":feature:add_residential_address"))
+    implementation(project(":feature:enter_email"))
+    implementation(project(":feature:reset_password"))
+    implementation(project(":feature:upload_employee_profile_image"))
+    implementation(project(":feature:employment_history"))
+
     implementation(project(":feature:doctor-schedule"))
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
 
 
 }

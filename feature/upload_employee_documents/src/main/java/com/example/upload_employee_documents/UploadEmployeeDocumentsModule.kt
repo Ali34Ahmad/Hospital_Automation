@@ -4,6 +4,6 @@ import com.example.upload_employee_documents.main.UploadEmployeeDocumentsViewMod
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val uploadEmployeeDocumentsModule = module {
+val uploadEmploymentDocumentsModule = module {
     viewModelOf(::UploadEmployeeDocumentsViewModel)
 }

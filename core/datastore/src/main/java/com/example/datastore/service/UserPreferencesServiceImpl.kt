@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import com.example.datastore.constants.DataStoreKeys
-import com.example.datastore.model.UserPreferencesDataStore
+import com.example.datastore.model.UserPreferences
 import com.example.datastore.utility.Crypto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 class UserPreferencesServiceImpl(
     private val dataStore: DataStore<Preferences>,
 ) : UserPreferencesService {
-    override val userPreferencesDataStoreFlow: Flow<UserPreferencesDataStore>
+    override val userPreferencesDataStoreFlow: Flow<UserPreferences>
         get() = dataStore.data
             .catch { cause ->
                 Log.e("Error Reading UserPreferences", cause.message.toString())
@@ -35,7 +35,7 @@ class UserPreferencesServiceImpl(
                     String(decrypted, Charsets.UTF_8)
                 }
 
-                UserPreferencesDataStore(
+                UserPreferences(
                     isDarkTheme = isDarkTheme,
                     showPermissionCard = showPermissionCard,
                     token = token,

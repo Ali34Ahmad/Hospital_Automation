@@ -10,15 +10,13 @@ import com.example.data.repositories.employee_account_management.EmployeeAccount
 import com.example.data.repositories.employee_profile.EmployeeProfileRepositoryImpl
 import com.example.data.repositories.employment_history.EmploymentHistoryRepositoryImpl
 import com.example.data.repositories.upload_employee_file.UploadEmploymentDocumentsRepositoryImpl
-import com.example.data.repositories.upload_employee_image.UploadEmployeeProfileImageRepositoryImpl
 import com.example.data.repositories.residential_address.AddResidentialAddressRepositoryImpl
 import com.example.data.repositories.upload_child_file.UploadChildDocumentsRepositoryImpl
-import com.example.data.repositories.upload_employee_file.UploadEmployeeDocumentsRepositoryImpl
 import com.example.data.repositories.upload_employee_image.UploadEmployeeProfileImageRepositoryImpl
 import com.example.data.repositories.user.UserRepositoryImp
 import com.example.data.repositories.user_preferences.UserPreferencesRepositoryImpl
 import com.example.datastore.di.dataStoreModule
-import com.example.domain.di.domainModules.domainModule
+import com.example.domain.di.domainModules.employeeDomainModule
 import com.example.domain.repositories.AddResidentialAddressRepository
 import com.example.domain.repositories.AdminProfileRepository
 import com.example.domain.repositories.AuthRepository
@@ -45,7 +43,7 @@ val employeeDataModule = module {
     single<UserRepository> { UserRepositoryImp(get(), get()) }
     single<ChildRepository> { ChildRepositoryImp(get(), get()) }
     //doctor repo
-    singleOf(::DoctorRepositoryImp){bind<DoctorRepository>()}
+    singleOf(::DoctorRepositoryImp) { bind<DoctorRepository>() }
 
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
 

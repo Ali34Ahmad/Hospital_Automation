@@ -21,7 +21,7 @@ import com.example.login.loginModule
 import com.example.reset_password.resetPasswordModule
 import com.example.signup.signUpModule
 import com.example.upload_child_documents.uploadChildDocumentsModule
-import com.example.upload_employee_documents.uploadEmployeeDocumentsModule
+import com.example.upload_employee_documents.uploadEmploymentDocumentsModule
 import com.example.upload_employee_profile_image.uploadEmployeeProfileImageModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -56,7 +56,7 @@ class EmployeeApplication: Application() {
                 loginModule,
                 resetPasswordModule,
                 signUpModule,
-                uploadEmployeeDocumentsModule,
+                uploadEmploymentDocumentsModule,
                 uploadChildDocumentsModule,
                 uploadEmployeeProfileImageModule,
             )

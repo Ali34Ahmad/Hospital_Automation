@@ -1,10 +1,10 @@
 package com.example.datastore.service
 
-import com.example.datastore.model.UserPreferencesDataStore
+import com.example.datastore.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 
 interface UserPreferencesService {
-    val userPreferencesDataStoreFlow: Flow<UserPreferencesDataStore>
+    val userPreferencesDataStoreFlow: Flow<UserPreferences>
 
     suspend fun updateIsDarkTheme(isDarkTheme:Boolean)
 

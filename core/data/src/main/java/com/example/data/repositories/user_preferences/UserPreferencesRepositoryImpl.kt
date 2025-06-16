@@ -3,20 +3,18 @@ package com.example.data.repositories.user_preferences
 import com.example.data.mapper.user_preferences.toUserPreferences
 import com.example.datastore.service.UserPreferencesService
 import com.example.domain.repositories.local.UserPreferencesRepository
-import com.example.model.user_preferences.UserPreferences
+import com.example.model.user_preferences.UserPreferencesDataStore
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class UserPreferencesRepositoryImpl(
     private val userPreferencesService: UserPreferencesService
 ) : UserPreferencesRepository {
-    override val userPreferencesDataStoreFlow: Flow<UserPreferences>
+    override val userPreferencesDataStoreFlow: Flow<UserPreferencesDataStore>
         get() = userPreferencesService.userPreferencesDataStoreFlow.map { userPreferencesDataStore ->
             userPreferencesDataStore.toUserPreferences()
         }

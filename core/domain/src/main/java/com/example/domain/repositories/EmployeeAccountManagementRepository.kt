@@ -21,5 +21,4 @@ interface EmployeeAccountManagementRepository {
     suspend fun checkEmployeePermission(
         role: Role,
         ): Result<CheckEmployeePermissionResponse, rootError>
-
 }

@@ -1,12 +1,12 @@
 package com.example.domain.repositories.local
 
-import com.example.model.user_preferences.UserPreferences
+import com.example.model.user_preferences.UserPreferencesDataStore
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 import kotlinx.coroutines.flow.Flow
 
 interface UserPreferencesRepository {
-    val userPreferencesDataStoreFlow: Flow<UserPreferences>
+    val userPreferencesDataStoreFlow: Flow<UserPreferencesDataStore>
 
     suspend fun updateIsDarkTheme(isDarkTheme:Boolean)
 

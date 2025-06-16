@@ -18,13 +18,6 @@ import org.koin.androidx.scope.activityScope
 import org.koin.core.scope.Scope
 
 
-@Serializable
-object AuthGraphRoute
-
-@Serializable
-object MainGraphRoute
-
-
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
     override fun onCreate(savedInstanceState: Bundle?) {

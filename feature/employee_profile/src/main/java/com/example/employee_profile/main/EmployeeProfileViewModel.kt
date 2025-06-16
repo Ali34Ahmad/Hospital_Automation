@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.domain.use_cases.auth.LogoutUseCase
-import com.example.domain.use_cases.employee_account_management.DeactivateMyEmployeeAccountUseCase
-import com.example.domain.use_cases.employee_account_management.ReactivateMyEmployeeAccountUseCase
+import com.example.domain.use_cases.employee_account_management.DeactivateMyAccountUseCase
+import com.example.domain.use_cases.employee_account_management.ReactivateMyAccountUseCase
 import com.example.domain.use_cases.employee_profile.GetCurrentEmployeeProfileUseCase
 import com.example.domain.use_cases.employee_profile.GetEmployeeProfileByIdUseCase
 import com.example.employee_profile.navigation.EmployeeProfileRoute
@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 
 class EmployeeProfileViewModel(
     private val logoutUseCase: LogoutUseCase,
-    private val deactivateMyEmployeeAccountUseCase: DeactivateMyEmployeeAccountUseCase,
-    private val reactivateMyEmployeeAccountUseCase: ReactivateMyEmployeeAccountUseCase,
+    private val deactivateMyAccountUseCase: DeactivateMyAccountUseCase,
+    private val reactivateMyAccountUseCase: ReactivateMyAccountUseCase,
     private val getCurrentEmployeeProfileUseCase: GetCurrentEmployeeProfileUseCase,
     private val getEmployeeProfileByIdUseCase: GetEmployeeProfileByIdUseCase,
     private val savedStateHandle: SavedStateHandle,
@@ -202,7 +202,7 @@ class EmployeeProfileViewModel(
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.deactivating))
             Log.v("Deactivating Account", "ProfileViewModel")
-            deactivateMyEmployeeAccountUseCase(
+            deactivateMyAccountUseCase(
                 deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest(
                     deactivationReason = "Feeling Sick",
                     role =roleAppConfig.role,
@@ -231,7 +231,7 @@ class EmployeeProfileViewModel(
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.reactivating))
             Log.v("Reactivating Account", "ProfileViewModel")
-            val result = reactivateMyEmployeeAccountUseCase(
+            val result = reactivateMyAccountUseCase(
                 role = roleAppConfig.role
             )
             when (result) {
