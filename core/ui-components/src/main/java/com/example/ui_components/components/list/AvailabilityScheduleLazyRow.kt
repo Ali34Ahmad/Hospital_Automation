@@ -11,8 +11,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.ext.toAppropriateFormat
+import com.example.model.doctor.day_scedule.DaySchedule
 import com.example.model.helper.ext.toCapitalizedString
-import com.example.model.WorkDay
+import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -22,7 +23,7 @@ import java.time.LocalTime
 
 @Composable
 fun AvailabilityScheduleLazyRow(
-    workDays: List<WorkDay>,
+    workDays: List<DaySchedule>,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -32,8 +33,8 @@ fun AvailabilityScheduleLazyRow(
     ) {
         items(workDays) { workDay ->
             SubDetailsItem(
-                title = workDay.day.name.toCapitalizedString(),
-                description = (workDay.workStartTime..workDay.workEndTime).toAppropriateFormat(),
+                title = workDay.dayOfWeek.name.toCapitalizedString(),
+                description = (workDay.startTime..workDay.endTime).toAppropriateFormat(),
                 onClick = {},
             )
         }
@@ -46,28 +47,7 @@ fun AvailabilityScheduleLazyRowPreview() {
     Hospital_AutomationTheme {
         Surface {
             AvailabilityScheduleLazyRow(
-                workDays = listOf(
-                    WorkDay(
-                        day = DayOfWeek.SUNDAY,
-                        workStartTime = LocalTime.now(),
-                        workEndTime = LocalTime.now().plusHours(10L),
-                    ),
-                    WorkDay(
-                        day = DayOfWeek.SUNDAY,
-                        workStartTime = LocalTime.now(),
-                        workEndTime = LocalTime.now().plusHours(10L),
-                    ),
-                    WorkDay(
-                        day = DayOfWeek.SUNDAY,
-                        workStartTime = LocalTime.now(),
-                        workEndTime = LocalTime.now().plusHours(10L),
-                    ),
-                    WorkDay(
-                        day = DayOfWeek.SUNDAY,
-                        workStartTime = LocalTime.now(),
-                        workEndTime = LocalTime.now().plusHours(10L),
-                    ),
-                ),
+                workDays = createSampleWorkDayList(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = MaterialTheme.spacing.medium16)

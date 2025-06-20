@@ -62,6 +62,11 @@ object ApiRoutes {
         const val REACTIVATE_MY_ACCOUNT = "$DOCTOR/reactivate-my-account"
         const val EMPLOYMENT_HISTORY = "$DOCTOR/Doctor-employment-history"
         const val CHECK_PERMISSION = "$DOCTOR/show-permissions"
+        const val PROFILE = "$DOCTOR/show-profile"
+
+        const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
+        const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
+        const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/get-generic-vaccination-table"
     }
 
     fun loginEndpointFor(role: RoleDto): String {

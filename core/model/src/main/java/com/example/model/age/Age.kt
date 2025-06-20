@@ -1,5 +1,6 @@
-package com.example.model.helper
+package com.example.model.age
 
+import com.example.model.enums.AgeUnit
 import com.example.model.helper.ext.toCapitalizedString
 
 data class Age(

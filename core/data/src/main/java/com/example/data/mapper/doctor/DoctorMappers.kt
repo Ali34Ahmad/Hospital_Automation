@@ -1,6 +1,7 @@
 package com.example.data.mapper.doctor
 
 import com.example.data.mapper.child.toChildData
+import com.example.data.mapper.enums.toAgeUnit
 import com.example.data.mapper.user.toGuardianData
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
@@ -8,12 +9,12 @@ import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.clinic.ClinicData
 import com.example.model.doctor.vaccine.VaccineData
-import com.example.model.helper.Age
-import com.example.model.helper.AgeUnit
+import com.example.model.age.Age
+import com.example.model.enums.AgeUnit
 import com.example.network.model.dto.doctor.appointment.AppointmentDto
 import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
 import com.example.network.model.dto.doctor.ClinicDto
-import com.example.network.model.dto.doctor.VaccineDto
+import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.dto.doctor.appointment.AppointmentStatisticsDto
 
 internal fun AppointmentDto.toAppointmentData() =
@@ -59,8 +60,8 @@ internal fun VaccineDto.toVaccineData() =
         name = name,
         description = description,
         quantity = quantity,
-        minAge = Age(minAge, AgeUnit.getUnitFromString(minAgeUnit)),
-        maxAge = Age(minAge, AgeUnit.getUnitFromString(maxAgeUnit)),
+        minAge = Age(minAge, minAgeUnit.toAgeUnit()),
+        maxAge = Age(minAge, maxAgeUnit.toAgeUnit()),
     )
 internal fun AppointmentStatisticsDto.toAppointmentsStatisticsData() =
     AppointmentsStatisticsData(

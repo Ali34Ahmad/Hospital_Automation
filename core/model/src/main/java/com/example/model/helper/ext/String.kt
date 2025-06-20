@@ -1,7 +1,7 @@
 package com.example.model.helper.ext
 
-import com.example.model.helper.Age
-import com.example.model.helper.AgeUnit
+import com.example.model.age.Age
+import com.example.model.enums.AgeUnit
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime

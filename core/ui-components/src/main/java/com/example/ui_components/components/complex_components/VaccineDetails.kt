@@ -25,8 +25,8 @@ import com.example.ui_components.R
 import com.example.ui_components.components.texts.IndexedText
 import com.example.ui_components.components.texts.TitleWithSubtitle
 import com.example.model.InteractionData
-import com.example.model.helper.Age
-import com.example.model.helper.AgeUnit
+import com.example.model.age.Age
+import com.example.model.enums.AgeUnit
 
 @Composable
 fun VaccineDetails(

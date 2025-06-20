@@ -32,13 +32,13 @@ import com.example.domain.repositories.UploadEmployeeProfileImageRepository
 import com.example.domain.repositories.UserRepository
 import com.example.domain.repositories.auth.singup.BaseSignUpRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
-import com.example.network.di.networkModule
+import com.example.network.di.employeeNetworkModule
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val employeeDataModule = module {
-    includes(networkModule, dataStoreModule, employeeDomainModule)
+    includes(employeeNetworkModule, dataStoreModule, employeeDomainModule)
 
     single<UserRepository> { UserRepositoryImp(get(), get()) }
     single<ChildRepository> { ChildRepositoryImp(get(), get()) }

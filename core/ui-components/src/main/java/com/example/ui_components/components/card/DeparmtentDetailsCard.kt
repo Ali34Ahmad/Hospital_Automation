@@ -16,9 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.AvailabilityStatus
 import com.example.constants.icons.AppIcons
 import com.example.model.Department
+import com.example.model.enums.DoctorStatus
 import com.example.ui.fake.createSampleDepartmentData
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -35,7 +35,7 @@ import com.example.ui_components.components.screen_section.SectionWithTitle
 @Composable
 fun DepartmentDetailsCard(
     department: Department,
-    currentStatus: AvailabilityStatus,
+    currentStatus: DoctorStatus,
     onVaccinesItemClick: () -> Unit,
     onDoctorItemClick: (Int) -> Unit,
     onServiceItemClick: (index: Int) -> Unit,
@@ -46,7 +46,7 @@ fun DepartmentDetailsCard(
 
     val (currentStatusItemDescriptionColor, availabilityStatus) =
 
-        if (department.isDeactivated || currentStatus == AvailabilityStatus.CLOSED) {
+        if (department.isDeactivated || currentStatus == DoctorStatus.OPENED) {
             Pair(
                 MaterialTheme.colorScheme.error,
                 stringResource(R.string.closed)
@@ -120,7 +120,7 @@ fun DepartmentDetailsCard(
         SectionWithTitle(
             title = stringResource(R.string.availability_schedule),
             modifier = Modifier.fillMaxWidth(),
-            textPadding = sectionTitlePadding,
+            titleAreaPadding = sectionTitlePadding,
         ) {
             AvailabilityScheduleLazyRow(
                 workDays = department.workDays,
@@ -130,7 +130,7 @@ fun DepartmentDetailsCard(
         SectionWithTitle(
             title = stringResource(R.string.active_doctors),
             modifier = Modifier.fillMaxWidth(),
-            textPadding = sectionTitlePadding,
+            titleAreaPadding = sectionTitlePadding,
         ) {
             DepartmentDoctorsLazyRow(
                 doctors = department.activeDoctors,
@@ -142,7 +142,7 @@ fun DepartmentDetailsCard(
         SectionWithTitle(
             title = stringResource(R.string.services),
             modifier = Modifier.fillMaxWidth(),
-            textPadding = sectionTitlePadding,
+            titleAreaPadding = sectionTitlePadding,
         ) {
             TagsFlowRow(
                 tagsList = department.services.map { it.name },
@@ -160,7 +160,7 @@ fun DepartmentDetailsCardPreview() {
         Surface {
             DepartmentDetailsCard(
                 department = createSampleDepartmentData()[0],
-                currentStatus = AvailabilityStatus.OPEN,
+                currentStatus = DoctorStatus.OPENED,
                 onVaccinesItemClick = {},
                 onDoctorItemClick = {},
                 onServiceItemClick = {},
@@ -178,7 +178,7 @@ fun DepartmentDetailsCardDeactivatedPreview() {
         Surface {
             DepartmentDetailsCard(
                 department = createSampleDepartmentData()[1],
-                currentStatus = AvailabilityStatus.OPEN,
+                currentStatus = DoctorStatus.OPENED,
                 onVaccinesItemClick = {},
                 onDoctorItemClick = {},
                 onServiceItemClick = {},

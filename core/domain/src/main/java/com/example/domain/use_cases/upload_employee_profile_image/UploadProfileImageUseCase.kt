@@ -6,7 +6,7 @@ import com.example.model.enums.Role
 import com.example.model.file.ProgressUpdate
 import kotlinx.coroutines.flow.Flow
 
-class UploadEmployeeProfileImageUseCase(
+class UploadProfileImageUseCase(
     private val uploadEmployeeProfileImageRepository: UploadEmployeeProfileImageRepository
 ) {
    suspend operator fun invoke(uri: Uri,role: Role): Flow<ProgressUpdate> {

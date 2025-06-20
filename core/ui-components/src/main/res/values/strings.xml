@@ -242,4 +242,11 @@
     <string name="appointment_type">Appointment type</string>
     <string name="today">Today</string>
     <string name="no_appointment_subtitle">please try another query</string>
+    <string name="add_new_vaccine">Add New Vaccine</string>
+    <string name="vaccine_name">Vaccine Name</string>
+    <string name="vaccine_description">Vaccine Description</string>
+    <string name="none">None</string>
+    <string name="invalid_number">Invalid number</string>
+    <string name="number_must_be_positive">Number must be positive</string>
+    <string name="age_unit_must_be_specified">Age unit must be specified</string>
 </resources>

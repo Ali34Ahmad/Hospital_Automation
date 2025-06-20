@@ -1,7 +1,5 @@
 package com.example.doctor_profile.main
 
-import com.example.utility.ui.AppNavigationUiAction
-
 class DoctorProfileUiActions(
     navigationActions:DoctorProfileNavigationUiActions,
     businessActions:DoctorProfileBusinessUiActions,
@@ -19,9 +17,12 @@ interface DoctorProfileBusinessUiActions {
     fun clearToastMessage()
 }
 
-interface DoctorProfileNavigationUiActions:AppNavigationUiAction {
-    fun navigateToAddedChildrenScreen()
+interface DoctorProfileNavigationUiActions {
+    fun navigateToAppointmentsScreen()
     fun navigateToEmploymentHistoryScreen()
     fun navigateUp()
     fun navigateToLoginScreen()
+    fun navigateToPrescriptionsScreen()
+    fun navigateToMedicalRecordsScreen()
+    fun navigateToDepartmentDetailsScreen()
 }

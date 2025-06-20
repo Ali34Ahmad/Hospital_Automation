@@ -7,12 +7,11 @@ import com.example.model.enums.DoctorStatus
 import com.example.model.enums.Gender
 import com.example.model.enums.Role
 import com.example.model.user.FullName
+import java.time.LocalDate
 
 
-// The response wrapper for the DoctorProfile
 data class DoctorProfileResponse(
     val profile: DoctorProfile,
-    val isAccessedByOwner: Boolean,
 )
 
 data class DoctorProfile(
@@ -34,12 +33,12 @@ data class DoctorProfile(
     val isSuspended: Boolean,
     val suspendingReason: String?,
     val isResigned: Boolean,
-    val workStartDate: String?,
-    val workEndDate: String?,
+    val workStartDate: LocalDate?,
+    val workEndDate: LocalDate?,
     val createdAt: String,
     val updatedAt: String,
     val clinicId: Int?,
     val resignedBy: Int?,
     val suspendedBy: Int?,
-    val acceptedBy: Int?
+    val acceptedBy: Int?,
 )

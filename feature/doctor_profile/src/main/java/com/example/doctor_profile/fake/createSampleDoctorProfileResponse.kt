@@ -1,5 +1,6 @@
 package com.example.doctor_profile.fake
 
+import androidx.compose.ui.platform.LocalTextToolbar
 import com.example.model.address.Address
 import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.model.doctor.day_scedule.DaySchedule
@@ -10,6 +11,8 @@ import com.example.model.enums.Gender
 import com.example.model.enums.Role
 import com.example.model.user.FullName
 import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalTime
 
 
 fun createSampleDoctorProfileResponse(): List<DoctorProfileResponse> {
@@ -39,8 +42,8 @@ fun createSampleDoctorProfileResponse(): List<DoctorProfileResponse> {
             DaySchedule(
                 id = 1,
                 dayOfWeek = DayOfWeek.SUNDAY,
-                startTime = "12:30 PM",
-                endTime = "04:00 PM",
+                startTime = LocalTime.now(),
+                endTime = LocalTime.now(),
                 doctorId = null,
                 clinicId = 1,
                 pharmacyId = null
@@ -48,8 +51,8 @@ fun createSampleDoctorProfileResponse(): List<DoctorProfileResponse> {
             DaySchedule(
                 id = 2,
                 dayOfWeek = DayOfWeek.MONDAY,
-                startTime = "09:30 AM",
-                endTime = "02:00 PM",
+                startTime = LocalTime.now(),
+                endTime =LocalTime.now(),
                 doctorId = 1,
                 clinicId = null,
                 pharmacyId = null,
@@ -57,8 +60,8 @@ fun createSampleDoctorProfileResponse(): List<DoctorProfileResponse> {
             DaySchedule(
                 id = 3,
                 dayOfWeek = DayOfWeek.TUESDAY,
-                startTime = "09:00 AM",
-                endTime = "04:00 PM",
+                startTime = LocalTime.now(),
+                endTime = LocalTime.now(),
                 doctorId = null,
                 clinicId = null,
                 pharmacyId = 1,
@@ -71,7 +74,7 @@ fun createSampleDoctorProfileResponse(): List<DoctorProfileResponse> {
         isSuspended = false,
         suspendingReason = null,
         isResigned = false,
-        workStartDate = "2018-09-01", // Example date
+        workStartDate = LocalDate.now(), // Example date
         workEndDate = null, // Still working
         createdAt = "2018-08-20T09:00:00Z",
         updatedAt = "2024-05-24T10:15:30Z",
@@ -82,8 +85,8 @@ fun createSampleDoctorProfileResponse(): List<DoctorProfileResponse> {
     )
 
     return listOf(
-        DoctorProfileResponse(profile = sampleDoctorProfile, isAccessedByOwner = true),
-        DoctorProfileResponse(profile = sampleDoctorProfile, isAccessedByOwner = false)
+        DoctorProfileResponse(profile = sampleDoctorProfile),
+        DoctorProfileResponse(profile = sampleDoctorProfile)
     )
 }
 

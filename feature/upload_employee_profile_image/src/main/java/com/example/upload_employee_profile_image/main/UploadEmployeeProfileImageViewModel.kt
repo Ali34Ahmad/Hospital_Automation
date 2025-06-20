@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.constants.enums.FileUploadingState
-import com.example.domain.use_cases.upload_employee_profile_image.UploadEmployeeProfileImageUseCase
+import com.example.domain.use_cases.upload_employee_profile_image.UploadProfileImageUseCase
 import com.example.model.FileInfo
 import com.example.model.role_config.RoleAppConfig
 import com.example.ui_components.R
@@ -25,7 +25,7 @@ import java.io.FileNotFoundException
 import java.nio.channels.UnresolvedAddressException
 
 class UploadEmployeeProfileImageViewModel(
-    private val uploadEmployeeProfileImageUseCase: UploadEmployeeProfileImageUseCase,
+    private val uploadProfileImageUseCase: UploadProfileImageUseCase,
     private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UploadEmployeeProfileImageUiState())
@@ -62,7 +62,7 @@ class UploadEmployeeProfileImageViewModel(
 
     private fun uploadImage(uri: Uri) {
         viewModelScope.launch {
-            uploadJob = uploadEmployeeProfileImageUseCase(
+            uploadJob = uploadProfileImageUseCase(
                 uri = uri,
                 role = roleAppConfig.role
             )

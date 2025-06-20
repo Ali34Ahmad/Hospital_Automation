@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.Gender
 import com.example.constants.icons.AppIcons
 import com.example.ext.clickableTextRange
 import com.example.ext.toAppropriateFormat
+import com.example.model.enums.Gender
 import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme

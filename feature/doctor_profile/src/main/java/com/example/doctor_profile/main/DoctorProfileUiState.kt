@@ -7,7 +7,7 @@ import com.example.util.UiText
 import com.example.utility.network.Error
 
 data class DoctorProfileUiState(
-    val userInfo: DoctorProfileResponse?=null,
+    val doctorInfo: DoctorProfileResponse?=null,
     val doctorId: Int?=null,
     val profileAccessType: ProfileAccessType?=null,
     val profileScreenState: ScreenState= ScreenState.IDLE,

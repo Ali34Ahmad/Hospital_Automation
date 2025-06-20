@@ -22,8 +22,8 @@ import com.example.ext.toAppropriateFormat
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui_components.components.items.DetailsItem
 import com.example.model.Child
-import com.example.model.helper.Age
-import com.example.model.helper.AgeUnit
+import com.example.model.age.Age
+import com.example.model.enums.AgeUnit
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.spacing

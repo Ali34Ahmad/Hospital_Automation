@@ -15,8 +15,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
+import com.example.model.doctor.day_scedule.DaySchedule
 import com.example.model.helper.ext.toCapitalizedString
-import com.example.model.WorkDay
+import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
@@ -27,7 +28,7 @@ import java.time.LocalTime
 
 @Composable
 fun WorkDayCard(
-    workDay: WorkDay,
+    workDay: DaySchedule,
     onItemDeleteClick: (Int?) -> Unit,
     onItemEditClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
@@ -43,7 +44,7 @@ fun WorkDayCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = workDay.day.name.toCapitalizedString(),
+            text = workDay.dayOfWeek.name.toCapitalizedString(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
@@ -56,7 +57,7 @@ fun WorkDayCard(
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            text = (workDay.workStartTime..workDay.workEndTime).toAppropriateFormat(),
+            text = (workDay.startTime..workDay.endTime).toAppropriateFormat(),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
             modifier = Modifier
@@ -102,11 +103,7 @@ fun WorkDayCardPreview() {
             WorkDayCard(
                 onItemDeleteClick = {},
                 onItemEditClick = {},
-                workDay = WorkDay(
-                    day = DayOfWeek.SUNDAY,
-                    workStartTime = LocalTime.now(),
-                    workEndTime = LocalTime.now().plusHours(10L),
-                ),
+                workDay = createSampleWorkDayList()[0],
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
             )
         }

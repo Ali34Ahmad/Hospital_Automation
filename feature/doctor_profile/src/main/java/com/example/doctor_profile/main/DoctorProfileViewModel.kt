@@ -9,7 +9,6 @@ import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.ProfileAccessType
 import com.example.domain.use_cases.auth.LogoutUseCase
 import com.example.domain.use_cases.doctor.profile.GetCurrentDoctorProfileUseCase
-import com.example.domain.use_cases.doctor.profile.GetDoctorProfileByIdUseCase
 import com.example.domain.use_cases.employee_account_management.DeactivateMyAccountUseCase
 import com.example.domain.use_cases.employee_account_management.ReactivateMyAccountUseCase
 import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
@@ -33,7 +32,6 @@ class DoctorProfileViewModel(
     private val deactivateMyAccountUseCase: DeactivateMyAccountUseCase,
     private val reactivateMyAccountUseCase: ReactivateMyAccountUseCase,
     private val getCurrentDoctorProfileUseCase: GetCurrentDoctorProfileUseCase,
-    private val getDoctorProfileByIdUseCase: GetDoctorProfileByIdUseCase,
     private val savedStateHandle: SavedStateHandle,
     private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
@@ -96,7 +94,7 @@ class DoctorProfileViewModel(
     }
 
     private fun updateProfileInfoState(profileInfo: DoctorProfileResponse?) {
-        _uiState.update { it.copy(userInfo = profileInfo) }
+        _uiState.update { it.copy(doctorInfo = profileInfo) }
         Log.v("imgUrl", profileInfo?.profile?.imageUrl ?: "")
     }
 
@@ -121,29 +119,10 @@ class DoctorProfileViewModel(
         }
     }
 
-    private fun getDoctorProfileById() {
-        val doctorId = uiState.value.doctorId
-        if (doctorId == null) return
-        viewModelScope.launch {
-            updateProfileScreenState(ScreenState.LOADING)
-            Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
-            getDoctorProfileByIdUseCase(doctorId)
-                .onSuccess { data ->
-                    Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
-                    updateProfileScreenState(ScreenState.SUCCESS)
-                    updateProfileInfoState(data)
-                }.onError { error ->
-                    Log.v("Failed to fetch DoctorProfile", "DoctorProfileViewModel")
-                    updateProfileScreenState(ScreenState.ERROR)
-                    updateProfileInfoState(null)
-                }
-        }
-    }
-
     private fun getDoctorProfile() {
         when (uiState.value.profileAccessType) {
             ProfileAccessType.TOKEN_ACCESS -> getCurrentDoctorProfile()
-            ProfileAccessType.ID_ACCESS -> getDoctorProfileById()
+            ProfileAccessType.ID_ACCESS -> TODO()
             null -> null
         }
     }
@@ -265,7 +244,7 @@ class DoctorProfileViewModel(
     private fun refreshData() {
         when (uiState.value.profileAccessType) {
             ProfileAccessType.TOKEN_ACCESS -> refreshCurrentDoctorData()
-            ProfileAccessType.ID_ACCESS -> refreshDoctorByIdData()
+            ProfileAccessType.ID_ACCESS -> TODO()
             null -> null
         }
     }
@@ -275,28 +254,6 @@ class DoctorProfileViewModel(
             updateIsRefreshing(true)
             Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
             getCurrentDoctorProfileUseCase()
-                .onSuccess { data ->
-                    Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
-                    updateIsRefreshing(false)
-                    updateProfileInfoState(data)
-                    if (uiState.value.profileScreenState == ScreenState.ERROR) {
-                        updateProfileScreenState(ScreenState.SUCCESS)
-                    }
-                }.onError { error ->
-                    Log.v("Failed to fetch DoctorProfile", "DoctorProfileViewModel")
-                    updateIsRefreshing(false)
-                    updateToastMessage(UiText.StringResource(R.string.something_went_wrong))
-                }
-        }
-    }
-
-    private fun refreshDoctorByIdData() {
-        val employeeId = uiState.value.doctorId
-        if (employeeId == null) return
-        viewModelScope.launch {
-            updateIsRefreshing(true)
-            Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
-            getDoctorProfileByIdUseCase(employeeId)
                 .onSuccess { data ->
                     Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
                     updateIsRefreshing(false)

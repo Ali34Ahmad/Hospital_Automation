@@ -18,13 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.example.constants.enums.Gender
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.OptionButton
 import com.example.constants.icons.AppIcons
+import com.example.model.enums.Gender
 
 @Composable
 fun SelectGenderSlot(

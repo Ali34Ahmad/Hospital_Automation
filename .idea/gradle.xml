@@ -37,6 +37,7 @@
             <option value="$PROJECT_DIR$/doctor_app" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/add_child_screen" />
+            <option value="$PROJECT_DIR$/feature/add_new_vaccine" />
             <option value="$PROJECT_DIR$/feature/add_residential_address" />
             <option value="$PROJECT_DIR$/feature/admin_profile" />
             <option value="$PROJECT_DIR$/feature/child_profile" />

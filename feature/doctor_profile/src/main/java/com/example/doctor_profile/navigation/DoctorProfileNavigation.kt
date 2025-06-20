@@ -26,15 +26,18 @@ fun NavGraphBuilder.doctorProfileScreen(
     onNavigateToEmploymentHistoryScreen: () -> Unit,
     onNavigateToLoginScreen: () -> Unit,
     onNavigateUp: () -> Unit,
-    onNavigateToAddedChildrenScreen: () -> Unit,
+    onNavigateToAppointmentsScreen: () -> Unit,
+    onNavigateToPrescriptionsScreen: () -> Unit,
+    onNavigateToMedicalRecordsScreen: () -> Unit,
+    onNavigateToDepartmentScreen: () -> Unit,
 ) {
     composable<DoctorProfileRoute> {
         val viewModel = koinViewModel<DoctorProfileViewModel>()
         val uiState = viewModel.uiState.collectAsState()
 
         val navActions = object : DoctorProfileNavigationUiActions {
-            override fun navigateToAddedChildrenScreen() {
-                onNavigateToAddedChildrenScreen()
+            override fun navigateToAppointmentsScreen() {
+                onNavigateToAppointmentsScreen()
             }
 
             override fun navigateToEmploymentHistoryScreen() {
@@ -47,6 +50,18 @@ fun NavGraphBuilder.doctorProfileScreen(
 
             override fun navigateToLoginScreen() {
                 onNavigateToLoginScreen()
+            }
+
+            override fun navigateToPrescriptionsScreen() {
+                onNavigateToPrescriptionsScreen()
+            }
+
+            override fun navigateToMedicalRecordsScreen() {
+                onNavigateToMedicalRecordsScreen()
+            }
+
+            override fun navigateToDepartmentDetailsScreen() {
+                onNavigateToDepartmentScreen()
             }
         }
 

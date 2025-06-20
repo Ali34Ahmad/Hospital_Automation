@@ -1,6 +1,6 @@
 package com.example.ext
 
-import com.example.constants.enums.Gender
+import com.example.model.enums.Gender
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date

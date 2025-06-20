@@ -2,7 +2,7 @@ package com.example.doctor_profile.main
 
 
 fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiActions {
-    override fun navigateToAddedChildrenScreen() {
+    override fun navigateToAppointmentsScreen() {
 
     }
 
@@ -15,6 +15,18 @@ fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiAct
     }
 
     override fun navigateToLoginScreen() {
+
+    }
+
+    override fun navigateToPrescriptionsScreen() {
+
+    }
+
+    override fun navigateToMedicalRecordsScreen() {
+
+    }
+
+    override fun navigateToDepartmentDetailsScreen() {
 
     }
 

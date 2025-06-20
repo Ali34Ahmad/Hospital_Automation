@@ -1,6 +1,6 @@
 package com.example.model
 
-import com.example.model.helper.Age
+import com.example.model.age.Age
 
 class Child(
     val id:Int,

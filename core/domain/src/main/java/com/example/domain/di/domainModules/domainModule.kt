@@ -6,12 +6,12 @@ import com.example.domain.di.auth.singup.baseSignUpModule
 import com.example.domain.di.children.childDomainModule
 import com.example.domain.di.doctor.doctorModule
 import com.example.domain.di.downloaderUseCaseModule
-import com.example.domain.di.employeeAccountManagementUseCasesModule
+import com.example.domain.di.accountManagementUseCasesModule
 import com.example.domain.di.employeeProfileUseCasesModule
 import com.example.domain.di.employmentHistoryUseCasesModule
 import com.example.domain.di.getAdminProfileByIdUseCaseModule
 import com.example.domain.di.basic_account_creating.uploadEmploymentDocumentsUseCasesModule
-import com.example.domain.di.basic_account_creating.uploadEmployeeProfileImageUseCasesModule
+import com.example.domain.di.basic_account_creating.uploadProfileImageUseCasesModule
 import com.example.domain.di.user.userDomainModule
 import com.example.domain.di.userPreferencesUseCasesModule
 import com.example.domain.di.validatorUseCasesModule
@@ -26,11 +26,11 @@ val employeeDomainModule = module {
         addResidentialAddressUseCaseModule,
         getAdminProfileByIdUseCaseModule,
         downloaderUseCaseModule,
-        employeeAccountManagementUseCasesModule,
+        accountManagementUseCasesModule,
         employeeProfileUseCasesModule,
         employmentHistoryUseCasesModule,
         uploadEmploymentDocumentsUseCasesModule,
-        uploadEmployeeProfileImageUseCasesModule,
+        uploadProfileImageUseCasesModule,
         validatorUseCasesModule,
 
         userPreferencesUseCasesModule,

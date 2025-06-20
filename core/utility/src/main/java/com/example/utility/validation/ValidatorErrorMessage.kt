@@ -40,4 +40,10 @@ sealed interface ValidatorErrorMessage {
         NON_DIGIT_CHARACTER,
     }
 
+    enum class PositiveNumber : ValidatorErrorMessage {
+        INVALID_NUMBER,
+        EMPTY_FIELD,
+        NEGATIVE_NUMBER,
+    }
+
 }

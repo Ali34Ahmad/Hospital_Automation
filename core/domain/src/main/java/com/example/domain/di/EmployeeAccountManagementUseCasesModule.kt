@@ -6,7 +6,7 @@ import com.example.domain.use_cases.employee_account_management.ReactivateMyAcco
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val employeeAccountManagementUseCasesModule= module {
+val accountManagementUseCasesModule= module {
     singleOf(::DeactivateMyAccountUseCase)
 
     singleOf(::ReactivateMyAccountUseCase)

@@ -23,12 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.AvailabilityStatus
-import com.example.constants.enums.Gender
 import com.example.constants.icons.AppIcons
-import com.example.model.WorkDay
+import com.example.model.doctor.appointment.AppointmentTypeData
+import com.example.model.doctor.day_scedule.DaySchedule
+import com.example.model.enums.DoctorStatus
+import com.example.model.enums.Gender
 import com.example.model.helper.ext.toCapitalizedString
-import com.example.ui.fake.createSampleAppointments
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -55,15 +55,19 @@ fun DoctorProfileCard(
     onDepartmentItemClick: () -> Unit,
     gender: Gender,
     address: String,
-    currentStatus: AvailabilityStatus,
-    workDays: List<WorkDay>,
-    appointmentTypes: List<String>,
-    onServiceItemClick: (index: Int) -> Unit,
+    currentStatus: DoctorStatus,
+    workDays: List<DaySchedule>,
+    appointmentTypes: List<AppointmentTypeData>,
+    onAppointmentTypeItemClick: (index: Int) -> Unit,
     phoneNumber: String,
     email: String,
     onPhoneNumberButtonClick: () -> Unit,
     onEmailButtonClick: () -> Unit,
     onNavigateUpButtonClick: () -> Unit,
+    isAccepted: Boolean,
+    isResigned: Boolean,
+    isSuspended: Boolean,
+    showNavigateUp: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val genderIcon = if (gender == Gender.MALE) AppIcons.Outlined.male else AppIcons.Outlined.female
@@ -71,7 +75,7 @@ fun DoctorProfileCard(
     val detailsItemModifier = Modifier
         .fillMaxWidth()
 
-    val (currentStatusItemDescriptionColor, availabilityStatus) = if (currentStatus == AvailabilityStatus.OPEN) {
+    val (currentStatusItemDescriptionColor, availabilityStatus) = if (currentStatus == DoctorStatus.OPENED) {
         Pair(
             MaterialTheme.additionalColorScheme.green,
             stringResource(R.string.open)
@@ -105,19 +109,21 @@ fun DoctorProfileCard(
                     NetworkImageError()
                 },
             )
-            IconButton(
-                onClick = onNavigateUpButtonClick,
-                modifier = Modifier
-                    .padding(MaterialTheme.spacing.extraSmall4)
-                    .clip(MaterialTheme.shapes.small),
-                colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = MaterialTheme.colorScheme.onBackground
-                ),
-            ) {
-                Icon(
-                    painter = painterResource(AppIcons.Outlined.arrowBack),
-                    contentDescription = stringResource(R.string.go_back)
-                )
+            if(showNavigateUp){
+                IconButton(
+                    onClick = onNavigateUpButtonClick,
+                    modifier = Modifier
+                        .padding(MaterialTheme.spacing.extraSmall4)
+                        .clip(MaterialTheme.shapes.small),
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onBackground
+                    ),
+                ) {
+                    Icon(
+                        painter = painterResource(AppIcons.Outlined.arrowBack),
+                        contentDescription = stringResource(R.string.go_back)
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
@@ -139,7 +145,37 @@ fun DoctorProfileCard(
             )
 
         }
-        // TODO: Add Suspended and Resigned states 
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
+        if (!isAccepted) {
+            WarningCard(
+                text = stringResource(R.string.not_accepted_warning),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.medium16),
+            )
+        } else if (isResigned) {
+            WarningCard(
+                text = stringResource(R.string.resigned_warning),
+                clickableText = stringResource(R.string.learn_more),
+                onTextClick = {
+//                    onResignedWaningTextClick()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.medium16),
+            )
+        } else if (isSuspended) {
+            WarningCard(
+                text = stringResource(R.string.suspended_warning),
+                clickableText = stringResource(R.string.learn_more),
+                onTextClick = {
+//                    onSuspendWarningTextClick()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.medium16),
+            )
+        }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
         DetailsItem(
             iconRes = AppIcons.Outlined.department,
@@ -175,7 +211,7 @@ fun DoctorProfileCard(
         SectionWithTitle(
             title = stringResource(R.string.availability_schedule),
             modifier = Modifier.fillMaxWidth(),
-            textPadding = sectionTitlePadding,
+            titleAreaPadding = sectionTitlePadding,
         ) {
             AvailabilityScheduleLazyRow(
                 workDays = workDays,
@@ -185,11 +221,11 @@ fun DoctorProfileCard(
         SectionWithTitle(
             title = stringResource(R.string.appointment_types),
             modifier = Modifier.fillMaxWidth(),
-            textPadding = sectionTitlePadding,
+            titleAreaPadding = sectionTitlePadding,
         ) {
             TagsFlowRow(
-                tagsList = appointmentTypes,
-                onTagClick = onServiceItemClick,
+                tagsList = appointmentTypes.map { it.name },
+                onTagClick = onAppointmentTypeItemClick,
                 modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16),
             )
         }
@@ -233,10 +269,14 @@ fun DoctorProfileCardOpenedPreview() {
                 specialty = "Cardiologist",
                 onDepartmentItemClick = {},
                 departmentName = "Department of mental illnesses",
-                onServiceItemClick = {},
+                onAppointmentTypeItemClick = {},
                 workDays = createSampleWorkDayList(),
-                appointmentTypes = createSampleAppointments().map { it.appointmentType },
-                currentStatus = AvailabilityStatus.OPEN
+                appointmentTypes = emptyList(),
+                currentStatus = DoctorStatus.CLOSED,
+                isAccepted=true,
+                isResigned= true,
+                isSuspended= false,
+                showNavigateUp=true,
             )
         }
     }
@@ -264,10 +304,14 @@ fun DoctorProfileCardClosedPreview() {
                 specialty = "Cardiologist",
                 onDepartmentItemClick = {},
                 departmentName = "Department of mental illnesses",
-                onServiceItemClick = {},
+                onAppointmentTypeItemClick = {},
                 workDays = createSampleWorkDayList(),
-                appointmentTypes = createSampleAppointments().map { it.appointmentType },
-                currentStatus = AvailabilityStatus.OPEN
+                appointmentTypes = emptyList(),
+                currentStatus = DoctorStatus.OPENED,
+                isAccepted=true,
+                isResigned= false,
+                isSuspended= false,
+                showNavigateUp=true,
             )
         }
     }

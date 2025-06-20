@@ -9,6 +9,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -47,13 +49,23 @@ fun HospitalAutomationTextFiled(
         imeAction = ImeAction.Next,
     ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    colors: TextFieldColors = TextFieldDefaults.colors(
+        focusedContainerColor = MaterialTheme.colorScheme.background,
+        unfocusedContainerColor = MaterialTheme.colorScheme.background,
+        unfocusedIndicatorColor = Color.Transparent,
+        focusedIndicatorColor = Color.Transparent,
+        errorIndicatorColor = Color.Transparent,
+        disabledIndicatorColor = Color.Transparent,
+        errorTextColor = MaterialTheme.colorScheme.onBackground,
+    ),
+    shape:Shape= MaterialTheme.shapes.extraSmall,
 ) {
     val singleLine = maxLines <= 1
     TextField(
         modifier = modifier,
         readOnly = readOnly,
         keyboardOptions = keyboardOptions,
-        shape = MaterialTheme.shapes.extraSmall,
+        shape = shape,
         value = value,
         onValueChange = onValueChange,
         visualTransformation = visualTransformation,
@@ -80,15 +92,7 @@ fun HospitalAutomationTextFiled(
                 }
             }
         },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            errorIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            errorTextColor = MaterialTheme.colorScheme.onBackground,
-        ),
+        colors = colors,
         placeholder = {
             placeholder?.let {
                 Text(

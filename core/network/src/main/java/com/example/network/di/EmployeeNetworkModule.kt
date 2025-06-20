@@ -51,7 +51,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
-val networkModule = module {
+val employeeNetworkModule = module {
 
     //ktor client
     single<HttpClient> {
@@ -69,8 +69,6 @@ val networkModule = module {
             }
         }
     }
-    //doctor api service
-    singleOf(::DoctorApiServiceImpl){bind<DoctorApiService>()}
     //child api service
     singleOf(::ChildApiServiceImpl) { bind<ChildApiService>() }
 

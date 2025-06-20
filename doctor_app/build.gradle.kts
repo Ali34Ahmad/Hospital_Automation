@@ -83,7 +83,10 @@ dependencies {
     implementation(project(":feature:upload_employee_profile_image"))
     implementation(project(":feature:employment_history"))
 
+    implementation(project(":feature:doctor_profile"))
     implementation(project(":feature:doctor-schedule"))
+
+    implementation(project(":feature:add_new_vaccine"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

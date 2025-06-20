@@ -1,11 +1,11 @@
-package com.example.network.model.dto.doctor
+package com.example.network.model.dto.vaccine
 
+import com.example.network.model.enums.AgeUnitDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class VaccineDto(
-   @SerialName("vaccinesId")
     val id: Int,
 
     val name: String,
@@ -13,11 +13,10 @@ data class VaccineDto(
     val quantity: Int,
 
     val minAge: Int,
+    val minAgeUnit: AgeUnitDto,
+
     val maxAge: Int,
+    val maxAgeUnit: AgeUnitDto,
 
-    val minAgeUnit: String,
-    val maxAgeUnit: String,
-
-    val createdAt: String,
-    val updatedAt: String
+    val interactions: List<VaccineInteractionDto>?,
 )

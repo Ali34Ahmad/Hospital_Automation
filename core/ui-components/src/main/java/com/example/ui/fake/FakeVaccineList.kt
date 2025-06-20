@@ -1,8 +1,8 @@
 package com.example.ui.fake
 
 import com.example.model.VaccineWithDescription
-import com.example.model.helper.Age
-import com.example.model.helper.AgeUnit
+import com.example.model.age.Age
+import com.example.model.enums.AgeUnit
 
 fun createSampleVaccineList(): List<VaccineWithDescription> {
     return listOf(

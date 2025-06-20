@@ -1,6 +1,6 @@
 package com.example.model.doctor.vaccine
 
-import com.example.model.helper.Age
+import com.example.model.age.Age
 
 data class VaccineData(
     val id: Int,

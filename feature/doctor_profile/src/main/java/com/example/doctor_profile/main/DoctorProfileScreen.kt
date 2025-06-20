@@ -27,16 +27,20 @@ import com.example.doctor_profile.fake.createSampleDoctorProfileResponse
 import com.example.ext.toAppropriateFormat
 import com.example.model.enums.Gender
 import com.example.model.enums.ScreenState
+import com.example.navigation.extesion.navigateToCallApp
+import com.example.navigation.extesion.navigateToEmailApp
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
+import com.example.ui_components.components.card.DoctorProfileCard
 import com.example.ui_components.components.card.EmployeeProfileActionsCard
 import com.example.ui_components.components.card.EmployeeProfileCard
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.list.DoctorProfileActionsCard
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 
@@ -79,14 +83,13 @@ fun DoctorProfileScreen(
         text = uiState.loadingDialogText?.asString()
     )
 
-    val isAddedChildrenEnabled = uiState.userInfo?.profile?.acceptedBy != null
-    val isEmploymentEnabled = uiState.userInfo?.profile?.acceptedBy != null
+    val isActionsItemsEnabled = uiState.doctorInfo?.profile?.acceptedBy != null
 
-    val isResigned = uiState.userInfo?.profile?.isResigned == true
-    val isAccepted = uiState.userInfo?.profile?.acceptedBy != null
-    val isSuspended = uiState.userInfo?.profile?.isSuspended == true
+    val isResigned = uiState.doctorInfo?.profile?.isResigned == true
+    val isAccepted = uiState.doctorInfo?.profile?.acceptedBy != null
+    val isSuspended = uiState.doctorInfo?.profile?.isSuspended == true
     val isSuspendedByHimself = (isSuspended &&
-            uiState.userInfo.profile.suspendedBy == uiState.userInfo.profile.userId)
+            uiState.doctorInfo.profile.suspendedBy == uiState.doctorInfo.profile.userId)
     val showDeactivationItem = !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
 
 
@@ -151,9 +154,9 @@ fun DoctorProfileScreen(
                 }
             }
             if (uiState.profileScreenState == ScreenState.SUCCESS &&
-                uiState.userInfo != null
+                uiState.doctorInfo != null
             ) {
-                val name = uiState.userInfo.profile.fullName.toAppropriateFormat()
+                val name = uiState.doctorInfo.profile.fullName.toAppropriateFormat()
                 val subject = stringResource(R.string.medicare)
                 PullToRefreshBox(
                     refreshing = uiState.isRefreshing,
@@ -171,57 +174,71 @@ fun DoctorProfileScreen(
                             ),
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
                         ) {
-                            EmployeeProfileCard(
+                            DoctorProfileCard(
                                 name = name,
                                 onNavigateUpButtonClick = {
                                     uiActions.navigateUp()
                                 },
                                 onEmailButtonClick = {
-                                    uiActions.navigateToEmail(
-                                        context = context,
-                                        email = uiState.userInfo.profile.email,
+                                    context.navigateToEmailApp(
+                                        email = uiState.doctorInfo.profile.email,
                                         subject = subject
                                     )
                                 },
                                 onPhoneNumberButtonClick = {
-                                    uiActions.navigateToCallApp(
-                                        context = context,
-                                        phoneNumber = uiState.userInfo.profile.phoneNumber
+                                    context.navigateToCallApp(
+                                        phoneNumber = uiState.doctorInfo.profile.phoneNumber
                                     )
                                 },
-                                phoneNumber = uiState.userInfo.profile.phoneNumber,
-                                profileImageUrl = uiState.userInfo.profile.imageUrl ?: "",
-                                address = uiState.userInfo.profile.address.toAppropriateFormat(),
-                                gender = uiState.userInfo.profile.gender ?: Gender.MALE,
-                                email = uiState.userInfo.profile.email,
-                                isResigned = uiState.userInfo.profile.isResigned,
-                                isSuspended = uiState.userInfo.profile.isSuspended,
-                                isAccepted = uiState.userInfo.profile.acceptedBy != null,
-                                showNavigateUp = true
+                                phoneNumber = uiState.doctorInfo.profile.phoneNumber,
+                                profileImageUrl = uiState.doctorInfo.profile.imageUrl ?: "",
+                                address = uiState.doctorInfo.profile.address.toAppropriateFormat(),
+                                gender = uiState.doctorInfo.profile.gender ?: Gender.MALE,
+                                email = uiState.doctorInfo.profile.email,
+                                isResigned = uiState.doctorInfo.profile.isResigned,
+                                isSuspended = uiState.doctorInfo.profile.isSuspended,
+                                isAccepted = uiState.doctorInfo.profile.acceptedBy != null,
+                                showNavigateUp = true,
+                                specialty = uiState.doctorInfo.profile.specialty?:"",
+                                departmentName = uiState.doctorInfo.profile.department?:"",
+                                onDepartmentItemClick = {
+                                    uiActions.navigateToDepartmentDetailsScreen()
+                                },
+                                currentStatus = uiState.doctorInfo.profile.currentStatus,
+                                workDays = uiState.doctorInfo.profile.availabilitySchedule,
+                                appointmentTypes = uiState.doctorInfo.profile.appointmentTypes,
+                                onAppointmentTypeItemClick = {
+                                    TODO()
+//                                    uiActions.showAppointmentTypeDetails()
+                                },
+                                modifier = Modifier.fillMaxWidth(),
                             )
-                            if (uiState.userInfo.isAccessedByOwner) {
-                                EmployeeProfileActionsCard(
-                                    onAddedChildrenItemClick = {
-                                        uiActions.navigateToAddedChildrenScreen()
-                                    },
-                                    isAddedChildrenEnabled = isAddedChildrenEnabled,
-                                    onEmploymentHistoryItemClick = {
-                                        uiActions.navigateToEmploymentHistoryScreen()
-                                    },
-                                    isEmploymentEnabled = isEmploymentEnabled,
-                                    onDeactivateAccountItemClick = {
-                                        uiActions.onDeactivateMyAccount()
-                                    },
-                                    onReactivateAccountItemClick = {
-                                        uiActions.onReactivateMyAccount()
-                                    },
-                                    showDeactivateMyAccountItem = showDeactivationItem,
-                                    isAccountDeactivated = isSuspended,
-                                    onLogoutItemClick = {
-                                        uiActions.onLogout()
-                                    },
-                                )
-                            }
+                            DoctorProfileActionsCard(
+                                onAppointmentsHistoryClick = {
+                                    uiActions.navigateToAppointmentsScreen()
+                                },
+                                isAppointmentsItemEnabled=isActionsItemsEnabled,
+                                onPrescriptionsClick = {
+                                    uiActions.navigateToPrescriptionsScreen()
+                                },
+                                isPrescriptionsItemEnabled=isActionsItemsEnabled,
+                                onMedicalRecordsClick = {
+                                    uiActions.navigateToMedicalRecordsScreen()
+                                },
+                                isMedicalRecordsItemEnabled=isActionsItemsEnabled,
+                                onEmploymentHistoryClick = {
+                                    uiActions.navigateToEmploymentHistoryScreen()
+                                },
+                                isEmploymentHistoryItemEnabled=isActionsItemsEnabled,
+                                onDeactivateAccountClick = {
+                                    uiActions.onDeactivateMyAccount()
+                                },
+                                showDeactivationItem=showDeactivationItem,
+                                onLogoutClick = {
+                                    uiActions.onLogout()
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                            )
                         }
                     }
                 }
@@ -237,7 +254,7 @@ fun EmployeeProfileOwnerScreenPreview() {
         Surface {
             DoctorProfileScreen(
                 uiState = DoctorProfileUiState(
-                    userInfo = createSampleDoctorProfileResponse()[0],
+                    doctorInfo = createSampleDoctorProfileResponse()[0],
                     profileScreenState = ScreenState.SUCCESS,
                 ),
                 uiActions = DoctorProfileUiActions(
@@ -257,7 +274,7 @@ fun EmployeeProfileAnotherEmployeeScreenPreview() {
         Surface {
             DoctorProfileScreen(
                 uiState = DoctorProfileUiState(
-                    userInfo = createSampleDoctorProfileResponse()[1],
+                    doctorInfo = createSampleDoctorProfileResponse()[1],
                     profileScreenState = ScreenState.SUCCESS,
                 ),
                 uiActions = DoctorProfileUiActions(

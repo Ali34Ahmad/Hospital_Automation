@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -43,7 +44,7 @@ fun TagsFlowRowPreview(){
     Hospital_AutomationTheme{
         Surface{
             TagsFlowRow(
-                tagsList = listOf("X-ray machine","Blood test","MRI","CT Scanner","3D imaging device"),
+                tagsList = emptyList(),
                 onTagClick = {},
                 modifier = Modifier.fillMaxWidth()
                     .padding(MaterialTheme.spacing.medium16),

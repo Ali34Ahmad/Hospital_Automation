@@ -1,6 +1,6 @@
 package com.example.ext
 
-import com.example.model.helper.Age
+import com.example.model.age.Age
 import com.example.model.helper.ext.toCapitalizedString
 
 
