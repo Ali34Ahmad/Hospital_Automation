@@ -67,5 +67,9 @@ sealed interface AppIcons {
         val invisible=R.drawable.ic_invisible
         val date = R.drawable.update
         val wifi_off = R.drawable.wifi_off
+        val medicalRecords = R.drawable.collections_bookmark
+        val bulb = R.drawable.lightbulb
+        val bulb_circle = R.drawable.lightbulb_circle
+        val pill_off = R.drawable.pill_off
     }
 }

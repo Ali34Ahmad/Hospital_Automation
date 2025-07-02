@@ -1,8 +1,8 @@
 package com.example.add_child_screen.presentation
 
-import com.example.constants.enums.Gender
 import com.example.model.child.ChildFullData
 import com.example.model.enums.BottomBarState
+import com.example.model.enums.Gender
 import com.example.util.UiText
 
 data class AddChildUIState(
@@ -30,7 +30,9 @@ data class AddChildUIState(
 
     val sendingDataButtonState: BottomBarState = BottomBarState.DISABLED,
     val isSendingDataButtonVisible: Boolean = true,
-    val childId: Int? = null
+    val childId: Int? = null,
+
+    val toastMessage: UiText? = null
 )
 
 internal fun AddChildUIState.toChildFullData(): ChildFullData =

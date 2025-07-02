@@ -7,6 +7,7 @@ import com.example.model.guardian.GuardianData
 import com.example.model.guardian.PagedData
 import com.example.network.remote.user.UserApiService
 import com.example.utility.network.NetworkError
+import com.example.utility.network.NetworkException
 import com.example.utility.network.map
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -27,7 +28,7 @@ class GuardiansPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GuardianData> {
         try {
             if (token == null){
-                return LoadResult.Error(Error(NetworkError.EMPTY_TOKEN.name))
+                return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
             }
             //start refresh at page 1 if undefined
             val nextPageNumber = params.key?:1
@@ -56,7 +57,7 @@ class GuardiansPagingSource(
                 guardians = data.data
                 nextKey = if(guardians.isEmpty()) null else data.page + 1
             }.onError { error: NetworkError ->
-                return LoadResult.Error(Exception(error.name))
+                return LoadResult.Error(NetworkException(error))
             }
 
             return LoadResult.Page(

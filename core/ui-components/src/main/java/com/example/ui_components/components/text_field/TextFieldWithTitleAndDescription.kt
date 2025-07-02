@@ -33,7 +33,11 @@ fun TextFieldWithTitleAndDescription(
     @StringRes description: Int,
     text: String,
     onTextChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    hasError: Boolean = false,
+    minLines: Int = 2,
+    maxLines: Int = minLines
 ) {
     Column(
         modifier = modifier
@@ -73,8 +77,11 @@ fun TextFieldWithTitleAndDescription(
                 focusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f)
             ),
-            maxLines = 2,
-            shape = MaterialTheme.shapes.medium
+            maxLines = maxLines,
+            minLines = minLines,
+            shape = MaterialTheme.shapes.medium,
+            enabled = enabled,
+            isError = hasError
         )
     }
 }

@@ -5,11 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.constants.enums.Gender
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.presentation.GuardianProfileNavigationAction
 import com.example.guardian_profile.presentation.GuardianProfileScreen
 import com.example.guardian_profile.presentation.GuardianProfileUIState
+import com.example.model.enums.Gender
+
 import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianFullData
 import com.example.ui.helper.DarkAndLightModePreview

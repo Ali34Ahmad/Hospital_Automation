@@ -7,6 +7,7 @@ import com.example.model.child.ChildData
 import com.example.model.guardian.PagedData
 import com.example.network.remote.child.ChildApiService
 import com.example.utility.network.NetworkError
+import com.example.utility.network.NetworkException
 import com.example.utility.network.map
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -28,7 +29,7 @@ class ChildrenSearchPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ChildData> {
 
         if(token == null){
-            return LoadResult.Error(Throwable(NetworkError.EMPTY_TOKEN.name))
+            return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
         }
 
         val nextPageNumber = params.key?:1
@@ -54,7 +55,7 @@ class ChildrenSearchPagingSource(
             children = data.data
             nextKey = if(children.isEmpty()) null else data.page + 1
         }.onError {error: NetworkError->
-            return LoadResult.Error(Exception(error.name))
+            return LoadResult.Error(NetworkException(error))
         }
 
         return LoadResult.Page(

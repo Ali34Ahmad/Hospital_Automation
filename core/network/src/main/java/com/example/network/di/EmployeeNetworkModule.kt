@@ -16,8 +16,6 @@ import com.example.network.remote.auth.singup.generic.BaseSignUpApiService
 import com.example.network.remote.auth.singup.generic.BaseSignUpApiServiceImpl
 import com.example.network.remote.child.ChildApiService
 import com.example.network.remote.child.ChildApiServiceImpl
-import com.example.network.remote.doctor.DoctorApiService
-import com.example.network.remote.doctor.DoctorApiServiceImpl
 import com.example.network.remote.employee_profile.EmployeeProfileApiService
 import com.example.network.remote.employee_profile.EmployeeProfileApiServiceImpl
 import com.example.network.remote.employment_history.EmploymentHistoryApiService

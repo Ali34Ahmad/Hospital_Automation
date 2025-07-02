@@ -51,7 +51,7 @@ fun MedicineCard(
     onPharmaciesClick: () -> Unit,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-    currency: String = "S.P",
+    currency: String = stringResource(R.string.syrian_pound),
     @DrawableRes secondaryIcon: Int = AppIcons.Outlined.location,
     @StringRes buttonText: Int = R.string.add_to_prescription
 ) {

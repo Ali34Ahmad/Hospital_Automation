@@ -16,10 +16,10 @@ import com.example.model.ActionIcon
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
-import java.time.LocalDate
 
 @Composable
 fun DoctorScheduleTopBar(
+    isPermissionsGranted: Boolean,
     isSearchBarVisible: Boolean,
     searchQuery: String,
     onQueryChanged: (String)-> Unit,
@@ -30,6 +30,16 @@ fun DoctorScheduleTopBar(
     onDrawerOpened: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val actions = listOf(
+        ActionIcon(
+            icon = AppIcons.Outlined.calender,
+            onCLick = onDatePickerIconClick
+        ),
+        ActionIcon(
+            icon = AppIcons.Outlined.search,
+            onCLick = onSearch
+        )
+    )
     AnimatedContent (isSearchBarVisible) { state->
         when(state){
             false->{
@@ -38,16 +48,7 @@ fun DoctorScheduleTopBar(
                     onNavigationIconClick = onDrawerOpened,
                     modifier = modifier,
                     navigationIcon = AppIcons.Outlined.menu,
-                    actionIcons = listOf(
-                        ActionIcon(
-                            icon = AppIcons.Outlined.calender,
-                            onCLick = onDatePickerIconClick
-                        ),
-                        ActionIcon(
-                            icon = AppIcons.Outlined.search,
-                            onCLick = onSearch
-                        )
-                    )
+                    actionIcons = if (isPermissionsGranted) actions else emptyList()
                 )
             }
             true->{
@@ -57,9 +58,7 @@ fun DoctorScheduleTopBar(
                     onTrailingIconClick = onQueryDeleted,
                     placeholderText = R.string.appointment_type,
                     onNavigationIconCLick = onBackButtonClick,
-                    onSearch = {},
                     modifier = modifier,
-                    navigationIcon = AppIcons.Outlined.arrowBack,
                 )
             }
         }
@@ -87,7 +86,8 @@ fun DoctorScheduleTopBarPreview() {
             onDatePickerIconClick = {},
             onDrawerOpened = {},
             modifier = Modifier.fillMaxWidth(),
-            onBackButtonClick = {isSearchVisible = false}
+            onBackButtonClick = {isSearchVisible = false},
+            isPermissionsGranted = true
         )
     }
 }

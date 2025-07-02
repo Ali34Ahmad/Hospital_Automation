@@ -1,0 +1,3 @@
+package com.example.data.repositories.upload_employee_file
+
+annotation class UploadEmployeeDocumentsRepositoryImpl

@@ -1,5 +1,6 @@
 package com.example.add_child_screen.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +14,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.theme.spacing
@@ -49,9 +52,17 @@ fun AddChildScreen(
     onAction: (AddChildUIActions)-> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val message = uiState.toastMessage?.asString()
+    LaunchedEffect(message) {
+        if(message!=null){
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surface,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .imePadding(),
         bottomBar = {
             SendingDataBottomBar(

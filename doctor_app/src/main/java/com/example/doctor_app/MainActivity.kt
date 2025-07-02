@@ -1,20 +1,28 @@
 package com.example.doctor_app
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.example.doctor_app.main.AppViewModel
-import com.example.doctor_app.navigation.Navigation
+import com.example.appointment_details.presentation.AppointmentDetailsScreen
+import com.example.appointment_details.presentation.AppointmentDetailsViewModel
+import com.example.appointment_details.presentation.AppointmentNavigationActions
+import com.example.clinic_details.presentation.ClinicDetailsScreen
+import com.example.clinic_details.presentation.ClinicDetailsUIAction
+import com.example.clinic_details.presentation.ClinicDetailsViewModel
+import com.example.clinic_details.presentation.ClinicNavigationAction
+import com.example.clinics_search.presentation.ClinicsSearchNavigationActions
+import com.example.clinics_search.presentation.ClinicsSearchScreen
+import com.example.clinics_search.presentation.ClinicsSearchViewModel
 
 import com.example.doctor_schedule.presentation.DoctorScheduleNavigationActions
 import com.example.doctor_schedule.presentation.DoctorScheduleScreen
 import com.example.doctor_schedule.presentation.DoctorScheduleViewModel
+import com.example.medical_diagnosis.presentation.DiagnosisNavigationActions
+import com.example.medical_diagnosis.presentation.DiagnosisScreen
+import com.example.medical_diagnosis.presentation.DiagnosisViewModel
 import com.example.ui.theme.Hospital_AutomationTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -24,27 +32,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Hospital_AutomationTheme {
-                val appViewModel = koinViewModel<AppViewModel>()
-                val appUiState = appViewModel.uiState.collectAsState()
+                val viewModel = koinViewModel<ClinicDetailsViewModel>()
+                ClinicDetailsScreen(
+                    viewModel = viewModel,
+                    navigationActions = object : ClinicNavigationAction {
+                        override fun navigateUp() {
+                        }
 
-                enableEdgeToEdge(
-                    statusBarStyle = SystemBarStyle.auto(
-                        Color.TRANSPARENT, Color.TRANSPARENT,
-                        detectDarkMode = {
-                            appUiState.value.isDarkTheme
-                        }),
-                    navigationBarStyle = SystemBarStyle.auto(
-                        Color.TRANSPARENT, Color.TRANSPARENT,
-                        detectDarkMode = {
-                            appUiState.value.isDarkTheme
-                        }),
+                        override fun navigateToDoctorProfile(doctorId: Int) {
+                        }
+
+                        override fun navigateToInitialScreen(doctorId: Int) {
+                        }
+
+                        override fun navigateToVaccines(clinicId: Int) {
+                        }
+                    },
                 )
-
-                Hospital_AutomationTheme(
-                    darkTheme = appUiState.value.isDarkTheme
-                ) {
-                    Navigation()
-                }
             }
         }
     }

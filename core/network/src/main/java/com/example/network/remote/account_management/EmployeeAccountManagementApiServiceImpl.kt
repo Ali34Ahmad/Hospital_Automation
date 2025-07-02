@@ -3,7 +3,7 @@ package com.example.network.remote.account_management
 import android.util.Log
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.DeactivateMyEmployeeAccountRequestDto
-import com.example.network.model.response.profile.CheckEmployeePermissionResponseDto
+import com.example.network.model.response.profile.CheckPermissionResponseDto
 import com.example.network.model.response.profile.DeactivateMyEmployeeAccountResponseDto
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.profile.ReactivateMyEmployeeAccountResponseDto
@@ -95,7 +95,7 @@ class EmployeeAccountManagementApiServiceImpl(
     override suspend fun checkEmployeePermission(
         token: String,
         role: RoleDto
-    ): Result<CheckEmployeePermissionResponseDto, rootError> =
+    ): Result<CheckPermissionResponseDto, rootError> =
         try {
             val response: HttpResponse = client.get(ApiRoutes.checkPermissionEndPointFor(role = role)) {
                 contentType(ContentType.Application.Json)
@@ -103,7 +103,7 @@ class EmployeeAccountManagementApiServiceImpl(
             }
             when (response.status.value) {
                 in 200..299 -> {
-                    val responseBody: CheckEmployeePermissionResponseDto = response.body()
+                    val responseBody: CheckPermissionResponseDto = response.body()
                     Log.v(
                         "Check Employee Permission: In Range 2xx",
                         "Successfully Checked ${responseBody.permissionGranted}"

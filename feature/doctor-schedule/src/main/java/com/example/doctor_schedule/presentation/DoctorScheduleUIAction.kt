@@ -14,11 +14,17 @@ sealed interface DoctorScheduleUIAction {
     object HideSearchBar : DoctorScheduleUIAction
     object ShowDatePicker: DoctorScheduleUIAction
     object HideDatePicker : DoctorScheduleUIAction
-    object OpenDrawer : DoctorScheduleUIAction
-    object CloseDrawer : DoctorScheduleUIAction
-
+    object ToggleDrawer : DoctorScheduleUIAction
+    object ToggleTheme: DoctorScheduleUIAction
+    object RefreshPermission: DoctorScheduleUIAction
+    object ClearDateFilter: DoctorScheduleUIAction
 }
 
 interface DoctorScheduleNavigationActions{
-    fun navigateToAppointmentDetails(id: Int)
+    fun navigateToAppointmentDetails(doctorId: Int)
+    fun navigateToDoctorProfile(doctorId: Int)
+    fun navigateToNotifications(doctorId: Int)
+    fun navigateToMedicalRecords(doctorId: Int)
+    fun navigateToPrescriptions(doctorId: Int)
+    fun navigateToVaccines(doctorId: Int)
 }

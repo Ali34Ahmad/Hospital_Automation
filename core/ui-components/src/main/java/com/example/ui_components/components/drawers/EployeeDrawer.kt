@@ -1,12 +1,16 @@
 package com.example.ui_components.components.drawers
 
+import android.annotation.SuppressLint
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ContentAlpha.disabled
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
@@ -25,16 +29,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.constants.icons.AppIcons
+import com.example.ext.disabled
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
 import com.example.model.DrawerButton
 import com.example.ui.theme.spacing
 
+@SuppressLint("UnusedCrossfadeTargetStateParameter")
 @Composable
 fun EmployeeDrawer(
     state: DrawerState,
@@ -65,7 +73,7 @@ fun EmployeeDrawer(
                     ) {
                         Text(
                             modifier = Modifier
-                                .padding(18.dp)
+                                .padding(MaterialTheme.spacing.medium18)
                                 .weight(1f),
                             text = stringResource(title),
                             style = MaterialTheme.typography.headlineMedium,
@@ -74,21 +82,27 @@ fun EmployeeDrawer(
                         IconButton(
                             onClick = onChangeThemeClick
                         ) {
-                            val icon = if (isDarkTheme) {
-                                painterResource(AppIcons.Outlined.darkMode)
-                            }else{
-                                painterResource(AppIcons.Outlined.lightMode)
+                            Crossfade(isDarkTheme) {
+                                when(it){
+                                    true ->  Icon(
+                                        painter = painterResource(AppIcons.Outlined.darkMode),
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    false -> Icon(
+                                        painter = painterResource(AppIcons.Outlined.lightMode),
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                             }
-                            Icon(
-                                painter = icon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
                         }
                     }
                     buttons.forEachIndexed { currentIndex, item ->
                         NavigationDrawerItem(
-                            modifier = Modifier.padding(bottom = MaterialTheme.spacing.small8),
+                            modifier = Modifier.padding(bottom = MaterialTheme.spacing.small8)
+                                then if(!item.enabled) Modifier.disabled() else Modifier
+                            ,
                             selected = currentIndex == selectedIndex,
                             onClick = {
                                 item.onClick
@@ -115,6 +129,7 @@ fun EmployeeDrawer(
                                 selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                 selectedBadgeColor = MaterialTheme.colorScheme.onPrimaryContainer,
+
                             ),
                             badge = {
                                 item.badgeCount?.let {

@@ -5,6 +5,7 @@ import com.example.model.doctor.clinic.ClinicData
 import com.example.model.doctor.vaccine.VaccineData
 import com.example.model.guardian.GuardianData
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 data class AppointmentData(
@@ -39,4 +40,9 @@ data class AppointmentData(
 
     val clinic: ClinicData,
     val child: ChildData? = null
-)
+){
+    val dateTime : LocalDateTime
+        get() = LocalDateTime.of(date,time)
+    val fullName: String
+        get() = user?.fullName?:child?.fullName?:"no name"
+}

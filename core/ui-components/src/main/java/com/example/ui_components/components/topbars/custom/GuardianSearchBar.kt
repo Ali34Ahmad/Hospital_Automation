@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.ui_components.R
 import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
-import com.example.constants.icons.AppIcons
 
 @Composable
 fun GuardianSearchBar(
@@ -19,10 +18,8 @@ fun GuardianSearchBar(
         query = query,
         onQueryChange = onQueryChange,
         onTrailingIconClick = onTrailingIconClick,
-        onSearch = onSearch,
         placeholderText = R.string.search_for_guardians,
-        trailingIcon = AppIcons.Outlined.close,
-        modifier = modifier,
         onNavigationIconCLick = onNavigateUp,
+        modifier = modifier,
     )
 }

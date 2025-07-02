@@ -1,6 +1,7 @@
 package com.example.ui_components.components.card
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import com.example.ui_components.components.overlapping_image.OverlappingImagesV
 fun DepartmentCard(
     department: Department,
     modifier: Modifier = Modifier,
+    onClick:(Int)-> Unit = {},
 ) {
     val (availabilityState, availabilityTextColor) = if (department.isAvailableNow) {
         Pair(
@@ -45,6 +47,9 @@ fun DepartmentCard(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .background(MaterialTheme.colorScheme.background)
+            .clickable{
+                onClick(department.id)
+            }
     ) {
         Row(
             modifier = Modifier

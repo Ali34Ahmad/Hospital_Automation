@@ -40,9 +40,12 @@
             <option value="$PROJECT_DIR$/feature/add_new_vaccine" />
             <option value="$PROJECT_DIR$/feature/add_residential_address" />
             <option value="$PROJECT_DIR$/feature/admin_profile" />
+            <option value="$PROJECT_DIR$/feature/appointment_details" />
             <option value="$PROJECT_DIR$/feature/child_profile" />
             <option value="$PROJECT_DIR$/feature/children" />
             <option value="$PROJECT_DIR$/feature/children_search" />
+            <option value="$PROJECT_DIR$/feature/clinic_details" />
+            <option value="$PROJECT_DIR$/feature/clinics_search" />
             <option value="$PROJECT_DIR$/feature/doctor-schedule" />
             <option value="$PROJECT_DIR$/feature/doctor_profile" />
             <option value="$PROJECT_DIR$/feature/doctor_signup" />
@@ -55,6 +58,8 @@
             <option value="$PROJECT_DIR$/feature/guardians_search" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />
+            <option value="$PROJECT_DIR$/feature/medical_diagnosis" />
+            <option value="$PROJECT_DIR$/feature/medicines_search" />
             <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
             <option value="$PROJECT_DIR$/feature/upload_child_documents" />

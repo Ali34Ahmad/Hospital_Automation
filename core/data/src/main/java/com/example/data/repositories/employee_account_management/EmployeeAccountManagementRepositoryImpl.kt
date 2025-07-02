@@ -1,5 +1,6 @@
 package com.example.data.repositories.employee_account_management
 
+import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.employee_management.toCheckEmployeePermissionResponse
 import com.example.data.mapper.employee_management.toDeactivateMyEmployeeAccountRequestDto
 import com.example.data.mapper.employee_management.toDeactivateMyEmployeeAccountResponse
@@ -48,12 +49,16 @@ class EmployeeAccountManagementRepositoryImpl(
     override suspend fun checkEmployeePermission(
         role: Role,
     ): Result<CheckEmployeePermissionResponse, rootError> =
-        userPreferencesRepository.executeWithValidToken { token ->
-            employeeAccountManagementApiService.checkEmployeePermission(token=token,
-                role = role.toRoleDto())
-                .map { checkEmployeePermissionResponseDto ->
-                    checkEmployeePermissionResponseDto.toCheckEmployeePermissionResponse()
-                }
-        }
-
+        employeeAccountManagementApiService.checkEmployeePermission(token= FAKE_TOKEN,
+            role = role.toRoleDto())
+            .map { checkEmployeePermissionResponseDto ->
+                checkEmployeePermissionResponseDto.toCheckEmployeePermissionResponse()
+            }
+//        userPreferencesRepository.executeWithValidToken { token ->
+//            employeeAccountManagementApiService.checkEmployeePermission(token=token,
+//                role = role.toRoleDto())
+//                .map { checkEmployeePermissionResponseDto ->
+//                    checkEmployeePermissionResponseDto.toCheckEmployeePermissionResponse()
+//                }
+//        }
 }

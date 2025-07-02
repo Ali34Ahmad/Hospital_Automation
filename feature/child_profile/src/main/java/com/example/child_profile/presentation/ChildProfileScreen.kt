@@ -53,13 +53,6 @@ fun ChildProfileScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-//    val toastMessage = uiState.toastMessage
-//    LaunchedEffect(toastMessage) {
-//        if(toastMessage != null){
-//            Toast.makeText(context, toastMessage.asString(context), Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
     LaunchedEffect(uiState.toastMessage) {
         uiState.toastMessage?.let {
             Toast.makeText(

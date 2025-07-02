@@ -2,7 +2,9 @@ package com.example.model.doctor.appointment
 enum class AppointmentState{
     UPCOMMING,
     PASSED,
-    MISSED;
+    MISSED,
+    PENDING,
+    ;
 
     override fun toString(): String {
         return name.lowercase().replaceFirstChar { it.uppercase() }

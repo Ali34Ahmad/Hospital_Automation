@@ -49,6 +49,11 @@ object ApiRoutes {
 
     object Doctor {
         private const val DOCTOR = "$BASE_URL/doctor"
+        const val PROFILE = "$DOCTOR/show-profile"
+        const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
+        const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
+        const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/get-generic-vaccination-table"
+        const val UPDATE_GENERIC_VACCINATION_TABLE = "$DOCTOR/update-generic-vaccination-table"
         const val SIGNUP = "$DOCTOR/sign-up"
         const val LOGIN = "$DOCTOR/login"
         const val SEND_OTP = "$DOCTOR/send-otp"
@@ -62,12 +67,25 @@ object ApiRoutes {
         const val REACTIVATE_MY_ACCOUNT = "$DOCTOR/reactivate-my-account"
         const val EMPLOYMENT_HISTORY = "$DOCTOR/Doctor-employment-history"
         const val CHECK_PERMISSION = "$DOCTOR/show-permissions"
-        const val PROFILE = "$DOCTOR/show-profile"
+        const val SHOW_APPOINTMENTS = "$DOCTOR/show-appointments"
+        const val SHOW_SINGLE_APPOINTMENT = "$DOCTOR/get-single-appointment-details"
+        const val UPDATE_APPOINTMENT_STATE_TO_PASSED = "$DOCTOR/change-appointment-state-to-passed"
+        const val UPDATE_APPOINTMENT_STATE_TO_MISSED = "$DOCTOR/change-appointment-state-to-missed"
+        const val SEND_WORK_REQUEST = "$DOCTOR/send-doctor-request"
+    }
 
+    object Clinic{
+        const val SHOW_ALL_CLINICS = "$DOCTOR/show-all-clinics"
+        const val SHOW_CLINIC = "$DOCTOR/view-single-clinic-details"
+        const val PROFILE = "$DOCTOR/show-profile"
         const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
         const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
         const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/get-generic-vaccination-table"
     }
+    object Medicine{
+        const val GET_MEDICINES = "$DOCTOR/get-medicine-byname"
+    }
+
 
     fun loginEndpointFor(role: RoleDto): String {
         return when (role) {
@@ -175,6 +193,6 @@ object ApiRoutes {
     }
 
 
-    const val SHOW_APPOINTMENTS = "$DOCTOR/show-appointments"
+
 
 }

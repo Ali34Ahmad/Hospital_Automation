@@ -2,7 +2,7 @@ package com.example.network.model.dto.doctor.appointment
 
 import com.example.network.model.dto.child.ChildDto
 import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
-import com.example.network.model.dto.doctor.ClinicDto
+import com.example.network.model.dto.doctor.clinic.ClinicDto
 import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.dto.user.UserDto
 import com.example.network.serializer.LocalDateSerializer

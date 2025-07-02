@@ -8,4 +8,5 @@ data class DrawerButton(
     @DrawableRes val image: Int,
     val onClick: () -> Unit,
     val badgeCount : Int? = null,
+    val enabled: Boolean = true
 )

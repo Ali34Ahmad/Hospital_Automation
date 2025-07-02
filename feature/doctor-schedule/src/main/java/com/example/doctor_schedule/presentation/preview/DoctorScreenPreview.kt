@@ -30,10 +30,27 @@ val appointments = flowOf(
 )
 @DarkAndLightModePreview
 @Composable
+fun DoctorSchedulePermissionsRequiredPreview(){
+    Hospital_AutomationTheme {
+        DoctorScheduleScreen(
+            uiState = DoctorScheduleUIState(screenState = ScreenState.SUCCESS, doctorId = 112),
+            appointments = appointments.collectAsLazyPagingItems(),
+            navigationActions = mockActions,
+            onAction ={}
+        )
+    }
+}
+@DarkAndLightModePreview
+@Composable
 fun DoctorSchedulePreview(){
     Hospital_AutomationTheme {
         DoctorScheduleScreen(
-            uiState = DoctorScheduleUIState(screenState = ScreenState.SUCCESS),
+            uiState = DoctorScheduleUIState(
+                screenState = ScreenState.SUCCESS,
+                doctorId = 112,
+                isPermissionGranted = true,
+                selectedDate = LocalDate.now()
+            ),
             appointments = appointments.collectAsLazyPagingItems(),
             navigationActions = mockActions,
             onAction ={},
@@ -41,7 +58,27 @@ fun DoctorSchedulePreview(){
     }
 }
 internal val mockActions =  object : DoctorScheduleNavigationActions{
-    override fun navigateToAppointmentDetails(id: Int) {
+    override fun navigateToAppointmentDetails(doctorId: Int) {
 
+    }
+
+    override fun navigateToDoctorProfile(doctorId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToNotifications(doctorId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToMedicalRecords(doctorId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToPrescriptions(doctorId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun navigateToVaccines(doctorId: Int) {
+        TODO("Not yet implemented")
     }
 }

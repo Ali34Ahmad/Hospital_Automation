@@ -1,52 +1,139 @@
 package com.example.ui.fake
 
-import com.example.constants.enums.AppointmentState
-import com.example.model.Appointment
-import java.time.LocalDate
-import java.time.LocalDateTime
 
-fun createSampleAppointments(): List<Appointment> {
-    return listOf(
-        Appointment(
-            id = 123,
-            patientId = 456,
-            patientName = "Ali Ahmad",
-            clinicName = "City Health Clinic",
-            doctorId = 789,
-            childId = null, // Assuming this is an adult appointment
-            dateTime = LocalDateTime.of(2024, 10, 26, 10, 30), // October 26, 2024, 10:30 AM
-            appointmentType = "Vaccination",
-            state = AppointmentState.UPCOMING,
-        ),
-        Appointment(
-            id = 456,
-            patientId = 789,
-            patientName = "Mariam Saoud",
-            clinicName = "Family Wellness Center",
-            doctorId = 101,
-            vaccineName = "MMR Vaccine",
-            childId = 123, // Assuming this is a child appointment
-            dateTime = LocalDateTime.of(2024, 11, 15, 14, 0), // November 15, 2024, 2:00 PM
-            appointmentType = "Child Vaccination",
-            recommendedVisitDate =LocalDate.now(),
-            recommendedVisitNote = "This is a recommended visit note",
+import com.example.model.age.Age
+import com.example.model.child.ChildData
+import com.example.model.doctor.appointment.AppointmentData
+import com.example.model.doctor.appointment.AppointmentState
+import com.example.model.doctor.appointment.AppointmentTypeData
+import com.example.model.doctor.clinic.ClinicData
+import com.example.model.doctor.vaccine.VaccineData
+import com.example.model.enums.AgeUnit
+import com.example.model.guardian.GuardianData
+import java.time.LocalDate
+import java.time.LocalTime
+
+
+private val date = LocalDate.now()
+private val time = LocalTime.now()
+private val clinic = ClinicData(
+    clinicId = 1,
+    name = "dentist"
+)
+private val child = ChildData(
+    id = 1,
+    firstName = "Mazen",
+    lastName = "Ali",
+    fatherFirstName = "Hadi",
+    fatherLastName = "Ali",
+    motherFirstName = "Hoda",
+    motherLastName = "Hoda",
+    dateOfBirth = "2002-10-10"
+)
+private val guardian =GuardianData(
+    id = 1,
+    img = null,
+    fullName = "Ali Bassam Man"
+)
+private val appType =AppointmentTypeData(
+    id = 1,
+    name = "Check up",
+    standardDurationInMinutes = 20,
+    description = "check up desc",
+    doctorId = 1
+)
+private val vaccine = VaccineData(
+    id = 1,
+    name = "fake vaccine",
+    description = "so good for energy",
+    quantity = 10,
+    minAge = Age(
+        value = 10,
+        unit = AgeUnit.DAY
+    ),
+    maxAge = Age(
+        value = 2,
+        unit = AgeUnit.MONTH
+    ),
+)
+fun createSampleAppointments(): List<AppointmentData> =
+    listOf(
+        AppointmentData(
+            id = 1,
+            recommendedVisitDate = date,
+            recommendedVisitNote = "recommendedVisitNote",
             state = AppointmentState.PASSED,
-            medicalDiagnosis = "This is really bad situation"
+            medicalDiagnosis = "Anemia",
+            date = date,
+            time = time,
+            clinicId = 1,
+            appointmentTypeId = 1 ,
+            doctorId =1,
+            patientId = 1,
+            appointmentType = appType,
+            user = guardian,
+            vaccine = null,
+            clinic = clinic,
+            child = null
         ),
-        Appointment(
-            id = 789,
-            patientId = 112,
-            patientName = "Mariam Saoud",
-            clinicName = "City Health Clinic",
-            doctorId = 789,
-            vaccineName = null,
-            childId = null,
-            dateTime = LocalDateTime.of(2024, 12, 5, 9, 0), // December 5, 2024, 9:00 AM
-            appointmentType = "Checkup",
-            recommendedVisitDate = null,
-            recommendedVisitNote = null,
+        AppointmentData(
+            id = 1,
+            recommendedVisitDate = date,
+            recommendedVisitNote = "recommendedVisitNote",
+            state = AppointmentState.UPCOMMING,
+            medicalDiagnosis = "Anemia",
+            date = date,
+            time = time,
+            clinicId = 1,
+            vaccineId = 1,
+            appointmentTypeId = 1 ,
+            childId = 1,
+            doctorId =1,
+            patientId = null,
+            appointmentType = appType,
+            user = null,
+            vaccine = vaccine,
+            clinic = clinic,
+            child = child
+        ),
+        AppointmentData(
+            id = 1,
+            recommendedVisitDate = date,
+            recommendedVisitNote = "recommendedVisitNote",
             state = AppointmentState.MISSED,
-        )
-        // Add more appointments as needed
+            medicalDiagnosis = "Anemia",
+            date = date,
+            time = time,
+            clinicId = 1,
+            vaccineId = 1,
+            appointmentTypeId = 1 ,
+            childId = 1,
+            doctorId =1,
+            patientId = null,
+            appointmentType = appType,
+            user = null,
+            vaccine = vaccine,
+            clinic = clinic,
+            child = child
+        ),
+        AppointmentData(
+            id = 1,
+            recommendedVisitDate = date,
+            recommendedVisitNote = "recommendedVisitNote",
+            state = AppointmentState.PENDING,
+            medicalDiagnosis = "Anemia",
+            date = date,
+            time = time,
+            clinicId = 1,
+            vaccineId = 1,
+            appointmentTypeId = 1 ,
+            childId = 1,
+            doctorId =1,
+            patientId = null,
+            appointmentType = appType,
+            user = null,
+            vaccine = vaccine,
+            clinic = clinic,
+            child = child
+        ),
     )
-}

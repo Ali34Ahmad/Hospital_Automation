@@ -53,7 +53,8 @@ fun EditableAppointmentTypeCard(
     @DrawableRes deleteIcon: Int = AppIcons.Outlined.delete,
     warningMessage: String = stringResource(R.string.description_not_added),
     @DrawableRes noteLeadingIcon: Int = AppIcons.Outlined.errorMessage,
-    @DrawableRes noteTrailingIcon : Int = AppIcons.Outlined.add
+    @DrawableRes noteTrailingIcon : Int = AppIcons.Outlined.add,
+    readOnly: Boolean = false
 ) {
     var showWarningMessage by remember{mutableStateOf(description.isNullOrBlank())}
     Card(
@@ -93,6 +94,7 @@ fun EditableAppointmentTypeCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         BasicTextField(
+                            readOnly = readOnly,
                             modifier = Modifier.wrapContentWidth()
                                 .padding(end = MaterialTheme.spacing.extraSmall4),
                             value = title,
@@ -108,7 +110,7 @@ fun EditableAppointmentTypeCard(
                                 text = "( $subtitle )",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.clickable{onSubtitleClick()}
+                                modifier = Modifier.clickable(enabled = !readOnly){onSubtitleClick()}
                             )
                         }
 
@@ -151,6 +153,7 @@ fun EditableAppointmentTypeCard(
                     }
                     false -> {
                         BasicTextField(
+                            readOnly = readOnly,
                             modifier = Modifier.fillMaxWidth(),
                             value = description?.toString().orEmpty(),
                             onValueChange = onDescriptionChanged,

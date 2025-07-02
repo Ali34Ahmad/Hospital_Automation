@@ -1,7 +1,6 @@
 package com.example.ui_components.components.topbars
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,21 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui_components.R
 import com.example.constants.icons.AppIcons
 import com.example.model.ActionIcon
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
+import com.example.ui_components.components.icon.IconWithBackground
 import com.example.ui_components.components.network_image.NetworkImage
 import com.example.ui_components.components.network_image.NetworkImageError
 import com.example.ui_components.components.network_image.NetworkImageLoader
@@ -44,17 +36,18 @@ import com.example.ui_components.components.network_image.NetworkImageLoader
 @Composable
 fun HospitalAutomationTopBar(
     title: String,
-    onNavigationIconClick: () -> Unit ,
+    onNavigationIconClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int? = null,
     imageUrl: String? = null,
     @DrawableRes imagePlaceholder: Int = AppIcons.Outlined.child,
+    showImagePlaceHolder: Boolean =  false,
     actionIcons: List<ActionIcon> = emptyList()
     ) {
     TopAppBar(
         modifier = modifier,
         title = {
-            if(imageUrl.isNullOrBlank()){
+            if(imageUrl.isNullOrBlank()&& !showImagePlaceHolder){
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
@@ -66,14 +59,28 @@ fun HospitalAutomationTopBar(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    NetworkImage(
+                    if(showImagePlaceHolder){
+                        Icon(
+                            painterResource(imagePlaceholder),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(MaterialTheme.spacing.small8)
+                                .size(MaterialTheme.sizing.medium44)
+                                .background(
+                                    MaterialTheme.colorScheme.primaryContainer,
+                                    shape = CircleShape
+                                ).padding(MaterialTheme.spacing.extraSmall4),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }else{
+                        NetworkImage(
                             model = imageUrl,
-                        modifier = Modifier
-                            .size(MaterialTheme.sizing.medium56)
-                            .padding(MaterialTheme.spacing.small8)
-                            .clip(CircleShape)
-                        ,
-                        contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .padding(MaterialTheme.spacing.small8)
+                                .size(MaterialTheme.sizing.medium44)
+                                .clip(CircleShape)
+                            ,
+                            contentScale = ContentScale.Crop,
                             loading = {
                                 NetworkImageLoader(
                                     modifier=Modifier
@@ -85,8 +92,8 @@ fun HospitalAutomationTopBar(
                             errorCompose = {
                                 NetworkImageError()
                             },
-                    )
-
+                        )
+                    }
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleMedium,
@@ -169,3 +176,18 @@ fun HospitalAutomationTopBarActionsPreview() {
         )
     }
 }
+
+@DarkAndLightModePreview
+@Composable
+fun HospitalAutomationTopBarPlaceholderActionsPreview() {
+    Hospital_AutomationTheme {
+        HospitalAutomationTopBar(
+            title ="Mail",
+            navigationIcon = AppIcons.Outlined.menu,
+            onNavigationIconClick = {},
+            imageUrl = null,
+            showImagePlaceHolder = true
+        )
+    }
+}
+

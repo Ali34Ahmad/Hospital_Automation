@@ -3,6 +3,7 @@ package com.example.doctor_schedule.presentation.model
 import androidx.paging.PagingData
 import androidx.paging.insertSeparators
 import androidx.paging.map
+import com.example.ext.isToday
 import com.example.ext.toAppropriateFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.ui_components.R
@@ -46,15 +47,22 @@ internal fun Flow<PagingData<AppointmentData>>.upcomingMapper() =
         }
             .insertSeparators { before,after->
                 when{
-                    //when we got the first
-                    before == null -> AppointmentUIModel.SeparatorModel(
-                        UiText.StringResource(R.string.today)
-                    )
-                    after == null -> null
-                    before.date.isBefore(after.date)-> {
-                        val dateTime = after.date.toAppropriateFormat()
+                    //when we got the first item
+                    before == null && after!=null-> {
+                        if(after.date.isToday()){
+                            AppointmentUIModel.SeparatorModel(
+                                UiText.StringResource(R.string.today)
+                            )
+                        }else{
+                            AppointmentUIModel.SeparatorModel(
+                                UiText.DynamicString(after.date.toAppropriateFormat())
+                            )
+                        }
+                    }
+                    // at the middle and is not the same date
+                    before!= null && after!=null&& after.date.isAfter(before.date)->{
                         AppointmentUIModel.SeparatorModel(
-                            UiText.DynamicString(dateTime)
+                            UiText.DynamicString(after.date.toAppropriateFormat())
                         )
                     }
                     else -> null

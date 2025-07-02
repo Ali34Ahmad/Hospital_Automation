@@ -4,16 +4,17 @@ import com.example.model.guardian.GuardianData
 import com.example.model.guardian.GuardianFullData
 import com.example.network.model.dto.user.UserDto
 import com.example.network.model.dto.user.UserFullDto
+import com.example.network.utility.ApiRoutes
 
 internal fun UserFullDto.toGuardianData() = GuardianData(
     id = userId,
-    img = imgUrl,
+    img = "${ApiRoutes.BASE_URL}/$imgUrl",
     fullName = "$firstName $middleName $lastName"
 )
 
 internal fun UserDto.toGuardianData() = GuardianData(
     id = userId?:-1,
-    img = imageUrl,
+    img = "${ApiRoutes.BASE_URL}/$imageUrl",
     fullName = "$firstName $middleName $lastName"
 )
 
@@ -31,5 +32,5 @@ internal fun UserFullDto.toGuardianFullData() = GuardianFullData(
     addressStreet = addressStreet,
     addressNote = addressNote,
     gender = gender,
-    imgUrl = imgUrl
+    imgUrl = "${ApiRoutes.BASE_URL}/$imgUrl"
 )

@@ -7,6 +7,7 @@ import com.example.network.model.dto.child.ChildFullDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
+import com.example.network.utility.ApiRoutes
 
 internal fun ChildDto.toChildData() =
     ChildData(
@@ -32,7 +33,7 @@ internal fun ChildFullResponse.toChildFullData(): ChildFullData {
         motherFirstName = child.motherFirstName,
         motherLastName = child.motherLastName,
         dateOfBirth = child.dateOfBirth,
-        birthCertificateImgUrl = child.birthCertificateImgUrl,
+        birthCertificateImgUrl = "${ApiRoutes.BASE_URL}/${child.birthCertificateImgUrl}",
         gender = child.gender,
         employeeId = child.employeeId
     )
@@ -73,7 +74,7 @@ internal fun ChildFullDto.toChildFullData(): ChildFullData = ChildFullData(
     motherFirstName =motherFirstName,
     motherLastName = motherLastName,
     dateOfBirth = dateOfBirth,
-    birthCertificateImgUrl = birthCertificateImgUrl,
+    birthCertificateImgUrl = "${ApiRoutes.BASE_URL}/$birthCertificateImgUrl",
     gender = gender,
     employeeId = employeeId,
     employeeName = user?.let {user-> "${user.firstName} ${user.lastName}" }

@@ -85,8 +85,12 @@ dependencies {
 
     implementation(project(":feature:doctor_profile"))
     implementation(project(":feature:doctor-schedule"))
+    implementation(project(":feature:appointment_details"))
+    implementation(project(":feature:medical_diagnosis"))
 
     implementation(project(":feature:add_new_vaccine"))
+    implementation(project(":feature:clinics_search"))
+    implementation(project(":feature:clinic_details"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

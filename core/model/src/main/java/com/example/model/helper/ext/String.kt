@@ -11,7 +11,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-fun String.toCapitalizedString():String = lowercase().replaceFirstChar { it.uppercase() }
+fun String.toCapitalized():String = lowercase().replaceFirstChar { it.uppercase() }
 //converts from data to age
 fun String.toAge():Age =
     try {

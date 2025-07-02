@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import com.example.constants.enums.AppointmentState
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
-import com.example.model.Appointment
-import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.doctor.appointment.AppointmentData
+import com.example.model.doctor.appointment.AppointmentState
+import com.example.model.helper.ext.toCapitalized
 import com.example.ui.fake.createSampleAppointments
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -27,11 +27,11 @@ import com.example.ui_components.components.tag.OutlinedTagItem
 
 @Composable
 fun AppointmentDetailsCard(
-    appointment: Appointment,
+    appointment: AppointmentData,
     onDepartmentItemClick: () -> Unit,
-    onVaccineItemClick: (() -> Unit)? = null,
     onAppointmentTypeTagClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onVaccineItemClick: (() -> Unit)? = null,
 ) {
     val detailsItemModifier = Modifier.fillMaxWidth()
 
@@ -40,7 +40,7 @@ fun AppointmentDetailsCard(
             AppIcons.Outlined.checkWithBorder
         }
 
-        AppointmentState.UPCOMING, AppointmentState.PENDING -> {
+        AppointmentState.UPCOMMING, AppointmentState.PENDING -> {
             AppIcons.Outlined.clock
         }
 
@@ -72,7 +72,7 @@ fun AppointmentDetailsCard(
             )
     ) {
         OutlinedTagItem(
-            text = appointment.appointmentType,
+            text = appointment.appointmentType.name,
             onClick = onAppointmentTypeTagClick,
             modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16),
         )
@@ -80,15 +80,15 @@ fun AppointmentDetailsCard(
         DetailsItem(
             iconRes = AppIcons.Outlined.department,
             title = stringResource(id = R.string.department),
-            description = appointment.clinicName,
+            description = appointment.clinic.name,
             modifier = detailsItemModifier,
             onClick = onDepartmentItemClick,
         )
-        appointment.vaccineName?.let {
+        appointment.vaccine?.let {
             DetailsItem(
                 iconRes = AppIcons.Outlined.syringe,
                 title = stringResource(id = R.string.vaccine),
-                description = appointment.vaccineName,
+                description = it.name,
                 modifier = detailsItemModifier,
                 onClick = onVaccineItemClick,
             )
@@ -100,11 +100,11 @@ fun AppointmentDetailsCard(
             description = appointment.dateTime.toAppropriateFormat(),
             modifier = detailsItemModifier,
         )
-        appointment.vaccineName?.let {
+        appointment.vaccine?.let {
             DetailsItem(
                 iconRes = AppIcons.Outlined.guardian,
                 title = stringResource(id = R.string.booked_by),
-                description = appointment.patientName,
+                description = appointment.fullName,
                 modifier = detailsItemModifier,
                 onClick = onVaccineItemClick,
             )
@@ -113,7 +113,7 @@ fun AppointmentDetailsCard(
         DetailsItem(
             iconRes = statusIcon,
             title = stringResource(id = R.string.status),
-            description = appointment.state.name.toCapitalizedString(),
+            description = appointment.state.name.toCapitalized(),
             modifier = detailsItemModifier,
             iconColor = statusIconColor,
             iconBackgroundColor = statusBackgroundColor,
@@ -122,7 +122,7 @@ fun AppointmentDetailsCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.upcomingEvent,
                 title = stringResource(id = R.string.next_recommended_visit),
-                description = appointment.recommendedVisitDate.toAppropriateFormat(),
+                description = it.toAppropriateFormat(),
                 modifier = detailsItemModifier,
             )
         }
@@ -130,20 +130,18 @@ fun AppointmentDetailsCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.note,
                 title = stringResource(id = R.string.note),
-                description = appointment.recommendedVisitNote,
+                description = it,
                 modifier = detailsItemModifier,
                 isMultipleLines = true,
             )
         }
-        appointment.medicalDiagnosis?.let {
-            DetailsItem(
-                iconRes = AppIcons.Outlined.medicalDiagnosis,
-                title = stringResource(id = R.string.medical_diagnosis),
-                description = appointment.medicalDiagnosis,
-                modifier = detailsItemModifier,
-                isMultipleLines = true,
-            )
-        }
+        DetailsItem(
+            iconRes = AppIcons.Outlined.medicalDiagnosis,
+            title = stringResource(id = R.string.medical_diagnosis),
+            description = appointment.medicalDiagnosis,
+            modifier = detailsItemModifier,
+            isMultipleLines = true,
+        )
     }
 }
 

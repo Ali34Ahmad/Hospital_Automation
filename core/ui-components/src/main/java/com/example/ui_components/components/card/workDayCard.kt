@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateFormat
 import com.example.model.doctor.day_scedule.DaySchedule
-import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.helper.ext.toCapitalized
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -44,7 +44,7 @@ fun WorkDayCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = workDay.dayOfWeek.name.toCapitalizedString(),
+            text = workDay.dayOfWeek.name.toCapitalized(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier

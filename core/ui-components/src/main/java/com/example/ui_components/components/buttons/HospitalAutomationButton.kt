@@ -49,9 +49,7 @@ fun HospitalAutomationButton(
 
     Button(
         modifier = modifier,
-        onClick = {
-            onClick()
-        },
+        onClick = onClick,
         shape = MaterialTheme.additionalShapes.small12,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -77,8 +75,8 @@ fun HospitalAutomationButton(
             if(isLoading){
                 CircularProgressIndicator(
                     strokeWidth = MaterialTheme.sizing.small2,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(MaterialTheme.sizing.small24)
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(MaterialTheme.sizing.small20)
                 )
             }else{
                 Text(

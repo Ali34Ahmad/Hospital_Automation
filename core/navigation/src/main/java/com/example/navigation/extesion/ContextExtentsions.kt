@@ -24,7 +24,7 @@ fun Context.navigateToCallApp(phoneNumber: String) {
     }
 }
 
-fun Context.navigateToEmailApp(email: String,subject: String?){
+fun Context.navigateToEmailApp(email: String,subject: String?=null){
     val intent = Intent(Intent.ACTION_SENDTO).apply {
         data = "mailto:${Uri.encode(email)}".toUri()
         putExtra(Intent.EXTRA_EMAIL, arrayOf(email))

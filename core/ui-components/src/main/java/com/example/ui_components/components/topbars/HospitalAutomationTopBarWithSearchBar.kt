@@ -2,8 +2,6 @@ package com.example.ui_components.components.topbars
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,9 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -34,7 +30,6 @@ fun HospitalAutomationTopBarWithSearchBar(
     onTrailingIconClick: () -> Unit,
     @StringRes placeholderText: Int,
     onNavigationIconCLick: () -> Unit,
-    onSearch: (String)-> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int = AppIcons.Outlined.arrowBack,
     @DrawableRes trailingIcon: Int? = AppIcons.Outlined.close,
@@ -49,7 +44,7 @@ fun HospitalAutomationTopBarWithSearchBar(
                     onTrailingIconClick = onTrailingIconClick,
                     placeholderText = placeholderText,
                     trailingIcon = trailingIcon,
-                    onSearch = onSearch
+                    onSearch = {}
                 )
         },
         navigationIcon = {
@@ -77,7 +72,6 @@ fun HospitalAutomationTopBarWithSearchBarPreview() {
             mutableStateOf("")
         }
         HospitalAutomationTopBarWithSearchBar(
-            modifier = Modifier.fillMaxWidth(),
             query = query,
             onQueryChange = {
                 query = it
@@ -87,7 +81,7 @@ fun HospitalAutomationTopBarWithSearchBarPreview() {
             },
             placeholderText = R.string.search_for_guardians,
             onNavigationIconCLick = {  },
-            onSearch = {}
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

@@ -9,8 +9,10 @@ import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.appointment.SortType
-import com.example.network.remote.doctor.DoctorApiService
+import com.example.network.remote.appointment.AppointmentsApiService
+import com.example.network.remote.appointment.AppointmentsApiServiceImp
 import com.example.utility.network.NetworkError
+import com.example.utility.network.NetworkException
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 
@@ -20,28 +22,29 @@ class AppointmentPagingSource(
     private val dateFilter: String?,
     private val appointmentState: AppointmentState,
     private val token: String?,
-    private val doctorApiService: DoctorApiService,
+    private val appointmentsApi: AppointmentsApiService,
     private val onStatisticsChanged: (AppointmentsStatisticsData)-> Unit,
 ) : PagingSource<Int, AppointmentData>(){
     override fun getRefreshKey(state: PagingState<Int, AppointmentData>): Int? {
-        return state.anchorPosition?.let{anchorPosition->
+        return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1)?: anchorPage?.nextKey?.minus(1)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AppointmentData> {
-        val currentPage = params.key ?: 1
+        val nextPageNumber = params.key?:1
         if (token == null) {
-            return LoadResult.Error(Throwable(NetworkError.EMPTY_TOKEN.name))
+            return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
         }
         try {
+            var nextKey: Int? = null
             var list = emptyList<AppointmentData>()
 
-            doctorApiService.showAppointments(
+            appointmentsApi.showAppointments(
                 token = token,
                 params = appointmentState.toString(),
-                page = currentPage,
+                page = nextPageNumber,
                 limit = params.loadSize,
                 sort = sort.toString(),
                 queryFilter = queryFilter,
@@ -50,14 +53,16 @@ class AppointmentPagingSource(
                 list = response.data.map { item->
                     item.toAppointmentData()
                 }
+                nextKey = if (list.isEmpty()) null else response.pagination.page+1
                 onStatisticsChanged(response.appointmentStatistics.toAppointmentsStatisticsData())
-            }.onError {
-                return LoadResult.Error(Throwable(it.name))
+            }.onError {error: NetworkError->
+                return LoadResult.Error(NetworkException(error))
             }
+            Log.d("AppointmentPaging","next page : $nextPageNumber")
             return LoadResult.Page(
                 data = list,
                 prevKey = null,
-                nextKey = if (list.isEmpty()) null else currentPage + 1
+                nextKey = nextKey
             )
 
         } catch (e: Exception) {

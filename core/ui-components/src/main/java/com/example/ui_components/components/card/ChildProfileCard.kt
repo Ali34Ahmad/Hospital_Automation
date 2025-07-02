@@ -17,7 +17,7 @@ import com.example.constants.icons.AppIcons
 import com.example.ext.clickableTextRange
 import com.example.ext.toAppropriateFormat
 import com.example.model.enums.Gender
-import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.helper.ext.toCapitalized
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -69,7 +69,7 @@ fun ChildProfileCard(
         DetailsItem(
             iconRes = genderIcon,
             title = stringResource(id = R.string.gender),
-            description = gender.name.toCapitalizedString(),
+            description = gender.name.toCapitalized(),
             modifier = detailsItemModifier,
         )
         DetailsItem(

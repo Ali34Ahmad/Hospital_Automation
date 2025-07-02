@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import com.example.ui_components.R
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -36,31 +37,31 @@ class AddChildViewModel(
     private var _uiState = MutableStateFlow<AddChildUIState>(AddChildUIState(
         guardianId = savedStateHandle.toRoute<AddChildRoute>().guardianId
     ))
-    val uiState: StateFlow<AddChildUIState> = _uiState
-        .onStart {
-            validateOnEachEmission()
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            AddChildUIState(
-                guardianId = savedStateHandle.toRoute<AddChildRoute>().guardianId
-            )
-        )
 
+    val uiState: StateFlow<AddChildUIState> = _uiState.onEach {
+        validateAll()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000L),
+        _uiState.value
+    )
 
     fun onAction(action: AddChildUIActions){
         when(action){
             is AddChildUIActions.OnFirstNameChanged ->{
                 _uiState.value = _uiState.value.copy(firstNameErrorMessage = null)
                 _uiState.value = _uiState.value.copy(firstName = action.newValue)
+                validateFirstName()
             }
             is AddChildUIActions.OnLastNameChanged ->{
                 _uiState.value = _uiState.value.copy(lastNameErrorMessage = null)
                 _uiState.value = _uiState.value.copy(lastName = action.newValue)
+                validateLastName()
             }
             is AddChildUIActions.OnDateChanged -> {
                 _uiState.value = _uiState.value.copy(dateOfBirthErrorMessage = null)
                 _uiState.value = _uiState.value.copy(dateOfBirth = action.date)
+                validateDateOfBirth()
             }
             is AddChildUIActions.OnGenderChanged ->{
                 _uiState.value = _uiState.value.copy(gender = action.newGender)
@@ -68,80 +69,53 @@ class AddChildViewModel(
             is AddChildUIActions.OnFatherFirstNameChanged ->{
                 _uiState.value = _uiState.value.copy(fatherFirstNameErrorMessage = null)
                 _uiState.value = _uiState.value.copy(fatherFirstName = action.newValue)
+                validateFatherFirstName()
             }
             is AddChildUIActions.OnFatherLastNameChanged -> {
                 _uiState.value = _uiState.value.copy(fatherLastNameErrorMessage = null)
                 _uiState.value = _uiState.value.copy(fatherLastName = action.newValue)
+                validateFatherLastName()
             }
             is AddChildUIActions.OnMotherFirstNameChanged ->{
                 _uiState.value = _uiState.value.copy(motherFirstNameErrorMessage = null)
                 _uiState.value = _uiState.value.copy(motherFirstName = action.newValue)
+                validateMotherFirstName()
             }
             is AddChildUIActions.OnMotherLastNameChanged ->{
                 _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = null)
                 _uiState.value = _uiState.value.copy(motherLastName = action.newValue)
-            }
-            AddChildUIActions.Validate ->{
-                _uiState.value = _uiState.value.copy(isValid = false)
-                validateFirstName()
-                validateLastName()
-                validateDateOfBirth()
-                validateFatherFirstName()
-                validateFatherLastName()
-                validateMotherFirstName()
                 validateMotherLastName()
-                _uiState.value.apply {
-                   val isValid = listOf(
-                       firstNameErrorMessage,lastNameErrorMessage,dateOfBirthErrorMessage,
-                       fatherFirstNameErrorMessage,fatherFirstNameErrorMessage,
-                       motherFirstNameErrorMessage,motherLastNameErrorMessage
-                   ).all{it == null}
-                    _uiState.value = _uiState.value.copy(isValid = isValid)
-                    if(isValid) _uiState.value = _uiState.value.copy(sendingDataButtonState = BottomBarState.IDLE)
-                }
-
             }
             is AddChildUIActions.ChangeDatePickerVisibility->{
                 _uiState.value = _uiState.value.copy(isDatePickerVisible = action.isVisible)
+                validateDateOfBirth()
             }
             AddChildUIActions.SendData ->{
-
-                    onAction(AddChildUIActions.Validate)
-                    if(_uiState.value.isValid){
-                        //sending data using the network call
-                        viewModelScope.launch {
+                if(_uiState.value.isValid){
+                    viewModelScope.launch {
+                        _uiState.value = _uiState.value.copy(
+                            sendingDataButtonState = BottomBarState.LOADING
+                        )
+                        addChildUseCase(
+                            guardianId = _uiState.value.guardianId,
+                            child = _uiState.value.toChildFullData()
+                        ).onSuccess{child: ChildFullData->
                             _uiState.value = _uiState.value.copy(
-                                sendingDataButtonState = BottomBarState.LOADING
+                                sendingDataButtonState = BottomBarState.SUCCESS,
+                                childId = child.childId
                             )
-                            addChildUseCase(
-                                guardianId = _uiState.value.guardianId,
-                                child = _uiState.value.toChildFullData()
-                            ).onSuccess{child: ChildFullData->
-                                _uiState.value = _uiState.value.copy(
-                                    sendingDataButtonState = BottomBarState.SUCCESS,
-                                    childId = child.childId
-                                )
-                                delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
-                                _uiState.value = _uiState.value.copy(isSendingDataButtonVisible = false)
-                            }.onError {
-                                _uiState.value = _uiState.value.copy(
-                                    sendingDataButtonState = BottomBarState.FAILURE
-                                )
-                                delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
-                                onAction(AddChildUIActions.ClearForm)
-                            }
+                            delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
+                            _uiState.value = _uiState.value.copy(isSendingDataButtonVisible = false)
+                        }.onError {
+                            _uiState.value = _uiState.value.copy(
+                                sendingDataButtonState = BottomBarState.IDLE
+                            )
                         }
-
-
+                    }
                 }
-            }
-            AddChildUIActions.ClearForm -> {
-                val bottomBarState = if (_uiState.value.sendingDataButtonState == BottomBarState.SUCCESS) {
-                    BottomBarState.SUCCESS
-                } else {
-                    BottomBarState.IDLE
+                else{
+                    showToast(UiText.StringResource(R.string.invalid_values))
                 }
-                _uiState.value = AddChildUIState(sendingDataButtonState = bottomBarState )
             }
         }
     }
@@ -196,80 +170,28 @@ class AddChildViewModel(
         }
     }
 
-    @OptIn(FlowPreview::class)
-    private fun validateOnEachEmission(){
-        viewModelScope.launch {
-            uiState.map { it.firstName }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateFirstName()
-                }.collect {
-
-                }
+    /**
+     * checks if all values in the form are valid, then it updates the button state
+     * from [BottomBarState.DISABLED] to [BottomBarState.IDLE] and make it ready
+     * to do its work.
+     *
+     * @author Ali Mansoura
+     */
+    fun validateAll(){
+        _uiState.value = _uiState.value.copy(isValid = false)
+        _uiState.value.run {
+            val isValid = listOf(
+                firstNameErrorMessage,lastNameErrorMessage,
+                fatherFirstNameErrorMessage,fatherLastNameErrorMessage,
+                motherFirstNameErrorMessage,motherLastNameErrorMessage,
+                dateOfBirthErrorMessage
+            ).all{it == null}
+            _uiState.value = _uiState.value.copy(isValid = isValid)
+            if(isValid) _uiState.value = _uiState.value.copy(sendingDataButtonState = BottomBarState.IDLE)
         }
-        viewModelScope.launch {
-            uiState.map { it.lastName }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateLastName()
-                }.collect {
+    }
 
-                }
-        }
-        viewModelScope.launch {
-            uiState.map { it.dateOfBirth }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateDateOfBirth()
-                }.collect {
-
-                }
-        }
-        viewModelScope.launch {
-            uiState.map { it.fatherFirstName }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateFatherFirstName()
-                }.collect {
-
-                }
-        }
-        viewModelScope.launch {
-            uiState.map { it.fatherLastName }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateFatherLastName()
-                }.collect {
-
-                }
-        }
-        viewModelScope.launch {
-            uiState.map { it.motherFirstName }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateMotherFirstName()
-                }.collect {
-
-                }
-        }
-        viewModelScope.launch {
-            uiState.map { it.motherLastName }
-                .distinctUntilChanged()
-                .debounce(500L)
-                .onEach {
-                    validateMotherLastName()
-                }.collect {
-
-                }
-        }
-        viewModelScope.launch {
-
-        }
+    fun showToast(message: UiText){
+        _uiState.value = _uiState.value.copy(toastMessage = message)
     }
 }
