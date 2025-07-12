@@ -1,7 +1,7 @@
 package com.example.domain.use_cases.upload_employee_documents
 
 import android.net.Uri
-import com.example.domain.repositories.UploadEmploymentDocumentsRepository
+import com.example.domain.repositories.file.UploadEmploymentDocumentsRepository
 import com.example.model.enums.Role
 import com.example.model.file.ProgressUpdate
 import kotlinx.coroutines.flow.Flow

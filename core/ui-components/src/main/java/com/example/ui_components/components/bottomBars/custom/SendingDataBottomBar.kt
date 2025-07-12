@@ -3,6 +3,7 @@ package com.example.ui_components.components.bottomBars.custom
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -19,50 +20,58 @@ import com.example.ui_components.components.buttons.HospitalAutomationButton
 
 @Composable
 fun SendingDataBottomBar(
-    text: String ,
-    onButtonClick: ()-> Unit,
+    text: String,
+    onButtonClick: () -> Unit,
     state: BottomBarState,
-    onSuccess:()->Unit,
+    onSuccess: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(state) {
-        if(state == BottomBarState.SUCCESS){
+        if (state == BottomBarState.SUCCESS) {
             onSuccess()
         }
     }
     //add animations here
     AnimatedContent(
-        targetState = state
-    ) { state->
-        when(state){
+        targetState = state,
+    ) { state ->
+        when (state) {
             BottomBarState.IDLE -> {
                 HospitalAutomationButton(
                     onClick = onButtonClick,
                     text = text,
-                    modifier = modifier,
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .then(modifier),
                     isLoading = false,
                     enabled = true,
                     hasError = false
                 )
             }
-            BottomBarState.LOADING ->{
+
+            BottomBarState.LOADING -> {
                 HospitalAutomationButton(
                     onClick = onButtonClick,
                     text = text,
-                    modifier = modifier,
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .then(modifier),
                     isLoading = true,
                     enabled = false,
                     hasError = false
                 )
             }
+
             BottomBarState.FAILURE -> Unit
             BottomBarState.SUCCESS -> Unit
 
-            BottomBarState.DISABLED ->{
+            BottomBarState.DISABLED -> {
                 HospitalAutomationButton(
                     onClick = onButtonClick,
                     text = text,
-                    modifier = modifier,
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .then(modifier),
                     enabled = false,
                 )
             }
@@ -82,13 +91,15 @@ fun SendingDataBottomBarPreview() {
                     onButtonClick = {
                     },
                     state = BottomBarState.LOADING,
-                    modifier = Modifier.fillMaxWidth().padding(
-                        MaterialTheme.spacing.medium16
-                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            MaterialTheme.spacing.medium16
+                        ),
                 )
             },
         ) {
-            Box(modifier = Modifier.padding(it)){}
+            Box(modifier = Modifier.padding(it)) {}
         }
     }
 }

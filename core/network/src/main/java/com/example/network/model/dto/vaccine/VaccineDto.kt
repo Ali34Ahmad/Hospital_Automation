@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class VaccineDto(
-    val id: Int,
+    @SerialName("vaccinesId")
+    val id: Int?=null,
 
     val name: String,
     val description: String,

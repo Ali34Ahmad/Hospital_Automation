@@ -33,7 +33,7 @@ import com.example.constants.icons.AppIcons
 import com.example.doctor_schedule.presentation.custom_screens.PermissionRequiredScreen
 import com.example.doctor_schedule.presentation.custom_screens.SuccessScreen
 import com.example.doctor_schedule.presentation.model.AppointmentUIModel
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.DrawerButton
 import com.example.model.enums.ScreenState
 import com.example.ui.theme.sizing
@@ -215,7 +215,7 @@ internal fun DoctorScheduleScreen(
             ) {
                 FilterItem(
                     title = stringResource(R.string.date_filter),
-                    subtitle = uiState.selectedDate?.toAppropriateFormat().toString(),
+                    subtitle = uiState.selectedDate?.toAppropriateDateFormat().toString(),
                     onClose = {
                         onAction(
                             DoctorScheduleUIAction.ClearDateFilter

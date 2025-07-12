@@ -2,7 +2,7 @@ package com.example.model.doctor.appointment
 
 import com.example.model.child.ChildData
 import com.example.model.doctor.clinic.ClinicData
-import com.example.model.doctor.vaccine.VaccineData
+import com.example.model.vaccine.VaccineData
 import com.example.model.guardian.GuardianData
 import java.time.LocalDate
 import java.time.LocalDateTime

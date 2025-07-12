@@ -13,7 +13,7 @@ import com.example.data.mapper.auth.toSendOtpResponse
 import com.example.data.mapper.auth.toVerifyEmailOtpRequestDto
 import com.example.data.mapper.auth.toVerifyEmailOtpResponse
 import com.example.data.mapper.enums.toRoleDto
-import com.example.domain.repositories.AuthRepository
+import com.example.domain.repositories.auth.AuthRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.auth.login.LoginRequest
 import com.example.model.auth.login.LoginResponse

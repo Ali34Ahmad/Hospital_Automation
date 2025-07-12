@@ -2,8 +2,8 @@ package com.example.data.repositories.doctor
 
 import com.example.data.mapper.doctor.toDoctorProfileResponse
 import com.example.data.mapper.employee_profile.toEmployeeProfileResponse
-import com.example.domain.repositories.EmployeeProfileRepository
-import com.example.domain.repositories.doctor.DoctorProfileRepository
+import com.example.domain.repositories.profile.EmployeeProfileRepository
+import com.example.domain.repositories.profile.DoctorProfileRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.doctor.doctor_profile.DoctorProfileResponse
 import com.example.model.employee.EmployeeProfileResponse

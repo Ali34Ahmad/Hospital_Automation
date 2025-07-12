@@ -1,6 +1,6 @@
 package com.example.domain.use_cases.auth
 
-import com.example.domain.repositories.AuthRepository
+import com.example.domain.repositories.auth.AuthRepository
 import com.example.model.auth.login.LoginRequest
 import com.example.model.auth.login.LoginResponse
 import com.example.utility.network.Result

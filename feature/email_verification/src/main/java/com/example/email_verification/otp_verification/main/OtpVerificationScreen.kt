@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.constants.icons.AppIcons
-import com.example.ext.clickableTextRange
 import com.example.model.enums.ScreenState
+import com.example.model.helper.ext.clickableTextRange
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing

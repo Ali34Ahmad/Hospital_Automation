@@ -2,7 +2,7 @@ package com.example.data.repositories.employment_history
 
 import com.example.data.mapper.employment_history.toEmploymentHistoryResponse
 import com.example.data.mapper.enums.toRoleDto
-import com.example.domain.repositories.EmploymentHistoryRepository
+import com.example.domain.repositories.profile.EmploymentHistoryRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.employment_history.EmploymentHistoryResponse
 import com.example.model.enums.Role

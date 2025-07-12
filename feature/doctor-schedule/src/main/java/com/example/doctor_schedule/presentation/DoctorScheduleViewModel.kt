@@ -12,7 +12,8 @@ import com.example.domain.use_cases.doctor.appointment.GetAppointmentsFlowUseCas
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
@@ -94,7 +95,7 @@ class DoctorScheduleViewModel(
                 onStatisticsChanged = { statistics ->
                     updateStatistics(statistics)
                 },
-                dateFilter = filter.date?.toAppropriateFormat(),
+                dateFilter = filter.date?.toAppropriateDateFormat(),
                 queryFilter = filter.query,
             ).upcomingMapper()
 

@@ -17,7 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.example.constants.enums.NotificationType
 import com.example.constants.enums.RequestState
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateTimeFormat
 import com.example.model.Notification
 import com.example.ui.fake.createSampleNotifications
 import com.example.ui.helper.DarkAndLightModePreview
@@ -91,7 +92,7 @@ fun NotificationWrapperCard(
                     modifier = Modifier.weight(1f)
                 )
                 Text(
-                    text = notification.sendTime.toLocalTime().toAppropriateFormat(),
+                    text = notification.sendTime.toLocalTime().toAppropriateTimeFormat(),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 )

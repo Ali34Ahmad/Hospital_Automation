@@ -1,6 +1,6 @@
 package com.example.domain.use_cases.auth.sing_up
 
-import com.example.domain.repositories.AuthRepository
+import com.example.domain.repositories.auth.AuthRepository
 import com.example.domain.repositories.auth.singup.BaseSignUpRepository
 import com.example.domain.repositories.auth.singup.DoctorSignUpRepository
 import com.example.model.auth.signup.BaseRegistrationRequest

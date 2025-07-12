@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
 import com.example.model.doctor.day_scedule.DaySchedule
 import com.example.model.helper.ext.toCapitalized
 import com.example.ui.fake.createSampleWorkDayList
@@ -23,8 +23,6 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground
-import java.time.DayOfWeek
-import java.time.LocalTime
 
 @Composable
 fun WorkDayCard(
@@ -57,7 +55,7 @@ fun WorkDayCard(
             overflow = TextOverflow.Ellipsis,
         )
         Text(
-            text = (workDay.startTime..workDay.endTime).toAppropriateFormat(),
+            text = (workDay.startTime..workDay.endTime).toAppropriateAddressFormat(),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
             modifier = Modifier

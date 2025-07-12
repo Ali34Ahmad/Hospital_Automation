@@ -23,7 +23,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleEmployeeProfileResponse
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.model.enums.Gender
@@ -153,7 +154,7 @@ fun EmployeeProfileScreen(
             if (uiState.profileScreenState == ScreenState.SUCCESS &&
                 uiState.userInfo != null
             ) {
-                val name = uiState.userInfo.profile.fullName.toAppropriateFormat()
+                val name = uiState.userInfo.profile.fullName.toAppropriateNameFormat()
                 val subject = stringResource(R.string.medicare)
                 PullToRefreshBox(
                     refreshing = uiState.isRefreshing,
@@ -191,7 +192,7 @@ fun EmployeeProfileScreen(
                                 },
                                 phoneNumber = uiState.userInfo.profile.phoneNumber,
                                 profileImageUrl = uiState.userInfo.profile.imageUrl ?: "",
-                                address = uiState.userInfo.profile.address.toAppropriateFormat(),
+                                address = uiState.userInfo.profile.address.toAppropriateAddressFormat(),
                                 gender = uiState.userInfo.profile.gender ?: Gender.MALE,
                                 email = uiState.userInfo.profile.email,
                                 isResigned = uiState.userInfo.profile.isResigned,

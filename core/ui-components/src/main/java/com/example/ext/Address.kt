@@ -2,7 +2,7 @@ package com.example.ext
 
 import com.example.model.address.Address
 
-fun Address.toAppropriateFormat(): String {
+fun Address.toAppropriateAddressFormat(): String {
     val addressParts = listOfNotNull(
         this.street?.takeIf { it.isNotBlank() },
         this.region?.takeIf { it.isNotBlank() },

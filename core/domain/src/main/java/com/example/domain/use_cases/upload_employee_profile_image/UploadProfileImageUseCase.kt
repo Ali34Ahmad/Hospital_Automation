@@ -1,7 +1,7 @@
 package com.example.domain.use_cases.upload_employee_profile_image
 
 import android.net.Uri
-import com.example.domain.repositories.UploadEmployeeProfileImageRepository
+import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
 import com.example.model.enums.Role
 import com.example.model.file.ProgressUpdate
 import kotlinx.coroutines.flow.Flow

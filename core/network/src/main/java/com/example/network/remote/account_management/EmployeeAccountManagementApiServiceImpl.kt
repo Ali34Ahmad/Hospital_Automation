@@ -97,10 +97,11 @@ class EmployeeAccountManagementApiServiceImpl(
         role: RoleDto
     ): Result<CheckPermissionResponseDto, rootError> =
         try {
-            val response: HttpResponse = client.get(ApiRoutes.checkPermissionEndPointFor(role = role)) {
-                contentType(ContentType.Application.Json)
-                bearerAuth(token)
-            }
+            val response: HttpResponse =
+                client.get(ApiRoutes.checkPermissionEndPointFor(role = role)) {
+                    contentType(ContentType.Application.Json)
+                    bearerAuth(token)
+                }
             when (response.status.value) {
                 in 200..299 -> {
                     val responseBody: CheckPermissionResponseDto = response.body()

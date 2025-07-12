@@ -15,10 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.ext.toDate
-import com.example.ext.toGender
 import com.example.model.FileInfo
 import com.example.model.enums.ScreenState
+import com.example.model.helper.ext.toGender
+import com.example.model.helper.ext.toLocalDate
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.custom.AddGuardianButton
@@ -152,7 +152,7 @@ fun ChildProfileScreen(
                                     fatherName = child.fatherLastName,
                                     motherName = child.motherLastName,
                                     gender = child.gender.toGender(),
-                                    dateOfBirth = child.dateOfBirth.toDate(),
+                                    dateOfBirth = child.dateOfBirth.toLocalDate(),
                                     employeeName = child.employeeName
                                         ?: stringResource(R.string.not_provided),
                                     guardiansNumber = child.numberOfGuardians ?: 1,

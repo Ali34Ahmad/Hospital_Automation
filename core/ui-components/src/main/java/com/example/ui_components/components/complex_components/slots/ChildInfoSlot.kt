@@ -28,7 +28,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -36,6 +36,7 @@ import com.example.ui_components.R
 import com.example.ui_components.components.dialog.DatePickerDialog
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 import com.example.constants.icons.AppIcons
+import com.example.ext.toAppropriateDateFormat
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 
 @Composable
@@ -114,8 +115,7 @@ fun ChildInfoSlot(
         Surface {
             DatePickerDialog(
                 onConfirm = {
-                    //to appropriat fromat
-                    onDateOfBirthChanged(it.toAppropriateFormat())
+                    onDateOfBirthChanged(it.toAppropriateDateFormat())
                     onDatePickerVisibilityChanged(false)
                 },
                 datePickerState = rememberUseCaseState(

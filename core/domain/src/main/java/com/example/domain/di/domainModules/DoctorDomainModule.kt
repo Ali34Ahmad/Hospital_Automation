@@ -13,6 +13,7 @@ import com.example.domain.di.doctor.doctorProfileUseCasesModule
 import com.example.domain.di.employmentHistoryUseCasesModule
 import com.example.domain.di.getAdminProfileByIdUseCaseModule
 import com.example.domain.di.userPreferencesUseCasesModule
+import com.example.domain.di.vaccine.vaccineUseCase
 import com.example.domain.di.validatorUseCasesModule
 import com.example.domain.di.work_request.workRequestUseCasesModule
 
@@ -36,6 +37,7 @@ val doctorDomainModule = module {
         validatorUseCasesModule,
         userPreferencesUseCasesModule,
         clinicsUseCasesModule,
-        workRequestUseCasesModule
+        workRequestUseCasesModule,
+        vaccineUseCase,
     )
 }

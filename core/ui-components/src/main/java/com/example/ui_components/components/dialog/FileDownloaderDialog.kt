@@ -31,11 +31,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
 import com.example.ext.toFileSizeFormatReadable
 import com.example.model.FileInfo
 import com.example.model.enums.FileDownloadingState
-import com.example.model.user.FullName
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalShapes

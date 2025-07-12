@@ -2,6 +2,7 @@ package com.example.model.helper.ext
 
 import com.example.model.age.Age
 import com.example.model.enums.AgeUnit
+import com.example.model.enums.Gender
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -11,6 +12,24 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+
+fun String.clickableTextRange(text: String): IntRange {
+    val startIndex = this.indexOf(text)
+    if (startIndex == -1) {
+        return 0..0 // Name not found
+    }
+    val endIndex = startIndex + text.length - 1
+    return startIndex..endIndex
+}
+
+fun String.toGender(): Gender{
+    return when{
+        this.equals("male",ignoreCase = true) -> Gender.MALE
+        else -> Gender.FEMALE
+    }
+}
+
+fun String.toCapitalizedString():String = lowercase().replaceFirstChar { it.uppercase() }
 fun String.toCapitalized():String = lowercase().replaceFirstChar { it.uppercase() }
 //converts from data to age
 fun String.toAge():Age =
@@ -39,7 +58,7 @@ fun String.toAge():Age =
         Age(value,unit)
     }catch (e: Exception){
         e.printStackTrace()
-        Age(value = 0, unit = AgeUnit.NOT_SPECIFIED)
+        Age(value = 0, unit = AgeUnit.NONE)
     }
 
 fun String.toAgeFromDate()

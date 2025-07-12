@@ -57,6 +57,7 @@ fun HospitalAutomationTextFiled(
         errorIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
         errorTextColor = MaterialTheme.colorScheme.onBackground,
+        errorContainerColor = MaterialTheme.colorScheme.background,
     ),
     shape:Shape= MaterialTheme.shapes.extraSmall,
 ) {

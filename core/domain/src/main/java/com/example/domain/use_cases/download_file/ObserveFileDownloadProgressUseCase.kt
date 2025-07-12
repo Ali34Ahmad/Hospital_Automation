@@ -1,6 +1,6 @@
 package com.example.domain.use_cases.download_file
 
-import com.example.domain.repositories.DownloadFileRepository
+import com.example.domain.repositories.file.DownloadFileRepository
 import com.example.model.download_file.DownloadProgress
 import kotlinx.coroutines.flow.Flow
 

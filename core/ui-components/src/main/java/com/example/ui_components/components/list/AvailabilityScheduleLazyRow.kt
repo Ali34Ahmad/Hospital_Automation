@@ -10,9 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
 import com.example.model.doctor.day_scedule.DaySchedule
-import com.example.model.helper.ext.toCapitalized
+import com.example.model.helper.ext.toCapitalizedString
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -32,8 +32,8 @@ fun AvailabilityScheduleLazyRow(
     ) {
         items(workDays) { workDay ->
             SubDetailsItem(
-                title = workDay.dayOfWeek.name.toCapitalized(),
-                description = (workDay.startTime..workDay.endTime).toAppropriateFormat(),
+                title = workDay.dayOfWeek.name.toCapitalizedString(),
+                description = (workDay.startTime..workDay.endTime).toAppropriateAddressFormat(),
                 onClick = {},
             )
         }

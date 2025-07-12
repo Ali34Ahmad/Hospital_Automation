@@ -1,21 +1,35 @@
 package com.example.ui.fake
 
-import com.example.model.Vaccine
+import com.example.model.vaccine.VaccinationTableVisit
+import com.example.model.vaccine.VaccineMainInfo
 
-fun createFakeVaccinationData(): List<Pair<Int, List<Vaccine>>> {
+fun createFakeVaccinationData(): List<VaccinationTableVisit> {
     return listOf(
-        1 to listOf(
-            Vaccine(name = "Vaccine A"),
-            Vaccine(name = "Vaccine B"),
-            Vaccine(name = "Vaccine C"),
+        VaccinationTableVisit(
+            visitNumber = 1,
+            vaccines = listOf(
+                VaccineMainInfo(id = 1, name = "Vaccine A"),
+                VaccineMainInfo(id = 1, name = "Vaccine B"),
+                VaccineMainInfo(id = 1, name = "Vaccine C"),
+            )
         ),
-        2 to listOf(
-            Vaccine(name = "Vaccine D"),
+        VaccinationTableVisit(
+            visitNumber = 2,
+            vaccines = listOf(
+                VaccineMainInfo(id = 1, name = "Vaccine A"),
+            )
         ),
-        3 to listOf(
-            Vaccine(name = "Vaccine E"),
-            Vaccine(name = "Vaccine F"),
-            Vaccine(name = "Vaccine G"),
-        )
+        VaccinationTableVisit(
+            visitNumber = 3,
+            vaccines = listOf(
+                VaccineMainInfo(id = 1, name = "Vaccine A"),
+                VaccineMainInfo(id = 1, name = "Vaccine B"),
+                VaccineMainInfo(id = 1, name = "Vaccine C"),
+            ),
+        ),
+        VaccinationTableVisit(
+            visitNumber = 4,
+            vaccines = listOf(),
+        ),
     )
 }

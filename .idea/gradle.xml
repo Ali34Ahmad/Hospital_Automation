@@ -53,6 +53,7 @@
             <option value="$PROJECT_DIR$/feature/employee_profile" />
             <option value="$PROJECT_DIR$/feature/employment_history" />
             <option value="$PROJECT_DIR$/feature/enter_email" />
+            <option value="$PROJECT_DIR$/feature/generic_vaccination_table" />
             <option value="$PROJECT_DIR$/feature/guardian_profile" />
             <option value="$PROJECT_DIR$/feature/guardians" />
             <option value="$PROJECT_DIR$/feature/guardians_search" />
@@ -65,6 +66,7 @@
             <option value="$PROJECT_DIR$/feature/upload_child_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_profile_image" />
+            <option value="$PROJECT_DIR$/feature/vaccine_details" />
           </set>
         </option>
       </GradleProjectSettings>

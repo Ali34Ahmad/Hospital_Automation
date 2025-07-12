@@ -3,7 +3,7 @@ package com.example.data.repositories.upload_employee_image
 import android.net.Uri
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.mapper.file.toProgressUpdate
-import com.example.domain.repositories.UploadEmployeeProfileImageRepository
+import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.enums.Role
 import com.example.model.file.ProgressUpdate

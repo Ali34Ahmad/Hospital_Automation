@@ -8,7 +8,6 @@ class DoctorProfileUiActions(
 
 
 interface DoctorProfileBusinessUiActions {
-    fun onRefreshProfile()
     fun onDeactivateMyAccount()
     fun onReactivateMyAccount()
     fun onLogout()

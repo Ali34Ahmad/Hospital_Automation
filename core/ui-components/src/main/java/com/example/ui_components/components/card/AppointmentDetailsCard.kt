@@ -13,7 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateDateFormat
+import com.example.ext.toAppropriateDateTimeFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.helper.ext.toCapitalized
@@ -97,7 +98,7 @@ fun AppointmentDetailsCard(
         DetailsItem(
             iconRes = AppIcons.Outlined.specificDate,
             title = stringResource(id = R.string.date_and_time),
-            description = appointment.dateTime.toAppropriateFormat(),
+            description = appointment.dateTime.toAppropriateDateTimeFormat(),
             modifier = detailsItemModifier,
         )
         appointment.vaccine?.let {
@@ -122,7 +123,7 @@ fun AppointmentDetailsCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.upcomingEvent,
                 title = stringResource(id = R.string.next_recommended_visit),
-                description = it.toAppropriateFormat(),
+                description = it.toAppropriateDateFormat(),
                 modifier = detailsItemModifier,
             )
         }

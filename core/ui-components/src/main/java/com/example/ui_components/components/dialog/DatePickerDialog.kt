@@ -10,7 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
@@ -59,7 +60,7 @@ fun DatePickerDialogPreview() {
                 Button(onClick = { datePickerState.show() }) {
                     Text("Open")
                 }
-                Text(selectedDate?.toAppropriateFormat()?:"NULL")
+                Text(selectedDate?.toAppropriateDateFormat()?:"NULL")
             }
         }
     }

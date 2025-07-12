@@ -34,7 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
@@ -106,7 +106,7 @@ fun FilterItemPreview() {
         ) {
             FilterItem(
                 title = stringResource(R.string.date_filter),
-                subtitle = LocalDate.now().toAppropriateFormat(),
+                subtitle = LocalDate.now().toAppropriateDateFormat(),
                 onClose = {
                     isShown = false
                 }

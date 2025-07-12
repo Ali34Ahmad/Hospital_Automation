@@ -14,11 +14,11 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data object AddNewVaccineRoute
 
-fun NavController.navigateToSignUpScreen() {
+fun NavController.navigateToAddNewVaccineScreen() {
     navigateToScreen(AddNewVaccineRoute)
 }
 
-fun NavGraphBuilder.signUpScreen(
+fun NavGraphBuilder.addNewVaccineScreen(
     onNavigateToVaccineDetailsScreenScreen: (vaccineId: Int) -> Unit,
     onNavigateUp: () -> Unit,
 ) {

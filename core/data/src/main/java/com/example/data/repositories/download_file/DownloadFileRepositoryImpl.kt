@@ -1,7 +1,7 @@
 package com.example.data.repositories.download_file
 
 import com.example.data.mapper.download_progress.toDownloadProgress
-import com.example.domain.repositories.DownloadFileRepository
+import com.example.domain.repositories.file.DownloadFileRepository
 import com.example.model.download_file.DownloadProgress
 import com.example.network.downloader.FileDownloaderService
 import kotlinx.coroutines.flow.Flow

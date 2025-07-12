@@ -1,6 +1,6 @@
 package com.example.domain.use_cases.download_file
 
-import com.example.domain.repositories.DownloadFileRepository
+import com.example.domain.repositories.file.DownloadFileRepository
 
 class DownloadFileUseCase(
     private val downloadFileRepository: DownloadFileRepository,

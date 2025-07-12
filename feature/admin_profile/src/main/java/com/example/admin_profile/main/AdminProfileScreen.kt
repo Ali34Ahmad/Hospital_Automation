@@ -23,7 +23,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleAdminProfile
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.model.enums.Gender
@@ -125,7 +126,7 @@ fun AdminProfileScreen(
             if (uiState.userInfo != null &&
                 uiState.screenState == ScreenState.SUCCESS
             ) {
-                val name = uiState.userInfo.admin.fullName.toAppropriateFormat()
+                val name = uiState.userInfo.admin.fullName.toAppropriateNameFormat()
                 val subject = stringResource(R.string.medicare)
                 PullToRefreshBox(
                     refreshing = uiState.isRefreshing,
@@ -162,7 +163,7 @@ fun AdminProfileScreen(
                                 },
                                 phoneNumber = uiState.userInfo.admin.phoneNumber,
                                 adminImageUrl = uiState.userInfo.admin.imageUrl,
-                                address = uiState.userInfo.admin.address.toAppropriateFormat(),
+                                address = uiState.userInfo.admin.address.toAppropriateAddressFormat(),
                                 gender = uiState.userInfo.admin.gender ?: Gender.MALE,
                                 email = uiState.userInfo.admin.email,
                                 isResigned = uiState.userInfo.admin.isResigned,

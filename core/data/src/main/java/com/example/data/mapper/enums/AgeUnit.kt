@@ -9,6 +9,15 @@ fun AgeUnitDto.toAgeUnit(): AgeUnit{
         AgeUnitDto.WEEK -> AgeUnit.WEEK
         AgeUnitDto.MONTH -> AgeUnit.MONTH
         AgeUnitDto.YEAR -> AgeUnit.YEAR
-        AgeUnitDto.NOT_SPECIFIED -> AgeUnit.NOT_SPECIFIED
+        AgeUnitDto.NOT_SPECIFIED -> AgeUnit.NONE
+    }
+}
+fun AgeUnit.toAgeUnitDto(): AgeUnitDto{
+    return when(this){
+        AgeUnit.DAY -> AgeUnitDto.DAY
+        AgeUnit.WEEK -> AgeUnitDto.WEEK
+        AgeUnit.MONTH -> AgeUnitDto.MONTH
+        AgeUnit.YEAR -> AgeUnitDto.YEAR
+        AgeUnit.NONE -> AgeUnitDto.NOT_SPECIFIED
     }
 }

@@ -1,6 +1,6 @@
 package com.example.domain.use_cases.auth
 
-import com.example.domain.repositories.AuthRepository
+import com.example.domain.repositories.auth.AuthRepository
 import com.example.model.auth.verify_otp.VerifyEmailOtpRequest
 import com.example.model.auth.verify_otp.VerifyEmailOtpResponse
 import com.example.utility.network.Result

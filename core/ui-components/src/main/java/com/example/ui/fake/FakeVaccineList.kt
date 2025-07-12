@@ -1,26 +1,28 @@
 package com.example.ui.fake
 
-import com.example.model.VaccineWithDescription
 import com.example.model.age.Age
 import com.example.model.enums.AgeUnit
+import com.example.model.vaccine.VaccineData
 
-fun createSampleVaccineList(): List<VaccineWithDescription> {
+fun createSampleVaccineList(): List<VaccineData> {
     return listOf(
-        VaccineWithDescription(
+        VaccineData(
             id = 1,
             name = "Influenza Vaccine",
             description = "Protects against seasonal influenza viruses.",
-            isAvailable = true,
-            fromAge = Age(6, AgeUnit.MONTH),
-            toAge = Age(100, AgeUnit.YEAR) // Assuming no upper age limit
+            minAge = Age(6, AgeUnit.MONTH),
+            maxAge = Age(100, AgeUnit.YEAR),
+            quantity = 10,
+            interactions = createVaccineInteractionsSampleData() // Assuming no upper age limit
         ),
-        VaccineWithDescription(
-            id = 2,
-            name = "MMR Vaccine",
-            description = "Protects against measles, mumps, and rubella.Protects against measles, mumps, and rubella. Protects against measles, mumps, and rubella.",
-            isAvailable = false,
-            fromAge = Age(12, AgeUnit.MONTH),
-            toAge = Age(60, AgeUnit.YEAR) // Example upper age limit
-        )
+        VaccineData(
+            id = 1,
+            name = "Influenza Vaccine",
+            description = "Protects against seasonal influenza viruses.",
+            minAge = Age(6, AgeUnit.MONTH),
+            maxAge = Age(100, AgeUnit.YEAR),
+            quantity = 10,
+            interactions = createVaccineInteractionsSampleData() // Assuming no upper age limit
+        ),
     )
 }

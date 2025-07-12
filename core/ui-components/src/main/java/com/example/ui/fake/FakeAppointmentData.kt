@@ -7,9 +7,9 @@ import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.model.doctor.clinic.ClinicData
-import com.example.model.doctor.vaccine.VaccineData
 import com.example.model.enums.AgeUnit
 import com.example.model.guardian.GuardianData
+import com.example.model.vaccine.VaccineData
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -55,6 +55,7 @@ private val vaccine = VaccineData(
         value = 2,
         unit = AgeUnit.MONTH
     ),
+    interactions = emptyList(),
 )
 fun createSampleAppointments(): List<AppointmentData> =
     listOf(

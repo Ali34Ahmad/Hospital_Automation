@@ -20,8 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.ext.toAppropriateFormat
-import com.example.model.VaccineWithDescription
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateAgeFormat
+import com.example.model.vaccine.VaccineData
 import com.example.ui.fake.createSampleVaccineList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -31,7 +32,7 @@ import com.example.ui.theme.spacing
 
 @Composable
 fun VaccineCard(
-    vaccine: VaccineWithDescription,
+    vaccine: VaccineData,
     onClick: (id: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -39,7 +40,7 @@ fun VaccineCard(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .background(MaterialTheme.colorScheme.background)
-            .clickable { onClick(vaccine.id) },
+            .clickable { onClick(vaccine.id?:-1) },
     ) {
         Column(
             modifier = Modifier.padding(MaterialTheme.spacing.medium16),
@@ -48,7 +49,7 @@ fun VaccineCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
             ) {
-                if (vaccine.isAvailable) {
+                if (true) {
                     Spacer(
                         modifier = Modifier
                             .size(MaterialTheme.sizing.extraSmall4)
@@ -73,7 +74,7 @@ fun VaccineCard(
             )
             Spacer(modifier = Modifier.size(MaterialTheme.spacing.medium16))
             Text(
-                text = "${vaccine.fromAge.toAppropriateFormat()} - ${vaccine.toAge.toAppropriateFormat()}",
+                text = "${vaccine.minAge.toAppropriateAgeFormat()} - ${vaccine.maxAge.toAppropriateAgeFormat()}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
             )

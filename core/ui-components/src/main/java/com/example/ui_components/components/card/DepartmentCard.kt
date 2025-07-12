@@ -15,7 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.Department
 import com.example.ui.fake.createSampleDepartmentData
 import com.example.ui.helper.DarkAndLightModePreview
@@ -77,7 +78,7 @@ fun DepartmentCard(
                     color =availabilityTextColor,
                 )
                 Text(
-                    text = department.creatingDate.toAppropriateFormat(),
+                    text = department.creatingDate.toAppropriateDateFormat(),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 )

@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import androidx.paging.insertSeparators
 import androidx.paging.map
 import com.example.ext.isToday
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.ui_components.R
 import com.example.util.UiText
@@ -35,7 +35,7 @@ sealed class AppointmentUIModel {
 
     class SeparatorModel(val desc: UiText) : AppointmentUIModel(){
         constructor(appointment: AppointmentData): this(
-            desc = UiText.DynamicString(appointment.date.toAppropriateFormat())
+            desc = UiText.DynamicString(appointment.date.toAppropriateDateFormat())
         )
     }
 }
@@ -55,14 +55,14 @@ internal fun Flow<PagingData<AppointmentData>>.upcomingMapper() =
                             )
                         }else{
                             AppointmentUIModel.SeparatorModel(
-                                UiText.DynamicString(after.date.toAppropriateFormat())
+                                UiText.DynamicString(after.date.toAppropriateDateFormat())
                             )
                         }
                     }
                     // at the middle and is not the same date
                     before!= null && after!=null&& after.date.isAfter(before.date)->{
                         AppointmentUIModel.SeparatorModel(
-                            UiText.DynamicString(after.date.toAppropriateFormat())
+                            UiText.DynamicString(after.date.toAppropriateDateFormat())
                         )
                     }
                     else -> null

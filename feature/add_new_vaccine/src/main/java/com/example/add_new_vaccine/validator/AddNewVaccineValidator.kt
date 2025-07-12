@@ -52,7 +52,7 @@ class AddNewVaccineValidator(
     }
 
     private fun validateAgeUnit(ageUnit: AgeUnit): UiText? {
-        if (ageUnit == AgeUnit.NOT_SPECIFIED) {
+        if (ageUnit == AgeUnit.NONE) {
             return UiText.StringResource(R.string.age_unit_must_be_specified)
         }
         return null

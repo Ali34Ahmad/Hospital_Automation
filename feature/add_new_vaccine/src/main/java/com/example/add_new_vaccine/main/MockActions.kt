@@ -28,7 +28,7 @@ fun mockBusinessUiActions() = object : AddNewVaccineBusinessUiActions {
 
     }
 
-    override fun updateSelectedFromAgeUnitIndex(selectedUnit: AgeUnit) {
+    override fun onUpdateSelectedFromAgeUnitIndex(selectedUnit: AgeUnit) {
 
     }
 
@@ -40,7 +40,7 @@ fun mockBusinessUiActions() = object : AddNewVaccineBusinessUiActions {
 
     }
 
-    override fun updateSelectedToAgeUnitIndex(selectedUnit: AgeUnit) {
+    override fun onUpdateSelectedToAgeUnitIndex(selectedUnit: AgeUnit) {
 
     }
 
@@ -61,6 +61,22 @@ fun mockBusinessUiActions() = object : AddNewVaccineBusinessUiActions {
     }
 
     override fun onAddInteractionClick() {
+
+    }
+
+    override fun onSaveInteractionClick() {
+
+    }
+
+    override fun onTabItemClick(index: Int) {
+
+    }
+
+    override fun onVaccineInteractionTableItemClick(index: Int) {
+
+    }
+
+    override fun onUpdateVaccineInteractionDialogVisibilityState(isVisible: Boolean) {
 
     }
 

@@ -21,10 +21,6 @@ fun mockEmployeeProfileNavigationUiActions()=object : EmployeeProfileNavigationU
 }
 
 fun mockEmployeeProfileBusinessUiActions()=object : EmployeeProfileBusinessUiActions {
-    override fun onRefreshProfile() {
-
-    }
-
     override fun onDeactivateMyAccount() {
 
     }

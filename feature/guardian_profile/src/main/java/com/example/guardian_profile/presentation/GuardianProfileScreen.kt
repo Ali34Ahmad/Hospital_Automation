@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -82,7 +83,7 @@ fun GuardianProfileScreen(
                                 )
                             },
                             state = uiState.bottomBarState,
-                            modifier = modifier
+                            modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(MaterialTheme.spacing.medium16),
                             text = stringResource(R.string.set_as_guardian),
@@ -96,6 +97,7 @@ fun GuardianProfileScreen(
                             text = stringResource(R.string.add_child),
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .navigationBarsPadding()
                                 .padding(MaterialTheme.spacing.medium16)
                             ,
                         )
@@ -104,7 +106,6 @@ fun GuardianProfileScreen(
             }
         }
     ) { innerPadding ->
-
             AnimatedContent(
                 modifier = modifier
                     .padding(innerPadding)

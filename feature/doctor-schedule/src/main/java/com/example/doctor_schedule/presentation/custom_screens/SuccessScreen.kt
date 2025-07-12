@@ -19,7 +19,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.doctor_schedule.presentation.DoctorScheduleUIAction
 import com.example.doctor_schedule.presentation.DoctorScheduleUIState
 import com.example.doctor_schedule.presentation.model.AppointmentUIModel
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.LabeledBadgeData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.enums.ScreenState
@@ -164,7 +164,7 @@ fun SuccessScreen(
                                                 imageUrl = imageUrl,
                                                 name = fullName,
                                                 tag = appointmentType,
-                                                date = date.toAppropriateFormat(),
+                                                date = date.toAppropriateDateFormat(),
                                                 onClick = {
                                                     onNavigateToAppointmentDetails(
                                                         appointment.id

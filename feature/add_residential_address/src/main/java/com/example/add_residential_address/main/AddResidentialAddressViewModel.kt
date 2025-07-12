@@ -162,6 +162,7 @@ class AddResidentialAddressViewModel(
 
     private fun submitAddress() {
         viewModelScope.launch {
+            val note=uiState.value.note
             updateScreenState(ScreenState.LOADING)
             Log.v("Submitting Address info", "AddResidentialViewModel")
             addResidentialAddressUseCase(
@@ -170,7 +171,7 @@ class AddResidentialAddressViewModel(
                     city = uiState.value.city,
                     region = uiState.value.region,
                     street = uiState.value.street,
-                    note = uiState.value.note,
+                    note =  if (note.isNotEmpty())note else null,
                     role = roleAppConfig.role,
                 )
             ).onSuccess { result ->

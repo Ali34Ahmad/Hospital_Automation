@@ -1,7 +1,7 @@
 package com.example.data.repositories.admin_profile
 
 import com.example.data.mapper.admin_profile.toAdminProfileResponse
-import com.example.domain.repositories.AdminProfileRepository
+import com.example.domain.repositories.profile.AdminProfileRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.admin_account.AdminProfileResponse
 import com.example.network.remote.admin_profile.AdminProfileApiService

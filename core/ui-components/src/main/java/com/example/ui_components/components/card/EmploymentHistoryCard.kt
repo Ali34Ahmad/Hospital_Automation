@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateDateFormat
+import com.example.ext.toAppropriateNameFormat
 import com.example.model.employment_history.UserReference
 import com.example.model.user.FullName
 import com.example.ui.helper.DarkAndLightModePreview
@@ -52,7 +54,7 @@ fun EmploymentHistoryCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.workBriefcase,
                 title = stringResource(id = R.string.employment_date),
-                description = employmentDate.toAppropriateFormat(),
+                description = employmentDate.toAppropriateDateFormat(),
                 modifier = detailsItemModifier,
             )
         }
@@ -60,7 +62,7 @@ fun EmploymentHistoryCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.admin,
                 title = stringResource(id = R.string.accepted_by),
-                description = acceptedBy.fullName.toAppropriateFormat(),
+                description = acceptedBy.fullName.toAppropriateNameFormat(),
                 modifier = detailsItemModifier,
                 onClick = onAcceptedByItemClick,
             )
@@ -70,7 +72,7 @@ fun EmploymentHistoryCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.admin,
                 title = stringResource(id = R.string.suspended_by),
-                description = suspendedBy.fullName.toAppropriateFormat(),
+                description = suspendedBy.fullName.toAppropriateNameFormat(),
                 modifier = detailsItemModifier,
                 onClick = onSuspendedByItemClick,
             )
@@ -80,7 +82,7 @@ fun EmploymentHistoryCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.finishLineFlag,
                 title = stringResource(id = R.string.date_and_time),
-                description = resignationDate.toAppropriateFormat(),
+                description = resignationDate.toAppropriateDateFormat(),
                 modifier = detailsItemModifier,
             )
         }
@@ -89,7 +91,7 @@ fun EmploymentHistoryCard(
             DetailsItem(
                 iconRes = AppIcons.Outlined.admin,
                 title = stringResource(id = R.string.resigned_by),
-                description = resignedBy.fullName.toAppropriateFormat(),
+                description = resignedBy.fullName.toAppropriateNameFormat(),
                 modifier = detailsItemModifier,
                 onClick = onResignedByItemClick,
             )

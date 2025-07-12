@@ -53,10 +53,6 @@ class DoctorProfileViewModel(
 
     private fun getBusinessUiActions(): DoctorProfileBusinessUiActions =
         object : DoctorProfileBusinessUiActions {
-            override fun onRefreshProfile() {
-                getDoctorProfile()
-            }
-
             override fun onDeactivateMyAccount() {
                 deactivateMyAccount()
             }

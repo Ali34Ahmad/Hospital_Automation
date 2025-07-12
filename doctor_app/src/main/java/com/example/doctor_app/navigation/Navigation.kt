@@ -5,6 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.example.add_new_vaccine.navigation.AddNewVaccineRoute
+import com.example.add_new_vaccine.navigation.addNewVaccineScreen
+import com.example.add_new_vaccine.navigation.navigateToAddNewVaccineScreen
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.doctor_profile.navigation.DoctorProfileRoute
@@ -29,6 +32,9 @@ import com.example.upload_employee_documents.navigation.navigateToUploadEmployee
 import com.example.upload_employee_documents.navigation.uploadEmploymentDocumentsScreen
 import com.example.upload_employee_profile_image.navigation.navigateToUploadEmployeeProfileImageScreen
 import com.example.upload_employee_profile_image.navigation.uploadEmployeeProfileImageScreen
+import com.example.vaccine_details_screen.navigation.VaccinePreviousScreen
+import com.example.vaccine_details_screen.navigation.navigateToVaccineDetailsScreen
+import com.example.vaccine_details_screen.navigation.vaccineDetailsScreen
 
 @Composable
 fun Navigation() {
@@ -98,12 +104,13 @@ fun Navigation() {
                     navController.navigateToEnterEmailScreen()
                 },
                 onNavigateToHomeScreen = {
-                    navController.navigate(
-                        DoctorProfileRoute(
-                            ProfileAccessType.TOKEN_ACCESS,
-                            doctorId = null
-                        )
-                    )
+                    navController.navigateToAddNewVaccineScreen()
+//                    navController.navigate(
+//                        DoctorProfileRoute(
+//                            ProfileAccessType.TOKEN_ACCESS,
+//                            doctorId = null
+//                        )
+//                    )
                 },
                 onNavigateToToSignUpScreen = {
                     navController.navigateToSignUpScreen()
@@ -121,33 +128,59 @@ fun Navigation() {
 
             resetPasswordScreen(
                 onNavigateToHomeScreen = {
-//                    navController.navigateToHomeScree()
+                    navController.navigateToDoctorProfileScreen(
+                        profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                        doctorId = null
+                    )
                 }
             )
-
-            doctorProfileScreen(
-                onNavigateUp = {
-//                    navController.navigateUp()
-                },
-                onNavigateToLoginScreen = {
-                    navController.navigateToLoginScreen()
-                },
-                onNavigateToEmploymentHistoryScreen = {
-                    navController.navigateToEmploymentHistoryScreen()
-                },
-                onNavigateToAppointmentsScreen = {
-//                    navController.
-                },
-                onNavigateToPrescriptionsScreen = {
-//                    navController.
-                },
-                onNavigateToMedicalRecordsScreen = {
-//                    navController.
-                },
-                onNavigateToDepartmentScreen = {
-//                    navController.
-                },
-            )
         }
+
+        doctorProfileScreen(
+            onNavigateUp = {
+//                    navController.navigateUp()
+            },
+            onNavigateToLoginScreen = {
+                navController.navigateToLoginScreen()
+            },
+            onNavigateToEmploymentHistoryScreen = {
+                navController.navigateToEmploymentHistoryScreen()
+            },
+            onNavigateToAppointmentsScreen = {
+//                    navController.
+            },
+            onNavigateToPrescriptionsScreen = {
+//                    navController.
+            },
+            onNavigateToMedicalRecordsScreen = {
+//                    navController.
+            },
+            onNavigateToDepartmentScreen = {
+//                    navController.
+            },
+        )
+
+        addNewVaccineScreen(
+            onNavigateToVaccineDetailsScreenScreen = { vaccineId ->
+                navController.navigateToVaccineDetailsScreen(
+                    VaccinePreviousScreen.ADD_NEW_VACCINE,
+                    vaccineId
+                )
+            },
+            onNavigateUp = {
+                navController.navigateUp()
+            }
+        )
+        vaccineDetailsScreen(
+            onNavigateToVaccinationTableScreen = {
+                navController.navigateToDoctorProfileScreen(
+                    profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                    doctorId = null,
+                )
+            },
+            onNavigateUp = {
+//                navController.navigateToVaccinesScreen()
+            },
+        )
     }
 }

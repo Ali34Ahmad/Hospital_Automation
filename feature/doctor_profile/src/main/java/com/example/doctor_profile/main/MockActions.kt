@@ -33,10 +33,6 @@ fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiAct
 }
 
 fun mockDoctorProfileBusinessUiActions()=object : DoctorProfileBusinessUiActions {
-    override fun onRefreshProfile() {
-
-    }
-
     override fun onDeactivateMyAccount() {
 
     }

@@ -14,17 +14,23 @@ interface AddNewVaccineBusinessUiActions {
 
     fun onFromAgeChange(fromAge: String)
     fun onFromAgeMenuExpandedChange(isVisible: Boolean)
-    fun updateSelectedFromAgeUnitIndex(selectedUnit: AgeUnit)
+    fun onUpdateSelectedFromAgeUnitIndex(selectedUnit: AgeUnit)
 
     fun onToAgeChange(toAge: String)
     fun onToAgeMenuExpandedChange(isVisible: Boolean)
-    fun updateSelectedToAgeUnitIndex(selectedUnit: AgeUnit)
+    fun onUpdateSelectedToAgeUnitIndex(selectedUnit: AgeUnit)
 
     fun onQuantityChange(quantity: String)
     fun onVaccineDescriptionChange(vaccineDescription: String)
+
     fun onInteractionNameChange(interactionName: String)
     fun onInteractionDescriptionChange(interactionDescription: String)
     fun onAddInteractionClick()
+    fun onSaveInteractionClick()
+
+    fun onTabItemClick(index: Int)
+    fun onVaccineInteractionTableItemClick(index: Int)
+    fun onUpdateVaccineInteractionDialogVisibilityState(isVisible: Boolean)
 
     fun onShowErrorDialogStateChange(value: Boolean)
     fun onSubmitButtonClick()

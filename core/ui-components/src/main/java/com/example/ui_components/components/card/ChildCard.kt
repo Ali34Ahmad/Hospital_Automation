@@ -18,7 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateAgeFormat
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui_components.components.items.DetailsItem
 import com.example.model.Child
@@ -51,7 +52,7 @@ fun ChildCard(
             )
             Spacer(modifier=Modifier.width(MaterialTheme.spacing.extraSmall4))
             Text(
-                text = child.age.toAppropriateFormat(),
+                text = child.age.toAppropriateAgeFormat(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
                 maxLines = 1,

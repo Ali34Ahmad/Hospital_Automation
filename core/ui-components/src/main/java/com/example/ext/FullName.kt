@@ -2,7 +2,7 @@ package com.example.ext
 
 import com.example.model.user.FullName
 
-fun FullName.toAppropriateFormat(): String {
+fun FullName.toAppropriateNameFormat(): String {
     val name = "${this.firstName} "
     val middleName = if (this.middleName!=null) "${this.middleName} " else ""
     val lastName = this.lastName

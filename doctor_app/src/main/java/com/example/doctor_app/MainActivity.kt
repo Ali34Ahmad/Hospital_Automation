@@ -16,6 +16,7 @@ import com.example.clinic_details.presentation.ClinicNavigationAction
 import com.example.clinics_search.presentation.ClinicsSearchNavigationActions
 import com.example.clinics_search.presentation.ClinicsSearchScreen
 import com.example.clinics_search.presentation.ClinicsSearchViewModel
+import com.example.doctor_app.navigation.Navigation
 
 import com.example.doctor_schedule.presentation.DoctorScheduleNavigationActions
 import com.example.doctor_schedule.presentation.DoctorScheduleScreen
@@ -32,23 +33,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Hospital_AutomationTheme {
-                val viewModel = koinViewModel<ClinicDetailsViewModel>()
-                ClinicDetailsScreen(
-                    viewModel = viewModel,
-                    navigationActions = object : ClinicNavigationAction {
-                        override fun navigateUp() {
-                        }
-
-                        override fun navigateToDoctorProfile(doctorId: Int) {
-                        }
-
-                        override fun navigateToInitialScreen(doctorId: Int) {
-                        }
-
-                        override fun navigateToVaccines(clinicId: Int) {
-                        }
-                    },
-                )
+                Navigation()
             }
         }
     }

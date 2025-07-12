@@ -23,7 +23,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleEmploymentHistoryResponse
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.model.FileInfo
@@ -62,7 +63,7 @@ fun EmploymentHistoryScreen(
         onDismiss = {
             uiActions.onHideFileDownloaderDialog()
         },
-        userFullName = uiState.employmentHistory?.currentUser?.fullName?.toAppropriateFormat()?:"",
+        userFullName = uiState.employmentHistory?.currentUser?.fullName?.toAppropriateNameFormat()?:"",
         fileDownloadingState = uiState.fileDownloadingState,
         fileInfo = uiState.fileInfo ?: FileInfo(0, 0, "NULL"),
         profileImageUrl = uiState.employmentHistory?.currentUser?.imageUrl ?: "",
@@ -78,7 +79,7 @@ fun EmploymentHistoryScreen(
     Scaffold(
         topBar = {
             val currentUserName =
-                uiState.employmentHistory?.currentUser?.fullName?.toAppropriateFormat()
+                uiState.employmentHistory?.currentUser?.fullName?.toAppropriateNameFormat()
 
             HospitalAutomationTopBar(
                 title = currentUserName ?: "",

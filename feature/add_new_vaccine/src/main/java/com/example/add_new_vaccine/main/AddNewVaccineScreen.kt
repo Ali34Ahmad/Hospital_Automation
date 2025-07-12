@@ -1,16 +1,17 @@
 package com.example.add_new_vaccine.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -18,21 +19,43 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import com.example.constants.icons.AppIcons
 import com.example.model.enums.AgeUnit
+import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
+import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.menu.DropDownMenuItem
+import com.example.model.tab.TabItemWithIcon
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
+import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.dialog.MessageDialog
-import com.example.ui_components.components.icon.IconWithBackground
-import com.example.ui_components.components.screen_section.SectionWithTitle
+import com.example.ui_components.components.dialog.TwoFieldsInputDialog
+import com.example.ui_components.components.tab.TabLayoutWithIcons
+import com.example.ui_components.components.tables.vaccine_interactions.EmptyVaccineInteractionsTable
+import com.example.ui_components.components.tables.vaccine_interactions.VaccineInteractionTable
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 import com.example.ui_components.components.text_field.InputWithDropdownSelector
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
+import com.example.util.UiText
+
+private val tabs = listOf(
+    TabItemWithIcon(
+        title = UiText.StringResource(R.string.show_all),
+        iconRes = AppIcons.Outlined.list
+    ),
+    TabItemWithIcon(
+        title = UiText.StringResource(R.string.new_),
+        iconRes = AppIcons.Outlined.add
+    ),
+)
 
 @Composable
 fun AddNewVaccineScreen(
@@ -48,11 +71,47 @@ fun AddNewVaccineScreen(
 
     MessageDialog(
         showDialog = uiState.showErrorDialog,
-        title = stringResource(R.string.signup_error),
+        title = stringResource(R.string.add_vaccine_error),
         description = stringResource(R.string.something_went_wrong),
         onConfirm = { uiActions.onShowErrorDialogStateChange(false) },
         confirmButtonText = stringResource(R.string.ok),
         showCancelButton = false,
+    )
+
+    val dialogTitle=if(uiState.isAddingNewInteraction)
+        stringResource(R.string.new_interaction)
+    else
+        stringResource(R.string.edit_interaction)
+
+    TwoFieldsInputDialog(
+        title = dialogTitle,
+        firstFieldText = uiState.interactionName,
+        firstFieldTextError = uiState.interactionNameError?.asString(),
+        isFirstFieldError = uiState.interactionNameError != null,
+        onFirstFieldTextChange = { uiActions.onInteractionNameChange(it) },
+        secondFieldText = uiState.interactionDescription,
+        isSecondFieldError = uiState.interactionDescriptionError != null,
+        secondFieldTextError = uiState.interactionDescriptionError?.asString(),
+        onSecondFieldTextChange = { uiActions.onInteractionDescriptionChange(it) },
+        showDialog = uiState.showAddInteractionDialog,
+        onDismiss = { uiActions.onUpdateVaccineInteractionDialogVisibilityState(false) },
+        showCancelButton = true,
+        dismissButtonText = stringResource(R.string.cancel),
+        onConfirm = {
+            if (uiState.isAddingNewInteraction) {
+                uiActions.onAddInteractionClick()
+            } else {
+                uiActions.onSaveInteractionClick()
+            }
+        },
+        confirmButtonText = if (uiState.isAddingNewInteraction) {
+            stringResource(R.string.add)
+        } else {
+            stringResource(R.string.save)
+        },
+        firstFieldLabel = R.string.interaction_name,
+        secondFieldLabel = R.string.interaction_description,
+        isConfirmButtonEnabled=uiState.isInteractionDialogConfirmButtonEnabled,
     )
 
     val isLoading = uiState.screenState == ScreenState.LOADING
@@ -65,6 +124,22 @@ fun AddNewVaccineScreen(
                 onNavigationIconClick = { uiActions.navigateUp() },
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = AppIcons.Outlined.arrowBack,
+            )
+        },
+        bottomBar = {
+            SendingDataBottomBar(
+                onSuccess = {},
+                text = stringResource(R.string.submit),
+                onButtonClick = {
+                    uiActions.onSubmitButtonClick()
+                },
+                state = uiState.bottomBarState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(
+                        MaterialTheme.spacing.medium16
+                    ),
             )
         }
     ) { contentPadding ->
@@ -112,9 +187,18 @@ fun AddNewVaccineScreen(
                         isMenuExpanded = uiState.isFromAgeMenuExpanded,
                         onMenuExpandedChange = { uiActions.onFromAgeMenuExpandedChange(it) },
                         onDismissRequest = { uiActions.onFromAgeMenuExpandedChange(false) },
-                        onDropDownItemSelected = { uiActions.updateSelectedFromAgeUnitIndex(AgeUnit.entries[it]) },
+                        onDropDownItemSelected = {
+                            uiActions.onUpdateSelectedFromAgeUnitIndex(
+                                AgeUnit.entries[it]
+                            )
+                        },
                         selectedIndexItem = uiState.fromAgeUnit.ordinal,
                         isDropDownMenuError = uiState.fromAgeUnitError != null,
+                        dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.toCapitalizedString()) },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        ),
                     )
 
                     InputWithDropdownSelector(
@@ -131,15 +215,20 @@ fun AddNewVaccineScreen(
                         isMenuExpanded = uiState.isToAgeMenuExpanded,
                         onMenuExpandedChange = { uiActions.onToAgeMenuExpandedChange(it) },
                         onDismissRequest = { uiActions.onToAgeMenuExpandedChange(false) },
-                        onDropDownItemSelected = { uiActions.updateSelectedToAgeUnitIndex(AgeUnit.entries[it]) },
+                        onDropDownItemSelected = { uiActions.onUpdateSelectedToAgeUnitIndex(AgeUnit.entries[it]) },
                         selectedIndexItem = uiState.toAgeUnit.ordinal,
                         isDropDownMenuError = uiState.toAgeUnitError != null,
+                        dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.toCapitalizedString()) },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        ),
                     )
 
                     HospitalAutomationTextFiled(
                         value = uiState.quantity,
                         onValueChange = {
-                            uiActions.onToAgeChange(it)
+                            uiActions.onQuantityChange(it)
                         },
                         label = R.string.quantity,
                         supportingText = uiState.quantityError?.asString(),
@@ -147,12 +236,16 @@ fun AddNewVaccineScreen(
                         isRequired = true,
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isLoading,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next
+                        ),
                     )
 
                     HospitalAutomationTextFiled(
                         value = uiState.vaccineDescription,
                         onValueChange = {
-                            uiActions.onToAgeChange(it)
+                            uiActions.onVaccineDescriptionChange(it)
                         },
                         label = R.string.vaccine_description,
                         supportingText = uiState.vaccineDescriptionError?.asString(),
@@ -161,62 +254,57 @@ fun AddNewVaccineScreen(
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !isLoading,
                         maxLines = 3,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done
+                        ),
                     )
                 }
-                SectionWithTitle(
-                    title = stringResource(R.string.interactions),
-                    modifier = Modifier.fillMaxWidth(),
-                    titleAreaPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium16),
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { uiActions.onAddInteractionClick() }
-                        ) {
-                            IconWithBackground(
-                                iconRes = AppIcons.Outlined.add,
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = MaterialTheme.spacing.medium16
+                        )
+                        .clip(MaterialTheme.shapes.small)
+                        .background(MaterialTheme.colorScheme.background),
+                ) {
+                    Text(
+                        text = stringResource(R.string.interactions),
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.padding(
+                            vertical = MaterialTheme.spacing.small8,
+                            horizontal = MaterialTheme.spacing.medium16
+                        ),
+                    )
+                    TabLayoutWithIcons(
+                        tabs = tabs,
+                        selectedTabIndex = uiState.selectedTabItem,
+                        onTabClick = { index ->
+                            uiActions.onTabItemClick(index)
+                        }
+                    )
+                    VaccineInteractionTable(
+                        interactions = uiState.interactions,
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.background),
+                        onItemClick = { index ->
+                            uiActions.onVaccineInteractionTableItemClick(index)
+                        },
+                        isEditable = true,
+                        emptyTable = {
+                            EmptyVaccineInteractionsTable(
+                                modifier = Modifier.padding(
+                                    MaterialTheme.spacing.medium16
+                                ),
+                                onAddInteractionButtonClick = {
+                                    uiActions.onTabItemClick(1)
+                                },
                             )
                         }
-                    }
-                ) {
-                    uiState.interactions.forEach { interaction ->
-                        Text(interaction.title)
-                    }
-                    HospitalAutomationTextFiled(
-                        value = uiState.interactionName,
-                        onValueChange = {
-                            uiActions.onToAgeChange(it)
-                        },
-                        label = R.string.interaction_name,
-                        supportingText = uiState.interactionNameError?.asString(),
-                        isError = uiState.interactionNameError != null,
-                        isRequired = false,
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !isLoading,
-                    )
-
-                    HospitalAutomationTextFiled(
-                        value = uiState.interactionDescription,
-                        onValueChange = {
-                            uiActions.onToAgeChange(it)
-                        },
-                        label = R.string.interaction_description,
-                        supportingText = uiState.interactionDescriptionError?.asString(),
-                        isError = uiState.interactionDescriptionError != null,
-                        isRequired = false,
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !isLoading,
-                        maxLines = 3,
-                    )
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
-
-                    HospitalAutomationButton(
-                        onClick = { uiActions.onSubmitButtonClick() },
-                        text = stringResource(R.string.submit),
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = uiState.isSubmitButtonEnabled && !isLoading,
-                        isLoading = isLoading,
                     )
                 }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large36))
             }
         }
     }

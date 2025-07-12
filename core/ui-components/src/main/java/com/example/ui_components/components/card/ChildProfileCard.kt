@@ -14,9 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.clickableTextRange
-import com.example.ext.toAppropriateFormat
+import com.example.ext.toAppropriateAddressFormat
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.enums.Gender
+import com.example.model.helper.ext.clickableTextRange
 import com.example.model.helper.ext.toCapitalized
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -25,6 +26,7 @@ import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.items.SubDetailsItem
 import java.time.Instant
+import java.time.LocalDate
 import java.util.Date
 
 @Composable
@@ -32,7 +34,7 @@ fun ChildProfileCard(
     fatherName:String,
     motherName:String,
     gender: Gender,
-    dateOfBirth: Date,
+    dateOfBirth: LocalDate,
     employeeName: String,
     guardiansNumber: Int,
     onBirthCertificateItemClick: () -> Unit,
@@ -75,7 +77,7 @@ fun ChildProfileCard(
         DetailsItem(
             iconRes = AppIcons.Outlined.specificDate,
             title = stringResource(id = R.string.date_of_birth),
-            description = dateOfBirth.toAppropriateFormat(),
+            description = dateOfBirth.toAppropriateDateFormat(),
             modifier = detailsItemModifier,
         )
         DetailsItem(
@@ -114,7 +116,7 @@ fun ChildProfileCardPreview() {
                 fatherName = "Bassam Mansoura",
                 motherName = "Mariam Mansoura",
                 employeeName = "Elias Fares",
-                dateOfBirth = Date.from(Instant.now()),
+                dateOfBirth = LocalDate.now(),
                 gender = Gender.MALE,
                 guardiansNumber = 2,
             )

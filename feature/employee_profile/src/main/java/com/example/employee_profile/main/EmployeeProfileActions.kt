@@ -10,7 +10,6 @@ class EmployeeProfileUiActions(
 
 
 interface EmployeeProfileBusinessUiActions {
-    fun onRefreshProfile()
     fun onDeactivateMyAccount()
     fun onReactivateMyAccount()
     fun onLogout()

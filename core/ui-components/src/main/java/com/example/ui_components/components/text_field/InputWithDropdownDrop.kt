@@ -5,12 +5,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.model.enums.AgeUnit
+import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.menu.DropDownMenuItem
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
@@ -32,6 +36,10 @@ fun InputWithDropdownSelector(
     isInputError: Boolean = false,
     isDropDownMenuError: Boolean = false,
     supportingText: String? = null,
+    dropDownMenuItems:List<DropDownMenuItem>,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        imeAction = ImeAction.Next,
+    ),
 ) {
     Row(
         modifier = modifier,
@@ -51,6 +59,8 @@ fun InputWithDropdownSelector(
             isRequired = isRequired,
             isError = isInputError,
             supportingText = supportingText,
+            modifier = Modifier.weight(0.4f),
+            keyboardOptions = keyboardOptions,
         )
         Spacer(Modifier.width(MaterialTheme.spacing.extraSmall1))
         TextFieldWithDropDownMenu(
@@ -58,7 +68,7 @@ fun InputWithDropdownSelector(
             onExpandedChange = onMenuExpandedChange,
             onDismissRequest = onDismissRequest,
             onDropDownItemSelected = onDropDownItemSelected,
-            dropDownItems = AgeUnit.entries.map { it.name },
+            dropDownItems = dropDownMenuItems,
             selectedItemIndex = selectedIndexItem,
             textFieldShape = RoundedCornerShape(
                 topStart = 0.dp,
@@ -66,7 +76,7 @@ fun InputWithDropdownSelector(
                 topEnd = 4.dp,
                 bottomEnd = 4.dp
             ),
-            modifier = Modifier,
+            modifier = Modifier.weight(0.25f),
             enabled = enabled,
             isError = isDropDownMenuError,
         )
@@ -88,6 +98,7 @@ fun InputWithDropdownSelectorPreview() {
                 modifier = Modifier,
                 selectedIndexItem = null,
                 editableTextLabel = R.string.from_age,
+                dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.toCapitalizedString()) }
             )
         }
     }

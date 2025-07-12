@@ -55,10 +55,6 @@ class EmployeeProfileViewModel(
 
     private fun getBusinessUiActions(): EmployeeProfileBusinessUiActions =
         object : EmployeeProfileBusinessUiActions {
-            override fun onRefreshProfile() {
-                getEmployeeProfile()
-            }
-
             override fun onDeactivateMyAccount() {
                 deactivateMyAccount()
             }

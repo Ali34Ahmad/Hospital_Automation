@@ -155,7 +155,7 @@ internal fun AppointmentDetailsScreen(
                                 },
                                 onVaccineItemClick = {
                                     it.vaccine?.let { vaccine ->
-                                        navigationActions.navigateToVaccineDetails(vaccine.id)
+                                        navigationActions.navigateToVaccineDetails(vaccine.id!!)
                                     }
                                 },
                                 onAppointmentTypeTagClick = {

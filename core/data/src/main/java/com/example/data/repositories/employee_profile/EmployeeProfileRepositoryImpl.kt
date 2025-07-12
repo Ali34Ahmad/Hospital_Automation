@@ -1,7 +1,7 @@
 package com.example.data.repositories.employee_profile
 
 import com.example.data.mapper.employee_profile.toEmployeeProfileResponse
-import com.example.domain.repositories.EmployeeProfileRepository
+import com.example.domain.repositories.profile.EmployeeProfileRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.network.remote.employee_profile.EmployeeProfileApiService
