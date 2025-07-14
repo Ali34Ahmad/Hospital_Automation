@@ -70,8 +70,8 @@ fun HospitalAutomationTextFiled(
         value = value,
         onValueChange = onValueChange,
         visualTransformation = visualTransformation,
-        label = {
-            label?.let {
+        label = if (label != null) {
+            {
                 val text = buildString {
                     append(stringResource(label))
                     if (isRequired)
@@ -82,7 +82,7 @@ fun HospitalAutomationTextFiled(
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-        },
+        } else null,
         trailingIcon = {
             if (trailingIcon != null) {
                 IconButton(
@@ -186,6 +186,18 @@ fun HospitalAutomationTextFiledErrorPreview() {
     }
 }
 
+@DarkAndLightModePreview
+@Composable
+fun TextFieldWithoutLabelPreview() {
+    Hospital_AutomationTheme {
+        HospitalAutomationTextFiled(
+            value = "",
+            onValueChange = {},
+            placeholder = R.string.first_name,
+        )
+
+    }
+}
 
 
 

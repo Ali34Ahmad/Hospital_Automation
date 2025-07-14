@@ -24,6 +24,9 @@ import com.example.doctor_schedule.presentation.DoctorScheduleViewModel
 import com.example.medical_diagnosis.presentation.DiagnosisNavigationActions
 import com.example.medical_diagnosis.presentation.DiagnosisScreen
 import com.example.medical_diagnosis.presentation.DiagnosisViewModel
+import com.example.medicines_search.presentation.MedicineSearchViewModel
+import com.example.medicines_search.presentation.MedicinesSearchNavigationActions
+import com.example.medicines_search.presentation.MedicinesSearchScreen
 import com.example.ui.theme.Hospital_AutomationTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,7 +36,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Hospital_AutomationTheme {
-                Navigation()
+                val viewModel = koinViewModel<MedicineSearchViewModel>()
+                MedicinesSearchScreen(
+                    viewModel = viewModel,
+                    navigationActions = object : MedicinesSearchNavigationActions{
+                        override fun navigateUp() {
+                            TODO("Not yet implemented")
+                        }
+                        override fun navigateToPharmacies(medicineId: Int) {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun navigateToMedicineDetails(medicineId: Int) {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun navigateToAppointmentDetails(appointmentId: Int) {
+                            TODO("Not yet implemented")
+                        }
+                    }
+                )
             }
         }
     }

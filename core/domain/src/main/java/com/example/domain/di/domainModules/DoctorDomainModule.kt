@@ -12,6 +12,9 @@ import com.example.domain.di.clinics.clinicsUseCasesModule
 import com.example.domain.di.doctor.doctorProfileUseCasesModule
 import com.example.domain.di.employmentHistoryUseCasesModule
 import com.example.domain.di.getAdminProfileByIdUseCaseModule
+import com.example.domain.di.medicine.medicinesUseCasesModule
+import com.example.domain.di.pharmacy.pharmacyUseCasesModule
+import com.example.domain.di.prescription.prescriptionUseCasesModule
 import com.example.domain.di.userPreferencesUseCasesModule
 import com.example.domain.di.vaccine.vaccineUseCase
 import com.example.domain.di.validatorUseCasesModule
@@ -21,6 +24,9 @@ import org.koin.dsl.module
 
 val doctorDomainModule = module {
     includes(
+        pharmacyUseCasesModule,
+        medicinesUseCasesModule,
+        prescriptionUseCasesModule,
         sharedDomainModule,
         authUseCasesModule,
         doctorSignUpModule,

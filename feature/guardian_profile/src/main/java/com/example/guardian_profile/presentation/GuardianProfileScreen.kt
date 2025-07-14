@@ -69,38 +69,40 @@ fun GuardianProfileScreen(
             }
         },
         bottomBar = {
-            AnimatedContent (uiState.userProfileMode) {state->
-                when(state){
-                    UserProfileMode.VIEW_ONLY -> Unit
-                    UserProfileMode.SET_AS_GUARDIAN -> {
-                        SendingDataBottomBar(
-                            onSuccess = {
+            if(uiState.screenState == ScreenState.SUCCESS){
+                AnimatedContent(uiState.userProfileMode) { state ->
+                    when (state) {
+                        UserProfileMode.VIEW_ONLY -> Unit
+                        UserProfileMode.SET_AS_GUARDIAN -> {
+                            SendingDataBottomBar(
+                                onSuccess = {
 
-                            },
-                            onButtonClick = {
-                                onAction(
-                                    GuardianProfileActions.SetAsGuardian
-                                )
-                            },
-                            state = uiState.bottomBarState,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(MaterialTheme.spacing.medium16),
-                            text = stringResource(R.string.set_as_guardian),
-                        )
-                    }
-                    UserProfileMode.ADD_CHILD ->{
-                        HospitalAutomationButton(
-                            onClick = {
-                                navigationActions.navigateToAddChild(uiState.guardianId)
-                            },
-                            text = stringResource(R.string.add_child),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .navigationBarsPadding()
-                                .padding(MaterialTheme.spacing.medium16)
-                            ,
-                        )
+                                },
+                                onButtonClick = {
+                                    onAction(
+                                        GuardianProfileActions.SetAsGuardian
+                                    )
+                                },
+                                state = uiState.bottomBarState,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(MaterialTheme.spacing.medium16),
+                                text = stringResource(R.string.set_as_guardian),
+                            )
+                        }
+
+                        UserProfileMode.ADD_CHILD -> {
+                            HospitalAutomationButton(
+                                onClick = {
+                                    navigationActions.navigateToAddChild(uiState.guardianId)
+                                },
+                                text = stringResource(R.string.add_child),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .navigationBarsPadding()
+                                    .padding(MaterialTheme.spacing.medium16),
+                            )
+                        }
                     }
                 }
             }
@@ -115,9 +117,7 @@ fun GuardianProfileScreen(
                 targetState = uiState.screenState
             ) {state->
                 when(state){
-                    ScreenState.IDLE ->{
-
-                    }
+                    ScreenState.IDLE -> Unit
                     ScreenState.LOADING ->{
                         FetchingDataItem(
                             modifier = Modifier.fillMaxSize()
@@ -140,7 +140,7 @@ fun GuardianProfileScreen(
                     }
                     ScreenState.SUCCESS -> {
                         uiState.guardianData?.let { data->
-                            data.apply {
+                            data.run {
                                 PullToRefreshColumn(
                                     refreshing = uiState.isRefreshing,
                                     onRefresh = {

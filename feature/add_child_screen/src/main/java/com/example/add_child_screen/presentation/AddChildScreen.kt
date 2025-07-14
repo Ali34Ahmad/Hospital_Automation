@@ -1,5 +1,6 @@
 package com.example.add_child_screen.presentation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -75,9 +76,10 @@ fun AddChildScreen(
                 state = uiState.sendingDataButtonState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(MaterialTheme.spacing.medium16),
+                    .padding(horizontal = MaterialTheme.spacing.medium16),
                 onSuccess = {
                     uiState.childId?.let {
+                        Log.d("Add Child Screen","navigateToNextScreen $it")
                         navigationActions.navigateToNextScreen(it)
                     }
                 }

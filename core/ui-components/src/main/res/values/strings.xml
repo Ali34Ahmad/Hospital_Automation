@@ -273,6 +273,11 @@
     <string name="no_medicines_selected">No medicine selected</string>
     <string name="select_medicine">Select a medicine from the list above to add it here.</string>
     <string name="invalid_values">You have entered invalid values.</string>
+    <string name="prescribed_medicines">Prescribed Medicines</string>
+    <string name="add_note_subtitle">Add a note about how or when to take this medicine</string>
+    <string name="type_your_note">Type your note...</string>
+
+    <string name="please_wait">Please wait</string>
     <string name="name">Name</string>
     <string name="Tap_a_row_to_edit">Tap a row to edit</string>
     <string name="show_all">Show all</string>

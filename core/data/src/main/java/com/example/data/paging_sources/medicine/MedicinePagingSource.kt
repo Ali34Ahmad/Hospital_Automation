@@ -18,8 +18,8 @@ class MedicinePagingSource(
 ): PagingSource<Int, MedicineData>() {
     override fun getRefreshKey(state: PagingState<Int, MedicineData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
-            val closetPage = state.closestPageToPosition(anchorPosition)
-            closetPage?.prevKey?.plus(1)?: closetPage?.nextKey?.minus(1)
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
@@ -32,7 +32,7 @@ class MedicinePagingSource(
         var data = emptyList<MedicineData>()
         medicineApi.getAllMedicines(
             token = token,
-            page = 0,
+            page = currentPage,
             limit = params.loadSize,
             name = name
         ).onSuccess {

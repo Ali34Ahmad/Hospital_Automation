@@ -5,21 +5,13 @@ import com.example.data.mapper.enums.toGender
 import com.example.data.mapper.enums.toRole
 import com.example.model.address.Address
 import com.example.model.doctor.DoctorData
-import com.example.model.doctor.day_scedule.DaySchedule
 import com.example.model.doctor.day_scedule.DoctorStatusChecker
 import com.example.model.doctor.doctor_profile.DoctorProfile
 import com.example.model.doctor.doctor_profile.DoctorProfileResponse
-import com.example.model.enums.DoctorStatus
 import com.example.model.user.FullName
-import com.example.network.model.dto.WorkDayDto
 import com.example.network.model.dto.user.UserDto
 import com.example.network.model.response.profile.DoctorProfileDto
 import com.example.network.model.response.profile.DoctorProfileResponseDto
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.TextStyle
-import java.util.Locale
 
 fun DoctorProfileResponseDto.toDoctorProfileResponse(): DoctorProfileResponse {
     return DoctorProfileResponse(

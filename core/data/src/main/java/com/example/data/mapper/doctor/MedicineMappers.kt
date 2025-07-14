@@ -16,5 +16,5 @@ fun MedicineDto.toMedicineData() =
         isAllowedWithoutPrescription = isAllowedWithoutPrescription,
         barcode = barcode,
         medImageUrl = "${ApiRoutes.BASE_URL}/$medImageUrl",
-        numberOfPharmacies = numberOfPharmaciesList.first().numOfPharmacies
+        numberOfPharmacies = numberOfPharmaciesList.size
     )

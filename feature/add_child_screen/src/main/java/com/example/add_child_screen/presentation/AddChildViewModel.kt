@@ -1,6 +1,5 @@
 package com.example.add_child_screen.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,25 +8,15 @@ import com.example.add_child_screen.navigation.AddChildRoute
 import com.example.domain.use_cases.children.AddChildUseCase
 import com.example.model.child.ChildFullData
 import com.example.model.enums.BottomBarState
+import com.example.model.enums.Gender
 import com.example.util.UiText
-import com.example.utility.constants.DurationConstants
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import com.example.utility.validation.validator.TextValidator
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.ui_components.R
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.WhileSubscribed
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 
 class AddChildViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -38,78 +27,55 @@ class AddChildViewModel(
         guardianId = savedStateHandle.toRoute<AddChildRoute>().guardianId
     ))
 
-    val uiState: StateFlow<AddChildUIState> = _uiState.onEach {
-        validateAll()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000L),
-        _uiState.value
-    )
+    val uiState: StateFlow<AddChildUIState> = _uiState
 
     fun onAction(action: AddChildUIActions){
         when(action){
             is AddChildUIActions.OnFirstNameChanged ->{
-                _uiState.value = _uiState.value.copy(firstNameErrorMessage = null)
-                _uiState.value = _uiState.value.copy(firstName = action.newValue)
-                validateFirstName()
+                updateFirstName(action.newValue)
             }
             is AddChildUIActions.OnLastNameChanged ->{
-                _uiState.value = _uiState.value.copy(lastNameErrorMessage = null)
-                _uiState.value = _uiState.value.copy(lastName = action.newValue)
-                validateLastName()
+                updateLastName(action.newValue)
             }
             is AddChildUIActions.OnDateChanged -> {
-                _uiState.value = _uiState.value.copy(dateOfBirthErrorMessage = null)
-                _uiState.value = _uiState.value.copy(dateOfBirth = action.date)
-                validateDateOfBirth()
+                updateDateOfBirth(action.date)
             }
             is AddChildUIActions.OnGenderChanged ->{
-                _uiState.value = _uiState.value.copy(gender = action.newGender)
+               updateGender(action.newGender)
             }
             is AddChildUIActions.OnFatherFirstNameChanged ->{
-                _uiState.value = _uiState.value.copy(fatherFirstNameErrorMessage = null)
-                _uiState.value = _uiState.value.copy(fatherFirstName = action.newValue)
-                validateFatherFirstName()
+                updateFatherFirstName(action.newValue)
             }
             is AddChildUIActions.OnFatherLastNameChanged -> {
-                _uiState.value = _uiState.value.copy(fatherLastNameErrorMessage = null)
-                _uiState.value = _uiState.value.copy(fatherLastName = action.newValue)
-                validateFatherLastName()
+                updateFatherLastName(action.newValue)
             }
             is AddChildUIActions.OnMotherFirstNameChanged ->{
-                _uiState.value = _uiState.value.copy(motherFirstNameErrorMessage = null)
-                _uiState.value = _uiState.value.copy(motherFirstName = action.newValue)
-                validateMotherFirstName()
+                updateMotherFirstName(action.newValue)
             }
             is AddChildUIActions.OnMotherLastNameChanged ->{
-                _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = null)
-                _uiState.value = _uiState.value.copy(motherLastName = action.newValue)
-                validateMotherLastName()
+                updateMotherLastName(action.newValue)
             }
             is AddChildUIActions.ChangeDatePickerVisibility->{
                 _uiState.value = _uiState.value.copy(isDatePickerVisible = action.isVisible)
-                validateDateOfBirth()
             }
             AddChildUIActions.SendData ->{
+                validateAll()
                 if(_uiState.value.isValid){
                     viewModelScope.launch {
-                        _uiState.value = _uiState.value.copy(
-                            sendingDataButtonState = BottomBarState.LOADING
-                        )
+                        updateBottomBarButtonState(BottomBarState.LOADING)
                         addChildUseCase(
                             guardianId = _uiState.value.guardianId,
                             child = _uiState.value.toChildFullData()
                         ).onSuccess{child: ChildFullData->
-                            _uiState.value = _uiState.value.copy(
-                                sendingDataButtonState = BottomBarState.SUCCESS,
-                                childId = child.childId
-                            )
-                            delay(DurationConstants.BUTTON_ERROR_STATE_DURATION)
-                            _uiState.value = _uiState.value.copy(isSendingDataButtonVisible = false)
+                            showToast(UiText.StringResource(R.string.success))
+
+                            updateBottomBarButtonState(BottomBarState.SUCCESS)
+
+                            updateChild(childId = child.childId)
                         }.onError {
-                            _uiState.value = _uiState.value.copy(
-                                sendingDataButtonState = BottomBarState.IDLE
-                            )
+                            showToast(UiText.StringResource(R.string.something_went_wrong))
+
+                            updateBottomBarButtonState(BottomBarState.IDLE)
                         }
                     }
                 }
@@ -119,79 +85,103 @@ class AddChildViewModel(
             }
         }
     }
-
-    fun validateFirstName(){
+    private fun updateChild(childId: Int?){
+        _uiState.value = _uiState.value.copy(childId = childId)
+    }
+    private fun validateFirstName(){
         val error = TextValidator.validate(_uiState.value.firstName)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(firstNameErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(firstNameErrorMessage = text)
     }
-    fun validateLastName(){
+    private fun validateLastName(){
         val error = TextValidator.validate(_uiState.value.lastName)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(lastNameErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(lastNameErrorMessage = text)
     }
-    fun validateFatherFirstName(){
+    private fun validateFatherFirstName(){
         val error = TextValidator.validate(_uiState.value.fatherFirstName)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(fatherFirstNameErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(fatherFirstNameErrorMessage = text)
     }
-    fun validateFatherLastName(){
+    private fun validateFatherLastName(){
         val error = TextValidator.validate(_uiState.value.fatherLastName)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(fatherLastNameErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(fatherLastNameErrorMessage = text)
     }
-    fun validateMotherFirstName(){
+    private fun validateMotherFirstName(){
         val error = TextValidator.validate(_uiState.value.motherFirstName)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(motherFirstNameErrorMessage = text)
     }
-    fun validateMotherLastName(){
+    private fun validateMotherLastName(){
         val error = TextValidator.validate(_uiState.value.motherLastName)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = text)
     }
-    fun validateDateOfBirth(){
+    private fun validateDateOfBirth(){
         val error = TextValidator.validate(_uiState.value.dateOfBirth)
-        error?.let {
-            val text = UiText.StringResource(resId = R.string.required_field)
-            _uiState.value = _uiState.value.copy(dateOfBirthErrorMessage = text)
-        }
+        val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
+        _uiState.value = _uiState.value.copy(dateOfBirthErrorMessage = text)
     }
 
-    /**
-     * checks if all values in the form are valid, then it updates the button state
-     * from [BottomBarState.DISABLED] to [BottomBarState.IDLE] and make it ready
-     * to do its work.
-     *
-     * @author Ali Mansoura
-     */
-    fun validateAll(){
-        _uiState.value = _uiState.value.copy(isValid = false)
-        _uiState.value.run {
-            val isValid = listOf(
-                firstNameErrorMessage,lastNameErrorMessage,
-                fatherFirstNameErrorMessage,fatherLastNameErrorMessage,
-                motherFirstNameErrorMessage,motherLastNameErrorMessage,
-                dateOfBirthErrorMessage
-            ).all{it == null}
-            _uiState.value = _uiState.value.copy(isValid = isValid)
-            if(isValid) _uiState.value = _uiState.value.copy(sendingDataButtonState = BottomBarState.IDLE)
-        }
+    private fun validateAll(){
+        validateFirstName()
+        validateLastName()
+        validateDateOfBirth()
+        validateFatherFirstName()
+        validateFatherLastName()
+        validateMotherFirstName()
+        validateMotherLastName()
+
+        val isValid = _uiState.value.errorMessages.all{it == null}
+        _uiState.value = _uiState.value.copy(isValid = isValid)
+
     }
 
-    fun showToast(message: UiText){
+    private fun showToast(message: UiText){
         _uiState.value = _uiState.value.copy(toastMessage = message)
     }
+    private fun enableBottomBarButtonIfNeeded(){
+        val textFieldsInputs = _uiState.value.textFieldsStringInputs
+        val newState = if (textFieldsInputs.all { it.isNotBlank() }) BottomBarState.IDLE
+        else BottomBarState.DISABLED
+
+        updateBottomBarButtonState(newState)
+    }
+    private fun updateBottomBarButtonState(state: BottomBarState){
+        _uiState.value = _uiState.value.copy(sendingDataButtonState= state)
+    }
+    private fun updateFirstName(value: String){
+        _uiState.value = _uiState.value.copy(firstName = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateLastName(value: String){
+        _uiState.value = _uiState.value.copy(lastName = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateFatherFirstName(value: String){
+        _uiState.value = _uiState.value.copy(fatherFirstName = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateFatherLastName(value: String){
+        _uiState.value = _uiState.value.copy(fatherLastName = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateMotherFirstName(value: String){
+        _uiState.value = _uiState.value.copy(motherFirstName = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateMotherLastName(value: String){
+        _uiState.value = _uiState.value.copy(motherLastName = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateDateOfBirth(value: String){
+        _uiState.value = _uiState.value.copy(dateOfBirth = value)
+        enableBottomBarButtonIfNeeded()
+    }
+    private fun updateGender(value: Gender){
+        _uiState.value = _uiState.value.copy(gender = value)
+    }
+
+
 }

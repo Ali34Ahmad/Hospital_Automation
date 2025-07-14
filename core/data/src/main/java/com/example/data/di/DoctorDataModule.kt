@@ -10,11 +10,13 @@ import com.example.data.repositories.download_file.DownloadFileRepositoryImpl
 import com.example.data.repositories.employee_account_management.EmployeeAccountManagementRepositoryImpl
 import com.example.data.repositories.employment_history.EmploymentHistoryRepositoryImpl
 import com.example.data.repositories.medicine.MedicineRepositoryImp
+import com.example.data.repositories.pharmacy.PharmacyRepositoryImp
 import com.example.data.repositories.residential_address.AddResidentialAddressRepositoryImpl
 import com.example.data.repositories.upload_employee_file.UploadEmploymentDocumentsRepositoryImpl
 import com.example.data.repositories.upload_employee_image.UploadEmployeeProfileImageRepositoryImpl
 import com.example.data.repositories.user_preferences.UserPreferencesRepositoryImpl
 import com.example.data.repositories.vaccine.VaccineRepositoryImpl
+import com.example.data.repositories.prescription.PrescriptionRepositoryImp
 import com.example.data.repositories.work_request.WorkRequestRepositoryImp
 import com.example.datastore.di.dataStoreModule
 import com.example.domain.di.domainModules.doctorDomainModule
@@ -29,10 +31,12 @@ import com.example.domain.repositories.file.DownloadFileRepository
 import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
 import com.example.domain.repositories.file.UploadEmploymentDocumentsRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
+import com.example.domain.repositories.pharmacy.PharmacyRepository
 import com.example.domain.repositories.profile.AdminProfileRepository
 import com.example.domain.repositories.profile.DoctorProfileRepository
 import com.example.domain.repositories.profile.EmploymentHistoryRepository
 import com.example.domain.repositories.vaccine.VaccineRepository
+import com.example.domain.repositories.prescription.PrescriptionRepository
 import com.example.domain.repositories.work_request.WorkRequestRepository
 import com.example.network.di.doctorNetworkModule
 import org.koin.core.module.dsl.bind
@@ -41,7 +45,8 @@ import org.koin.dsl.module
 
 val doctorDataModule = module {
     includes(doctorNetworkModule, dataStoreModule, doctorDomainModule,sharedDataModule)
-
+    singleOf(::PrescriptionRepositoryImp){bind<PrescriptionRepository>()}
+    singleOf(::PharmacyRepositoryImp){bind<PharmacyRepository>()}
     singleOf(::MedicineRepositoryImp){bind<MedicineRepository>()}
     singleOf(::WorkRequestRepositoryImp){bind<WorkRequestRepository>()}
     singleOf(::ClinicRepositoryImp) { bind<ClinicRepository>() }

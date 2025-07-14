@@ -9,8 +9,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
-import io.ktor.client.request.parameter
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.request
 import io.ktor.http.HttpStatusCode
 
 const val MEDICINE_TAG = "MedicineApi"
@@ -28,15 +28,22 @@ class MedicineApiServiceImp(
             client.get(ApiRoutes.Medicine.GET_MEDICINES){
                 bearerAuth(token)
                 url{
-                    parameter("page",page)
-                    parameter("limit",limit)
-                    name?.let { parameter("name",name) }
+                    parameters.apply {
+                        append("page",page.toString())
+                        append("limit",limit.toString())
+                        if(!name.isNullOrBlank()){
+                            append("name",name)
+                        }
+                    }
+
                 }
             }
+
         }catch (e: Exception){
             Log.e(MEDICINE_TAG,e.message.toString())
             return Result.Error(NetworkError.UNKNOWN)
         }
+        Log.e(MEDICINE_TAG,"request : "+response.request.url.toString())
         return when(response.status){
             HttpStatusCode.OK -> {
                 Log.d(MEDICINE_TAG,"Success : ${response.bodyAsText()}")

@@ -14,7 +14,7 @@ data class ChildDto(
     @SerialName("mother_last_name") val motherLastName: String,
     @SerialName("date_of_birth") val dateOfBirth: String,
     val gender: String,
-    @SerialName("employee_id") val employeeId: Int,
+    @SerialName("employee_id") val employeeId: Int? = null,
     val updatedAt: String,
     val createdAt: String,
     @SerialName("birth_certificate_img_url")

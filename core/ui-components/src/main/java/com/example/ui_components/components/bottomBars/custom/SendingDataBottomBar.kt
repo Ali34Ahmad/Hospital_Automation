@@ -26,11 +26,6 @@ fun SendingDataBottomBar(
     onSuccess: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LaunchedEffect(state) {
-        if (state == BottomBarState.SUCCESS) {
-            onSuccess()
-        }
-    }
     //add animations here
     AnimatedContent(
         targetState = state,
@@ -63,7 +58,11 @@ fun SendingDataBottomBar(
             }
 
             BottomBarState.FAILURE -> Unit
-            BottomBarState.SUCCESS -> Unit
+            BottomBarState.SUCCESS -> {
+                LaunchedEffect(Unit) {
+                        onSuccess()
+                }
+            }
 
             BottomBarState.DISABLED -> {
                 HospitalAutomationButton(

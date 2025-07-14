@@ -92,6 +92,7 @@ dependencies {
     implementation(project(":feature:add_new_vaccine"))
     implementation(project(":feature:clinics_search"))
     implementation(project(":feature:clinic_details"))
+    implementation(project(":feature:medicines_search"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

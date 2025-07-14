@@ -20,6 +20,10 @@ import com.example.network.remote.doctor.profile.DoctorProfileApiService
 import com.example.network.remote.doctor.profile.DoctorProfileApiServiceImpl
 import com.example.network.remote.medicine.MedicineApiService
 import com.example.network.remote.medicine.MedicineApiServiceImp
+import com.example.network.remote.pharmacy.PharmacyApiService
+import com.example.network.remote.pharmacy.PharmacyApiServiceImp
+import com.example.network.remote.prescription.PrescriptionApiService
+import com.example.network.remote.prescription.PrescriptionApiServiceImp
 import com.example.network.remote.upload_employee_documents.UploadEmploymentDocumentsApi
 import com.example.network.remote.upload_employee_documents.UploadEmploymentDocumentsApiImpl
 import com.example.network.remote.upload_file.UploadFileApiService
@@ -41,8 +45,11 @@ import org.koin.dsl.module
 
 val doctorNetworkModule = module {
     includes(sharedNetworkModule)
-
-    //Medicine service
+    //pharmacy API service
+    singleOf(::PharmacyApiServiceImp){bind<PharmacyApiService>()}
+    //Prescription API service
+    singleOf(::PrescriptionApiServiceImp){bind<PrescriptionApiService>()}
+    //Medicine API service
     singleOf(::MedicineApiServiceImp){bind<MedicineApiService>()}
     //Work request
     singleOf(::WorkRequestApiServiceImp){bind<WorkRequestApiService>()}

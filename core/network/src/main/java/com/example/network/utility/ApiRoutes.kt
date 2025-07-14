@@ -86,8 +86,12 @@ object ApiRoutes {
     object Medicine{
         const val GET_MEDICINES = "$DOCTOR/get-medicine-byname"
     }
-
-
+    object Prescription{
+        const val ADD_PRESCRIPTION = "$DOCTOR/add-prescription"
+    }
+    object Pharmacy{
+        const val PHARMACIES_BY_MEDICINE_ID = "$DOCTOR/show-pharmacies-have-medicine"
+    }
     fun loginEndpointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGIN

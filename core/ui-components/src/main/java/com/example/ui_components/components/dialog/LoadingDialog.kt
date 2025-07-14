@@ -27,8 +27,8 @@ import com.example.ui.theme.additionalShapes
 @Composable
 fun LoadingDialog(
     showDialog: Boolean,
-    text: String? = null,
     modifier: Modifier = Modifier,
+    text: String? = null,
 ) {
     if (showDialog) {
         BasicAlertDialog(

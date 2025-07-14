@@ -33,7 +33,21 @@ data class AddChildUIState(
     val childId: Int? = null,
 
     val toastMessage: UiText? = null
-)
+){
+    val textFieldsStringInputs
+        get() = listOf(
+            firstName,lastName,dateOfBirth,gender.toString(),
+            fatherFirstName,fatherLastName,
+            motherFirstName,motherLastName
+        )
+    val errorMessages
+        get() = listOf(
+            firstNameErrorMessage,lastNameErrorMessage,
+            fatherFirstNameErrorMessage,fatherLastNameErrorMessage,
+            motherFirstNameErrorMessage,motherLastNameErrorMessage,
+            dateOfBirthErrorMessage
+        )
+}
 
 internal fun AddChildUIState.toChildFullData(): ChildFullData =
     ChildFullData(

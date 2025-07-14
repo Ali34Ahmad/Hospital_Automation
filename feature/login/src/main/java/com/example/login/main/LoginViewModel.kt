@@ -87,7 +87,6 @@ class LoginViewModel(
         _uiState.update { currentState ->
             val allFieldsFilled = currentState.email.isNotEmpty() &&
                     currentState.password.isNotEmpty()
-
             currentState.copy(isLoginButtonEnabled = allFieldsFilled)
         }
     }

@@ -83,6 +83,7 @@ fun HospitalAutomationButton(
                     text,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
 

@@ -1,9 +1,9 @@
 package com.example.ui_components.components.topbars
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,16 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import com.example.constants.icons.AppIcons
+import com.example.ext.shimmerEffect
+import com.example.model.ActionIcon
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.constants.icons.AppIcons
-import com.example.model.ActionIcon
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
-import com.example.ui_components.components.icon.IconWithBackground
+import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
-import com.example.ui_components.components.network_image.NetworkImageError
-import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,15 +81,18 @@ fun HospitalAutomationTopBar(
                             ,
                             contentScale = ContentScale.Crop,
                             loading = {
-                                NetworkImageLoader(
-                                    modifier=Modifier
-                                        .clip(CircleShape)
+                                Box(
+                                    modifier = Modifier
                                         .padding(MaterialTheme.sizing.small16)
                                         .size(MaterialTheme.sizing.medium40)
+                                        .clip(CircleShape)
+                                        .shimmerEffect()
                                 )
                             },
                             errorCompose = {
-                                NetworkImageError()
+                                FailedImage(
+                                    modifier = Modifier.padding(MaterialTheme.sizing.small16)
+                                )
                             },
                         )
                     }

@@ -33,6 +33,7 @@ fun HospitalAutomationTopBarWithSearchBar(
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int = AppIcons.Outlined.arrowBack,
     @DrawableRes trailingIcon: Int? = AppIcons.Outlined.close,
+    actionComposable: @Composable ()-> Unit = {},
 ) {
     TopAppBar(
         modifier = modifier,
@@ -57,6 +58,9 @@ fun HospitalAutomationTopBarWithSearchBar(
                     contentDescription = null
                 )
             }
+        },
+        actions = {
+            actionComposable()
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface

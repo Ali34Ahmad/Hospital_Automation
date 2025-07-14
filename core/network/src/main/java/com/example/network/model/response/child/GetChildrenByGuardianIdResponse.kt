@@ -17,8 +17,8 @@ data class GetChildrenByGuardianResponseItem(
     @SerialName("user_id")
     val userId: Int,
     @SerialName("employee_id")
-    val employeeId: Int,
-    val user: UserDto,
+    val employeeId: Int? = null,
+    val user: UserDto? = null,
     val child: ChildFullDto
 )
 

@@ -1,14 +1,10 @@
 package com.example.network.model.dto.medicine
 
 import com.example.network.model.response.NetworkPagination
-import com.example.network.serializer.LocalDateTimeSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.sql.Date
-import java.time.LocalDateTime
 
 
-//don't forget the number of pharmacies.
 @Serializable
 data class MedicineDto(
     @SerialName("medicinesId")
@@ -27,9 +23,9 @@ data class MedicineDto(
     val updatedAt: String,
     @SerialName("pharmacy_medicines")
     val numberOfPharmaciesList: List<NumberOfPharmacies>,
-    val pagination: NetworkPagination,
 )
 @Serializable
 data class NumberOfPharmacies(
-    val numOfPharmacies : Int
+    @SerialName("pharmacy_id")
+    val pharmacyId : Int
 )

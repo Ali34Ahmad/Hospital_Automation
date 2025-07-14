@@ -61,6 +61,7 @@
             <option value="$PROJECT_DIR$/feature/login" />
             <option value="$PROJECT_DIR$/feature/medical_diagnosis" />
             <option value="$PROJECT_DIR$/feature/medicines_search" />
+            <option value="$PROJECT_DIR$/feature/pharmacies" />
             <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
             <option value="$PROJECT_DIR$/feature/upload_child_documents" />

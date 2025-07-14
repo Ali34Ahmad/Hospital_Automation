@@ -16,5 +16,6 @@ data class AppointmentsStatisticsData(
             AppointmentState.UPCOMMING -> upcoming
             AppointmentState.PASSED -> passed
             AppointmentState.MISSED -> missed
+            AppointmentState.PENDING -> upcoming
         }
 }
