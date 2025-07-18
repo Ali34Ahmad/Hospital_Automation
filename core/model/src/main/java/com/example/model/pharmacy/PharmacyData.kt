@@ -1,7 +1,5 @@
 package com.example.model.pharmacy
 
-import com.example.model.auth.signup.UserData
-import com.example.model.guardian.GuardianData
 import java.time.LocalDate
 
 data class PharmacyData(
@@ -11,12 +9,12 @@ data class PharmacyData(
     val addressCity: String,
     val addressRegion: String,
     val addressStreet: String,
-    val addressNote: String,
-    val phoneNumber: Int,
-    val isDeactivated: Boolean? = null,
-    val deactivationReason: String? = null,
+    val addressNote: String?,
+    val phoneNumber: String,
+    val isDeactivated: Boolean,
+    val deactivationReason: String?,
     val startDate: LocalDate?,
     val endDate: LocalDate?,
-    val deactivatedBy: Int,
+    val deactivatedBy: Int?,
     val pharmacist: PharmacistData
 )

@@ -132,7 +132,7 @@
     <string name="terms_and_conditions">These data will be used for medical purposes only.</string>
     <string name="personal_data_access">Your email and phone number will be accessible to the doctor and administrator as needed.</string>
     <string name="signup_error">Sign up error</string>
-    <string name="submitting">Submitting...</string>
+    <string name="submitting">Submitting…</string>
     <string name="middle_name">Middle Name</string>
     <string name="welcome_back">Welcome Back!</string>
     <string name="Sign_in_to_access_your_work_tasks">Sign in to access your work tasks</string>
@@ -145,7 +145,7 @@
     <string name="Did_not_get_OTP_verification_code">Didn’t get OTP verification code?</string>
     <string name="verification_error">Verification error</string>
     <string name="something_went_wrong">Something went wrong!</string>
-    <string name="loggin_in">Loggin in...</string>
+    <string name="loggin_in">Logging in…</string>
     <string name="login_failed">Login failed</string>
     <string name="document_upload_is_required">Document upload is required</string>
     <string name="upload_employee_document_description">Please ensure your uploaded files are clear and legible.</string>
@@ -228,14 +228,14 @@
     <string name="failed_to_reactivate_account">Failed to reactivate your account. Please try again later.</string>
     <string name="logging_out">Logging out…</string>
     <string name="deactivating">Deactivating…</string>
-    <string name="reactivating">Reactivating...</string>
+    <string name="reactivating">Reactivating…</string>
     <string name="uploading_cancelled">Uploading cancelled</string>
     <string name="file_too_big">File is too big to be used in out system.</string>
     <string name="file_not_found">File can not be found. Please try again.</string>
     <string name="check_internet_connection">Please check your internet connection and try again later.</string>
     <string name="download">Download</string>
     <string name="pending_with_dots">Pending</string>
-    <string name="downloading_with_dots">Downloading...</string>
+    <string name="downloading_with_dots">Downloading…</string>
     <string name="specialty">Specialty</string>
     <string name="data_updated_successfully">Data updated successfully</string>
     <string name="schedule">Schedule</string>
@@ -275,14 +275,14 @@
     <string name="invalid_values">You have entered invalid values.</string>
     <string name="prescribed_medicines">Prescribed Medicines</string>
     <string name="add_note_subtitle">Add a note about how or when to take this medicine</string>
-    <string name="type_your_note">Type your note...</string>
+    <string name="type_your_note">Type your note…</string>
 
     <string name="please_wait">Please wait</string>
     <string name="name">Name</string>
     <string name="Tap_a_row_to_edit">Tap a row to edit</string>
     <string name="show_all">Show all</string>
     <string name="new_">New</string>
-    <string name="no_interaction_added_yet">No Interations Added Yet!</string>
+    <string name="no_interaction_added_yet">No Interactions Added Yet!</string>
     <string name="add_interaction">Add interaction</string>
     <string name="interactions_will_be_displayed_here_in_structured_table">Interactions will be displayed here in a structured table.</string>
     <string name="add_vaccine_error">Add Vaccine Error</string>
@@ -291,4 +291,17 @@
     <string name="edit_interaction">Edit Interaction</string>
     <string name="save">Save</string>
     <string name="vaccination_table">Vaccination Table</string>
+    <string name="no_guardians">There is no guardians</string>
+    <string name="no_pharmacies">there is no pharmacies</string>
+    <string name="titer">Titer</string>
+    <string name="company">Company</string>
+    <string name="allowance">Allowance</string>
+    <string name="allowed">Allowed</string>
+    <string name="prescription_required">Prescription required</string>
+    <string name="pharmaceutical_composition">Pharmaceutical composition</string>
+    <string name="pharmaceutical_Indications">Pharmaceutical Indications</string>
+    <string name="alternatives">Alternatives</string>
+    <string name="alternatives_subtitle">Explore Similar Medicines by Composition and Use</string>
+    <string name="medicines_alternatives">Medicine Alternatives</string>
+    <string name="medicine_details">Medicine Details</string>
 </resources>

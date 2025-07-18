@@ -19,8 +19,9 @@ data class PharmacyDto(
     @SerialName("address_street")
     val addressStreet: String,
     @SerialName("address_note")
-    val addressNote: String,
-    val phoneNumber: Int,
+    val addressNote: String? = null,
+    @SerialName("phoneNumber")
+    val phone: String,
     @SerialName("is_deactivated")
     val isDeactivated: Boolean? = null,
     @SerialName("deactivation_reason")
@@ -34,7 +35,7 @@ data class PharmacyDto(
     val createdAt: String,
     val updatedAt: String,
     @SerialName("deactivated_by")
-    val deactivatedBy: Int,
+    val deactivatedBy: Int? = null,
     @SerialName("pharmacist_id")
     val pharmacistId: Int,
     val user: UserDto

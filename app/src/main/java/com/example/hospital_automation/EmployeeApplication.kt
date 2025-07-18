@@ -7,7 +7,7 @@ import com.example.admin_profile.adminProfileModule
 import com.example.child_profile.di.childProfileModule
 import com.example.children.di.childrenModule
 import com.example.children_search.di.childrenSearchModule
-import com.example.data.di.employeeDataModule
+import com.example.data.di.employeeAppDataModule
 import com.example.email_verification.emailVerificationModule
 import com.example.employee_profile.employeeProfileModule
 import com.example.employment_history.employmentHistoryModule
@@ -35,7 +35,7 @@ class EmployeeApplication: Application() {
             androidContext(this@EmployeeApplication)
             modules(
                 appModule,
-                employeeDataModule,
+                employeeAppDataModule,
                 //guardians
                 guardiansSearchModule,
                 guardianProfileModule,

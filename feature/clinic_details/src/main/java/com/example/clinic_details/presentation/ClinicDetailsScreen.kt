@@ -61,6 +61,7 @@ fun ClinicDetailsScreen(
         if(message!=null){
             Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
         }
+        onAction(ClinicDetailsUIAction.ClearToast)
     }
 
     Scaffold(
@@ -84,7 +85,7 @@ fun ClinicDetailsScreen(
                         )
                     },
                     onSuccess = {
-                        navigationAction.navigateToInitialScreen(uiState.doctorId)
+                        navigationAction.navigateToScheduleScreen()
                     },
                     modifier = Modifier.padding(MaterialTheme.spacing.medium16)
                 )
@@ -150,10 +151,10 @@ fun ClinicDetailsScreen(
                                 ),
                                 currentStatus = DoctorStatusChecker.getDoctorStatus(workDays),
                                 onVaccinesItemClick = {
-                                    navigationAction.navigateToVaccines(uiState.clinicId)
+                                    navigationAction.navigateToVaccines()
                                 },
                                 onDoctorItemClick = {
-                                    navigationAction.navigateToDoctorProfile(uiState.doctorId)
+                                    navigationAction.navigateToDoctorProfile()
                                 },
                                 onServiceItemClick = {index ->
                                     val service = clinicServices[index]

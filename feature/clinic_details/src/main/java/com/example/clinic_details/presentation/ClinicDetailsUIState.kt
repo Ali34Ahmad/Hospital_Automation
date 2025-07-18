@@ -6,7 +6,6 @@ import com.example.model.enums.ScreenState
 import com.example.util.UiText
 
 data class ClinicDetailsUIState(
-    val doctorId : Int,
     val clinicId: Int,
     val clinic: ClinicFullData? = null,
     val screenState: ScreenState = ScreenState.IDLE,

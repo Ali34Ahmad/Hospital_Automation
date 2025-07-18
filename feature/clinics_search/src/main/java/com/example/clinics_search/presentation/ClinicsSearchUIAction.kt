@@ -13,10 +13,10 @@ interface ClinicsSearchUIAction {
 }
 
 interface ClinicsSearchNavigationActions{
-    fun navigateToDepartmentDetails(clinicId: Int)
-    fun navigateToDoctorProfile(doctorId: Int)
-    fun navigateToNotifications(doctorId: Int)
-    fun navigateToMedicalRecords(doctorId: Int)
-    fun navigateToPrescriptions(doctorId: Int)
-    fun navigateToVaccines(doctorId: Int)
+    fun navigateToDepartmentDetails(clinicId: Int,doctorId: Int)
+    fun navigateToDoctorProfile()
+    fun navigateToNotifications()
+    fun navigateToMedicalRecords()
+    fun navigateToPrescriptions()
+    fun navigateToVaccines()
 }

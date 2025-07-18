@@ -66,42 +66,42 @@ fun ClinicsSearchScreen(
             text = R.string.profile,
             image = AppIcons.Outlined.accountCircle,
             onClick = {
-                navigationActions.navigateToDoctorProfile(doctorId = uiState.doctorId)
+                navigationActions.navigateToDoctorProfile()
             }
         ),
         DrawerButton(
             text = R.string.notifications,
             image = AppIcons.Outlined.notification,
             onClick = {
-                navigationActions.navigateToNotifications(doctorId = uiState.doctorId)
+                navigationActions.navigateToNotifications()
             }
         ),
         DrawerButton(
             text = R.string.medical_records,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
-                navigationActions.navigateToMedicalRecords(doctorId = uiState.doctorId)
+                navigationActions.navigateToMedicalRecords()
             }
         ),
         DrawerButton(
             text = R.string.prescriptions,
             image = AppIcons.Outlined.prescription,
             onClick = {
-                navigationActions.navigateToPrescriptions(doctorId = uiState.doctorId)
+                navigationActions.navigateToPrescriptions()
             }
         ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,
             onClick = {
-                navigationActions.navigateToVaccines(doctorId = uiState.doctorId)
+                navigationActions.navigateToVaccines()
             }
         ),
         DrawerButton(
             text = R.string.vaccine_table,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
-                navigationActions.navigateToMedicalRecords(doctorId = uiState.doctorId)
+                navigationActions.navigateToMedicalRecords()
             }
         ),
         )

@@ -22,9 +22,9 @@ sealed interface DoctorScheduleUIAction {
 
 interface DoctorScheduleNavigationActions{
     fun navigateToAppointmentDetails(doctorId: Int)
-    fun navigateToDoctorProfile(doctorId: Int)
-    fun navigateToNotifications(doctorId: Int)
-    fun navigateToMedicalRecords(doctorId: Int)
-    fun navigateToPrescriptions(doctorId: Int)
-    fun navigateToVaccines(doctorId: Int)
+    fun navigateToDoctorProfile()
+    fun navigateToNotifications()
+    fun navigateToMedicalRecords()
+    fun navigateToPrescriptions()
+    fun navigateToVaccines()
 }

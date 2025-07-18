@@ -3,6 +3,8 @@ package com.example.clinic_details.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.example.clinic_details.navigation.ClinicDetailsRoute
 import com.example.domain.use_cases.doctor.clinic.GetClinicByIdUseCase
 import com.example.domain.use_cases.work_request.SendDoctorWorkRequestUseCase
 import com.example.model.doctor.clinic.ClinicFullData
@@ -26,12 +28,13 @@ class ClinicDetailsViewModel(
     private val getClinicById: GetClinicByIdUseCase,
     private val sendRequest: SendDoctorWorkRequestUseCase,
 ): ViewModel() {
-    private val clinicId: Int = 1
-    private val doctorId: Int = 122
-
     private val refreshTrigger = MutableSharedFlow<Unit>()
 
-    private val _uiState = MutableStateFlow(ClinicDetailsUIState(doctorId = doctorId,clinicId = clinicId))
+    private val _uiState = MutableStateFlow(
+        ClinicDetailsUIState(
+            clinicId = savedStateHandle.toRoute<ClinicDetailsRoute>().clinicId
+        )
+    )
     val uiState: StateFlow<ClinicDetailsUIState> = combine(
         _uiState.onStart { getClinicDetails() },
         refreshTrigger.onStart {
@@ -46,28 +49,32 @@ class ClinicDetailsViewModel(
 
     fun onAction(action: ClinicDetailsUIAction){
         when(action){
-            ClinicDetailsUIAction.Refresh -> {
-                viewModelScope.launch{
-                    refreshTrigger.emit(Unit)
-                    refreshData()
-                }
-            }
-            ClinicDetailsUIAction.SendRequest-> {
-                sendRequest()
-            }
-            ClinicDetailsUIAction.HideDialog -> {
-                _uiState.value = _uiState.value.copy(isDialogShown = false)
-            }
-            is ClinicDetailsUIAction.ShowDialog -> {
-                _uiState.value = _uiState.value.copy(
-                    isDialogShown = true,
-                    dialogTitle = action.title,
-                    dialogSubtitle = action.subtitle
-                )
-            }
+            ClinicDetailsUIAction.Refresh -> refresh()
+            ClinicDetailsUIAction.SendRequest-> sendRequest
+            ClinicDetailsUIAction.HideDialog -> hideDialog()
+            is ClinicDetailsUIAction.ShowDialog -> showDialog(action.title,action.subtitle)
+            ClinicDetailsUIAction.ClearToast -> clearToast()
         }
     }
 
+    private fun clearToast() {
+        _uiState.value = _uiState.value.copy(toastMessage = null)
+    }
+
+    private fun showDialog(title: String,subtitle: String){
+        _uiState.value = _uiState.value.copy(
+            isDialogShown = true,
+            dialogTitle = title,
+            dialogSubtitle = subtitle
+        )
+    }
+    private fun hideDialog(){
+        _uiState.value = _uiState.value.copy(isDialogShown = false)
+    }
+    private fun refresh()=viewModelScope.launch{
+        refreshTrigger.emit(Unit)
+        refreshData()
+    }
     private fun getClinicDetails() = viewModelScope.launch{
         updateScreenState(ScreenState.LOADING)
         val result = getClinicById(uiState.value.clinicId)

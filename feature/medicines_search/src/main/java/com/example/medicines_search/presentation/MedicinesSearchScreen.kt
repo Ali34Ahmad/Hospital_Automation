@@ -125,6 +125,7 @@ fun MedicinesSearchScreen(
     ) { innerPadding->
         AnimatedContent(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding)
                 .padding(MaterialTheme.spacing.medium16),
             targetState = uiState.screenState

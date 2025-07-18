@@ -85,6 +85,7 @@ object ApiRoutes {
     }
     object Medicine{
         const val GET_MEDICINES = "$DOCTOR/get-medicine-byname"
+        const val GET_MEDICINE_BY_ID = "$DOCTOR/get-medicine-by-id"
     }
     object Prescription{
         const val ADD_PRESCRIPTION = "$DOCTOR/add-prescription"

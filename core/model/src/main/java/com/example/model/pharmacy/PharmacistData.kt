@@ -6,4 +6,7 @@ data class PharmacistData(
     val middleName: String,
     val lastName: String,
     val imageUrl: String?
-)
+){
+    val fullName: String
+        get()="$firstName $middleName $lastName"
+}

@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.example.clinics_search.navigation.ClinicsSearchRoute
 import com.example.domain.use_cases.doctor.clinic.GetClinicsFlowUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
@@ -25,8 +27,10 @@ class ClinicsSearchViewModel(
     private val getUserPreferences: GetUserPreferencesUseCase,
     private val updateIsDarkTheme: UpdateIsDarkThemeUseCase,
 ): ViewModel() {
-    val id: Int = 122
-    private val _uiState = MutableStateFlow(ClinicsSearchUIState(doctorId = id))
+
+    private val _uiState = MutableStateFlow(ClinicsSearchUIState(
+        doctorId = savedStateHandle.toRoute<ClinicsSearchRoute>().doctorId
+    ))
     val uiState : StateFlow<ClinicsSearchUIState> = _uiState
 
     init {

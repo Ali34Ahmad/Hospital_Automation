@@ -4,15 +4,16 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.doctor_schedule.navigation.DoctorScheduleRoute
 import com.example.doctor_schedule.presentation.model.AppointmentsFilter
 import com.example.doctor_schedule.presentation.model.upcomingMapper
 import com.example.domain.use_cases.doctor.appointment.GetAppointmentsFlowUseCase
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
-import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateDateFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
@@ -24,7 +25,7 @@ import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class DoctorScheduleViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -47,22 +49,17 @@ class DoctorScheduleViewModel(
     private val roleAppConfig:RoleAppConfig,
     private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
     ): ViewModel() {
-    //from navigation
-    val fakeDoctorId = 112
-
 
     private val _uiState = MutableStateFlow(
         DoctorScheduleUIState(
-        doctorId = fakeDoctorId,
+        doctorId = savedStateHandle.toRoute<DoctorScheduleRoute>().doctorId,
     ))
 
     val uiState : StateFlow<DoctorScheduleUIState> = _uiState
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            DoctorScheduleUIState(
-                doctorId = fakeDoctorId,
-            )
+            _uiState.value
         )
 
     init {
@@ -106,58 +103,57 @@ class DoctorScheduleViewModel(
 
     fun onAction(action: DoctorScheduleUIAction){
         when(action){
-            is DoctorScheduleUIAction.UpdateTab ->{
-               viewModelScope.launch {
-                   _uiState.value = _uiState.value.copy(selectedTab = action.selectedTab)
-               }
-            }
-            is DoctorScheduleUIAction.UpdateState -> {
-                updateScreenState(action.newState)
-            }
-            DoctorScheduleUIAction.Refresh -> {
-                viewModelScope.launch {
-                    updateRefreshState(true)
-                    refreshTrigger.emit(Unit)
-                }
-            }
-
-            DoctorScheduleUIAction.HideSearchBar -> {
-                _uiState.value = _uiState.value.copy(searchQuery = "")
-                _uiState.value = _uiState.value.copy(isSearchBarVisible = false)
-            }
-            DoctorScheduleUIAction.ShowSearchBar -> {
-                _uiState.value = _uiState.value.copy(isSearchBarVisible = true)
-            }
-            DoctorScheduleUIAction.HideDatePicker ->{
-                _uiState.value = _uiState.value.copy(isDatePickerVisible = false)
-                Log.d("DoctorScheduleViewModel","is visible : ${_uiState.value.isDatePickerVisible}")
-            }
-            DoctorScheduleUIAction.ToggleDrawer ->{
-                _uiState.value = _uiState.value.copy(isDrawerOpened = !uiState.value.isDrawerOpened)
-            }
-            DoctorScheduleUIAction.ShowDatePicker -> {
-                _uiState.value = _uiState.value.copy(isDatePickerVisible = true)
-            }
-            is DoctorScheduleUIAction.UpdateSearchQuery -> {
-                _uiState.value = _uiState.value.copy(searchQuery = action.newValue)
-            }
-
-            is DoctorScheduleUIAction.UpdateDate -> {
-                _uiState.value = _uiState.value.copy(selectedDate = action.newDate)
-            }
-
-            DoctorScheduleUIAction.ToggleTheme -> viewModelScope.launch{
-                updateIsDarkThemeUseCase(!_uiState.value.isDarkTheme)
-            }
-
-            DoctorScheduleUIAction.RefreshPermission ->{
-                checkPermissions()
-            }
-
-            DoctorScheduleUIAction.ClearDateFilter -> {
-                _uiState.value = _uiState.value.copy(selectedDate = null)
-            }
+            is DoctorScheduleUIAction.UpdateTab ->updateTab(action.selectedTab)
+            is DoctorScheduleUIAction.UpdateState -> updateScreenState(action.newState)
+            DoctorScheduleUIAction.Refresh ->refresh()
+            DoctorScheduleUIAction.HideSearchBar ->hideSearchBar()
+            DoctorScheduleUIAction.ShowSearchBar ->showSearchBar()
+            DoctorScheduleUIAction.HideDatePicker ->hideDatePicker()
+            DoctorScheduleUIAction.ToggleDrawer -> toggleDrawer()
+            DoctorScheduleUIAction.ShowDatePicker -> showDatePicker()
+            is DoctorScheduleUIAction.UpdateSearchQuery -> updateSearchQuery(action.newValue)
+            is DoctorScheduleUIAction.UpdateDate -> updateDate(action.newDate)
+            DoctorScheduleUIAction.ToggleTheme -> toggleTheme()
+            DoctorScheduleUIAction.RefreshPermission ->checkPermissions()
+            DoctorScheduleUIAction.ClearDateFilter -> clearDateFilter()
         }
+    }
+
+    private fun updateTab(newTap: AppointmentState){
+        _uiState.value = _uiState.value.copy(selectedTab = newTap)
+    }
+
+    private fun hideSearchBar() {
+        _uiState.value = _uiState.value.copy(isSearchBarVisible = false, searchQuery = "")
+    }
+    private fun toggleDrawer(){
+        _uiState.value = _uiState.value.copy(isDrawerOpened = !uiState.value.isDrawerOpened)
+    }
+    private fun hideDatePicker(){
+        _uiState.value = _uiState.value.copy(isDatePickerVisible = false)
+    }
+    private fun showSearchBar() {
+        _uiState.value = _uiState.value.copy(isSearchBarVisible = true)
+    }
+    private fun showDatePicker(){
+        _uiState.value = _uiState.value.copy(isDatePickerVisible = true)
+    }
+    private fun updateSearchQuery(newQuery: String){
+        _uiState.value = _uiState.value.copy(searchQuery = newQuery)
+    }
+    private fun updateDate(newDate: LocalDate?){
+        _uiState.value = _uiState.value.copy(selectedDate = newDate)
+    }
+    private fun toggleTheme() = viewModelScope.launch{
+        updateIsDarkThemeUseCase(!_uiState.value.isDarkTheme)
+    }
+
+    private fun clearDateFilter(){
+        _uiState.value = _uiState.value.copy(selectedDate = null)
+    }
+    private fun refresh() = viewModelScope.launch {
+        updateRefreshState(true)
+        refreshTrigger.emit(Unit)
     }
 
     private fun updateScreenState(newState: ScreenState){
@@ -198,10 +194,8 @@ class DoctorScheduleViewModel(
         val result= checkEmployeePermissionUseCase(roleAppConfig.role)
         result.map { it.permissionGranted }
             .onError {
-                Log.e("DoctorScheduleViewModel","check permissions error: $it")
                 updatePermissionState(ScreenState.ERROR)
             }.onSuccess {
-                Log.d("DoctorScheduleViewModel","check permissions result : $it")
                 updatePermission(it)
                 updatePermissionState(ScreenState.SUCCESS)
             }

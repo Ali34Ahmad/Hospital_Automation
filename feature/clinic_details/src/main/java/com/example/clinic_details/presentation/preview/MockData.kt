@@ -7,7 +7,6 @@ import com.example.model.doctor.clinic.ClinicServiceData
 import com.example.model.doctor.day_scedule.DaySchedule
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 val mockClinic = ClinicFullData(
@@ -115,13 +114,13 @@ val mockAction = object : ClinicNavigationAction{
     override fun navigateUp() {
     }
 
-    override fun navigateToDoctorProfile(doctorId: Int) {
+    override fun navigateToDoctorProfile() {
 
     }
 
-    override fun navigateToInitialScreen(doctorId: Int) {
+    override fun navigateToScheduleScreen() {
     }
 
-    override fun navigateToVaccines(clinicId: Int) {
+    override fun navigateToVaccines() {
     }
 }

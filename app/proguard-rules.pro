@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Prevent R8/ProGuard from obfuscating or removing the enum ProfileAccessType
+-keep enum com.example.** { *; }

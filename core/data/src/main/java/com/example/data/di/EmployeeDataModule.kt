@@ -33,8 +33,8 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val employeeDataModule = module {
-    includes(employeeNetworkModule, dataStoreModule, employeeDomainModule,sharedDataModule)
+val employeeAppDataModule = module {
+    includes(employeeNetworkModule, dataStoreModule, employeeDomainModule,commonDataModule)
 
     single<UserRepository> { UserRepositoryImp(get(), get()) }
     single<ChildRepository> { ChildRepositoryImp(get(), get()) }

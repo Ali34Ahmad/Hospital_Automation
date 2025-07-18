@@ -62,23 +62,23 @@ internal val mockActions =  object : DoctorScheduleNavigationActions{
 
     }
 
-    override fun navigateToDoctorProfile(doctorId: Int) {
+    override fun navigateToDoctorProfile() {
         TODO("Not yet implemented")
     }
 
-    override fun navigateToNotifications(doctorId: Int) {
+    override fun navigateToNotifications() {
         TODO("Not yet implemented")
     }
 
-    override fun navigateToMedicalRecords(doctorId: Int) {
+    override fun navigateToMedicalRecords() {
         TODO("Not yet implemented")
     }
 
-    override fun navigateToPrescriptions(doctorId: Int) {
+    override fun navigateToPrescriptions() {
         TODO("Not yet implemented")
     }
 
-    override fun navigateToVaccines(doctorId: Int) {
+    override fun navigateToVaccines() {
         TODO("Not yet implemented")
     }
 }

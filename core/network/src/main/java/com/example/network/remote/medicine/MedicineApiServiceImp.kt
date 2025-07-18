@@ -2,7 +2,9 @@ package com.example.network.remote.medicine
 
 import android.util.Log
 import com.example.network.model.response.medicine.GetAllMedicinesResponse
+import com.example.network.model.response.medicine.GetMedicineByIdResponse
 import com.example.network.utility.ApiRoutes
+import com.example.network.utility.doApiCall
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import io.ktor.client.HttpClient
@@ -61,4 +63,16 @@ class MedicineApiServiceImp(
         }
 
     }
+
+    override suspend fun getMedicineById(
+        token: String,
+        medicineId: Int,
+    ): Result<GetMedicineByIdResponse, NetworkError> =
+            doApiCall<GetMedicineByIdResponse>(
+                tag = MEDICINE_TAG
+            ) {
+                client.get(ApiRoutes.Medicine.GET_MEDICINE_BY_ID+"/$medicineId") {
+                    bearerAuth(token)
+                }
+            }
 }

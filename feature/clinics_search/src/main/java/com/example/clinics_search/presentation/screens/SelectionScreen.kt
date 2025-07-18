@@ -135,7 +135,11 @@ fun SelectionScreen(
                                 DepartmentCard(
                                     department = department,
                                     modifier = Modifier.fillMaxWidth(),
-                                    onClick = navigationActions::navigateToDepartmentDetails
+                                    onClick = {
+                                        navigationActions.navigateToDepartmentDetails(
+                                            clinicId = it, doctorId = uiState.doctorId
+                                        )
+                                    }
                                 )
                             }
                         }

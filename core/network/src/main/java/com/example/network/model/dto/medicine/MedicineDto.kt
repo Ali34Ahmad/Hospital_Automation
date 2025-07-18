@@ -18,11 +18,12 @@ data class MedicineDto(
     val price: Int,
     val isAllowedWithoutPrescription: Boolean,
     val barcode: String,
-    val medImageUrl: String,
+    val medImageUrl: String? = null,
     val createdAt: String,
     val updatedAt: String,
     @SerialName("pharmacy_medicines")
     val numberOfPharmaciesList: List<NumberOfPharmacies>,
+
 )
 @Serializable
 data class NumberOfPharmacies(

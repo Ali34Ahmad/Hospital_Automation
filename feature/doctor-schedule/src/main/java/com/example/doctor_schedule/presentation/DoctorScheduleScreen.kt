@@ -6,13 +6,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
@@ -98,42 +94,42 @@ internal fun DoctorScheduleScreen(
             text = R.string.profile,
             image = AppIcons.Outlined.accountCircle,
             onClick = {
-                navigationActions.navigateToDoctorProfile(doctorId = uiState.doctorId)
+                navigationActions.navigateToDoctorProfile()
             }
         ),
         DrawerButton(
             text = R.string.notifications,
             image = AppIcons.Outlined.notification,
             onClick = {
-                navigationActions.navigateToNotifications(doctorId = uiState.doctorId)
+                navigationActions.navigateToNotifications()
             }
         ),
         DrawerButton(
             text = R.string.medical_records,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
-                navigationActions.navigateToMedicalRecords(doctorId = uiState.doctorId)
+                navigationActions.navigateToMedicalRecords()
             }
         ),
         DrawerButton(
             text = R.string.prescriptions,
             image = AppIcons.Outlined.prescription,
             onClick = {
-                navigationActions.navigateToPrescriptions(doctorId = uiState.doctorId)
+                navigationActions.navigateToPrescriptions()
             }
         ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,
             onClick = {
-                navigationActions.navigateToVaccines(doctorId = uiState.doctorId)
+                navigationActions.navigateToVaccines()
             }
         ),
         DrawerButton(
             text = R.string.vaccine_table,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
-                navigationActions.navigateToMedicalRecords(doctorId = uiState.doctorId)
+                navigationActions.navigateToMedicalRecords()
             }
         ),
 

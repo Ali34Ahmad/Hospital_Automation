@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.FileInfo
 import com.example.model.enums.ScreenState
-import com.example.model.helper.ext.toGender
+import com.example.model.helper.ext.toGenderFromString
 import com.example.model.helper.ext.toLocalDate
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
@@ -97,16 +97,18 @@ fun ChildProfileScreen(
             )
         },
         bottomBar = {
-            AddGuardianButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.spacing.medium16),
-                onClick = {
-                    child?.childId?.let {
-                        navigationActions.navigateToAddGuardianScreen(it)
-                    }
-                },
-            )
+            if(uiState.state == ScreenState.SUCCESS){
+                AddGuardianButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.spacing.medium16),
+                    onClick = {
+                        child?.childId?.let {
+                            navigationActions.navigateToAddGuardianScreen(it)
+                        }
+                    },
+                )
+            }
         }
     ) { innerPadding ->
         Surface(
@@ -151,7 +153,7 @@ fun ChildProfileScreen(
                                 ChildProfileCard(
                                     fatherName = child.fatherLastName,
                                     motherName = child.motherLastName,
-                                    gender = child.gender.toGender(),
+                                    gender = child.gender.toGenderFromString(),
                                     dateOfBirth = child.dateOfBirth.toLocalDate(),
                                     employeeName = child.employeeName
                                         ?: stringResource(R.string.not_provided),

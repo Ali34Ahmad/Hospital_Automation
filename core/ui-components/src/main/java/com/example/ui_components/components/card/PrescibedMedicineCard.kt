@@ -3,7 +3,9 @@ package com.example.ui_components.components.card
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,14 +28,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Modifier.Companion.then
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.icons.AppIcons
+import com.example.ext.shimmerEffect
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
+import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
 
 @Composable
@@ -42,21 +48,28 @@ fun PrescribedMedicineCard(
     drug: Int,
     imageUrl: String?,
     hasNote: Boolean,
-    onAddNote: ()-> Unit,
-    onEditNote: ()-> Unit,
-    onRemove:()-> Unit,
     modifier: Modifier = Modifier,
+    onAddNote: ()-> Unit ={},
+    onEditNote: ()-> Unit ={},
+    onTrailingIconClick:()-> Unit = {},
+    canEdit: Boolean = true,
+    onClick: ()-> Unit = {},
     @DrawableRes drugIcon: Int = AppIcons.Outlined.pill,
     @DrawableRes addNoteIcon: Int = AppIcons.Outlined.addNotes,
     @DrawableRes editNoteIcon: Int = AppIcons.Outlined.editNote,
     @DrawableRes removeIcon: Int = AppIcons.Outlined.close,
+    shape: Shape = RoundedCornerShape(MaterialTheme.sizing.small8)
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable(
+            enabled = !canEdit
+        ){
+                onClick()
+            },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
-        shape = RoundedCornerShape(MaterialTheme.sizing.small8)
+        shape = shape
     ){
         Row(
             modifier = Modifier.padding(
@@ -67,9 +80,24 @@ fun PrescribedMedicineCard(
         ) {
             NetworkImage(
                 model = imageUrl,
-                modifier = Modifier.size(MaterialTheme.sizing.medium48)
+                modifier = Modifier
+                    .size(MaterialTheme.sizing.medium48)
                     .clip(RoundedCornerShape(MaterialTheme.sizing.small6)),
                 contentScale = ContentScale.Crop,
+                loading = {
+                    Box(
+                        modifier = Modifier
+                            .size(MaterialTheme.sizing.medium48)
+                            .clip(RoundedCornerShape(MaterialTheme.sizing.small6))
+                            .shimmerEffect()
+                    )
+                },
+                errorCompose = {
+                    FailedImage(
+                        size = MaterialTheme.sizing.medium48,
+                        shape = RoundedCornerShape(MaterialTheme.sizing.small6)
+                    )
+                },
             )
             Spacer(Modifier.width(MaterialTheme.spacing.small8))
             //Medicine name and its drug amount
@@ -104,54 +132,53 @@ fun PrescribedMedicineCard(
             }
             Spacer(Modifier.weight(1f))
             //note actions
-            Crossfade(
-                targetState = hasNote,
-                label = "note action cross fade"
-            ) { sate->
-                if(sate){ //add note icon button
-                    IconButton(
-                        onClick = onAddNote,
-                        modifier = Modifier
-                            .size(
-                                MaterialTheme.sizing.small24
-                            ),
-
-                    ) {
-                        Icon(
-                            modifier = Modifier.padding(MaterialTheme.spacing.extraSmall4),
-                            painter = painterResource(addNoteIcon),
-                            contentDescription = null,
-                        )
-                    }
-                }else{//edit note icon button
-                    IconButton(
-                        onClick = onEditNote,
-                        modifier = Modifier
-                            .background(
-                                shape = CircleShape,
-                                color = MaterialTheme.colorScheme.secondaryContainer
+            if (canEdit) {
+                Crossfade(
+                    targetState = hasNote,
+                    label = "note action cross fade"
+                ) { sate ->
+                    if (sate) { //add note icon button
+                        IconButton(
+                            onClick = onAddNote,
+                            modifier = Modifier
+                                .size(
+                                    MaterialTheme.sizing.small24
+                                ),
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(MaterialTheme.spacing.extraSmall4),
+                                painter = painterResource(addNoteIcon),
+                                contentDescription = null,
                             )
-                            .size(
-                                MaterialTheme.sizing.small24
-                            ),
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.secondary
-                        )
-                    ) {
-                        Icon(
-                            modifier = Modifier.padding(MaterialTheme.spacing.extraSmall4),
-                            painter = painterResource(editNoteIcon),
-                            contentDescription = null,
-                        )
+                        }
+                    } else {//edit note icon button
+                        IconButton(
+                            onClick = onEditNote,
+                            modifier = Modifier
+                                .background(
+                                    shape = CircleShape,
+                                    color = MaterialTheme.colorScheme.secondaryContainer
+                                )
+                                .size(
+                                    MaterialTheme.sizing.small24
+                                ),
+                            colors = IconButtonDefaults.iconButtonColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.secondary
+                            )
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(MaterialTheme.spacing.extraSmall4),
+                                painter = painterResource(editNoteIcon),
+                                contentDescription = null,
+                            )
+                        }
                     }
                 }
-            }
-
-            Spacer(Modifier.width(MaterialTheme.sizing.small16))
+                Spacer(Modifier.width(MaterialTheme.sizing.small16))
             // remove icon button
             IconButton(
-                onClick = onRemove,
+                onClick = onTrailingIconClick,
                 modifier = Modifier
                     .size(
                         MaterialTheme.sizing.small24
@@ -168,12 +195,13 @@ fun PrescribedMedicineCard(
                 )
             }
         }
+        }
     }
 }
 
 @Preview
 @Composable
-fun PrescribedMedicineCardPreview() {
+fun EditablePrescribedMedicineCardPreview() {
     Hospital_AutomationTheme {
         var hasNote by remember { mutableStateOf(false) }
         PrescribedMedicineCard(
@@ -183,7 +211,25 @@ fun PrescribedMedicineCardPreview() {
             hasNote = hasNote,
             onAddNote = {},
             onEditNote = {},
-            onRemove = {},
+            onTrailingIconClick = {},
+            modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+        )
+    }
+}
+@Preview
+@Composable
+fun PrescribedMedicineCardPreview() {
+    Hospital_AutomationTheme {
+        var hasNote by remember { mutableStateOf(false) }
+        PrescribedMedicineCard(
+            canEdit = false,
+            medicineName = "Citamol",
+            drug = 500,
+            imageUrl = null,
+            hasNote = hasNote,
+            onAddNote = {},
+            onEditNote = {},
+            onTrailingIconClick = {},
             modifier = Modifier.padding(MaterialTheme.spacing.medium16),
         )
     }

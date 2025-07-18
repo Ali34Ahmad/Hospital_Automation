@@ -110,8 +110,8 @@ fun OtpVerificationScreen(
                     onOtpChange = { index, value ->
                         uiActions.onOtpCodeChange(index, value)
                     },
-                    isValid = uiState.otpCodeError == null,
                     onValidate = {
+
                     },
                     invalidText = uiState.otpCodeError?.asString(),
                     modifier = Modifier.fillMaxWidth(),

@@ -13,7 +13,7 @@ fun PharmacyDto.toPharmacyData() = PharmacyData(
     addressRegion =addressRegion,
     addressStreet = addressStreet,
     addressNote = addressNote,
-    phoneNumber = phoneNumber,
+    phoneNumber = phone,
     isDeactivated = isDeactivated == true,
     deactivationReason = deactivationReason,
     startDate = startDate,

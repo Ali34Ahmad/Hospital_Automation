@@ -8,79 +8,91 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.example.ui.helper.DarkAndLightModePreview
+import com.example.ui.theme.sizing
 
 @Composable
 fun OtpInputField(
-    number: Int? = null,
+    number: Int?,
     onNumberChange: (Int?) -> Unit,
     onNumberEntered: (Int) -> Unit,
-    onBackButtonPress: () -> Unit,
+    onMoveBack: () -> Unit,
     focusRequester: FocusRequester,
     enabled: Boolean,
     isError: Boolean,
     modifier: Modifier = Modifier,
+    style : TextStyle = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+    shape : Shape = RoundedCornerShape(MaterialTheme.sizing.small8),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedContainerColor = MaterialTheme.colorScheme.background,
+        unfocusedContainerColor =  MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
+        focusedTextColor = MaterialTheme.colorScheme.onBackground,
+        unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        errorBorderColor = MaterialTheme.colorScheme.error,
+    )
 ) {
     val value = number?.toString().orEmpty()
+    val textFieldValue = TextFieldValue(
+        text = value,
+        selection = TextRange(value.length),
+    )
     OutlinedTextField(
         modifier = modifier
             .onKeyEvent { event ->
+                //if the user press on the del button from the keyboard
                 if(event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL){
-                    onNumberChange(null)
-                    onBackButtonPress()
+                    if(number != null){
+                        //delete the number
+                        onNumberChange(null)
+                    }else{
+                        //if no value in the text field we will move back
+                        onMoveBack()
+                    }
                 }
                 false
             }
-            .aspectRatio(1f)
+            .aspectRatio(0.8f)
+            .width(MaterialTheme.sizing.medium48)
             .focusRequester(focusRequester)
-            .onFocusChanged {
-                if(it.isFocused){
-                    onNumberChange(null)
-                }
-            },
-        value = value,
-        onValueChange = {
-            val num = it.map { char ->
-                if (char.isDigit()) char.toString().toInt()  else null
-            }.lastOrNull()
-
-            onNumberChange(num)
-            num?.let {
-                onNumberEntered(it)
-            }
+//            .onFocusChanged {
+//                if(it.isFocused){
+//                    onNumberChange(null)
+//                }
+//            }
+            ,
+        value = textFieldValue,
+        onValueChange = {newValue->
+            val number = newValue.text.toInt()
+            onNumberChange(number)
+            onNumberEntered(number)
         },
-        textStyle = TextStyle(
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center
-        ),
+        textStyle = style,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
         ),
         singleLine = true,
-        shape = RoundedCornerShape(8),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor =  MaterialTheme.colorScheme.background.copy(alpha = 0.5f),
-            focusedTextColor = MaterialTheme.colorScheme.onBackground,
-            unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            errorBorderColor = MaterialTheme.colorScheme.error,
-        ),
+        shape = shape,
+        colors = colors,
         isError = isError,
         enabled = enabled
     )
@@ -92,7 +104,7 @@ fun OtpInputField(
 fun OtpInputFieldPreview() {
     var number by remember { mutableStateOf<Int?>(null) }
     OtpInputField(
-        modifier = Modifier.width(48.dp),
+        modifier = Modifier.width(MaterialTheme.sizing.medium56),
         number = number,
         onNumberChange = {
             number = it
@@ -101,7 +113,7 @@ fun OtpInputFieldPreview() {
 
         },
         focusRequester = FocusRequester(),
-        onBackButtonPress = {},
+        onMoveBack = {},
         enabled = true,
         isError=true
     )

@@ -5,11 +5,12 @@ interface ClinicDetailsUIAction {
     object SendRequest : ClinicDetailsUIAction
     object HideDialog: ClinicDetailsUIAction
     data class ShowDialog(val title: String,val subtitle: String): ClinicDetailsUIAction
+    object ClearToast: ClinicDetailsUIAction
 }
 
 interface ClinicNavigationAction{
     fun navigateUp()
-    fun navigateToDoctorProfile(doctorId: Int)
-    fun navigateToInitialScreen(doctorId: Int)
-    fun navigateToVaccines(clinicId: Int)
+    fun navigateToDoctorProfile()
+    fun navigateToScheduleScreen()
+    fun navigateToVaccines()
 }

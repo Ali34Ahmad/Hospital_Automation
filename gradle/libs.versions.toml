@@ -28,6 +28,7 @@ datastorePreferences = "1.1.4"
 materialVersion = "1.8.2"
 pagingRuntime = "3.3.6"
 uiGraphicsAndroid = "1.6.6"
+uiTooling = "1.8.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -93,6 +94,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 option = { module = "com.maxkeppeler.sheets-compose-dialogs:option", version.ref = "core" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

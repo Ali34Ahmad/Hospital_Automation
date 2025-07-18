@@ -8,7 +8,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-internal val sharedDataModule = module{
+internal val commonDataModule = module{
     singleOf(::UserPreferencesRepositoryImpl) { bind<UserPreferencesRepository>() }
     singleOf(::EmployeeAccountManagementRepositoryImpl) { bind<EmployeeAccountManagementRepository>() }
 }

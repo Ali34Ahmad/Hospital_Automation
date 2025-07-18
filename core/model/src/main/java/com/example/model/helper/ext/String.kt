@@ -22,7 +22,7 @@ fun String.clickableTextRange(text: String): IntRange {
     return startIndex..endIndex
 }
 
-fun String.toGender(): Gender{
+fun String.toGenderFromString(): Gender{
     return when{
         this.equals("male",ignoreCase = true) -> Gender.MALE
         else -> Gender.FEMALE

@@ -80,5 +80,8 @@ sealed interface AppIcons {
         val editNote = R.drawable.edit_note
         val clean = R.drawable.clean
         val brokenImage = R.drawable.broken_image
+        val titer = R.drawable.titer
+        val factory = R.drawable.factory
+        val alternative = R.drawable.alternative
     }
 }

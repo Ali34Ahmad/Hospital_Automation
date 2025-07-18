@@ -19,7 +19,9 @@ import com.example.upload_employee_documents.uploadEmploymentDocumentsModule
 import com.example.upload_employee_profile_image.uploadEmployeeProfileImageModule
 import com.example.vaccine_details_screen.vaccineDetailsModule
 import com.example.medical_diagnosis.di.diagnosisModule
+import com.example.medicine_details.di.medicineDetailsModule
 import com.example.medicines_search.di.medicinesSearchModule
+import com.example.pharmacies.di.pharmaciesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -29,6 +31,7 @@ class DoctorApplication: Application() {
         startKoin {
             androidContext(this@DoctorApplication)
             modules(
+                medicineDetailsModule,
                 doctorDataModule,
                 doctorScheduleModule,
                 addResidentialAddressModule,
@@ -48,7 +51,8 @@ class DoctorApplication: Application() {
                 vaccineDetailsModule,
                 clinicsSearchModule,
                 clinicDetailsModule,
-                medicinesSearchModule
+                medicinesSearchModule,
+                pharmaciesModule
             )
         }
     }
