@@ -1,5 +1,6 @@
 package com.example.clinic_details.navigation
 
+import androidx.annotation.Keep
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -13,13 +14,21 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data class ClinicDetailsRoute(
     val clinicId: Int,
+    val type: ClinicDetailsType,
 )
 
-fun NavController.navigateToClinicDetails(
+@Keep
+@Serializable
+enum class ClinicDetailsType{
+    JUST_INFO,
+    FOR_REGISTERING,
+}
+fun NavController.navigateToClinicDetailsScreen(
     clinicId: Int,
+    type: ClinicDetailsType
 ){
     navigateToScreen(
-        route = ClinicDetailsRoute(clinicId = clinicId)
+        route = ClinicDetailsRoute(clinicId = clinicId, type = type)
     )
 }
 

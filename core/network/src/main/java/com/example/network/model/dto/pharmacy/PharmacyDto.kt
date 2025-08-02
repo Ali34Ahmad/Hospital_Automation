@@ -9,6 +9,7 @@ import java.time.LocalDate
 @Serializable
 data class PharmacyDto(
     val pharmacyId: Int,
+    @SerialName("ph_name")
     val name: String,
     @SerialName("address_governorate")
     val addressGovernorate: String,

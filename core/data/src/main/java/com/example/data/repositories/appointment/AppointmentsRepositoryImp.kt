@@ -3,7 +3,6 @@ package com.example.data.repositories.appointment
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.doctor.toAppointmentData
 import com.example.data.paging_sources.appointment.AppointmentPagingSource
 import com.example.domain.model.constants.PagingConstants
@@ -34,50 +33,59 @@ class AppointmentsRepositoryImp(
         //decide the sort type depending on appointment state.
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)
             SortType.ASC else SortType.DESC
+        return dataStore.executeFlowWithValidToken { token->
+             Pager(
+                config = PagingConfig(
+                    pageSize = PagingConstants.PAGE_SIZE
+                ),
+                pagingSourceFactory = {
+                    AppointmentPagingSource(
+                        appointmentState = appointmentState,
+                        token = token,
+                        appointmentsApi = appointmentsApi,
+                        sort = sortType,
+                        onStatisticsChanged = onStatisticsChanged,
+                        queryFilter = queryFilter,
+                        dateFilter = dateFilter
+                    )
+                }
+            ).flow
+        }
 
-        //create a flow of paging data of AppointmentData class
-        return Pager(
-            config = PagingConfig(
-                pageSize = PagingConstants.PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                AppointmentPagingSource(
-                    appointmentState = appointmentState,
-                    token = FAKE_TOKEN,
-                    appointmentsApi = appointmentsApi,
-                    sort = sortType,
-                    onStatisticsChanged = onStatisticsChanged,
-                    queryFilter = queryFilter,
-                    dateFilter = dateFilter
-                )
-            }
-        ).flow
     }
 
     override suspend fun getAppointmentDetails(id: Int) =
-        appointmentsApi.getAppointmentDetails(id = id , token = FAKE_TOKEN)
-            .map { it.data.toAppointmentData() }
+        dataStore.executeWithValidToken { token->
+            appointmentsApi.getAppointmentDetails(id = id , token = token)
+                .map { it.data.toAppointmentData() }
+        }
 
     override suspend fun updateAppointmentStateToPassed(appointmentId: Int): Result<UpdatedIds, NetworkError> =
-        appointmentsApi.updateAppointmentStateToPassed(
-            token = FAKE_TOKEN,
-            appointmentId = appointmentId
-        ).map { it.updatedState }
+        dataStore.executeWithValidToken { token ->
+            appointmentsApi.updateAppointmentStateToPassed(
+                token = token,
+                appointmentId = appointmentId
+            ).map { it.updatedState }
+        }
 
 
     override suspend fun updateAppointmentStateToMissed(appointmentId: Int): Result<UpdatedIds, NetworkError> =
-        appointmentsApi.updateAppointmentStateToMissed(
-            token = FAKE_TOKEN,
-            appointmentId = appointmentId
-        ).map { it.updatedState }
+        dataStore.executeWithValidToken { token->
+            appointmentsApi.updateAppointmentStateToMissed(
+                token = token,
+                appointmentId = appointmentId
+            ).map { it.updatedState }
+        }
 
     override suspend fun addDiagnosis(
         appointmentId: Int,
         diagnosis: String,
     ): Result<Int, NetworkError> =
-        appointmentsApi.addDiagnosis(
-            token = FAKE_TOKEN,
-            appointmentId = appointmentId,
-            diagnosis = diagnosis
-        ).map { it.updatedData[0] }
+        dataStore.executeWithValidToken { token->
+            appointmentsApi.addDiagnosis(
+                token = token,
+                appointmentId = appointmentId,
+                diagnosis = diagnosis
+            ).map { it.updatedData[0] }
+        }
 }

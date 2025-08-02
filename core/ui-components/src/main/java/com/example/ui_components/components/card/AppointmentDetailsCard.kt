@@ -136,13 +136,15 @@ fun AppointmentDetailsCard(
                 isMultipleLines = true,
             )
         }
-        DetailsItem(
-            iconRes = AppIcons.Outlined.medicalDiagnosis,
-            title = stringResource(id = R.string.medical_diagnosis),
-            description = appointment.medicalDiagnosis,
-            modifier = detailsItemModifier,
-            isMultipleLines = true,
-        )
+        appointment.medicalDiagnosis?.let {
+            DetailsItem(
+                iconRes = AppIcons.Outlined.medicalDiagnosis,
+                title = stringResource(id = R.string.medical_diagnosis),
+                description = it,
+                modifier = detailsItemModifier,
+                isMultipleLines = true,
+            )
+        }
     }
 }
 

@@ -18,6 +18,7 @@ sealed interface DoctorScheduleUIAction {
     object ToggleTheme: DoctorScheduleUIAction
     object RefreshPermission: DoctorScheduleUIAction
     object ClearDateFilter: DoctorScheduleUIAction
+    object UpdateIsFirstLaunchToFalse : DoctorScheduleUIAction
 }
 
 interface DoctorScheduleNavigationActions{

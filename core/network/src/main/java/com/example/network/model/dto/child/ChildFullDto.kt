@@ -1,10 +1,10 @@
 package com.example.network.model.dto.child
 
 import com.example.network.model.dto.user.UserDto
-import kotlinx.serialization.InternalSerializationApi
+import com.example.network.serializer.LocalDateSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
+import java.time.LocalDate
 
 
 @Serializable
@@ -30,8 +30,9 @@ data class ChildFullDto(
     @SerialName("mother_last_name")
     val motherLastName: String,
 
+    @Serializable(with = LocalDateSerializer::class)
     @SerialName("date_of_birth")
-    val dateOfBirth: String,
+    val dateOfBirth: LocalDate,
 
     val gender: String,
 

@@ -1,22 +1,31 @@
+
 package com.example.ui_components.components.card
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateAgeFormat
@@ -35,13 +44,24 @@ fun ChildCard(
     child: Child,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = RoundedCornerShape(MaterialTheme.spacing.small8),
+    @DrawableRes firstIcon: Int = AppIcons.Outlined.father,
+    firstText: String = stringResource(R.string.father),
+    secondText: String = stringResource(R.string.mother),
+    @DrawableRes secondIcon: Int = AppIcons.Outlined.mother,
+
 ) {
-    Column(modifier = modifier
-        .clip(shape = MaterialTheme.shapes.small)
-        .background(color = MaterialTheme.colorScheme.background)
-        .clickable { onClick() }
-        .padding(MaterialTheme.spacing.medium16)) {
-        Row(modifier=Modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .clip(shape)
+            .background(color = MaterialTheme.colorScheme.background,shape)
+            .clickable { onClick() }
+            .padding(
+                MaterialTheme.spacing.medium16
+            )
+    ) {
+        //top section
+        Row() {
             Text(
                 text = child.name,
                 style = MaterialTheme.typography.bodyLarge,
@@ -59,30 +79,35 @@ fun ChildCard(
                 )
         }
         Spacer(modifier=Modifier.height(MaterialTheme.spacing.large24))
-        Row(modifier = Modifier.fillMaxWidth()) {
+        //bottom section
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             DetailsItem(
-                title = stringResource(R.string.father),
+                title = firstText ,
                 description = child.fatherName,
-                iconRes = AppIcons.Outlined.father,
+                iconRes = firstIcon,
                 modifier = Modifier.weight(1f),
                 isMultipleLines = false,
+                contentPadding = PaddingValues(MaterialTheme.spacing.default)
             )
             DetailsItem(
-                title = stringResource(R.string.mother),
+                title = secondText,
                 description = child.motherName,
-                iconRes = AppIcons.Outlined.mother,
+                iconRes = secondIcon,
                 modifier = Modifier.weight(1f),
                 isMultipleLines = false,
+                contentPadding = PaddingValues(MaterialTheme.spacing.default)
             )
         }
     }
 }
 
-@DarkAndLightModePreview
+@Preview()
 @Composable
 fun ChildCardPreview() {
     Hospital_AutomationTheme {
-        Surface {
             ChildCard(
                 child = Child(
                     id = 1,
@@ -93,6 +118,6 @@ fun ChildCardPreview() {
                 ),
                 onClick = {}
             )
-        }
+
     }
 }

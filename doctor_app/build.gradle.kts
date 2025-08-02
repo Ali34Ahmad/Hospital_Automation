@@ -85,16 +85,20 @@ dependencies {
     implementation(project(":feature:vaccine_details"))
 
     implementation(project(":feature:doctor_profile"))
+
+    implementation(project(":feature:add_new_vaccine"))
+
+    // Ali mansoura modules, delete this comment after successfully working.
+
+    implementation(project(":feature:clinics_search"))
+    implementation(project(":feature:clinic_details"))
     implementation(project(":feature:doctor-schedule"))
     implementation(project(":feature:appointment_details"))
     implementation(project(":feature:medical_diagnosis"))
     implementation(project(":feature:medicine_details"))
-
-    implementation(project(":feature:add_new_vaccine"))
-    implementation(project(":feature:clinics_search"))
-    implementation(project(":feature:clinic_details"))
     implementation(project(":feature:medicines_search"))
     implementation(project(":feature:pharmacies"))
+    implementation(project(":feature:guardian_profile"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

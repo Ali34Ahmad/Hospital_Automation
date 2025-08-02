@@ -1,12 +1,13 @@
 package com.example.medicines_search.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.example.domain.use_cases.doctor.prescription.AddPrescriptionUseCase
 import com.example.domain.use_cases.medicine.GetMedicinesFlowUseCase
+import com.example.medicines_search.navigation.MedicinesSearchRoute
 import com.example.model.prescription.PrescriptionMedicineData
 import com.example.util.UiText
 import com.example.utility.constants.DurationConstants
@@ -27,21 +28,17 @@ import com.example.ui_components.R
 import com.example.util.UiText.*
 import com.example.utility.network.onSuccess
 
-private const val MEDICINE_VIEW_MODEL_TAG = "MedicineViewModelTag"
 class MedicineSearchViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getMedicines: GetMedicinesFlowUseCase,
     private val addPrescription: AddPrescriptionUseCase
 ): ViewModel() {
-    val appointmentId = 1
-    val doctorId = 122
-    val childId = 1
-    val patientId: Int? = null
 
     private val _uiState = MutableStateFlow(
         MedicinesSearchUIState(
-            doctorId=doctorId,
-            appointmentId=appointmentId
+            appointmentId= savedStateHandle.toRoute<MedicinesSearchRoute>().appointmentId,
+            childId = savedStateHandle.toRoute<MedicinesSearchRoute>().childId,
+            patientId = savedStateHandle.toRoute<MedicinesSearchRoute>().patientId
         )
     )
     val uiState: StateFlow<MedicinesSearchUIState> = _uiState
@@ -80,17 +77,13 @@ class MedicineSearchViewModel(
                     _uiState.value = _uiState.value.copy(isDataSentSuccessfully = true)
                     return@launch
                 }
-                Log.d(MEDICINE_VIEW_MODEL_TAG,"""
-                    selected medicines :
-                    ${uiState.value.selectedMedicines}
-                """.trimIndent())
                 showLoadingDialog()
                 addPrescription(
-                    childId = childId,
-                    patientId = patientId,
-                    note = "no note added",
+                    childId = uiState.value.childId,
+                    patientId = uiState.value.patientId,
+                    note = "",
                     medicines = _uiState.value.selectedMedicines.map { (medicine,note)->
-                        val newNote = if(note.isBlank()) "no note added" else note
+                        val newNote = note
                         PrescriptionMedicineData(
                             medicine.medicineId,newNote
                         )
@@ -142,13 +135,15 @@ class MedicineSearchViewModel(
             MedicinesSearchUIAction.CloseNoteDialog ->{
                 _uiState.value = _uiState.value.copy(isNoteDialogOpened = false)
             }
-
             is MedicinesSearchUIAction.UpdateNote ->{
                 _uiState.value = _uiState.value.copy(dialogNote = action.newNote)
             }
-
+            MedicinesSearchUIAction.ClearToast -> {
+                _uiState.value = _uiState.value.copy(toastMessage = null)
+            }
         }
     }
+
     private fun showToast(message: UiText) {
         _uiState.value = _uiState.value.copy(toastMessage = message)
     }

@@ -1,13 +1,10 @@
 package com.example.doctor_schedule.presentation
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.doctor_schedule.navigation.DoctorScheduleRoute
 import com.example.doctor_schedule.presentation.model.AppointmentsFilter
 import com.example.doctor_schedule.presentation.model.upcomingMapper
 import com.example.domain.use_cases.doctor.appointment.GetAppointmentsFlowUseCase
@@ -25,7 +22,6 @@ import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +38,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class DoctorScheduleViewModel(
-    private val savedStateHandle: SavedStateHandle,
     private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
     private val getAppointmentsFlowUseCase: GetAppointmentsFlowUseCase,
     private val checkEmployeePermissionUseCase: CheckEmployeePermissionUseCase,
@@ -50,10 +45,11 @@ class DoctorScheduleViewModel(
     private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
     ): ViewModel() {
 
+
+
     private val _uiState = MutableStateFlow(
-        DoctorScheduleUIState(
-        doctorId = savedStateHandle.toRoute<DoctorScheduleRoute>().doctorId,
-    ))
+        DoctorScheduleUIState()
+    )
 
     val uiState : StateFlow<DoctorScheduleUIState> = _uiState
         .stateIn(
@@ -61,11 +57,10 @@ class DoctorScheduleViewModel(
             SharingStarted.WhileSubscribed(5000L),
             _uiState.value
         )
-
     init {
         viewModelScope.launch {
-            checkPermissions()
             readTheme()
+            checkPermissions()
         }
     }
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
@@ -86,7 +81,6 @@ class DoctorScheduleViewModel(
     }
         .debounce(500)
         .flatMapLatest { filter->
-            Log.d("DoctorScheduleViewModel",filter.toString())
             val result = loadData(
                 selectedTab = filter.tab,
                 onStatisticsChanged = { statistics ->
@@ -95,7 +89,6 @@ class DoctorScheduleViewModel(
                 dateFilter = filter.date?.toAppropriateDateFormat(),
                 queryFilter = filter.query,
             ).upcomingMapper()
-
             updateRefreshState(false)
             result
         }
@@ -116,6 +109,7 @@ class DoctorScheduleViewModel(
             DoctorScheduleUIAction.ToggleTheme -> toggleTheme()
             DoctorScheduleUIAction.RefreshPermission ->checkPermissions()
             DoctorScheduleUIAction.ClearDateFilter -> clearDateFilter()
+            DoctorScheduleUIAction.UpdateIsFirstLaunchToFalse -> updateIsFirstLaunchToFalse()
         }
     }
 
@@ -155,7 +149,9 @@ class DoctorScheduleViewModel(
         updateRefreshState(true)
         refreshTrigger.emit(Unit)
     }
-
+    private fun updateIsFirstLaunchToFalse(){
+        _uiState.value = _uiState.value.copy(isFirstLaunch = false)
+    }
     private fun updateScreenState(newState: ScreenState){
         _uiState.value = _uiState.value.copy(screenState = newState)
     }
@@ -190,13 +186,14 @@ class DoctorScheduleViewModel(
      * checks the permissions from the server then store it locally.
      */
     private fun checkPermissions() = viewModelScope.launch{
-        updatePermissionState(ScreenState.LOADING)
         val result= checkEmployeePermissionUseCase(roleAppConfig.role)
         result.map { it.permissionGranted }
             .onError {
+                Log.e("DoctorViewModel"," Error : $it")
                 updatePermissionState(ScreenState.ERROR)
-            }.onSuccess {
-                updatePermission(it)
+            }.onSuccess {reponse: Boolean->
+                Log.d("DoctorViewModel"," Success : $reponse")
+                updatePermission(reponse)
                 updatePermissionState(ScreenState.SUCCESS)
             }
     }

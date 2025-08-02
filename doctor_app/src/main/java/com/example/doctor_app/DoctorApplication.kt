@@ -3,6 +3,7 @@ package com.example.doctor_app
 import android.app.Application
 import com.example.add_new_vaccine.addNewVaccineModule
 import com.example.add_residential_address.addResidentialAddressModule
+import com.example.appointment_details.di.appointmentDetailsModule
 import com.example.clinic_details.di.clinicDetailsModule
 import com.example.clinics_search.di.clinicsSearchModule
 import com.example.data.di.doctorDataModule
@@ -31,9 +32,8 @@ class DoctorApplication: Application() {
         startKoin {
             androidContext(this@DoctorApplication)
             modules(
-                medicineDetailsModule,
+
                 doctorDataModule,
-                doctorScheduleModule,
                 addResidentialAddressModule,
                 doctorProfileModule,
                 addNewVaccineModule,
@@ -49,10 +49,15 @@ class DoctorApplication: Application() {
                 addResidentialAddressModule,
                 employmentHistoryModule,
                 vaccineDetailsModule,
+                //Ali Mansoura feature modules
                 clinicsSearchModule,
                 clinicDetailsModule,
+                doctorScheduleModule,
+                appointmentDetailsModule,
+                diagnosisModule,
+                medicineDetailsModule,
                 medicinesSearchModule,
-                pharmaciesModule
+                pharmaciesModule,
             )
         }
     }

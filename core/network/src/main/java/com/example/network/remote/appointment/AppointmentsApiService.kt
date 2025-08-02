@@ -1,6 +1,5 @@
 package com.example.network.remote.appointment
 
-import com.example.network.model.request.appointment.AddDiagnosisRequest
 import com.example.network.model.response.appointments.AddDiagnosisResponse
 import com.example.network.model.response.appointments.ShowAppointmentDetails
 import com.example.network.model.response.appointments.ShowAppointmentsResponse

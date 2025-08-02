@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -15,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.constants.icons.AppIcons
-import com.example.model.enums.BottomBarState
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.AddDiagnosisBottomBar
@@ -51,6 +51,7 @@ fun DiagnosisScreen(
     LaunchedEffect(message) {
         if (message!=null){
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            onAction(DiagnosisUIAction.ClearToast)
         }
     }
     Scaffold(
@@ -58,10 +59,26 @@ fun DiagnosisScreen(
         topBar = {
             HospitalAutomationTopBar(
                 title = uiState.fullName,
-                onNavigationIconClick = navigationActions::navigateUp,
-                navigationIcon = AppIcons.Outlined.arrowBack,
+                onNavigationIconClick = {},
                 imageUrl = uiState.imgUrl,
                 showImagePlaceHolder = uiState.showChildIcon ,
+                hasTrailingContent = uiState.canSkip,
+                trailingContent = {
+                    TextButton(
+                        onClick = {
+                            navigationActions.navigateToMedicinesSearch(
+                                childId = uiState.childId,
+                                patientId = uiState.patientId,
+                                appointmentId = uiState.appointmentId
+                            )
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.skip),
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
             )
         },
         bottomBar = {
@@ -72,9 +89,13 @@ fun DiagnosisScreen(
                         DiagnosisUIAction.AddDiagnosis
                     )
                 },
-                onFinish = navigationActions::navigateUp,
+                onFinish = { navigationActions.navigateToAppointmentDetails(uiState.appointmentId) },
                 onAddPrescription = {
-                    navigationActions.navigateToPrescriptionScreen(uiState.appointmentId)
+                    navigationActions.navigateToMedicinesSearch(
+                        childId = uiState.childId,
+                        patientId = uiState.patientId,
+                        uiState.appointmentId,
+                    )
                 },
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16)
             )

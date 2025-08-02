@@ -6,7 +6,6 @@ import com.example.model.enums.ScreenState
 import java.time.LocalDate
 
 data class DoctorScheduleUIState(
-    val doctorId: Int,
     val isRefreshing: Boolean = false,
     val screenState: ScreenState = ScreenState.IDLE,
     val permissionsState: ScreenState = ScreenState.IDLE,
@@ -19,7 +18,8 @@ data class DoctorScheduleUIState(
     val statistics: AppointmentsStatisticsData = AppointmentsStatisticsData(),
     val isDarkTheme: Boolean = false,
     val isPermissionGranted: Boolean = false,
+    val isFirstLaunch: Boolean = true
 ){
-    fun hasDateFilter() = selectedDate!=null
+    fun hasDateFilter() = selectedDate !=null
 }
 

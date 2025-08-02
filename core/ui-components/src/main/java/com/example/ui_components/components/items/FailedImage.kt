@@ -3,6 +3,7 @@ package com.example.ui_components.components.items
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -29,9 +30,11 @@ fun FailedImage(
     @DrawableRes icon: Int = AppIcons.Outlined.brokenImage,
     containerColor : Color = MaterialTheme.colorScheme.outlineVariant,
     contentColor : Color = MaterialTheme.colorScheme.outline,
+    padding: PaddingValues = PaddingValues()
 ) {
     Box(
         modifier = modifier
+            .padding(padding)
             .size(size)
             .clip(shape)
             .background(containerColor),

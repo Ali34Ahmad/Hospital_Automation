@@ -14,8 +14,9 @@ import androidx.navigation.NavController
  *              route object or a route string that identifies the target screen.
  *  @author Ali Mansoura
  */
-fun  NavController.navigateToScreen(
+fun NavController.navigateToScreen(
     route :  Any,
+
 ){
     navigate(
         route = route
@@ -23,7 +24,6 @@ fun  NavController.navigateToScreen(
         launchSingleTop = true
     }
 }
-
 /**
  * Performs navigation within persistent UI components like bottom navigation,
  * drawers, or tabs, ensuring that the back stack is optimized for reuse and state restoration.
@@ -53,5 +53,26 @@ fun NavController.switchToTab(
         }
         restoreState = true
         launchSingleTop = true
+    }
+}
+
+/**
+ * Navigates to the next screen after remove the current screen
+ * from the back stack entry.
+ *
+ * @param route The target screen's route. It can be a @Serializable route object or a string representing the route.
+ *
+ * @author Ali Mansoura
+ */
+fun NavController.navigateReplacingCurrent(route: Any) {
+    val currentRoute = currentBackStackEntry?.destination?.route
+    navigate(route) {
+        launchSingleTop = true
+
+        currentRoute?.let {
+            popUpTo(it) {
+                inclusive = true
+            }
+        }
     }
 }

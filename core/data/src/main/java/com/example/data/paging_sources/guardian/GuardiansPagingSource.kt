@@ -30,17 +30,13 @@ class GuardiansPagingSource(
             if (token == null){
                 return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
             }
-            //start refresh at page 1 if undefined
-            val nextPageNumber = params.key?:1
-
-            var nextKey: Int? = null
+            val currentPage = params.key?:1
             var guardians = emptyList<GuardianData>()
-
 
 
             val response = userApiService.getUsersByName(
                 token = token,
-                page = nextPageNumber,
+                page = currentPage,
                 limit = params.loadSize,
                 name = query
             ).map { usersResponse ->
@@ -55,15 +51,14 @@ class GuardiansPagingSource(
 
             response.onSuccess { data: PagedData<GuardianData> ->
                 guardians = data.data
-                nextKey = if(guardians.isEmpty()) null else data.page + 1
             }.onError { error: NetworkError ->
                 return LoadResult.Error(NetworkException(error))
             }
 
             return LoadResult.Page(
                 data = guardians,
-                prevKey = null,
-                nextKey = nextKey
+                prevKey = if (currentPage==1) null else currentPage.minus(1),
+                nextKey = if (guardians.isEmpty()) null else currentPage.plus(1)
             )
 
         }catch (e:Exception){

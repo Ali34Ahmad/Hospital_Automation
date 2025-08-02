@@ -10,7 +10,6 @@ import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.appointment.SortType
 import com.example.network.remote.appointment.AppointmentsApiService
-import com.example.network.remote.appointment.AppointmentsApiServiceImp
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
 import com.example.utility.network.onError
@@ -33,42 +32,44 @@ class AppointmentPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AppointmentData> {
-        val nextPageNumber = params.key?:1
-        if (token == null) {
-            return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-        }
         try {
-            var nextKey: Int? = null
-            var list = emptyList<AppointmentData>()
-
+            if (token.isNullOrBlank()) {
+                return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
+            }
+            val currentPage = params.key ?: 1
+            var data = emptyList<AppointmentData>()
             appointmentsApi.showAppointments(
                 token = token,
                 params = appointmentState.toString(),
-                page = nextPageNumber,
+                page = currentPage,
                 limit = params.loadSize,
                 sort = sort.toString(),
                 queryFilter = queryFilter,
                 dateFilter = dateFilter
-            ).onSuccess { response->
-                list = response.data.map { item->
+            ).onSuccess { response ->
+                data = response.data.map { item ->
                     item.toAppointmentData()
                 }
-                nextKey = if (list.isEmpty()) null else response.pagination.page+1
                 onStatisticsChanged(response.appointmentStatistics.toAppointmentsStatisticsData())
-            }.onError {error: NetworkError->
+            }.onError { error: NetworkError ->
                 return LoadResult.Error(NetworkException(error))
             }
-            Log.d("AppointmentPaging","next page : $nextPageNumber")
+            Log.d("AppointmentPaging", "list size is ${data.size}")
+            Log.d("AppointmentPaging", "next page : $currentPage")
             return LoadResult.Page(
-                data = list,
-                prevKey = null,
-                nextKey = nextKey
+                data = data,
+                prevKey = if (currentPage == 1) null else currentPage - 1,
+                nextKey = if (data.isEmpty()) null else currentPage + 1
             )
-
+            return LoadResult.Page(
+                data = data,
+                prevKey = if (currentPage == 1) null else currentPage.minus(1),
+                nextKey = if (data.isEmpty()) null else currentPage.plus(1)
+            )
         } catch (e: Exception) {
-            Log.e("AppointmentPagingSource", "Error loading data", e)
-            return LoadResult.Error(e)
+            return LoadResult.Error(NetworkException(NetworkError.UNKNOWN))
         }
     }
 
 }
+

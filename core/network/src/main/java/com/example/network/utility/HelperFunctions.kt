@@ -22,6 +22,7 @@ suspend inline fun <reified T> doApiCall(
     tag: String,
     body:suspend () -> HttpResponse,
 ): Result<T, NetworkError> = try {
+    Log.d(tag,"Doing API call")
          val response = body()
          when(response.status){
             HttpStatusCode.OK->{
@@ -37,7 +38,7 @@ suspend inline fun <reified T> doApiCall(
                 Result.Error<NetworkError>(NetworkError.UNAUTHORIZED)
             }
              else -> {
-                 Log.e(tag,"UNKNOWN :  ${response.bodyAsText()}")
+                 Log.e(tag,"UNKNOWN : message = ${response.status.description},body ${ response.bodyAsText()}")
                  Result.Error<NetworkError>(NetworkError.UNKNOWN)
              }
         }

@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,7 +42,9 @@ fun HospitalAutomationTopBar(
     imageUrl: String? = null,
     @DrawableRes imagePlaceholder: Int = AppIcons.Outlined.child,
     showImagePlaceHolder: Boolean =  false,
-    actionIcons: List<ActionIcon> = emptyList()
+    actionIcons: List<ActionIcon> = emptyList(),
+    trailingContent: @Composable ()-> Unit = {},
+    hasTrailingContent: Boolean = false,
     ) {
     TopAppBar(
         modifier = modifier,
@@ -68,14 +71,14 @@ fun HospitalAutomationTopBar(
                                 .background(
                                     MaterialTheme.colorScheme.primaryContainer,
                                     shape = CircleShape
-                                ).padding(MaterialTheme.spacing.extraSmall4),
+                                )
+                                .padding(MaterialTheme.spacing.extraSmall4),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }else{
                         NetworkImage(
                             model = imageUrl,
                             modifier = Modifier
-                                .padding(MaterialTheme.spacing.small8)
                                 .size(MaterialTheme.sizing.medium44)
                                 .clip(CircleShape)
                             ,
@@ -83,15 +86,14 @@ fun HospitalAutomationTopBar(
                             loading = {
                                 Box(
                                     modifier = Modifier
-                                        .padding(MaterialTheme.sizing.small16)
-                                        .size(MaterialTheme.sizing.medium40)
+                                        .size(MaterialTheme.sizing.medium44)
                                         .clip(CircleShape)
                                         .shimmerEffect()
                                 )
                             },
                             errorCompose = {
                                 FailedImage(
-                                    modifier = Modifier.padding(MaterialTheme.sizing.small16)
+                                    size = MaterialTheme.sizing.medium44,
                                 )
                             },
                         )
@@ -117,15 +119,20 @@ fun HospitalAutomationTopBar(
 
         },
         actions = {
-            actionIcons.forEach { action->
-                IconButton(
-                    onClick = action.onCLick
-                ) {
-                    Icon(
-                        painter = painterResource(action.icon),
-                        contentDescription = null,
-                    )
+            if(!hasTrailingContent) {
+                actionIcons.forEach { action ->
+                    IconButton(
+                        onClick = action.onCLick
+                    ) {
+                        Icon(
+                            painter = painterResource(action.icon),
+                            contentDescription = null,
+                        )
+                    }
                 }
+            }
+            else{
+                trailingContent()
             }
         }
     )
@@ -189,6 +196,28 @@ fun HospitalAutomationTopBarPlaceholderActionsPreview() {
             onNavigationIconClick = {},
             imageUrl = null,
             showImagePlaceHolder = true
+        )
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun HospitalAutomationTopBarWithTrailingPreview() {
+    Hospital_AutomationTheme {
+        HospitalAutomationTopBar(
+            title ="Mail",
+            navigationIcon = AppIcons.Outlined.menu,
+            onNavigationIconClick = {},
+            imageUrl = null,
+            showImagePlaceHolder = true,
+            hasTrailingContent = true,
+            trailingContent = {
+                TextButton(
+                    onClick = {}
+                ) {
+                    Text("Skip")
+                }
+            }
         )
     }
 }

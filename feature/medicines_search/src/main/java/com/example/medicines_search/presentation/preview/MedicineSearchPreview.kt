@@ -22,18 +22,14 @@ fun MedicineSearchPreview() {
     Hospital_AutomationTheme {
         MedicinesSearchScreen(
             uiState = MedicinesSearchUIState(
-                doctorId = 1,
                 appointmentId = 1,
-                isRefreshing = false,
                 screenState = ScreenState.LOADING,
-                query = "",
                 prescriptionMedicines = mockMedicines,
-                toastMessage = null,
-                isBottomSheetOpened = false,
                 selectedMedicines = mockMedicines.map { it to "" },
                 isNoteDialogOpened = true,
                 dialogMedicine = mockMedicines[0],
-                dialogNote = ""
+                childId = null,
+                patientId = 1,
             ),
             onAction = {},
             navigationActions = mockNavigation,
@@ -45,19 +41,17 @@ fun MedicineSearchPreview() {
 
 val mockNavigation = object : MedicinesSearchNavigationActions{
     override fun navigateUp() {
-        TODO("Not yet implemented")
     }
 
-    override fun navigateToPharmacies(medicineId: Int) {
-        TODO("Not yet implemented")
-    }
 
     override fun navigateToMedicineDetails(medicineId: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun navigateToAppointmentDetails(appointmentId: Int) {
-        TODO("Not yet implemented")
+    }
+
+    override fun navigateToPharmacies(medicineId: Int, medicineName: String) {
+
     }
 }
 val mockMedicines = listOf(

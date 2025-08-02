@@ -6,20 +6,25 @@ import androidx.navigation.compose.composable
 import com.example.doctor_schedule.presentation.DoctorScheduleNavigationActions
 import com.example.doctor_schedule.presentation.DoctorScheduleScreen
 import com.example.doctor_schedule.presentation.DoctorScheduleViewModel
+import com.example.navigation.extesion.navigateReplacingCurrent
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 @Serializable
-data class DoctorScheduleRoute(
-    val doctorId: Int,
-)
+object DoctorScheduleRoute
 
-fun NavController.navigateToScheduleScreen(doctorId: Int){
+fun NavController.navigateToScheduleScreen(){
     navigateToScreen(
-        route = DoctorScheduleRoute(doctorId)
+        route = DoctorScheduleRoute
     )
 }
+fun NavController.navigateToScheduleScreenReplacingCurrent(){
+    navigateReplacingCurrent(
+        route = DoctorScheduleRoute,
+    )
+}
+
 fun NavGraphBuilder.doctorScheduleScreen(
     onNavigateToAppointmentDetails: (doctorId: Int)-> Unit,
     onNavigateToDoctorProfile: ()-> Unit,

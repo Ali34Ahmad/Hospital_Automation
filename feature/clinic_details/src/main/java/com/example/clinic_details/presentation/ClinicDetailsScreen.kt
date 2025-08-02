@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.constants.icons.AppIcons
 import com.example.model.Department
 import com.example.model.Doctor
@@ -49,7 +50,7 @@ fun ClinicDetailsScreen(
 }
 
 @Composable
-fun ClinicDetailsScreen(
+internal fun ClinicDetailsScreen(
     uiState: ClinicDetailsUIState,
     navigationAction: ClinicNavigationAction,
     onAction: (ClinicDetailsUIAction) -> Unit,
@@ -60,8 +61,8 @@ fun ClinicDetailsScreen(
     LaunchedEffect(message) {
         if(message!=null){
             Toast.makeText(context,message, Toast.LENGTH_SHORT).show()
+            onAction(ClinicDetailsUIAction.ClearToast)
         }
-        onAction(ClinicDetailsUIAction.ClearToast)
     }
 
     Scaffold(
@@ -76,7 +77,8 @@ fun ClinicDetailsScreen(
             )
         },
         bottomBar = {
-           ClinicDetailsBottomBar(
+            if(uiState.type == ClinicDetailsType.FOR_REGISTERING){
+                ClinicDetailsBottomBar(
                     title = stringResource(R.string.send_request),
                     state = uiState.sendRequestState,
                     onClick = {
@@ -89,6 +91,7 @@ fun ClinicDetailsScreen(
                     },
                     modifier = Modifier.padding(MaterialTheme.spacing.medium16)
                 )
+            }
         }
     ) { innerPadding->
         AnimatedContent(
@@ -124,7 +127,6 @@ fun ClinicDetailsScreen(
                             onRefresh = {
                                 onAction(ClinicDetailsUIAction.Refresh)
                             },
-                            modifier = Modifier.fillMaxWidth(),
                         ){
                             DepartmentDetailsCard(
                                 department = Department(
@@ -166,12 +168,12 @@ fun ClinicDetailsScreen(
                                     )
                                 },
                                 onLearnMoreClick = {
-                                    TODO("not yet implemented")
+
                                 },
-                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     }
+                    //Dialog for showing Tag description
                     if (uiState.isDialogShown){
                         DialogWithDescription(
                             onDismissRequest = {

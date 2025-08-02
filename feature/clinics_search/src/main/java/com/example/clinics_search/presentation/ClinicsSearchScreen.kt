@@ -10,7 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,7 +25,6 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
 import com.example.ui_components.components.topbars.custom.SearchTopBar
-import kotlinx.coroutines.launch
 
 @Composable
 fun ClinicsSearchScreen(
@@ -47,7 +45,7 @@ fun ClinicsSearchScreen(
 }
 
 @Composable
-fun ClinicsSearchScreen(
+internal fun ClinicsSearchScreen(
     uiState: ClinicsSearchUIState,
     clinics: LazyPagingItems<ClinicFullData>?,
     onAction: (ClinicsSearchUIAction) -> Unit,
@@ -55,7 +53,6 @@ fun ClinicsSearchScreen(
     modifier: Modifier = Modifier
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState.isDrawerOpened) {
         if(uiState.isDrawerOpened)drawerState.open()
@@ -81,28 +78,32 @@ fun ClinicsSearchScreen(
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
                 navigationActions.navigateToMedicalRecords()
-            }
+            },
+            enabled = false
         ),
         DrawerButton(
             text = R.string.prescriptions,
             image = AppIcons.Outlined.prescription,
             onClick = {
                 navigationActions.navigateToPrescriptions()
-            }
+            },
+            enabled = false
         ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,
             onClick = {
                 navigationActions.navigateToVaccines()
-            }
+            },
+            enabled = false
         ),
         DrawerButton(
             text = R.string.vaccine_table,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
                 navigationActions.navigateToMedicalRecords()
-            }
+            },
+            enabled = false
         ),
         )
     EmployeeDrawer(
@@ -112,9 +113,7 @@ fun ClinicsSearchScreen(
         selectedIndex = null,
         onItemSelected = {
             drawerButtons[it].onClick()
-            scope.launch {
-                drawerState.close()
-            }
+            onAction(ClinicsSearchUIAction.ToggleDrawer)
         },
         onChangeThemeClick = {
             onAction(
@@ -135,12 +134,9 @@ fun ClinicsSearchScreen(
                                 ClinicsSearchUIAction.UpdateTopBarMode(TopBarState.SEARCH)
                             )
                         },
-                        onNavigateUp = {
+                        onMenuOpen = {
                             onAction(
-                                ClinicsSearchUIAction.UpdateQuery("")
-                            )
-                            onAction(
-                                ClinicsSearchUIAction.UpdateTopBarMode(TopBarState.DEFAULT)
+                                ClinicsSearchUIAction.ToggleDrawer
                             )
                         },
                         onClearIconClick = {

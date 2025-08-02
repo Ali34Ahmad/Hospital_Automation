@@ -14,9 +14,11 @@ interface UserPreferencesRepository {
 
     suspend fun updateToken(token:String?)
 
-    suspend fun <T> executeWithValidToken(
-        action: suspend (token: String) -> Result<T, rootError>
-    ):Result<T, rootError>
+    suspend fun <T,E: rootError> executeWithValidToken(
+        action: suspend (token: String) -> Result<T, E>
+    ):Result<T, E>
+
+
 
     suspend fun <T> executeFlowWithValidToken(
         action: suspend (token: String) -> Flow<T>

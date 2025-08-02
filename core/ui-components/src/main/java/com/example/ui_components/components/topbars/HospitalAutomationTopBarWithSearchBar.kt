@@ -33,6 +33,7 @@ fun HospitalAutomationTopBarWithSearchBar(
     modifier: Modifier = Modifier,
     @DrawableRes navigationIcon: Int = AppIcons.Outlined.arrowBack,
     @DrawableRes trailingIcon: Int? = AppIcons.Outlined.close,
+    hasNavigationIcon: Boolean = true,
     actionComposable: @Composable ()-> Unit = {},
 ) {
     TopAppBar(
@@ -49,14 +50,16 @@ fun HospitalAutomationTopBarWithSearchBar(
                 )
         },
         navigationIcon = {
-            IconButton(
-                modifier = Modifier.fillMaxHeight() ,
-                onClick = onNavigationIconCLick
-            ) {
-                Icon(
-                    painterResource(navigationIcon),
-                    contentDescription = null
-                )
+            if(hasNavigationIcon){
+                IconButton(
+                    modifier = Modifier.fillMaxHeight() ,
+                    onClick = onNavigationIconCLick
+                ) {
+                    Icon(
+                        painterResource(navigationIcon),
+                        contentDescription = null
+                    )
+                }
             }
         },
         actions = {

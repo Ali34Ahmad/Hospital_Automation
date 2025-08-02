@@ -32,7 +32,8 @@ class ClinicDetailsViewModel(
 
     private val _uiState = MutableStateFlow(
         ClinicDetailsUIState(
-            clinicId = savedStateHandle.toRoute<ClinicDetailsRoute>().clinicId
+            clinicId = savedStateHandle.toRoute<ClinicDetailsRoute>().clinicId,
+            type = savedStateHandle.toRoute<ClinicDetailsRoute>().type
         )
     )
     val uiState: StateFlow<ClinicDetailsUIState> = combine(
@@ -50,7 +51,7 @@ class ClinicDetailsViewModel(
     fun onAction(action: ClinicDetailsUIAction){
         when(action){
             ClinicDetailsUIAction.Refresh -> refresh()
-            ClinicDetailsUIAction.SendRequest-> sendRequest
+            ClinicDetailsUIAction.SendRequest-> sendDoctorRequest()
             ClinicDetailsUIAction.HideDialog -> hideDialog()
             is ClinicDetailsUIAction.ShowDialog -> showDialog(action.title,action.subtitle)
             ClinicDetailsUIAction.ClearToast -> clearToast()
@@ -117,7 +118,7 @@ class ClinicDetailsViewModel(
     private fun updateSendRequestState(state: BottomBarState){
         _uiState.value = _uiState.value.copy(sendRequestState = state)
     }
-    private fun sendRequest() = viewModelScope.launch{
+    private fun sendDoctorRequest() = viewModelScope.launch{
         updateSendRequestState(BottomBarState.LOADING)
         sendRequest(uiState.value.clinicId).onSuccess{
             updateSendRequestState(BottomBarState.SUCCESS)

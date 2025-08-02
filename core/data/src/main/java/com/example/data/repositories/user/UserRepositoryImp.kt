@@ -71,7 +71,9 @@ internal class UserRepositoryImp(
             }
     }
 
-    override suspend fun getGuardiansByNamePagingData(query: String): Flow<PagingData<GuardianData>> {
+    override suspend fun getGuardiansByNamePagingData(
+        query: String
+    ): Flow<PagingData<GuardianData>> {
         val token = dataStore.userPreferencesDataStoreFlow.first().token
         return Pager(
             config = PagingConfig(

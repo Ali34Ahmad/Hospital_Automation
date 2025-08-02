@@ -50,7 +50,7 @@ fun PermissionRequiredScreen(
                 }
             }
             //if it's idle or success its the same.
-            else -> {
+            ScreenState.IDLE -> {
                 PullToRefreshColumn(
                     refreshing = isRefreshing,
                     modifier = Modifier.fillMaxSize(),
@@ -63,6 +63,7 @@ fun PermissionRequiredScreen(
                 }
 
             }
+            ScreenState.SUCCESS -> Unit
         }
     }
 }

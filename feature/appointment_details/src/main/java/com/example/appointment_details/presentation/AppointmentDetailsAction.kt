@@ -8,24 +8,22 @@ sealed interface AppointmentDetailsAction {
     object Refresh: AppointmentDetailsAction
     data class ShowToast(val message: UiText): AppointmentDetailsAction
     object ClearToastMessage: AppointmentDetailsAction
+    data class OpenDialog(val title: String, val subtitle: String): AppointmentDetailsAction
+    object CloseDialog: AppointmentDetailsAction
+
+    object UpdateIsFirstLaunchToFalse : AppointmentDetailsAction
 }
 interface AppointmentNavigationActions{
     fun navigateUp()
     fun navigateToDepartmentDetails(deptId: Int)
     fun navigateToVaccineDetails(vaccineId: Int)
-    fun navigateToAddMedicalDiagnosis(appointmentId: Int)
-}
-
-internal val mockNavigationActions = object :AppointmentNavigationActions{
-    override fun navigateUp() {
-    }
-
-    override fun navigateToDepartmentDetails(deptId: Int) {
-    }
-
-    override fun navigateToVaccineDetails(vaccineId: Int) {
-    }
-
-    override fun navigateToAddMedicalDiagnosis(appointmentId: Int) {
-    }
+    fun navigateToDoctorSchedule()
+    fun navigateToAddMedicalDiagnosis(
+        appointmentId: Int,
+        fullName: String,
+        patientId: Int?,
+        childId: Int?,
+        canSkip: Boolean,
+    )
+    fun navigateToGuardianProfile(guardianId: Int)
 }

@@ -17,7 +17,7 @@ import java.time.LocalTime
 sealed class AppointmentUIModel {
     class AppointmentModel(
         val id: Int,
-        val imageUrl : String,
+        val imageUrl : String?,
         val appointmentType: String,
         val fullName: String,
         val date: LocalDate,
@@ -26,7 +26,7 @@ sealed class AppointmentUIModel {
         constructor(data: AppointmentData) : this(
             id = data.id,
             appointmentType = data.appointmentType.name,
-            imageUrl = data.user?.img?:"",
+            imageUrl = data.user?.img,
             fullName = data.user?.fullName?:data.child?.fullName?:"no name",
             date = data.date,
             time = data.time,

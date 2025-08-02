@@ -4,7 +4,6 @@ import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
 
 data class ClinicsSearchUIState(
-    val doctorId : Int,
     val screenStep: ScreenStep = ScreenStep.INTRO,
     val isRefreshing: Boolean = false,
     val topBarMode: TopBarState = TopBarState.DEFAULT,

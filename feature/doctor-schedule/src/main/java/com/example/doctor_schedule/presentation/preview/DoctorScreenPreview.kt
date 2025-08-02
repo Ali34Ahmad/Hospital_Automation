@@ -19,7 +19,7 @@ val appointments = flowOf(
     PagingData.from(listOf(
         AppointmentUIModel.SeparatorModel(desc = UiText.DynamicString("Today")),
         AppointmentUIModel.AppointmentModel(
-            imageUrl = "",
+            imageUrl =null,
             id = 1,
             fullName = "Ali Mansoura",
             appointmentType = "Check Up",
@@ -33,7 +33,7 @@ val appointments = flowOf(
 fun DoctorSchedulePermissionsRequiredPreview(){
     Hospital_AutomationTheme {
         DoctorScheduleScreen(
-            uiState = DoctorScheduleUIState(screenState = ScreenState.SUCCESS, doctorId = 112),
+            uiState = DoctorScheduleUIState(screenState = ScreenState.SUCCESS),
             appointments = appointments.collectAsLazyPagingItems(),
             navigationActions = mockActions,
             onAction ={}
@@ -47,9 +47,8 @@ fun DoctorSchedulePreview(){
         DoctorScheduleScreen(
             uiState = DoctorScheduleUIState(
                 screenState = ScreenState.SUCCESS,
-                doctorId = 112,
-                isPermissionGranted = true,
-                selectedDate = LocalDate.now()
+                selectedDate = LocalDate.now(),
+                isPermissionGranted = true
             ),
             appointments = appointments.collectAsLazyPagingItems(),
             navigationActions = mockActions,

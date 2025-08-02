@@ -13,11 +13,9 @@ fun GuardiansScreenPreview() {
     Hospital_AutomationTheme {
         val state = PharmaciesUIState(
             medicineId = 1,
-            medicineName ="Citamol",
             data = mockList,
             state = ScreenState.SUCCESS,
-            isRefreshing = false,
-            toastMessage = null
+            medicineName = "Citamol"
         )
 
         PharmaciesScreen(

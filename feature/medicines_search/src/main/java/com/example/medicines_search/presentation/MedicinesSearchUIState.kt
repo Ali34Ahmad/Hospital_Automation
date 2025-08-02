@@ -5,8 +5,9 @@ import com.example.model.medicine.MedicineData
 import com.example.util.UiText
 
 data class MedicinesSearchUIState(
-    val doctorId: Int,
     val appointmentId: Int,
+    val childId: Int?,
+    val patientId: Int?,
     val isRefreshing: Boolean = false,
     val screenState: ScreenState = ScreenState.IDLE,
     val query: String = "",

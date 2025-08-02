@@ -1,24 +1,23 @@
 package com.example.clinics_search.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import com.example.clinics_search.navigation.ClinicsSearchRoute
 import com.example.domain.use_cases.doctor.clinic.GetClinicsFlowUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ClinicsSearchViewModel(
@@ -28,16 +27,16 @@ class ClinicsSearchViewModel(
     private val updateIsDarkTheme: UpdateIsDarkThemeUseCase,
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow(ClinicsSearchUIState(
-        doctorId = savedStateHandle.toRoute<ClinicsSearchRoute>().doctorId
-    ))
+    private val _uiState = MutableStateFlow(ClinicsSearchUIState())
     val uiState : StateFlow<ClinicsSearchUIState> = _uiState
-
-    init {
-        viewModelScope.launch {
+        .onStart {
             readTheme()
-        }
-    }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            _uiState.value
+        )
+
     val refreshTrigger = MutableSharedFlow<Unit>()
     @OptIn(ExperimentalCoroutinesApi::class)
     val clinicsFlow = combine(
@@ -68,11 +67,15 @@ class ClinicsSearchViewModel(
                 refreshData()
             }
             is ClinicsSearchUIAction.UpdateScreenState -> {
-                Log.d("ClinicsViewModel","ScreenState: ${action.newState}")
                 _uiState.value = _uiState.value.copy(screenState = action.newState)
             }
             ClinicsSearchUIAction.ToggleTheme -> viewModelScope.launch{
                 updateIsDarkTheme(!_uiState.value.isDarkTheme)
+            }
+            ClinicsSearchUIAction.ToggleDrawer -> {
+                _uiState.value = _uiState.value.copy(
+                    isDrawerOpened = !uiState.value.isDrawerOpened
+                )
             }
 
         }

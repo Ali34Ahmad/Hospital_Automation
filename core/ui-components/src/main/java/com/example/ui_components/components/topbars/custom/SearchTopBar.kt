@@ -1,5 +1,6 @@
 package com.example.ui_components.components.topbars.custom
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,7 @@ import com.example.ui_components.components.topbars.HospitalAutomationTopBarWith
 @Composable
 fun SearchTopBar(
     onSearchIconClick: ()-> Unit,
-    onNavigateUp: ()-> Unit,
+    onMenuOpen: ()-> Unit,
     onBackToDefault: () -> Unit,
     onClearIconClick:()-> Unit,
     query: String,
@@ -31,6 +32,10 @@ fun SearchTopBar(
     title: String,
     @StringRes placeholder: Int,
     modifier: Modifier = Modifier,
+    @DrawableRes defaultLeadingIcon: Int = AppIcons.Outlined.menu,
+    @DrawableRes searchLeadingIcon: Int = AppIcons.Outlined.arrowBack,
+    @DrawableRes searchTrailingIcon: Int = AppIcons.Outlined.close,
+    @DrawableRes searchIcon: Int = AppIcons.Outlined.search
 ) {
     AnimatedContent(
         state,
@@ -41,14 +46,14 @@ fun SearchTopBar(
                 HospitalAutomationTopBar(
                     title = title,
                     modifier = Modifier.fillMaxWidth(),
-                    onNavigationIconClick = onNavigateUp,
+                    onNavigationIconClick = onMenuOpen,
                     actionIcons = listOf(
                         ActionIcon(
-                            icon = AppIcons.Outlined.search,
+                            icon = searchIcon,
                             onCLick = onSearchIconClick
                         )
                     ),
-                    navigationIcon = AppIcons.Outlined.arrowBack
+                    navigationIcon = defaultLeadingIcon
                 )
             }
             TopBarState.SEARCH -> {
@@ -58,8 +63,8 @@ fun SearchTopBar(
                     onTrailingIconClick = onClearIconClick,
                     placeholderText = placeholder,
                     onNavigationIconCLick = onBackToDefault,
-                    trailingIcon = AppIcons.Outlined.close,
-                    navigationIcon = AppIcons.Outlined.arrowBack,
+                    trailingIcon = searchTrailingIcon,
+                    navigationIcon = searchLeadingIcon,
                 )
             }
         }
@@ -74,7 +79,7 @@ fun ClinicsTopBarPreview() {
         var state by remember { mutableStateOf(TopBarState.SEARCH) }
         SearchTopBar(
             onSearchIconClick = { state = TopBarState.SEARCH },
-            onNavigateUp = { state = TopBarState.DEFAULT },
+            onMenuOpen = { state = TopBarState.DEFAULT },
             onClearIconClick = { query = "" },
             query = query,
             state = state,

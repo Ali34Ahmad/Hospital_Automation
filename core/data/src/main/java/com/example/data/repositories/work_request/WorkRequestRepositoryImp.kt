@@ -1,6 +1,5 @@
 package com.example.data.repositories.work_request
 
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.work_request.toRequestTypeDto
 import com.example.data.mapper.work_request.toWorkRequestData
 import com.example.domain.repositories.local.UserPreferencesRepository
@@ -20,13 +19,15 @@ data class WorkRequestRepositoryImp(
     override suspend fun sendWorkRequest(
         requestType: RequestType,
         clinicId: Int,
-    ): Result<WorkRequestData, NetworkError> {
-        return  apiService.sendWorkRequest(
-            token = FAKE_TOKEN,
-            clinicId = clinicId,
-            requestType = requestType.toRequestTypeDto()
-        ).map {response : WorkRequestResponse ->
-            response.request.toWorkRequestData()
+    ): Result<WorkRequestData, NetworkError> =
+        userPreferencesRepository.executeWithValidToken { token->
+            apiService.sendWorkRequest(
+                token = token,
+                clinicId = clinicId,
+                requestType = requestType.toRequestTypeDto()
+            ).map {response : WorkRequestResponse ->
+                response.request.toWorkRequestData()
+            }
         }
-    }
+
 }

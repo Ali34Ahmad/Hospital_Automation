@@ -261,7 +261,7 @@
     <string name="add_prescription">Add prescription</string>
     <string name="available_departments">Available Departments</string>
     <string name="search_for_clinics">Search for clinics</string>
-    <string name="no_departments_subtitle">there are no departments with this name. Would you like to try another name?</string>
+    <string name="no_departments_subtitle">There are no departments. Would you like to try another name?</string>
     <string name="clinic_details">Clinic Details</string>
     <string name="send_request">Send Request</string>
     <string name="done">Done</string>
@@ -304,4 +304,6 @@
     <string name="alternatives_subtitle">Explore Similar Medicines by Composition and Use</string>
     <string name="medicines_alternatives">Medicine Alternatives</string>
     <string name="medicine_details">Medicine Details</string>
+    <string name="no_departments_at_all_subtitle">There are no departments at all.</string>
+    <string name="skip">Skip</string>
 </resources>

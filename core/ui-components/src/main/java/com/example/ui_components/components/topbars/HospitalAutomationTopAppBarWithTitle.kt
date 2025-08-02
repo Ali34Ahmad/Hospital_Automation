@@ -15,7 +15,8 @@ import com.example.ui.theme.Hospital_AutomationTheme
 @Composable
 fun HospitalAutomationTopBarWithTitle(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    
 ) {
     Box(
         modifier = modifier,

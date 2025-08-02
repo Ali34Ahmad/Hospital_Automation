@@ -6,11 +6,15 @@ import com.example.model.enums.ScreenState
 import com.example.util.UiText
 
 data class AppointmentDetailsUIState(
-    val appointmentId: Int = -1,
+    val appointmentId: Int,
     val appointment: AppointmentData? = null,
     val screenState: ScreenState = ScreenState.IDLE,
     val markAsPassedButtonState: BottomBarState = BottomBarState.IDLE,
     val markAsMissedButtonState: BottomBarState = BottomBarState.IDLE,
     val isRefreshing: Boolean = false,
-    val toastMessage: UiText? = null
+    val toastMessage: UiText? = null,
+    val isDialogShown: Boolean = false,
+    val dialogTitle: String ="",
+    val dialogSubtitle: String = "",
+    val isFirstLaunch: Boolean = true
 )

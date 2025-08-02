@@ -19,11 +19,11 @@ import com.example.ui.theme.Hospital_AutomationTheme
 fun ClinicsSearchPreview() {
     Hospital_AutomationTheme{
             var uiState by remember{ mutableStateOf(ClinicsSearchUIState(
-                doctorId = 122,
                 screenStep = ScreenStep.SELECTION,
-                topBarMode = TopBarState.SEARCH,
+                topBarMode = TopBarState.DEFAULT,
                 searchQuery = "clinic",
                 screenState = ScreenState.SUCCESS,
+                isDrawerOpened = true
             )
             ) }
             ClinicsSearchScreen(

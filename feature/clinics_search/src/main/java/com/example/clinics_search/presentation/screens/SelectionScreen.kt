@@ -81,11 +81,13 @@ fun SelectionScreen(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                 ) {
+                    val subtitle =if(uiState.searchQuery.isNotBlank()) stringResource(R.string.no_departments_subtitle)
+                    else stringResource(R.string.no_departments_at_all_subtitle)
                     ErrorComponent(
                         modifier = Modifier
                             .fillMaxWidth(),
                         title = stringResource(R.string.no_matching_result),
-                        description = stringResource(R.string.no_departments_subtitle)
+                        description =subtitle
                     )
                 }
             } else {
@@ -137,7 +139,7 @@ fun SelectionScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     onClick = {
                                         navigationActions.navigateToDepartmentDetails(
-                                            clinicId = it, doctorId = uiState.doctorId
+                                            clinicId = it
                                         )
                                     }
                                 )

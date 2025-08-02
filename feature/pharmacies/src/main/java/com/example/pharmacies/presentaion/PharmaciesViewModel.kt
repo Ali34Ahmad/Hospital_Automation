@@ -3,9 +3,11 @@ package com.example.pharmacies.presentaion
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.example.domain.use_cases.pharmacy.GetPharmaciesByMedicinesIdUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.pharmacy.PharmacyData
+import com.example.pharmacies.navigation.PharmaciesRoute
 import com.example.util.UiText
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
@@ -21,12 +23,10 @@ class PharmaciesViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getPharmaciesByMedicinesId: GetPharmaciesByMedicinesIdUseCase
 ): ViewModel() {
-    private val medicineId = 1
-    private val medicineName = "Vitamine D"
     private val _uiState = MutableStateFlow(
         PharmaciesUIState(
-            medicineId = medicineId,
-            medicineName = medicineName
+            medicineId = savedStateHandle.toRoute<PharmaciesRoute>().medicineId,
+            medicineName = savedStateHandle.toRoute<PharmaciesRoute>().medicineName
         )
     )
 
@@ -40,15 +40,16 @@ class PharmaciesViewModel(
 
     fun onAction(action: PharmaciesUIAction){
         when(action){
-            PharmaciesUIAction.Refresh -> {
-                refreshData()
-            }
+            PharmaciesUIAction.Refresh -> refreshData()
+            PharmaciesUIAction.ClearToast -> clearToast()
         }
     }
-
+    private fun clearToast(){
+        _uiState.value = _uiState.value.copy(toastMessage = null)
+    }
     private fun loadData()= viewModelScope.launch{
         updateScreenState(ScreenState.LOADING)
-        getPharmaciesByMedicinesId(medicineId = _uiState.value.medicineId)
+        getPharmaciesByMedicinesId(medicineId = uiState.value.medicineId)
             .onSuccess{ pharmacies: List<PharmacyData>->
                 updatePharmacies(pharmacies)
                 updateScreenState(ScreenState.SUCCESS)

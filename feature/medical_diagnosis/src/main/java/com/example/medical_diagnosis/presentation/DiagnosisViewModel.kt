@@ -3,7 +3,9 @@ package com.example.medical_diagnosis.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.example.domain.use_cases.doctor.appointment.AddDiagnosisUseCase
+import com.example.medical_diagnosis.navigation.DiagnosisRoute
 import com.example.model.enums.BottomBarState
 import com.example.util.UiText
 import com.example.utility.validation.validator.TextValidator
@@ -27,16 +29,20 @@ class DiagnosisViewModel(
         when(action){
             DiagnosisUIAction.AddDiagnosis -> addDiagnosis()
             is DiagnosisUIAction.UpdateText -> updateText(action.text)
+            DiagnosisUIAction.ClearToast -> {
+                _uiState.value = _uiState.value.copy(toastMessage = null)
+            }
         }
     }
-    private val _uiState = MutableStateFlow(DiagnosisUIState())
-    val uiState: StateFlow<DiagnosisUIState> = _uiState.onStart {
-        initValues()
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000L),
-        DiagnosisUIState()
-    )
+    private val _uiState = MutableStateFlow(DiagnosisUIState(
+        appointmentId = savedStateHandle.toRoute<DiagnosisRoute>().appointmentId,
+        fullName = savedStateHandle.toRoute<DiagnosisRoute>().fullName,
+        patientId = savedStateHandle.toRoute<DiagnosisRoute>().patientId,
+        childId = savedStateHandle.toRoute<DiagnosisRoute>().childId,
+        canSkip = savedStateHandle.toRoute<DiagnosisRoute>().canSkip
+    ))
+
+    val uiState: StateFlow<DiagnosisUIState> = _uiState
 
     private fun showToast(message: UiText){
         _uiState.value = _uiState.value.copy(toastMessage = message)
@@ -48,12 +54,6 @@ class DiagnosisViewModel(
     private fun updateBottomBarState(newState: BottomBarState){
         _uiState.value = _uiState.value.copy(
             sendDateState = newState
-        )
-    }
-    private fun initValues(){
-        _uiState.value = _uiState.value.copy(
-            appointmentId = 1,
-            fullName = "Mira Kamel",
         )
     }
     private fun clearErrorMessage(){

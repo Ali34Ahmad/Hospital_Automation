@@ -54,7 +54,7 @@ fun MedicinesSearchScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MedicinesSearchScreen(
+internal fun MedicinesSearchScreen(
     uiState: MedicinesSearchUIState,
     onAction: (MedicinesSearchUIAction)-> Unit,
     navigationActions: MedicinesSearchNavigationActions,
@@ -64,6 +64,7 @@ fun MedicinesSearchScreen(
     LaunchedEffect(uiState.isDataSentSuccessfully) {
         if(uiState.isDataSentSuccessfully){
             navigationActions.navigateToAppointmentDetails(uiState.appointmentId)
+            onAction(MedicinesSearchUIAction.ClearToast)
         }
     }
     medicines?.loadState?.run {
@@ -99,6 +100,7 @@ fun MedicinesSearchScreen(
         },
         topBar = {
             SearchBarWithTextAction(
+                hasNavigationIcon = false,
                 query = uiState.query,
                 onQueryChanged = {
                     onAction(
@@ -156,7 +158,7 @@ fun MedicinesSearchScreen(
                         text = stringResource(R.string.please_wait)
                     )
                     //add note dialog
-                    if(uiState.isNoteDialogOpened&&uiState.dialogMedicine!=null){
+                    if(uiState.isNoteDialogOpened &&uiState.dialogMedicine !=null){
                         AddNoteDialog(
                             title = uiState.dialogMedicine.name,
                             modifier = Modifier.fillMaxWidth(),
@@ -218,6 +220,7 @@ fun MedicinesSearchScreen(
                                     .fillMaxWidth(),
                                 columns = GridCells.Fixed(2),
                                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                                verticalArrangement =  Arrangement.spacedBy(MaterialTheme.spacing.small8),
                             ) {
                                 items(count) { index ->
                                     val medicine = medicines[index]
@@ -233,7 +236,8 @@ fun MedicinesSearchScreen(
                                             },
                                             onPharmaciesClick = {
                                                 navigationActions.navigateToPharmacies(
-                                                    medicineId
+                                                    medicineId = medicineId,
+                                                    medicineName = name
                                                 )
                                             },
                                             onButtonClick = {

@@ -22,6 +22,7 @@ fun SearchBarWithTextAction(
     modifier: Modifier = Modifier,
     actionText: String,
     onActionClick: ()-> Unit,
+    hasNavigationIcon: Boolean
     ) {
     HospitalAutomationTopBarWithSearchBar(
         modifier =modifier,
@@ -32,6 +33,7 @@ fun SearchBarWithTextAction(
         onNavigationIconCLick = onNavigateBack,
         trailingIcon = AppIcons.Outlined.close,
         navigationIcon = AppIcons.Outlined.arrowBack,
+        hasNavigationIcon = hasNavigationIcon
     ){
         TextButton(
             onClick =  onActionClick
@@ -56,7 +58,25 @@ fun SearchBarWithActionPreview() {
             placeholder = R.string.search_for_medicines,
             modifier = Modifier.fillMaxWidth(),
             actionText = "Finish",
-            onActionClick = {}
+            onActionClick = {},
+            hasNavigationIcon = true
+        )
+    }
+}
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun SearchBarWithActionWithoutNavigationPreview() {
+    Hospital_AutomationTheme {
+        SearchBarWithTextAction(
+            query = "Ali",
+            onQueryChanged ={},
+            onClearIconClick = {},
+            onNavigateBack = {},
+            placeholder = R.string.search_for_medicines,
+            modifier = Modifier.fillMaxWidth(),
+            actionText = "Finish",
+            onActionClick = {},
+            hasNavigationIcon = false
         )
     }
 }

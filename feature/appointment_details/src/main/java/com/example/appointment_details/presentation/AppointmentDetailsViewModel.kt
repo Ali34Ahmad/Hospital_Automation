@@ -1,9 +1,10 @@
 package com.example.appointment_details.presentation
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.example.appointment_details.navigation.AppointmentDetailsRoute
 import com.example.domain.use_cases.doctor.appointment.GetAppointmentDetailsUseCase
 import com.example.domain.use_cases.doctor.appointment.UpdateAppointmentStateToMissedUseCase
 import com.example.domain.use_cases.doctor.appointment.UpdateAppointmentStateToPassedUseCase
@@ -34,48 +35,56 @@ class AppointmentDetailsViewModel(
     private val getAppointmentDetails: GetAppointmentDetailsUseCase
 ): ViewModel() {
 
-
-    private val _uiState = MutableStateFlow(AppointmentDetailsUIState())
+    private val _uiState = MutableStateFlow(
+        AppointmentDetailsUIState(
+            appointmentId = savedStateHandle.toRoute<AppointmentDetailsRoute>().appointmentId,
+        )
+    )
     val uiState : StateFlow<AppointmentDetailsUIState> = _uiState
         .onStart {
-            initValues()
             loadDate()
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            AppointmentDetailsUIState()
+            _uiState.value
         )
-
-    private fun initValues(){
-        val id = 1
-        _uiState.value = _uiState.value.copy(appointmentId = id)
-    }
 
     fun onAction(action: AppointmentDetailsAction){
         when(action){
             AppointmentDetailsAction.MarkAsMissed ->markAsMissed()
             AppointmentDetailsAction.MarkAsPassed -> markAsPassed()
-            AppointmentDetailsAction.ClearToastMessage -> {
-                _uiState.value = _uiState.value.copy(toastMessage = null)
-            }
+            AppointmentDetailsAction.ClearToastMessage -> clearToast()
             AppointmentDetailsAction.Refresh -> refreshData()
             is AppointmentDetailsAction.ShowToast -> showToast(action.message)
+            AppointmentDetailsAction.CloseDialog -> closeDialog()
+            is AppointmentDetailsAction.OpenDialog -> openDialog(action.title,action.subtitle)
+            AppointmentDetailsAction.UpdateIsFirstLaunchToFalse ->updateIsFirstLaunchToFalse()
         }
+    }
+    private fun clearToast(){
+        _uiState.value = _uiState.value.copy(toastMessage = null)
+    }
+    private fun closeDialog() {
+        _uiState.value = _uiState.value.copy(isDialogShown = false)
+    }
+    private fun openDialog(title: String, subtitle: String){
+        _uiState.value = _uiState.value.copy(
+            dialogTitle = title,
+            dialogSubtitle = subtitle,
+            isDialogShown = true,
+        )
     }
     private fun updateState(newState: ScreenState){
         _uiState.value = _uiState.value.copy(screenState = newState)
     }
     fun loadDate()= viewModelScope.launch{
         updateState(ScreenState.LOADING)
-        Log.d("AppointmentViewModel", uiState.value.screenState.name)
         val result : Result<AppointmentData, NetworkError> = getAppointmentDetails(uiState.value.appointmentId)
         result.onSuccess {data->
             updateState(ScreenState.SUCCESS)
-            Log.d("AppointmentViewModel", uiState.value.screenState.name)
             _uiState.value = _uiState.value.copy(appointment = data)
         }.onError {
             updateState(ScreenState.ERROR)
-            Log.d("AppointmentViewModel", uiState.value.screenState.name)
         }
     }
     private fun updateRefreshState(isRefreshing: Boolean){
@@ -109,6 +118,9 @@ class AppointmentDetailsViewModel(
     }
     private fun updateMarkAsPassedButtonState(newState: BottomBarState){
         _uiState.value = _uiState.value.copy(markAsPassedButtonState = newState)
+    }
+    private fun updateIsFirstLaunchToFalse(){
+        _uiState.value = _uiState.value.copy(isFirstLaunch = false)
     }
     private fun markAsPassed() = viewModelScope.launch {
         updateMarkAsPassedButtonState(BottomBarState.LOADING)

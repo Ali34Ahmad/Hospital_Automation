@@ -1,10 +1,9 @@
 package com.example.network.model.dto.doctor.appointment
 
 import com.example.network.model.dto.child.ChildDto
-import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
 import com.example.network.model.dto.doctor.clinic.ClinicDto
-import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.dto.user.UserDto
+import com.example.network.model.dto.vaccine.VaccineSummaryDto
 import com.example.network.serializer.LocalDateSerializer
 import com.example.network.serializer.LocalTimeSerializer
 import kotlinx.serialization.SerialName
@@ -27,7 +26,7 @@ data class AppointmentDto(
     val state: String,
 
     @SerialName("medical_diagnosis")
-    val medicalDiagnosis: String,
+    val medicalDiagnosis: String? = null,
 
     @Serializable(with = LocalDateSerializer::class)
     val date: LocalDate,
@@ -61,7 +60,7 @@ data class AppointmentDto(
 
     val user: UserDto? = null,
 
-    val vaccine: VaccineDto? = null,
+    val vaccine: VaccineSummaryDto? = null,
 
     val clinic: ClinicDto,
     val child: ChildDto? = null

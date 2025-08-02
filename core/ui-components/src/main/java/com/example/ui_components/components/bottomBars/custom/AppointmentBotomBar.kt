@@ -43,9 +43,6 @@ fun AppointmentBottomBar(
             AnimatedContent(
                 modifier = Modifier.weight(1f),
                 targetState = markAsMissedButtonState,
-                transitionSpec = {
-                    fadeIn(tween(300)).togetherWith(fadeOut(tween(300)))
-                },
                 label = "Button state animation"
             ) { state ->
                 when (state) {

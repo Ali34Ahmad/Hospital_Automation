@@ -2,7 +2,6 @@ package com.example.model.doctor.appointment
 
 import com.example.model.child.ChildData
 import com.example.model.doctor.clinic.ClinicData
-import com.example.model.vaccine.VaccineData
 import com.example.model.guardian.GuardianData
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -16,7 +15,7 @@ data class AppointmentData(
 
     val state: AppointmentState,
 
-    val medicalDiagnosis: String,
+    val medicalDiagnosis: String?,
     val date: LocalDate,
     val time: LocalTime,
 
@@ -36,7 +35,7 @@ data class AppointmentData(
 
     val user: GuardianData? = null,
 
-    val vaccine: VaccineData? = null,
+    val vaccine: VaccineSummaryData? = null,
 
     val clinic: ClinicData,
     val child: ChildData? = null

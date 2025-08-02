@@ -7,7 +7,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.medical_diagnosis.presentation.DiagnosisNavigationActions
 import com.example.medical_diagnosis.presentation.DiagnosisScreen
-import com.example.medical_diagnosis.presentation.DiagnosisUIAction
 import com.example.medical_diagnosis.presentation.DiagnosisUIState
 import com.example.model.enums.BottomBarState
 import com.example.ui.helper.DarkAndLightModePreview
@@ -15,11 +14,15 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.util.UiText
 
 val mockNavigationActions = object : DiagnosisNavigationActions{
-    override fun navigateUp() {
+    override fun navigateToAppointmentDetails(appointmentId: Int) {
 
     }
 
-    override fun navigateToPrescriptionScreen(appointmentId: Int) {
+    override fun navigateToMedicinesSearch(
+        childId: Int?,
+        patientId: Int?,
+        appointmentId: Int,
+    ) {
     }
 }
 
@@ -30,18 +33,16 @@ fun AddDiagnosisPreview() {
         fullName = "Jamel Mahrez",
         sendDateState = BottomBarState.DISABLED,
         textFieldErrorText = UiText.DynamicString("has error"),
-        text = "Ali Mansoura suffers from Ali Ahamd"
+        text = "Ali Mansoura suffers from Ali Ahamd",
+        childId = null,
+        patientId = 1,
+        appointmentId = 1,
+        canSkip = false
     )) }
     Hospital_AutomationTheme {
         DiagnosisScreen(
             uiState = uiState,
-            onAction = {action->
-                when(action){
-                    DiagnosisUIAction.AddDiagnosis -> Unit
-                    is DiagnosisUIAction.UpdateText -> {
-                        uiState = uiState.copy(text = action.text)
-                    }
-                }
+            onAction = {
             },
             navigationActions = mockNavigationActions
         )

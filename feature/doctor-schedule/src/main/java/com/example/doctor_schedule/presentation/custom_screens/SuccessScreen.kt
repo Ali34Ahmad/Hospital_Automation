@@ -19,7 +19,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.doctor_schedule.presentation.DoctorScheduleUIAction
 import com.example.doctor_schedule.presentation.DoctorScheduleUIState
 import com.example.doctor_schedule.presentation.model.AppointmentUIModel
-import com.example.ext.toAppropriateDateFormat
+import com.example.ext.toAppropriateDateTimeFormat
 import com.example.model.LabeledBadgeData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.enums.ScreenState
@@ -34,6 +34,7 @@ import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.tab.CustomTabsLayout
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import java.time.LocalDateTime
 
 @Composable
 fun SuccessScreen(
@@ -48,8 +49,9 @@ fun SuccessScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
     ){
+        val items = AppointmentState.entries.toList()-AppointmentState.PENDING
         CustomTabsLayout(
-                items = AppointmentState.entries.map { state ->
+                items = items.map { state ->
                     val badge = uiState.statistics.getByState(state)
                     LabeledBadgeData(
                         label = state.toString(),
@@ -133,8 +135,7 @@ fun SuccessScreen(
                         ) {
                             ErrorComponent(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(MaterialTheme.spacing.medium16),
+                                    .fillMaxWidth() ,
                                 title = stringResource(R.string.no_matching_result),
                                 description = stringResource(R.string.no_appointment_subtitle)
                             )
@@ -150,7 +151,7 @@ fun SuccessScreen(
                         },
                     ){
                         LazyColumn(
-                            modifier = modifier,
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
                         ){
@@ -164,7 +165,7 @@ fun SuccessScreen(
                                                 imageUrl = imageUrl,
                                                 name = fullName,
                                                 tag = appointmentType,
-                                                date = date.toAppropriateDateFormat(),
+                                                date = LocalDateTime.of(date,time).toAppropriateDateTimeFormat(),
                                                 onClick = {
                                                     onNavigateToAppointmentDetails(
                                                         appointment.id
@@ -179,10 +180,7 @@ fun SuccessScreen(
                                         Text(
                                             text = appointment.desc.asString(),
                                             modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(
-                                                    vertical = MaterialTheme.spacing.small8
-                                                ),
+                                                .fillMaxWidth(),
                                             style = MaterialTheme.typography.titleMedium,
                                             color = MaterialTheme.colorScheme.primary
                                         )
@@ -202,8 +200,6 @@ fun SuccessScreen(
                             }
                         }
                     }
-
-
                 }
 
 

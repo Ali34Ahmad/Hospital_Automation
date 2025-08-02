@@ -3,7 +3,9 @@ package com.example.medicine_details.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.example.domain.use_cases.medicine.GetMedicineByIdUseCase
+import com.example.medicine_details.navigation.MedicineDetailsRoute
 import com.example.model.enums.ScreenState
 import com.example.model.medicine.MedicineDetailsData
 import com.example.util.UiText
@@ -21,9 +23,8 @@ class MedicineDetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getMedicine: GetMedicineByIdUseCase
 ): ViewModel() {
-    private val medicineId = 1
     private val _uiState = MutableStateFlow(MedicineDetailsUIState(
-        medicineId = medicineId
+        medicineId = savedStateHandle.toRoute<MedicineDetailsRoute>().medicineId
     ))
     val uiState: StateFlow<MedicineDetailsUIState> = _uiState.onStart {
         loadData()

@@ -1,15 +1,13 @@
 package com.example.ui.fake
 
 
-import com.example.model.age.Age
 import com.example.model.child.ChildData
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentTypeData
+import com.example.model.doctor.appointment.VaccineSummaryData
 import com.example.model.doctor.clinic.ClinicData
-import com.example.model.enums.AgeUnit
 import com.example.model.guardian.GuardianData
-import com.example.model.vaccine.VaccineData
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -28,7 +26,7 @@ private val child = ChildData(
     fatherLastName = "Ali",
     motherFirstName = "Hoda",
     motherLastName = "Hoda",
-    dateOfBirth = "2002-10-10"
+    dateOfBirth = LocalDate.now().minusYears(10)
 )
 private val guardian =GuardianData(
     id = 1,
@@ -42,20 +40,9 @@ private val appType =AppointmentTypeData(
     description = "check up desc",
     doctorId = 1
 )
-private val vaccine = VaccineData(
-    id = 1,
-    name = "fake vaccine",
-    description = "so good for energy",
-    quantity = 10,
-    minAge = Age(
-        value = 10,
-        unit = AgeUnit.DAY
-    ),
-    maxAge = Age(
-        value = 2,
-        unit = AgeUnit.MONTH
-    ),
-    interactions = emptyList(),
+private val vaccine = VaccineSummaryData(
+    vaccineId = 1,
+    name = "HBI"
 )
 fun createSampleAppointments(): List<AppointmentData> =
     listOf(

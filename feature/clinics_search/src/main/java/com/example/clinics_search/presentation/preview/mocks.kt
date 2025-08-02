@@ -10,7 +10,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 val mockNavigationActions = object : ClinicsSearchNavigationActions{
-    override fun navigateToDepartmentDetails(clinicId: Int, doctorId: Int) {
+    override fun navigateToDepartmentDetails(clinicId: Int) {
 
     }
 

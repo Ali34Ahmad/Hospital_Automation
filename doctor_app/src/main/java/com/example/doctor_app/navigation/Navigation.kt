@@ -2,15 +2,12 @@ package com.example.doctor_app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.example.add_new_vaccine.navigation.AddNewVaccineRoute
 import com.example.add_new_vaccine.navigation.addNewVaccineScreen
 import com.example.add_new_vaccine.navigation.navigateToAddNewVaccineScreen
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
-import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.ProfileAccessType
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
@@ -138,7 +135,7 @@ fun Navigation() {
 
         doctorProfileScreen(
             onNavigateUp = {
-//                    navController.navigateUp()
+//                    navController.navigateToAppointmentDetails()
             },
             onNavigateToLoginScreen = {
                 navController.navigateToLoginScreen()

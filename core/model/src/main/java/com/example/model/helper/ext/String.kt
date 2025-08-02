@@ -61,20 +61,7 @@ fun String.toAge():Age =
         Age(value = 0, unit = AgeUnit.NONE)
     }
 
-fun String.toAgeFromDate()
-    : Age {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val birthDate = LocalDate.parse(this, formatter)
-        val today = LocalDate.now()
 
-        val period = Period.between(birthDate, today)
-        return when {
-            period.years > 0 -> Age(period.years, AgeUnit.YEAR)
-            period.months > 0 -> Age(period.months, AgeUnit.MONTH)
-            period.days >= 7 -> Age((period.days / 7), AgeUnit.WEEK)
-            else -> Age(period.days, AgeUnit.DAY)
-        }
-    }
 
 fun String.toLocalDate(
     pattern: String = "yyyy-MM-dd"

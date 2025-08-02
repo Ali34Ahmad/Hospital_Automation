@@ -22,10 +22,10 @@ import kotlinx.coroutines.flow.map
 
 class ChildRepositoryImp(
     private val childApiService: ChildApiService,
-    private val dataStore: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository
 ): ChildRepository {
     override suspend fun searchForChildrenByName(name: String): Flow<PagingData<ChildData>> {
-        val token = dataStore.userPreferencesDataStoreFlow.map { it.token }.first()
+        val token = userPreferencesRepository.userPreferencesDataStoreFlow.map { it.token }.first()
 
         return Pager(
             config = PagingConfig(
@@ -40,7 +40,7 @@ class ChildRepositoryImp(
     }
 
     override suspend fun getChildById(childId: Int): Result<ChildFullData, NetworkError> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
+        val token = userPreferencesRepository.userPreferencesDataStoreFlow.first().token
 
         if (token==null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
@@ -57,7 +57,7 @@ class ChildRepositoryImp(
         guardianId: Int,
         child: ChildFullData,
     ): Result<ChildFullData, NetworkError> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
+        val token = userPreferencesRepository.userPreferencesDataStoreFlow.first().token
 
         if (token==null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
@@ -73,7 +73,7 @@ class ChildRepositoryImp(
 
 
     override suspend fun getChildrenByGuardianId(guardianId: Int): Result<List<ChildFullData>, NetworkError> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
+        val token = userPreferencesRepository.userPreferencesDataStoreFlow.first().token
 
         if (token==null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
@@ -90,7 +90,7 @@ class ChildRepositoryImp(
     override suspend fun searchForChildrenAddedByEmployeeByName(
         name: String
     ): Flow<PagingData<ChildData>> {
-        val token = dataStore.userPreferencesDataStoreFlow.map { it.token }.first()
+        val token = userPreferencesRepository.userPreferencesDataStoreFlow.map { it.token }.first()
         return Pager(
 
             config = PagingConfig(

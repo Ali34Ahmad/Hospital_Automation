@@ -21,9 +21,7 @@ internal fun ChildDto.toChildData() =
         dateOfBirth = dateOfBirth
     )
 
-internal fun ChildFullResponse.toChildFullData(): ChildFullData {
-
-    return ChildFullData(
+internal fun ChildFullResponse.toChildFullData(): ChildFullData = ChildFullData(
         numberOfGuardians = numOfGuardians ,
         childId = child.childId,
         firstName = child.firstName,
@@ -37,7 +35,7 @@ internal fun ChildFullResponse.toChildFullData(): ChildFullData {
         gender = child.gender,
         employeeId = child.employeeId
     )
-}
+
 
 internal fun ChildFullData.toAddChildRequest(): AddChildRequest =
     AddChildRequest(

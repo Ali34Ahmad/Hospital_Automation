@@ -1,6 +1,5 @@
 package com.example.medicines_search.presentation
 
-import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
 import com.example.model.medicine.MedicineData
 
@@ -12,6 +11,7 @@ sealed interface MedicinesSearchUIAction{
     //screen
     data class UpdateScreenState(val newState: ScreenState): MedicinesSearchUIAction
     object Refresh: MedicinesSearchUIAction
+    object ClearToast: MedicinesSearchUIAction
 
     //bottom sheet
     data class AddMedicineToPrescription(val medicine: MedicineData): MedicinesSearchUIAction
@@ -32,7 +32,7 @@ sealed interface MedicinesSearchUIAction{
 
 interface MedicinesSearchNavigationActions{
     fun navigateUp()
-    fun navigateToPharmacies(medicineId: Int)
+    fun navigateToPharmacies(medicineId: Int,medicineName: String)
     fun navigateToMedicineDetails(medicineId: Int)
     fun navigateToAppointmentDetails(appointmentId: Int)
 }

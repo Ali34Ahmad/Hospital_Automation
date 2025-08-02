@@ -11,20 +11,18 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 @Serializable
-data class ClinicsSearchRoute(
-    val doctorId: Int
-)
+object ClinicsSearchRoute
 
-fun NavController.navigateToClinicsSearch(doctorId: Int){
+fun NavController.navigateToClinicsSearch(){
     navigateToScreen(
-        route = ClinicsSearchRoute(doctorId = doctorId)
+        route = ClinicsSearchRoute
     )
 }
 
 fun NavGraphBuilder.clinicsSearchScreen(
-    onNavigateToDepartmentDetails: (clinicId: Int,doctorId: Int)-> Unit,
+    onNavigateToDepartmentDetails: (clinicId: Int)-> Unit,
     onNavigateToDoctorProfile: ()-> Unit,
-    onNavigateToNotification: ()-> Unit,
+    onNavigateToNotifications: ()-> Unit,
     onNavigateToMedicalRecords: ()-> Unit,
     onNavigateToPrescriptions: ()-> Unit,
     onNavigateToVaccines: ()-> Unit,
@@ -32,9 +30,9 @@ fun NavGraphBuilder.clinicsSearchScreen(
     composable<ClinicsSearchRoute> {
         val viewModel = koinViewModel<ClinicsSearchViewModel>()
         val navigationActions = object : ClinicsSearchNavigationActions{
-            override fun navigateToDepartmentDetails(clinicId: Int,doctorId: Int) = onNavigateToDepartmentDetails(clinicId,doctorId)
+            override fun navigateToDepartmentDetails(clinicId: Int) = onNavigateToDepartmentDetails(clinicId)
             override fun navigateToDoctorProfile() = onNavigateToDoctorProfile()
-            override fun navigateToNotifications() = onNavigateToNotification()
+            override fun navigateToNotifications() = onNavigateToNotifications()
             override fun navigateToMedicalRecords() = onNavigateToMedicalRecords()
             override fun navigateToPrescriptions() = onNavigateToPrescriptions()
             override fun navigateToVaccines() = onNavigateToVaccines()

@@ -10,12 +10,14 @@ import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.clinic.ClinicData
 import com.example.model.age.Age
+import com.example.model.doctor.appointment.VaccineSummaryData
 import com.example.model.vaccine.VaccineData
 import com.example.network.model.dto.doctor.appointment.AppointmentDto
 import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
 import com.example.network.model.dto.doctor.clinic.ClinicDto
 import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.dto.doctor.appointment.AppointmentStatisticsDto
+import com.example.network.model.dto.vaccine.VaccineSummaryDto
 
 internal fun AppointmentDto.toAppointmentData() =
     AppointmentData(
@@ -34,12 +36,16 @@ internal fun AppointmentDto.toAppointmentData() =
         patientId = patientId,
         appointmentType = appointmentType.toAppointmentTypeData(),
         user = user?.toGuardianData(),
-        vaccine = vaccine?.toVaccineData(),
+        vaccine = vaccine?.toVaccineSummaryData(),
         clinic = clinic.toClinicFullData(),
         child = child?.toChildData()
     )
 
-
+internal fun VaccineSummaryDto.toVaccineSummaryData()=
+    VaccineSummaryData(
+        vaccineId =  vaccineId,
+        name = name
+    )
 internal fun AppointmentTypeDto.toAppointmentTypeData() =
     AppointmentTypeData(
         id = id,

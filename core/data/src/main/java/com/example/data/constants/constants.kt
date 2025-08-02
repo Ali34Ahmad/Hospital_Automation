@@ -1,5 +1,3 @@
 package com.example.data.constants
 
-import com.example.model.helper.IdType
-
 const val FAKE_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsaS5zaC5haG1hZC43NzJAZ21haWwuY29tIiwidXNlcklkIjoxNDMsImlhdCI6MTc1MjkyOTkxMX0.K8f0EeszBH0JiCDDSsEaq7BrUwl_zy9gd7KdhgAyQ_c"

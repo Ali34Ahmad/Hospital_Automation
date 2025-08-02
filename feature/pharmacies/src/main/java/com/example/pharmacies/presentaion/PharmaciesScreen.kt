@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constants.icons.AppIcons
 import com.example.model.enums.ScreenState
 import com.example.ui.theme.spacing
@@ -57,6 +56,7 @@ fun PharmaciesScreen(
     LaunchedEffect(toastMessage) {
         if (toastMessage != null){
             Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+            onAction(PharmaciesUIAction.ClearToast)
         }
     }
     Scaffold(
@@ -129,7 +129,7 @@ fun PharmaciesScreen(
                                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    items(uiState.data, key = {it.pharmacyId}) { pharmacy ->
+                                    items(items = uiState.data, key = {it.pharmacyId}) { pharmacy ->
                                         PharmacyListItem(
                                             imageUrl = pharmacy.pharmacist.imageUrl,
                                             pharmacyName = pharmacy.name,

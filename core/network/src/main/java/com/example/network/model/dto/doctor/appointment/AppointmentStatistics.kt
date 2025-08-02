@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppointmentStatisticsDto(
     @SerialName("Upcomming_Appointments")
-    val upcoming: Int,
+    val upcoming: Int  = 0,
     @SerialName("Passed_Appointments")
-    val passed: Int,
+    val passed: Int = 0,
     @SerialName("Missed_Appointments")
-    val missed: Int,
+    val missed: Int = 0,
 )

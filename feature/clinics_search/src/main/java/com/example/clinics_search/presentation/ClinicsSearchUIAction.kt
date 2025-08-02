@@ -10,10 +10,11 @@ interface ClinicsSearchUIAction {
     data class UpdateScreenState(val newState: ScreenState): ClinicsSearchUIAction
     object ToggleTheme : ClinicsSearchUIAction
     object Refresh: ClinicsSearchUIAction
+    object ToggleDrawer: ClinicsSearchUIAction
 }
 
 interface ClinicsSearchNavigationActions{
-    fun navigateToDepartmentDetails(clinicId: Int,doctorId: Int)
+    fun navigateToDepartmentDetails(clinicId: Int)
     fun navigateToDoctorProfile()
     fun navigateToNotifications()
     fun navigateToMedicalRecords()

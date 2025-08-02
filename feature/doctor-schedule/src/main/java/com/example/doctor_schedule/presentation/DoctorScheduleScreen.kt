@@ -16,11 +16,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -66,25 +74,49 @@ internal fun DoctorScheduleScreen(
 ) {
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState.isDrawerOpened) {
         if(uiState.isDrawerOpened)drawerState.open()
         else drawerState.close()
     }
 
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                Log.d("Doctor Screen Observer","is first launch :${uiState.isFirstLaunch}")
+                if (uiState.isFirstLaunch) {
+                    onAction(
+                        DoctorScheduleUIAction.UpdateIsFirstLaunchToFalse
+                    )
+                } else {
+                    onAction(
+                        DoctorScheduleUIAction.Refresh
+                    )
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     appointments.let {
         when(it.loadState.refresh){
             is LoadState.Error ->{
-                Log.d("DoctorScheduleViewModel", "Error ")
+                Log.d("DoctorSchedule","Error")
+
                 onAction(DoctorScheduleUIAction.UpdateState(ScreenState.ERROR))
             }
             LoadState.Loading -> {
-                Log.d("DoctorScheduleViewModel", "Loading ")
+                Log.d("DoctorSchedule","Loading")
                 onAction(DoctorScheduleUIAction.UpdateState(ScreenState.LOADING))
             }
             is LoadState.NotLoading -> {
-                Log.d("DoctorScheduleViewModel", "Not loading ")
+                Log.d("DoctorSchedule","Not loading")
                 onAction(DoctorScheduleUIAction.UpdateState(ScreenState.SUCCESS))
             }
         }
@@ -109,28 +141,32 @@ internal fun DoctorScheduleScreen(
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
                 navigationActions.navigateToMedicalRecords()
-            }
+            },
+            enabled = uiState.isPermissionGranted
         ),
         DrawerButton(
             text = R.string.prescriptions,
             image = AppIcons.Outlined.prescription,
             onClick = {
                 navigationActions.navigateToPrescriptions()
-            }
+            },
+            enabled = uiState.isPermissionGranted
         ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,
             onClick = {
                 navigationActions.navigateToVaccines()
-            }
+            },
+            enabled = uiState.isPermissionGranted
         ),
         DrawerButton(
             text = R.string.vaccine_table,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
                 navigationActions.navigateToMedicalRecords()
-            }
+            },
+            enabled = uiState.isPermissionGranted
         ),
 
 
@@ -142,9 +178,7 @@ internal fun DoctorScheduleScreen(
         selectedIndex = null,
         onItemSelected = {
             drawerButtons[it].onClick()
-            scope.launch {
-                drawerState.close()
-            }
+            onAction(DoctorScheduleUIAction.ToggleDrawer)
         },
         onChangeThemeClick = {
             onAction(
@@ -211,7 +245,7 @@ internal fun DoctorScheduleScreen(
             ) {
                 FilterItem(
                     title = stringResource(R.string.date_filter),
-                    subtitle = uiState.selectedDate?.toAppropriateDateFormat().toString(),
+                    subtitle = uiState.selectedDate?.toAppropriateDateFormat()?.toString().orEmpty(),
                     onClose = {
                         onAction(
                             DoctorScheduleUIAction.ClearDateFilter
@@ -230,11 +264,11 @@ internal fun DoctorScheduleScreen(
                             appointments = appointments,
                             onNavigateToAppointmentDetails = navigationActions::navigateToAppointmentDetails,
                             modifier = modifier
+                                .fillMaxWidth()
                                 .padding(
                                     horizontal = MaterialTheme.sizing.small16,
                                     vertical = MaterialTheme.sizing.small8,
                                 )
-                                .fillMaxSize()
                         )
 
                         false ->
