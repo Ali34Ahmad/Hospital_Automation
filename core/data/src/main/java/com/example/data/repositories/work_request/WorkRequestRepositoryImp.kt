@@ -20,7 +20,7 @@ data class WorkRequestRepositoryImp(
         requestType: RequestType,
         clinicId: Int,
     ): Result<WorkRequestData, NetworkError> =
-        userPreferencesRepository.executeWithValidToken { token->
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
             apiService.sendWorkRequest(
                 token = token,
                 clinicId = clinicId,

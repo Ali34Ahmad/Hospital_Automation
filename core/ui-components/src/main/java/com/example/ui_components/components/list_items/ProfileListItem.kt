@@ -1,6 +1,5 @@
 package com.example.ui_components.components.list_items
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -33,10 +31,10 @@ import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
 
 @Composable
-fun PharmacyListItem(
+fun ProfileListItem(
     imageUrl: String?,
-    pharmacyName: String,
-    pharmacistName: String,
+    title: String,
+    subtitle: String,
     onClick:() -> Unit,
     modifier: Modifier = Modifier,
     containerColor : Color = MaterialTheme.colorScheme.background,
@@ -79,12 +77,12 @@ fun PharmacyListItem(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = pharmacistName,
+                    text = title,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
-                    text = pharmacyName,
+                    text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.additionalColorScheme.onBackgroundVariant
                 )
@@ -98,10 +96,10 @@ fun PharmacyListItem(
 @Composable
 fun PharmacistListItemPreview() {
     Hospital_AutomationTheme {
-        PharmacyListItem(
+        ProfileListItem(
             imageUrl = null,
-            pharmacyName = "Bet Ahmad Pharmacy",
-            pharmacistName = "Ali Ahmad",
+            title = "Bet Ahmad Pharmacy",
+            subtitle = "Ali Ahmad",
             onClick = {},
         )
     }

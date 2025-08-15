@@ -40,4 +40,6 @@ data class PharmacyDto(
     @SerialName("pharmacist_id")
     val pharmacistId: Int,
     val user: UserDto
+    //we don't need more information in this summary class.
 )
+

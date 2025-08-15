@@ -1,5 +1,6 @@
 package com.example.clinics_search.presentation
 
+import com.example.model.admin.DepartmentState
 import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
 
@@ -11,6 +12,7 @@ interface ClinicsSearchUIAction {
     object ToggleTheme : ClinicsSearchUIAction
     object Refresh: ClinicsSearchUIAction
     object ToggleDrawer: ClinicsSearchUIAction
+    data class UpdateTab(val newTab: DepartmentState): ClinicsSearchUIAction
 }
 
 interface ClinicsSearchNavigationActions{
@@ -20,4 +22,5 @@ interface ClinicsSearchNavigationActions{
     fun navigateToMedicalRecords()
     fun navigateToPrescriptions()
     fun navigateToVaccines()
+    fun navigateToCreateNewClinic()
 }

@@ -10,12 +10,17 @@ import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
-@Serializable
-object ClinicsSearchRoute
 
-fun NavController.navigateToClinicsSearch(){
+@Serializable
+data class ClinicsSearchRoute(
+    val hasAdminAccess: Boolean = false
+)
+
+fun NavController.navigateToClinicsSearch(hasAdminAccess: Boolean = false){
     navigateToScreen(
-        route = ClinicsSearchRoute
+        route = ClinicsSearchRoute(
+            hasAdminAccess
+        )
     )
 }
 
@@ -26,6 +31,7 @@ fun NavGraphBuilder.clinicsSearchScreen(
     onNavigateToMedicalRecords: ()-> Unit,
     onNavigateToPrescriptions: ()-> Unit,
     onNavigateToVaccines: ()-> Unit,
+    onNavigateToCreateNewClinic: ()-> Unit ,
     ){
     composable<ClinicsSearchRoute> {
         val viewModel = koinViewModel<ClinicsSearchViewModel>()
@@ -36,6 +42,7 @@ fun NavGraphBuilder.clinicsSearchScreen(
             override fun navigateToMedicalRecords() = onNavigateToMedicalRecords()
             override fun navigateToPrescriptions() = onNavigateToPrescriptions()
             override fun navigateToVaccines() = onNavigateToVaccines()
+            override fun navigateToCreateNewClinic() = onNavigateToCreateNewClinic()
         }
         ClinicsSearchScreen(
             viewModel = viewModel,

@@ -3,7 +3,6 @@ package com.example.guardians.presentation
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,10 +20,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.enums.ScreenState
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.components.items.custom.CenteredMessage
 import com.example.ui_components.components.items.custom.FetchingDataItem
-import com.example.ui_components.components.items.custom.SomeThingWentWrong
-import com.example.ui_components.components.list_items.GuardianListItem
+import com.example.ui_components.components.list_items.SimpleProfileListItem
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -139,7 +136,7 @@ internal fun GuardiansScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(uiState.data) { guardian ->
-                                        GuardianListItem(
+                                        SimpleProfileListItem(
                                             imageUrl = guardian.img,
                                             name = guardian.fullName,
                                             onClick = {

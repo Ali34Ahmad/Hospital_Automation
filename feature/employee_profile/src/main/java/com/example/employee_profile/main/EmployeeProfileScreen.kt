@@ -77,7 +77,7 @@ fun EmployeeProfileScreen(
 
     LoadingDialog(
         showDialog = uiState.showLoadingDialog,
-        text = uiState.loadingDialogText?.asString()
+        subtitle = uiState.loadingDialogText?.asString()
     )
 
     val isAddedChildrenEnabled = uiState.userInfo?.profile?.acceptedBy != null

@@ -24,85 +24,76 @@ class ChildRepositoryImp(
     private val childApiService: ChildApiService,
     private val userPreferencesRepository: UserPreferencesRepository
 ): ChildRepository {
-    override suspend fun searchForChildrenByName(name: String): Flow<PagingData<ChildData>> {
-        val token = userPreferencesRepository.userPreferencesDataStoreFlow.map { it.token }.first()
-
-        return Pager(
-            config = PagingConfig(
-                pageSize = PagingConstants.PAGE_SIZE
-            ),
-            pagingSourceFactory = { ChildrenSearchPagingSource(
-                token = token,
-                childApiService = childApiService,
-                query = name,
-            )}
-        ).flow
-    }
-
-    override suspend fun getChildById(childId: Int): Result<ChildFullData, NetworkError> {
-        val token = userPreferencesRepository.userPreferencesDataStoreFlow.first().token
-
-        if (token==null)
-            return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
-
-        return childApiService.getChildProfile(
-            id = childId,
-            token = token
-        ).map { data->
-            data.toChildFullData()
+    override suspend fun searchForChildrenByName(name: String): Flow<PagingData<ChildData>> =
+        userPreferencesRepository.executeFlowWithValidToken { token ->
+            Pager(
+                config = PagingConfig(
+                    pageSize = PagingConstants.PAGE_SIZE
+                ),
+                pagingSourceFactory = {
+                    ChildrenSearchPagingSource(
+                        token = token,
+                        childApiService = childApiService,
+                        query = name,
+                    )
+                }
+            ).flow
         }
-    }
+
+    override suspend fun getChildById(childId: Int): Result<ChildFullData, NetworkError> =
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
+            childApiService.getChildProfile(
+                id = childId,
+                token = token
+            ).map { data->
+                data.toChildFullData()
+            }
+        }
 
     override suspend fun addChild(
         guardianId: Int,
         child: ChildFullData,
-    ): Result<ChildFullData, NetworkError> {
-        val token = userPreferencesRepository.userPreferencesDataStoreFlow.first().token
-
-        if (token==null)
-            return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
-
-        return childApiService.addChild(
-            token = token,
-            guardianId = guardianId,
-            child = child.toAddChildRequest()
-        ).map {
-            it.toChildFullData()
+    ): Result<ChildFullData, NetworkError> =
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
+            childApiService.addChild(
+                token = token,
+                guardianId = guardianId,
+                child = child.toAddChildRequest()
+            ).map {
+                it.toChildFullData()
+            }
         }
-    }
 
 
-    override suspend fun getChildrenByGuardianId(guardianId: Int): Result<List<ChildFullData>, NetworkError> {
-        val token = userPreferencesRepository.userPreferencesDataStoreFlow.first().token
 
-        if (token==null)
-            return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
-
-        val result  = childApiService.getChildrenByGuardianId(
-            token = token,
-            guardianId = guardianId
-        ).map {
-            it.data.map { it.child.toChildFullData() }
+    override suspend fun getChildrenByGuardianId(guardianId: Int): Result<List<ChildFullData>, NetworkError> =
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
+            val result  = childApiService.getChildrenByGuardianId(
+                token = token,
+                guardianId = guardianId
+            ).map {
+                it.data.map { it.child.toChildFullData() }
+            }
+            result
         }
-        return result
-    }
 
     override suspend fun searchForChildrenAddedByEmployeeByName(
         name: String
-    ): Flow<PagingData<ChildData>> {
-        val token = userPreferencesRepository.userPreferencesDataStoreFlow.map { it.token }.first()
-        return Pager(
+    ): Flow<PagingData<ChildData>> =
+        userPreferencesRepository.executeFlowWithValidToken {token->
+            Pager(
+                config = PagingConfig(
+                    pageSize = PagingConstants.PAGE_SIZE
+                ),
+                pagingSourceFactory = {
+                    ChildrenByEmployeeSearchPagingSource(
+                        token = token,
+                        query = name,
+                        childApiService = childApiService
+                    )
+                }
+            ).flow
+        }
 
-            config = PagingConfig(
-                pageSize = PagingConstants.PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                ChildrenByEmployeeSearchPagingSource(
-                    token = token,
-                    query = name,
-                    childApiService = childApiService
-                )
-            }
-        ).flow
-    }
+
 }

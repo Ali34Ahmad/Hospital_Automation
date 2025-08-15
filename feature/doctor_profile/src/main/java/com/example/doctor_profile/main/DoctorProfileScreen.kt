@@ -79,7 +79,7 @@ fun DoctorProfileScreen(
 
     LoadingDialog(
         showDialog = uiState.showLoadingDialog,
-        text = uiState.loadingDialogText?.asString()
+        subtitle = uiState.loadingDialogText?.asString()
     )
 
     val isActionsItemsEnabled = uiState.doctorInfo?.profile?.acceptedBy != null

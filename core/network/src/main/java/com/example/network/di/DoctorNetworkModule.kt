@@ -51,12 +51,7 @@ val doctorNetworkModule = module {
     singleOf(::PrescriptionApiServiceImp){bind<PrescriptionApiService>()}
     //Medicine API service
     singleOf(::MedicineApiServiceImp){bind<MedicineApiService>()}
-    //Work request
-    singleOf(::WorkRequestApiServiceImp){bind<WorkRequestApiService>()}
-    //appointment API service
-    singleOf(::AppointmentsApiServiceImp){bind<AppointmentsApiService>()}
-    //clinic API service
-    singleOf(::ClinicApiServiceImp){bind<ClinicApiService>()}
+
 
     //from Ali Ahmad
     singleOf(::DoctorSignUpApiServiceImpl) { bind<DoctorSignUpApiService>() }

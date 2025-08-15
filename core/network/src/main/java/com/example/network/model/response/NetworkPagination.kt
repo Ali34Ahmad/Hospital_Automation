@@ -8,5 +8,5 @@ data class NetworkPagination(
     val page: Int,
     val limit: Int,
     @SerialName("totalpage")
-    val totalPages: Int,
+    val totalPages: Int?,
 )

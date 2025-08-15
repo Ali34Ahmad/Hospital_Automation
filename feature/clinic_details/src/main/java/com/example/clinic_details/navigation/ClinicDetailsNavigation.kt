@@ -22,6 +22,7 @@ data class ClinicDetailsRoute(
 enum class ClinicDetailsType{
     JUST_INFO,
     FOR_REGISTERING,
+    ADMIN_ACCESS,
 }
 fun NavController.navigateToClinicDetailsScreen(
     clinicId: Int,
@@ -37,6 +38,12 @@ fun NavGraphBuilder.clinicDetailsScreen(
     onNavigateToDoctorProfile: ()-> Unit,
     onNavigateToScheduleScreen : ()->Unit,
     onNavigateToVaccines: ()-> Unit,
+    onNavigateToAllDoctors: ()-> Unit,
+    onNavigateToAllAppointments: ()-> Unit,
+    onNavigateToMedicalRecords: ()-> Unit,
+    onNavigateToContractHistory: ()-> Unit,
+    onNavigateToPrescriptions: ()-> Unit,
+    onNavigateToEditClinic: ()-> Unit
 ){
     composable<ClinicDetailsRoute> {
         val viewModel = koinViewModel<ClinicDetailsViewModel>()
@@ -45,6 +52,15 @@ fun NavGraphBuilder.clinicDetailsScreen(
             override fun navigateToDoctorProfile() = onNavigateToDoctorProfile()
             override fun navigateToScheduleScreen() =onNavigateToScheduleScreen()
             override fun navigateToVaccines() = onNavigateToVaccines()
+            override fun navigateToAllDoctors()=onNavigateToAllDoctors()
+
+            override fun navigateToAllAppointments() = onNavigateToAllAppointments()
+            override fun navigateToPrescriptions() = onNavigateToPrescriptions()
+
+            override fun navigateToMedicalRecords() = onNavigateToMedicalRecords()
+
+            override fun navigateToContractHistory() = onNavigateToContractHistory()
+            override fun navigateToEditClinic() = onNavigateToEditClinic()
         }
         ClinicDetailsScreen(
             viewModel = viewModel,

@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.clinic_details.navigation.ClinicDetailsRoute
+import com.example.clinic_details.navigation.ClinicDetailsType
+import com.example.domain.use_cases.admin.clinic.DeactivateClinicUseCase
+import com.example.domain.use_cases.admin.clinic.ReactivateClinicUseCase
 import com.example.domain.use_cases.doctor.clinic.GetClinicByIdUseCase
 import com.example.domain.use_cases.work_request.SendDoctorWorkRequestUseCase
 import com.example.model.doctor.clinic.ClinicFullData
@@ -27,13 +30,19 @@ class ClinicDetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getClinicById: GetClinicByIdUseCase,
     private val sendRequest: SendDoctorWorkRequestUseCase,
+    private val deactivateClinicUseCase: DeactivateClinicUseCase,
+    private val reactivateClinicUseCase: ReactivateClinicUseCase
 ): ViewModel() {
+
+    val clinicId = 1
+    val type = ClinicDetailsType.ADMIN_ACCESS
+
     private val refreshTrigger = MutableSharedFlow<Unit>()
 
     private val _uiState = MutableStateFlow(
         ClinicDetailsUIState(
-            clinicId = savedStateHandle.toRoute<ClinicDetailsRoute>().clinicId,
-            type = savedStateHandle.toRoute<ClinicDetailsRoute>().type
+            clinicId = clinicId,
+            type = type
         )
     )
     val uiState: StateFlow<ClinicDetailsUIState> = combine(
@@ -52,25 +61,73 @@ class ClinicDetailsViewModel(
         when(action){
             ClinicDetailsUIAction.Refresh -> refresh()
             ClinicDetailsUIAction.SendRequest-> sendDoctorRequest()
-            ClinicDetailsUIAction.HideDialog -> hideDialog()
-            is ClinicDetailsUIAction.ShowDialog -> showDialog(action.title,action.subtitle)
+            ClinicDetailsUIAction.HideInfoDialog -> hideInfoDialog()
+            is ClinicDetailsUIAction.ShowInfoDialog -> showInfoDialog(action.title,action.subtitle)
             ClinicDetailsUIAction.ClearToast -> clearToast()
+            ClinicDetailsUIAction.ShowWarningDialog -> showWarningDialog()
+            ClinicDetailsUIAction.HideWarningDialog -> hideWarningDialog()
+            ClinicDetailsUIAction.ShowLoadingDialog -> showLoadingDialog()
+            ClinicDetailsUIAction.HideLoadingDialog -> hideLoadingDialog()
+            is ClinicDetailsUIAction.UpdateDeactivationReason -> updateDeactivationReason(action.newValue)
+            ClinicDetailsUIAction.DeactivateClinic -> deactivateClinic()
+            ClinicDetailsUIAction.ReactivateClinic -> reactivateClinic()
         }
+    }
+    private fun reactivateClinic() = viewModelScope.launch{
+        showLoadingDialog()
+        reactivateClinicUseCase(
+            clinicId = uiState.value.clinicId
+        ).onError{
+            showToast(UiText.StringResource(R.string.something_went_wrong))
+        }.onSuccess {
+            showToast(UiText.StringResource(R.string.success))
+            refreshTrigger.emit(Unit)
+        }
+        hideLoadingDialog()
+    }
+    private fun deactivateClinic()= viewModelScope.launch{
+        showLoadingDialog()
+        deactivateClinicUseCase(
+            clinicId = uiState.value.clinicId,
+            deactivationReason = uiState.value.deactivationReason
+        ).onError{
+            showToast(UiText.StringResource(R.string.something_went_wrong))
+        }.onSuccess {
+            showToast(UiText.StringResource(R.string.success))
+            refreshTrigger.emit(Unit)
+        }
+        hideLoadingDialog()
     }
 
     private fun clearToast() {
         _uiState.value = _uiState.value.copy(toastMessage = null)
     }
 
-    private fun showDialog(title: String,subtitle: String){
+    private fun showInfoDialog(title: String, subtitle: String){
         _uiState.value = _uiState.value.copy(
-            isDialogShown = true,
-            dialogTitle = title,
-            dialogSubtitle = subtitle
+            isInfoDialogShown = true,
+            infoDialogTitle = title,
+            infoDialogSubtitle = subtitle
         )
     }
-    private fun hideDialog(){
-        _uiState.value = _uiState.value.copy(isDialogShown = false)
+    private fun hideLoadingDialog(){
+        _uiState.value = _uiState.value.copy(isLoadingDialogShown = false)
+    }
+    private fun showLoadingDialog(){
+        _uiState.value = _uiState.value.copy(isLoadingDialogShown = true)
+    }
+    private fun showWarningDialog(){
+        _uiState.value = _uiState.value.copy(isWarningDialogShown = true)
+    }
+    private fun hideWarningDialog(){
+        _uiState.value = _uiState.value.copy(isWarningDialogShown = false)
+    }
+    private fun updateDeactivationReason(newValue: String){
+        _uiState.value = _uiState.value.copy(deactivationReason = newValue)
+    }
+
+    private fun hideInfoDialog(){
+        _uiState.value = _uiState.value.copy(isInfoDialogShown = false)
     }
     private fun refresh()=viewModelScope.launch{
         refreshTrigger.emit(Unit)
@@ -127,6 +184,7 @@ class ClinicDetailsViewModel(
             showToast(UiText.StringResource(R.string.something_went_wrong))
         }
     }
+
 }
 
 

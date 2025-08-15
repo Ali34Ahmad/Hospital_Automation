@@ -1,8 +1,12 @@
 package com.example.clinics_search.presentation.screens
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -17,10 +21,13 @@ import com.example.clinics_search.presentation.ClinicsSearchUIAction
 import com.example.clinics_search.presentation.ClinicsSearchUIState
 import com.example.model.Department
 import com.example.model.Doctor
+import com.example.model.LabeledBadgeData
 import com.example.model.Service
 import com.example.model.User
+import com.example.model.admin.DepartmentState
 import com.example.model.doctor.clinic.ClinicFullData
 import com.example.model.doctor.day_scedule.DoctorStatusChecker
+import com.example.model.employee.EmployeeState
 import com.example.model.enums.DoctorStatus
 import com.example.model.enums.ScreenState
 import com.example.ui.theme.spacing
@@ -31,6 +38,7 @@ import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
+import com.example.ui_components.components.tab.CustomTabsLayout
 
 @Composable
 fun SelectionScreen(
@@ -41,116 +49,153 @@ fun SelectionScreen(
     modifier: Modifier = Modifier,
 ) {
     //observing the load state changes
-
     when(clinics.loadState.refresh){
-        is LoadState.Error ->onAction(ClinicsSearchUIAction.UpdateScreenState(ScreenState.LOADING))
-        LoadState.Loading -> onAction(ClinicsSearchUIAction.UpdateScreenState(ScreenState.ERROR))
+        is LoadState.Error ->onAction(ClinicsSearchUIAction.UpdateScreenState(ScreenState.ERROR))
+        LoadState.Loading -> onAction(ClinicsSearchUIAction.UpdateScreenState(ScreenState.LOADING))
         is LoadState.NotLoading ->onAction(ClinicsSearchUIAction.UpdateScreenState(ScreenState.SUCCESS))
     }
-
-    when(uiState.screenState){
-        ScreenState.IDLE -> Unit
-        ScreenState.LOADING ->{
-            FetchingDataItem(Modifier.fillMaxSize())
-        }
-        ScreenState.ERROR ->{
-            PullToRefreshColumn(
-                refreshing = uiState.isRefreshing,
-                modifier = Modifier.fillMaxSize(),
-                onRefresh = {
-                    onAction(ClinicsSearchUIAction.Refresh)
-                },
-                verticalArrangement = Arrangement.Center
-            ) {
-                ErrorComponent(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
-        }
-        ScreenState.SUCCESS -> {
-            val itemCount = clinics.itemCount
-            if (itemCount == 0) {
-                PullToRefreshColumn(
-                    refreshing = uiState.isRefreshing,
-                    onRefresh = {
-                        onAction(
-                            ClinicsSearchUIAction.Refresh
+    val tabs = DepartmentState.entries.map { status->
+        LabeledBadgeData(
+            label = status.toString(),
+            badge = uiState.statistics.getByState(status)
+        )
+    }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        //show filters
+        if(uiState.hasAdminAccess){
+            CustomTabsLayout(
+                items = tabs,
+                selectedItemIndex = uiState.selectedTab.ordinal,
+                onItemSelected = {index->
+                    onAction(
+                        ClinicsSearchUIAction.UpdateTab(
+                            DepartmentState.entries[index]
                         )
-                    },
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    val subtitle =if(uiState.searchQuery.isNotBlank()) stringResource(R.string.no_departments_subtitle)
-                    else stringResource(R.string.no_departments_at_all_subtitle)
-                    ErrorComponent(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        title = stringResource(R.string.no_matching_result),
-                        description =subtitle
                     )
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(MaterialTheme.spacing.medium16))
+        }
+        AnimatedContent(
+            targetState = uiState.screenState,
+        ) { state ->
+            when (state) {
+                ScreenState.IDLE -> Unit
+                ScreenState.LOADING -> {
+                    FetchingDataItem(Modifier.fillMaxSize())
                 }
-            } else {
-                PullToRefreshBox(
-                    refreshing = uiState.isRefreshing,
-                    onRefresh = {
-                        onAction(
-                            ClinicsSearchUIAction.Refresh
-                        )
-                    },
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    LazyColumn(
-                        modifier = modifier,
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+                ScreenState.ERROR -> {
+                    PullToRefreshColumn(
+                        refreshing = uiState.isRefreshing,
+                        modifier = Modifier.fillMaxSize(),
+                        onRefresh = {
+                            onAction(ClinicsSearchUIAction.Refresh)
+                        },
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        items(itemCount) { index ->
-                            val clinic = clinics[index]
-                            clinic?.run {
-                                val department = Department(
-                                    id = clinicId,
-                                    name = name,
-                                    workDays = workDays,
-                                    activeDoctors =activeDoctors.map {
-                                        Doctor(
-                                            imageUrl = it.imageUrl?:"",
-                                            name = it.fullName,
-                                            specialty = it.speciality
-                                        )
-                                    },
-                                    services = clinicServices.map {
-                                        Service.fromClinicService(it)
-                                    },
-                                    providesVaccine = providesVaccines,
-                                    creatingDate = creationDate,
-                                    isAvailableNow = DoctorStatusChecker.getDoctorStatus(workDays) == DoctorStatus.OPENED,
-                                    isDeactivated = isDeactivated,
-                                    deactivationReason = deactivationReason,
-                                    deactivatedBy = deactivatedByUser?.let {
-                                        User(
-                                            id = it.id?:-1,
-                                            name = it.fullName
-                                        )
-                                    }
+                        ErrorComponent(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+
+                ScreenState.SUCCESS -> {
+                    val itemCount = clinics.itemCount
+                    if (itemCount == 0) {
+                        PullToRefreshColumn(
+                            refreshing = uiState.isRefreshing,
+                            onRefresh = {
+                                onAction(
+                                    ClinicsSearchUIAction.Refresh
                                 )
-                                DepartmentCard(
-                                    department = department,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onClick = {
-                                        navigationActions.navigateToDepartmentDetails(
-                                            clinicId = it
-                                        )
-                                    }
-                                )
-                            }
+                            },
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            val subtitle =
+                                if (uiState.searchQuery.isNotBlank()) stringResource(R.string.no_departments_subtitle)
+                                else stringResource(R.string.no_departments_at_all_subtitle)
+                            ErrorComponent(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                title = stringResource(R.string.no_matching_result),
+                                description = subtitle
+                            )
                         }
-                        if(clinics.loadState.append == LoadState.Loading){
-                            item {
-                                SmallCircularProgressIndicator(
-                                    modifier = Modifier.fillMaxWidth()
-                                        .padding(MaterialTheme.spacing.medium16)
+                    } else {
+                        PullToRefreshBox(
+                            refreshing = uiState.isRefreshing,
+                            onRefresh = {
+                                onAction(
+                                    ClinicsSearchUIAction.Refresh
                                 )
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            LazyColumn(
+                                modifier = modifier,
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                items(itemCount) { index ->
+                                    val clinic = clinics[index]
+                                    clinic?.run {
+                                        val department = Department(
+                                            id = clinicId,
+                                            name = name,
+                                            workDays = workDays,
+                                            activeDoctors = activeDoctors.map {
+                                                Doctor(
+                                                    imageUrl = it.imageUrl ?: "",
+                                                    name = it.fullName,
+                                                    specialty =
+                                                        it.speciality
+                                                            ?: stringResource(R.string.not_determined)
+
+                                                )
+                                            },
+                                            services = clinicServices.map {
+                                                Service.fromClinicService(it)
+                                            },
+                                            providesVaccine = providesVaccines,
+                                            creatingDate = creationDate,
+                                            isAvailableNow = DoctorStatusChecker.getDoctorStatus(
+                                                workDays
+                                            ) == DoctorStatus.OPENED,
+                                            isDeactivated = isDeactivated,
+                                            deactivationReason = deactivationReason,
+                                            deactivatedBy = deactivatedByUser?.let {
+                                                User(
+                                                    id = it.id ?: -1,
+                                                    name = it.fullName
+                                                )
+                                            }
+                                        )
+                                        DepartmentCard(
+                                            department = department,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            onClick = {
+                                                navigationActions.navigateToDepartmentDetails(
+                                                    clinicId = it
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                                if (clinics.loadState.append == LoadState.Loading) {
+                                    item {
+                                        SmallCircularProgressIndicator(
+                                            modifier = Modifier.fillMaxWidth()
+                                                .padding(MaterialTheme.spacing.medium16)
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -158,5 +203,6 @@ fun SelectionScreen(
             }
         }
     }
+
 }
 

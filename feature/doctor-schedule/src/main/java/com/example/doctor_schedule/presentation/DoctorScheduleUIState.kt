@@ -6,6 +6,8 @@ import com.example.model.enums.ScreenState
 import java.time.LocalDate
 
 data class DoctorScheduleUIState(
+    val hasAdminAccess: Boolean,
+    val doctorId: Int?,
     val isRefreshing: Boolean = false,
     val screenState: ScreenState = ScreenState.IDLE,
     val permissionsState: ScreenState = ScreenState.IDLE,

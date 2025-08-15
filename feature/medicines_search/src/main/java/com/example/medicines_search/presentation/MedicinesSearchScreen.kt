@@ -155,7 +155,7 @@ internal fun MedicinesSearchScreen(
                     //loading dialog
                     LoadingDialog(
                         showDialog = uiState.isLoadingDialogShown,
-                        text = stringResource(R.string.please_wait)
+                        subtitle = stringResource(R.string.please_wait)
                     )
                     //add note dialog
                     if(uiState.isNoteDialogOpened &&uiState.dialogMedicine !=null){

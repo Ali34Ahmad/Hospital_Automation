@@ -7,6 +7,7 @@ object ApiRoutes {
     const val BASE_URL = "https://dispensary-hkz3.onrender.com"
     private const val EMPLOYEE = "$BASE_URL/employee"
     private const val DOCTOR = "$BASE_URL/doctor"
+    private const val ADMIN = "$BASE_URL/admin"
 
 
     const val SEARCH_FOR_CHILD = "$EMPLOYEE/searchFor-child"
@@ -73,20 +74,29 @@ object ApiRoutes {
         const val UPDATE_APPOINTMENT_STATE_TO_PASSED = "$DOCTOR/change-appointment-state-to-passed"
         const val UPDATE_APPOINTMENT_STATE_TO_MISSED = "$DOCTOR/change-appointment-state-to-missed"
         const val SEND_WORK_REQUEST = "$DOCTOR/send-doctor-request"
+        const val GET_MEDICINES = "${ApiRoutes.DOCTOR}/get-medicine-byname"
+        const val GET_MEDICINE_BY_ID = "${ApiRoutes.DOCTOR}/get-medicine-by-id"
+        const val SHOW_ALL_CLINICS = "${ApiRoutes.DOCTOR}/show-all-clinics"
+        const val GET_CLINIC_BY_ID = "${ApiRoutes.DOCTOR}/view-single-clinic-details"
     }
 
     object Clinic{
-        const val SHOW_ALL_CLINICS = "$DOCTOR/show-all-clinics"
-        const val SHOW_CLINIC = "$DOCTOR/view-single-clinic-details"
         const val PROFILE = "$DOCTOR/show-profile"
         const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
         const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
         const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/get-generic-vaccination-table"
         const val UPDATE_GENERIC_VACCINATION_TABLE = "$DOCTOR/update-generic-vaccination-table"
     }
-    object Medicine{
-        const val GET_MEDICINES = "$DOCTOR/get-medicine-byname"
-        const val GET_MEDICINE_BY_ID = "$DOCTOR/get-medicine-by-id"
+    object Admin{
+        const val ADMIN_GET_PHARMACIES = "$ADMIN/get-departments-pharmacies-states"
+        const val ADMIN_GET_CLINICS = "$ADMIN/get-departments-pharmacies-states"
+        const val GET_ALL_EMPLOYEES = "$ADMIN/get-employees-states"
+        const val GET_ALL_DOCTORS = "$ADMIN/get-employees-states"
+        const val  SHOW_APPOINTMENTS = "$ADMIN/doctor-appointment-screen"
+        const val GET_DOCTORS_IN_SPECIFIC_CLINIC ="$ADMIN/doctors-in-specific-clinic_states"
+        const val DEACTIVATE_CLINIC = "$ADMIN/deactivate-clinic"
+        const val REACTIVATE_CLINIC = "$ADMIN/reactivate-clinic"
+        const val GET_ADMIN_DETAILS_FOR = "$ADMIN/admin-get-details-by-id-for"
     }
     object Prescription{
         const val ADD_PRESCRIPTION = "$DOCTOR/add-prescription"
@@ -139,6 +149,22 @@ object ApiRoutes {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGOUT
             RoleDto.DOCTOR -> Doctor.LOGOUT
             RoleDto.ADMIN -> ""
+        }
+    }
+
+    fun getClinicByIdEndPointForRole(role: RoleDto) : String{
+        return when(role){
+            RoleDto.EMPLOYEE -> ""
+            RoleDto.DOCTOR -> Doctor.GET_CLINIC_BY_ID
+            RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
+        }
+    }
+
+    fun getAppointmentsEndPointFor(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> ""
+            RoleDto.DOCTOR -> Doctor.SHOW_APPOINTMENTS
+            RoleDto.ADMIN -> Admin.SHOW_APPOINTMENTS
         }
     }
 

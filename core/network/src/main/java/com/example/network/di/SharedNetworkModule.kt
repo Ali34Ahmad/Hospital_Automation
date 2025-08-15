@@ -2,6 +2,12 @@ package com.example.network.di
 
 import com.example.network.remote.account_management.EmployeeAccountManagementApiService
 import com.example.network.remote.account_management.EmployeeAccountManagementApiServiceImpl
+import com.example.network.remote.appointment.AppointmentsApiService
+import com.example.network.remote.appointment.AppointmentsApiServiceImp
+import com.example.network.remote.clinic.ClinicApiService
+import com.example.network.remote.clinic.ClinicApiServiceImp
+import com.example.network.remote.work_request.WorkRequestApiService
+import com.example.network.remote.work_request.WorkRequestApiServiceImp
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -34,4 +40,11 @@ internal val sharedNetworkModule = module {
     singleOf(::EmployeeAccountManagementApiServiceImpl) {
         bind<EmployeeAccountManagementApiService>()
     }
+    //shared between doctor and admin
+    singleOf(::ClinicApiServiceImp){bind<ClinicApiService>()}
+    //appointment API service
+    singleOf(::AppointmentsApiServiceImp){bind<AppointmentsApiService>()}
+    //Work request
+    singleOf(::WorkRequestApiServiceImp){bind<WorkRequestApiService>()}
+
 }

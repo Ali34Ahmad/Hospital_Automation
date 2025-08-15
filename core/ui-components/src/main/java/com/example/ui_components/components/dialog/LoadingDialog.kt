@@ -1,7 +1,6 @@
 package com.example.ui_components.components.dialog
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -22,13 +21,15 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalShapes
+import com.example.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadingDialog(
     showDialog: Boolean,
     modifier: Modifier = Modifier,
-    text: String? = null,
+    title: String? = null,
+    subtitle: String? = null,
 ) {
     if (showDialog) {
         BasicAlertDialog(
@@ -43,22 +44,31 @@ fun LoadingDialog(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(24.dp),
+                    .padding(MaterialTheme.spacing.large24),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16)
             ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                text?.let {
+                title?.let {
                     Text(
-                        text = text,
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                }
+                subtitle?.let {
+                    Text(
+                        text = subtitle,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }
@@ -70,8 +80,9 @@ fun LoadingDialogPreview() {
     Hospital_AutomationTheme {
         Surface {
             LoadingDialog(
+                title = "It may take some time",
                 showDialog = true,
-                text = "Loading..."
+                subtitle = "Loading..."
             )
         }
     }

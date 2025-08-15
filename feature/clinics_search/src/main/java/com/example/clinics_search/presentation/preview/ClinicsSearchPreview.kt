@@ -23,7 +23,8 @@ fun ClinicsSearchPreview() {
                 topBarMode = TopBarState.DEFAULT,
                 searchQuery = "clinic",
                 screenState = ScreenState.SUCCESS,
-                isDrawerOpened = true
+                isDrawerOpened = true,
+                hasAdminAccess = false,
             )
             ) }
             ClinicsSearchScreen(
@@ -33,5 +34,4 @@ fun ClinicsSearchPreview() {
                 navigationActions = mockNavigationActions,
             )
         }
-
 }

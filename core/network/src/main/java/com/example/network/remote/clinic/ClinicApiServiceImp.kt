@@ -1,5 +1,6 @@
 package com.example.network.remote.clinic
 
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.clinics.GetClinicByIdResponse
 import com.example.network.model.response.clinics.GetClinicsResponse
 import com.example.network.utility.ApiRoutes
@@ -26,7 +27,7 @@ class ClinicApiServiceImp(
         doApiCall<GetClinicsResponse>(
             tag = CLINIC_TAG
         ) {
-            client.get(ApiRoutes.Clinic.SHOW_ALL_CLINICS){
+            client.get(ApiRoutes.Doctor.SHOW_ALL_CLINICS){
                 url{
                     parameter("page",page)
                     parameter("limit",limit)
@@ -38,13 +39,26 @@ class ClinicApiServiceImp(
         }
 
     override suspend fun getClinicById(
+        roleDto: RoleDto,
         token: String,
         clinicId: Int,
     ): Result<GetClinicByIdResponse, NetworkError> =
         doApiCall<GetClinicByIdResponse>(
             tag = CLINIC_TAG
         ) {
-            client.get(ApiRoutes.Clinic.SHOW_CLINIC+"/$clinicId") {
+            val baseUrl = ApiRoutes.getClinicByIdEndPointForRole(roleDto)
+            val url = if(roleDto == RoleDto.ADMIN) baseUrl
+            else "$baseUrl/$clinicId"
+
+            client.get(url) {
+
+                if(roleDto == RoleDto.ADMIN){
+                    url{
+                        parameter("type","clinic")
+                        parameter("id",clinicId.toString())
+                    }
+                }
+
                 bearerAuth(token)
             }
         }

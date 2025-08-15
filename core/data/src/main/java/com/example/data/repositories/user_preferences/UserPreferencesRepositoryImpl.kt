@@ -4,6 +4,7 @@ import com.example.data.mapper.user_preferences.toUserPreferences
 import com.example.datastore.service.UserPreferencesService
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.user_preferences.UserPreferencesDataStore
+import com.example.utility.network.Error
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
@@ -28,11 +29,17 @@ class UserPreferencesRepositoryImpl(
     override suspend fun updateToken(token: String?) =
         userPreferencesService.updateToken(token)
 
-    override suspend fun <T> executeWithValidToken(
-        action: suspend (token: String) -> Result<T, rootError>
-    ): Result<T, rootError> {
+    override suspend fun <T> executeWithValidToken(action: suspend (String) -> Result<T, rootError>): Result<T, rootError> {
         val token = this.userPreferencesDataStoreFlow.firstOrNull()?.token
+        return if (token == null) {
+            Result.Error(NetworkError.UNAUTHORIZED)
+        } else {
+            action(token)
+        }
+    }
 
+    override suspend fun <T> executeWithValidTokenNetwork(action: suspend (String) -> Result<T, NetworkError>): Result<T, NetworkError> {
+        val token = this.userPreferencesDataStoreFlow.firstOrNull()?.token
         return if (token == null) {
             Result.Error(NetworkError.UNAUTHORIZED)
         } else {
@@ -44,7 +51,6 @@ class UserPreferencesRepositoryImpl(
         action: suspend (String) -> Flow<T>
     ): Flow<T> {
         val token = this.userPreferencesDataStoreFlow.firstOrNull()?.token
-
         return if (token == null) {
             throw Exception(NetworkError.UNAUTHORIZED.name)
         } else {

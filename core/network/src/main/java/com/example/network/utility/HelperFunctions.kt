@@ -27,6 +27,7 @@ suspend inline fun <reified T> doApiCall(
          when(response.status){
             HttpStatusCode.OK->{
                 val data : T = response.body()
+                Log.d(tag,"SUCCESS :  ${response.bodyAsText()}")
                 Result.Success<T>(data)
             }
             HttpStatusCode.BadRequest ->{

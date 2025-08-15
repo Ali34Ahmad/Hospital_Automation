@@ -306,4 +306,18 @@
     <string name="medicine_details">Medicine Details</string>
     <string name="no_departments_at_all_subtitle">There are no departments at all.</string>
     <string name="skip">Skip</string>
+    <string name="not_determined">Not determined</string>
+    <string name="admin">Admin</string>
+    <string name="doctor">Doctor</string>
+    <string name="doctor_name">Doctor name</string>
+    <string name="emplyee_name">Employee name</string>
+    <string name="deactivating_department">Deactivating department</string>
+    <string name="deactivating_reason">Deactivating reason</string>
+    <string name="deactivation_msg_title">Are you sure you want to deactivate this department?</string>
+    <string name="deactivation_msg_subtitle">You can reactivate this department later.</string>
+    <string name="all_doctors">All doctors</string>
+    <string name="work_history">Work history</string>
+    <string name="contract_history">Contract history</string>
+    <string name="deactivate_clinic">Deactivate clinic</string>
+    <string name="reactivate_clinic">Reactivate clinic</string>
 </resources>

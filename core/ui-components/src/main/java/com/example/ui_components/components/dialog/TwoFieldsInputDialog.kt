@@ -34,13 +34,11 @@ fun TwoFieldsInputDialog(
     firstFieldTextError: String?,
     isFirstFieldError: Boolean,
     onFirstFieldTextChange: (String) -> Unit,
-    firstFieldMaxLines: Int = 1,
     @StringRes firstFieldLabel: Int,
     secondFieldText: String,
     isSecondFieldError: Boolean,
     secondFieldTextError: String?,
     onSecondFieldTextChange: (String) -> Unit,
-    secondFieldMaxLines: Int = 1,
     @StringRes secondFieldLabel: Int,
     showDialog: Boolean,
     onDismiss: () -> Unit,
@@ -50,6 +48,8 @@ fun TwoFieldsInputDialog(
     confirmButtonText: String,
     isConfirmButtonEnabled: Boolean,
     modifier: Modifier = Modifier,
+    secondFieldMaxLines: Int = 1,
+    firstFieldMaxLines: Int = 1,
 ) {
     if (showDialog) {
         BasicAlertDialog(

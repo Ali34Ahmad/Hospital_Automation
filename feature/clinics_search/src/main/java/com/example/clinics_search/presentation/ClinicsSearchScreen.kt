@@ -4,13 +4,18 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
@@ -21,6 +26,7 @@ import com.example.constants.icons.AppIcons
 import com.example.model.DrawerButton
 import com.example.model.doctor.clinic.ClinicFullData
 import com.example.model.enums.TopBarState
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
@@ -32,7 +38,7 @@ fun ClinicsSearchScreen(
     navigationActions: ClinicsSearchNavigationActions,
     modifier: Modifier = Modifier
 ) {
-    val clinics = viewModel.clinicsFlow.collectAsLazyPagingItems()
+    val clinics = viewModel.clinics.collectAsLazyPagingItems()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     ClinicsSearchScreen(
@@ -79,7 +85,7 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToMedicalRecords()
             },
-            enabled = false
+            enabled = uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.prescriptions,
@@ -87,7 +93,7 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToPrescriptions()
             },
-            enabled = false
+            enabled =  uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.vaccines,
@@ -95,7 +101,7 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToVaccines()
             },
-            enabled = false
+            enabled =  uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.vaccine_table,
@@ -103,12 +109,12 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToMedicalRecords()
             },
-            enabled = false
+            enabled =  uiState.hasAdminAccess
         ),
         )
     EmployeeDrawer(
         state = drawerState,
-        title = R.string.mail,
+        title = if(uiState.hasAdminAccess) R.string.admin else R.string.doctor,
         buttons = drawerButtons,
         selectedIndex = null,
         onItemSelected = {
@@ -158,6 +164,29 @@ internal fun ClinicsSearchScreen(
                         }
                     )
                 }
+            },
+            floatingActionButton ={
+                // Only the admin can create new clinics
+                if (uiState.hasAdminAccess){
+                    FloatingActionButton(
+                        modifier = Modifier.size(
+                            MaterialTheme.sizing.medium56
+                        ),
+                        shape = RoundedCornerShape(
+                            MaterialTheme.sizing.small16
+                        ),
+                        onClick = {
+                            navigationActions.navigateToCreateNewClinic()
+                        },
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.secondary,
+                    ) {
+                        Icon(
+                            painter = painterResource(AppIcons.Outlined.add),
+                            contentDescription = null
+                        )
+                    }
+                }
             }
         ) { innerPadding ->
             AnimatedContent(
@@ -179,14 +208,14 @@ internal fun ClinicsSearchScreen(
                     }
 
                     ScreenStep.SELECTION -> {
-                        clinics?.let {
-                            SelectionScreen(
-                                uiState = uiState,
-                                onAction = onAction,
-                                navigationActions = navigationActions,
-                                clinics = it,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                        clinics?.let{
+                               SelectionScreen(
+                                   uiState = uiState,
+                                   onAction = onAction,
+                                   navigationActions = navigationActions,
+                                   clinics = it,
+                                   modifier = Modifier.fillMaxWidth()
+                               )
                         }
                     }
                 }

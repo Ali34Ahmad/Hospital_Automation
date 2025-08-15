@@ -8,7 +8,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
@@ -18,11 +17,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -46,7 +40,6 @@ import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
 import com.example.ui_components.components.items.FilterItem
 import com.example.ui_components.components.topbars.custom.DoctorScheduleTopBar
-import kotlinx.coroutines.launch
 
 @Composable
 fun DoctorScheduleScreen(
@@ -107,16 +100,12 @@ internal fun DoctorScheduleScreen(
     appointments.let {
         when(it.loadState.refresh){
             is LoadState.Error ->{
-                Log.d("DoctorSchedule","Error")
-
                 onAction(DoctorScheduleUIAction.UpdateState(ScreenState.ERROR))
             }
             LoadState.Loading -> {
-                Log.d("DoctorSchedule","Loading")
                 onAction(DoctorScheduleUIAction.UpdateState(ScreenState.LOADING))
             }
             is LoadState.NotLoading -> {
-                Log.d("DoctorSchedule","Not loading")
                 onAction(DoctorScheduleUIAction.UpdateState(ScreenState.SUCCESS))
             }
         }
@@ -142,7 +131,7 @@ internal fun DoctorScheduleScreen(
             onClick = {
                 navigationActions.navigateToMedicalRecords()
             },
-            enabled = uiState.isPermissionGranted
+            enabled = uiState.isPermissionGranted || uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.prescriptions,
@@ -150,7 +139,7 @@ internal fun DoctorScheduleScreen(
             onClick = {
                 navigationActions.navigateToPrescriptions()
             },
-            enabled = uiState.isPermissionGranted
+            enabled = uiState.isPermissionGranted || uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.vaccines,
@@ -158,22 +147,22 @@ internal fun DoctorScheduleScreen(
             onClick = {
                 navigationActions.navigateToVaccines()
             },
-            enabled = uiState.isPermissionGranted
+            enabled = uiState.isPermissionGranted || uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.vaccine_table,
             image = AppIcons.Outlined.medicalRecords,
             onClick = {
-                navigationActions.navigateToMedicalRecords()
+                navigationActions.navigateToVaccineTable()
             },
-            enabled = uiState.isPermissionGranted
+            enabled = uiState.isPermissionGranted || uiState.hasAdminAccess
         ),
 
 
     )
     EmployeeDrawer(
         state = drawerState,
-        title = R.string.mail,
+        title = R.string.doctor,
         buttons = drawerButtons,
         selectedIndex = null,
         onItemSelected = {
@@ -192,7 +181,7 @@ internal fun DoctorScheduleScreen(
             containerColor = MaterialTheme.colorScheme.surface,
             topBar = {
                 DoctorScheduleTopBar(
-                    isPermissionsGranted = uiState.isPermissionGranted,
+                    isPermissionsGranted = uiState.isPermissionGranted||uiState.hasAdminAccess,
                     isSearchBarVisible = uiState.isSearchBarVisible,
                     searchQuery = uiState.searchQuery,
                     onQueryChanged = { newValue ->
@@ -255,7 +244,7 @@ internal fun DoctorScheduleScreen(
                 )
             }
                 AnimatedContent(
-                    uiState.isPermissionGranted
+                    uiState.isPermissionGranted || uiState.hasAdminAccess
                 ) { state ->
                     when (state) {
                         true -> SuccessScreen(

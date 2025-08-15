@@ -12,8 +12,8 @@ import com.example.utility.network.onSuccess
 
 data class ClinicPagingSource(
     private val clinicApiService: ClinicApiService,
-    private val token: String?,
-    private val name: String?
+    private val token: String,
+    private val name: String?,
 ): PagingSource<Int, ClinicFullData>(){
     override fun getRefreshKey(state: PagingState<Int, ClinicFullData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -23,14 +23,12 @@ data class ClinicPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ClinicFullData> {
-        if(token == null){
-            return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-        }
+
         val nextPageNumber = params.key?:1
         var nextKey: Int? = null
         var clinics = emptyList<ClinicFullData>()
 
-        val response = clinicApiService.getAllClinics(
+        clinicApiService.getAllClinics(
             token = token,
             page = nextPageNumber,
             limit = params.loadSize,

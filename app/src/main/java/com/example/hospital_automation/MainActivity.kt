@@ -10,8 +10,6 @@ import androidx.compose.runtime.collectAsState
 import com.example.hospital_automation.main.AppViewModel
 import com.example.hospital_automation.navigation.Navigation
 import com.example.ui.theme.Hospital_AutomationTheme
-import kotlinx.serialization.Serializable
-import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.scope.activityScope

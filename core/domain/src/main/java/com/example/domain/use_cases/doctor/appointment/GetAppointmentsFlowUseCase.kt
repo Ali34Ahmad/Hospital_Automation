@@ -12,10 +12,12 @@ data class GetAppointmentsFlowUseCase(
         onStatisticsChanged: (AppointmentsStatisticsData)-> Unit,
         dateFilter: String?,
         queryFilter: String?,
+        doctorId: Int?,
     ) = appointmentsRepository.getAppointments(
         appointmentState = appointmentState,
         onStatisticsChanged = onStatisticsChanged,
         queryFilter = queryFilter,
-        dateFilter = dateFilter
+        dateFilter = dateFilter,
+        doctorId = doctorId
     )
 }

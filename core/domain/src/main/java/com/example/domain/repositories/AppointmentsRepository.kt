@@ -14,7 +14,8 @@ interface AppointmentsRepository {
         appointmentState: AppointmentState,
         onStatisticsChanged: (AppointmentsStatisticsData)-> Unit,
         queryFilter: String?,
-        dateFilter: String?
+        dateFilter: String?,
+        doctorId: Int?,
     ): Flow<PagingData<AppointmentData>>
 
     suspend fun getAppointmentDetails(

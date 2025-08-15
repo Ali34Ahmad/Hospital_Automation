@@ -6,12 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -23,6 +27,7 @@ import com.example.model.User
 import com.example.model.doctor.day_scedule.DoctorStatusChecker
 import com.example.model.enums.DoctorStatus
 import com.example.model.enums.ScreenState
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.ui_components.R
@@ -30,7 +35,10 @@ import com.example.ui_components.components.bottomBars.custom.ClinicDetailsBotto
 import com.example.ui_components.components.card.DepartmentDetailsCard
 import com.example.ui_components.components.card.custom.ErrorComponent
 import com.example.ui_components.components.dialog.DialogWithDescription
+import com.example.ui_components.components.dialog.LoadingDialog
+import com.example.ui_components.components.dialog.WarningDialogWithInputField
 import com.example.ui_components.components.items.custom.FetchingDataItem
+import com.example.ui_components.components.list.DepartmentActionsCard
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 
 
@@ -92,6 +100,21 @@ internal fun ClinicDetailsScreen(
                     modifier = Modifier.padding(MaterialTheme.spacing.medium16)
                 )
             }
+        },
+        floatingActionButton = {
+            if(uiState.type == ClinicDetailsType.ADMIN_ACCESS){
+                FloatingActionButton(
+                    onClick = navigationAction::navigateToEditClinic,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.secondary
+                ) {
+                    Icon(
+                        painter = painterResource(AppIcons.Outlined.edit),
+                        contentDescription = null,
+                        modifier = Modifier.size(MaterialTheme.sizing.small24)
+                    )
+                }
+            }
         }
     ) { innerPadding->
         AnimatedContent(
@@ -127,17 +150,21 @@ internal fun ClinicDetailsScreen(
                             onRefresh = {
                                 onAction(ClinicDetailsUIAction.Refresh)
                             },
-                        ){
+                        ) {
+                            val isActive = !isDeactivated
                             DepartmentDetailsCard(
                                 department = Department(
                                     id = clinicId,
                                     name = name,
                                     workDays = workDays,
-                                    activeDoctors = activeDoctors.map { Doctor(
-                                        imageUrl = it.imageUrl?:"",
-                                        name = it.fullName,
-                                        specialty = it.speciality
-                                    ) },
+                                    activeDoctors = activeDoctors.map {
+                                        Doctor(
+                                            imageUrl = it.imageUrl ?: "",
+                                            name = it.fullName,
+                                            specialty = it.speciality
+                                                ?: stringResource(R.string.not_determined)
+                                        )
+                                    },
                                     services = clinicServices.map {
                                         Service.fromClinicService(it)
                                     },
@@ -146,10 +173,12 @@ internal fun ClinicDetailsScreen(
                                     isAvailableNow = DoctorStatusChecker.getDoctorStatus(workDays) == DoctorStatus.OPENED,
                                     isDeactivated = isDeactivated,
                                     deactivationReason = deactivationReason,
-                                    deactivatedBy = deactivatedByUser?.let {user-> User(
-                                        id = user.id?:-1,
-                                        name = user.fullName
-                                    ) }
+                                    deactivatedBy = deactivatedByUser?.let { user ->
+                                        User(
+                                            id = user.id ?: -1,
+                                            name = user.fullName
+                                        )
+                                    }
                                 ),
                                 currentStatus = DoctorStatusChecker.getDoctorStatus(workDays),
                                 onVaccinesItemClick = {
@@ -158,10 +187,10 @@ internal fun ClinicDetailsScreen(
                                 onDoctorItemClick = {
                                     navigationAction.navigateToDoctorProfile()
                                 },
-                                onServiceItemClick = {index ->
+                                onServiceItemClick = { index ->
                                     val service = clinicServices[index]
                                     onAction(
-                                        ClinicDetailsUIAction.ShowDialog(
+                                        ClinicDetailsUIAction.ShowInfoDialog(
                                             title = service.name,
                                             subtitle = service.description
                                         )
@@ -171,23 +200,75 @@ internal fun ClinicDetailsScreen(
 
                                 },
                             )
+
+                                DepartmentActionsCard(
+                                    modifier = Modifier.padding(
+                                        vertical = MaterialTheme.spacing.large24
+                                    ),
+                                    onAllDoctorsClick = navigationAction::navigateToAllDoctors,
+                                    onAppointmentsClick = navigationAction::navigateToAllAppointments,
+                                    onPrescriptionsClick = navigationAction::navigateToPrescriptions,
+                                    onMedicalRecordsClick = navigationAction::navigateToMedicalRecords,
+                                    onContractHistoryClick = navigationAction::navigateToContractHistory,
+                                    onDeactivateClinicClick = {
+                                        onAction(
+                                            ClinicDetailsUIAction.ShowWarningDialog
+                                        )
+                                    },
+                                    onReactivateClinicClick = {
+                                        onAction(
+                                            ClinicDetailsUIAction.ReactivateClinic
+                                        )
+                                    },
+                                    isActive = isActive,
+                                    hasAdminAccess = uiState.type == ClinicDetailsType.ADMIN_ACCESS
+                                )
                         }
-                    }
-                    //Dialog for showing Tag description
-                    if (uiState.isDialogShown){
-                        DialogWithDescription(
-                            onDismissRequest = {
-                                onAction(
-                                    ClinicDetailsUIAction.HideDialog
-                                )
-                            },
-                            onActionClick = {
-                                onAction(
-                                    ClinicDetailsUIAction.HideDialog
-                                )
-                            },
-                            title = uiState.dialogTitle,
-                            subtitle = uiState.dialogSubtitle,
+                        //Dialog for showing Tag description
+                        if (uiState.isInfoDialogShown) {
+                            DialogWithDescription(
+                                onDismissRequest = {
+                                    onAction(
+                                        ClinicDetailsUIAction.HideInfoDialog
+                                    )
+                                },
+                                onActionClick = {
+                                    onAction(
+                                        ClinicDetailsUIAction.HideInfoDialog
+                                    )
+                                },
+                                title = uiState.infoDialogTitle,
+                                subtitle = uiState.infoDialogSubtitle,
+                            )
+                        }
+                        //Show warning dialog when clicking on deactivation button
+                        if (uiState.isWarningDialogShown) {
+                            WarningDialogWithInputField(
+                                title = stringResource(R.string.deactivation_msg_title),
+                                subtitle = stringResource(R.string.deactivation_msg_subtitle),
+                                text = uiState.deactivationReason,
+                                onTextValueChange = {
+                                    onAction(
+                                        ClinicDetailsUIAction.UpdateDeactivationReason(it)
+                                    )
+                                },
+                                onDismissRequest = {
+                                    onAction(ClinicDetailsUIAction.HideWarningDialog)
+                                },
+                                onConfirm = {
+                                    onAction(
+                                        ClinicDetailsUIAction.DeactivateClinic
+                                    )
+                                },
+                                onDismiss = {
+                                    onAction(ClinicDetailsUIAction.HideWarningDialog)
+                                },
+                            )
+                        }
+                        LoadingDialog(
+                            title = stringResource(R.string.please_wait),
+                            subtitle = stringResource(R.string.fetching_data_subtitle),
+                            showDialog = uiState.isLoadingDialogShown,
                         )
                     }
                 }

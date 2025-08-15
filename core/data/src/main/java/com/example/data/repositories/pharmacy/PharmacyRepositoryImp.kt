@@ -14,7 +14,7 @@ class PharmacyRepositoryImp(
     private val userPreferencesRepository: UserPreferencesRepository
 ): PharmacyRepository {
     override suspend fun getPharmaciesByMedicineId(medicineId: Int): Result<List<PharmacyData>, NetworkError> =
-        userPreferencesRepository.executeWithValidToken { token->
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
             pharmacyService.getPharmaciesByMedicineId(
                 token = token,
                 medicineId= medicineId

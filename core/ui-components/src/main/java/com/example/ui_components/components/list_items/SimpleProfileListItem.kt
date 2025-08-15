@@ -1,6 +1,5 @@
 package com.example.ui_components.components.list_items
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,7 +30,7 @@ import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
 
 @Composable
-fun GuardianListItem(
+fun SimpleProfileListItem(
     imageUrl: String?,
     name: String,
     onClick: () -> Unit,
@@ -86,7 +85,7 @@ fun GuardianListItem(
 @Composable
 fun GuardianListItemPreview() {
     Hospital_AutomationTheme {
-        GuardianListItem(
+        SimpleProfileListItem(
             modifier = Modifier.width(380.dp),
             imageUrl = "",
             name = "Mariam Saoud",

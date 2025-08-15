@@ -4,9 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.domain.use_cases.admin.clinic.GetFilteredClinicsFlowUseCase
 import com.example.domain.use_cases.doctor.clinic.GetClinicsFlowUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
+import com.example.model.admin.DepartmentState
+import com.example.model.admin.DepartmentStatistics
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,9 +28,15 @@ class ClinicsSearchViewModel(
     private val getClinics: GetClinicsFlowUseCase,
     private val getUserPreferences: GetUserPreferencesUseCase,
     private val updateIsDarkTheme: UpdateIsDarkThemeUseCase,
+    private val getFilteredClinicsFlowUseCase: GetFilteredClinicsFlowUseCase
 ): ViewModel() {
-
-    private val _uiState = MutableStateFlow(ClinicsSearchUIState())
+    val hasAdminAccess = true
+    private val _uiState = MutableStateFlow(
+        ClinicsSearchUIState(
+            hasAdminAccess = hasAdminAccess
+                //savedStateHandle.toRoute<ClinicsSearchRoute>().hasAdminAccess
+        )
+    )
     val uiState : StateFlow<ClinicsSearchUIState> = _uiState
         .onStart {
             readTheme()
@@ -39,13 +48,21 @@ class ClinicsSearchViewModel(
 
     val refreshTrigger = MutableSharedFlow<Unit>()
     @OptIn(ExperimentalCoroutinesApi::class)
-    val clinicsFlow = combine(
+    val clinics = combine(
         uiState.map { it.searchQuery }.distinctUntilChanged(),
+        _uiState.map { it.selectedTab }.distinctUntilChanged(),
         refreshTrigger.onStart { emit(Unit) }
-    ) {query,_->
-            query
-    }.flatMapLatest { query->
-        val result = getClinics(query)
+    ) {query,tab,_->
+            Pair(query,tab)
+    }.flatMapLatest { filters->
+        val result = if(uiState.value.hasAdminAccess) getFilteredClinicsFlowUseCase(
+                query = filters.first,
+                status = filters.second,
+                onStatisticsUpdated = {
+                    updateStatistics(it)
+                }
+            )else
+                getClinics(filters.first)
         updateRefreshState(false)
         result
     }.cachedIn(viewModelScope)
@@ -77,11 +94,15 @@ class ClinicsSearchViewModel(
                     isDrawerOpened = !uiState.value.isDrawerOpened
                 )
             }
+            is ClinicsSearchUIAction.UpdateTab -> updateTab(action.newTab)
 
         }
     }
     private fun updateTheme(isDarkTheme: Boolean){
         _uiState.value = _uiState.value.copy(isDarkTheme = isDarkTheme)
+    }
+    private fun updateStatistics(statistics: DepartmentStatistics){
+        _uiState.value = _uiState.value.copy(statistics = statistics)
     }
     private fun refreshData()=viewModelScope.launch {
         refreshTrigger.emit(Unit)
@@ -95,5 +116,8 @@ class ClinicsSearchViewModel(
                 updateTheme(userPreference.isDarkTheme)
             }
         }
+    }
+    private fun updateTab(newTab: DepartmentState){
+        _uiState.value = _uiState.value.copy(selectedTab = newTab)
     }
 }

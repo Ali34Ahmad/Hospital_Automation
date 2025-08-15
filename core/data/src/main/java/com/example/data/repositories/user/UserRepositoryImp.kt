@@ -21,12 +21,12 @@ import kotlinx.coroutines.flow.first
 
 internal class UserRepositoryImp(
     private val userApiService: UserApiService,
-    private val dataStore: UserPreferencesRepository,
+    private val userPreferences: UserPreferencesRepository,
 ): UserRepository  {
 
 
     override suspend fun getGuardianById(id: Int): Result<GuardianFullData, NetworkError> {
-        val token: String? = dataStore.userPreferencesDataStoreFlow.first().token
+        val token: String? = userPreferences.userPreferencesDataStoreFlow.first().token
         if(token == null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
 
@@ -43,7 +43,7 @@ internal class UserRepositoryImp(
         childId: Int,
         userId: Int,
     ): Result<Int, NetworkError> {
-        val token: String? = dataStore.userPreferencesDataStoreFlow.first().token
+        val token: String? = userPreferences.userPreferencesDataStoreFlow.first().token
         if(token == null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
         return userApiService.addGuardianToChild(
@@ -56,7 +56,7 @@ internal class UserRepositoryImp(
     }
 
     override suspend fun getGuardiansByChildId(childId: Int): Result<List<GuardianData>, NetworkError> {
-        val token: String? = dataStore.userPreferencesDataStoreFlow.first().token
+        val token: String? = userPreferences.userPreferencesDataStoreFlow.first().token
         if(token == null)
             return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
 
@@ -73,9 +73,9 @@ internal class UserRepositoryImp(
 
     override suspend fun getGuardiansByNamePagingData(
         query: String
-    ): Flow<PagingData<GuardianData>> {
-        val token = dataStore.userPreferencesDataStoreFlow.first().token
-        return Pager(
+    ): Flow<PagingData<GuardianData>> =
+        userPreferences.executeFlowWithValidToken{ token->
+         Pager(
             config = PagingConfig(
                 pageSize = PagingConstants.PAGE_SIZE,
             ),

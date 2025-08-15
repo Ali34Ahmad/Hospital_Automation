@@ -10,5 +10,4 @@ class GetUserPreferencesUseCase(
    operator fun invoke(): Flow<UserPreferencesDataStore> {
         return userPreferencesRepository.userPreferencesDataStoreFlow
     }
-
 }

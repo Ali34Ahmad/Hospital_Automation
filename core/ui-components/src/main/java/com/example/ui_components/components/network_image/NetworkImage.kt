@@ -49,11 +49,6 @@ fun NetworkImage(
             imageLoader = imageLoader,
             loading = loading,
             error = { errorState ->
-                Log.e(
-                    "ImageLoadError",
-                    "Error loading image: ${errorState.result.throwable.message}",
-                    errorState.result.throwable
-                )
                 errorCompose?.let {
                     errorCompose(errorState)
                 }

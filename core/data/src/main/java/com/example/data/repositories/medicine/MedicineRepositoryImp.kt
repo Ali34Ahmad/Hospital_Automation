@@ -36,7 +36,7 @@ class MedicineRepositoryImp(
     }
 
     override suspend fun getMedicineById(medicineId: Int): Result<MedicineDetailsData, NetworkError> =
-       userPreferencesRepository.executeWithValidToken { token->
+       userPreferencesRepository.executeWithValidTokenNetwork { token->
            medicineApi.getMedicineById(
                token = token,
                medicineId = medicineId

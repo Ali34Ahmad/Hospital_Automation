@@ -1,14 +1,15 @@
 package com.example.data.paging_sources.appointment
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.data.mapper.doctor.toAppointmentData
 import com.example.data.mapper.doctor.toAppointmentsStatisticsData
+import com.example.data.mapper.enums.toRoleDto
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.appointment.SortType
+import com.example.model.enums.Role
 import com.example.network.remote.appointment.AppointmentsApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
@@ -20,9 +21,11 @@ class AppointmentPagingSource(
     private val queryFilter: String?,
     private val dateFilter: String?,
     private val appointmentState: AppointmentState,
-    private val token: String?,
+    private val token: String,
     private val appointmentsApi: AppointmentsApiService,
     private val onStatisticsChanged: (AppointmentsStatisticsData)-> Unit,
+    private val role: Role,
+    private val doctorId: Int?
 ) : PagingSource<Int, AppointmentData>(){
     override fun getRefreshKey(state: PagingState<Int, AppointmentData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -33,9 +36,6 @@ class AppointmentPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, AppointmentData> {
         try {
-            if (token.isNullOrBlank()) {
-                return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-            }
             val currentPage = params.key ?: 1
             var data = emptyList<AppointmentData>()
             appointmentsApi.showAppointments(
@@ -45,7 +45,9 @@ class AppointmentPagingSource(
                 limit = params.loadSize,
                 sort = sort.toString(),
                 queryFilter = queryFilter,
-                dateFilter = dateFilter
+                dateFilter = dateFilter,
+                doctorId = doctorId,
+                roleDto = role.toRoleDto()
             ).onSuccess { response ->
                 data = response.data.map { item ->
                     item.toAppointmentData()
@@ -54,8 +56,6 @@ class AppointmentPagingSource(
             }.onError { error: NetworkError ->
                 return LoadResult.Error(NetworkException(error))
             }
-            Log.d("AppointmentPaging", "list size is ${data.size}")
-            Log.d("AppointmentPaging", "next page : $currentPage")
             return LoadResult.Page(
                 data = data,
                 prevKey = if (currentPage == 1) null else currentPage - 1,
@@ -66,10 +66,9 @@ class AppointmentPagingSource(
                 prevKey = if (currentPage == 1) null else currentPage.minus(1),
                 nextKey = if (data.isEmpty()) null else currentPage.plus(1)
             )
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return LoadResult.Error(NetworkException(NetworkError.UNKNOWN))
         }
     }
-
 }
 

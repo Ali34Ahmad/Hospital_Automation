@@ -33,7 +33,11 @@ val appointments = flowOf(
 fun DoctorSchedulePermissionsRequiredPreview(){
     Hospital_AutomationTheme {
         DoctorScheduleScreen(
-            uiState = DoctorScheduleUIState(screenState = ScreenState.SUCCESS),
+            uiState = DoctorScheduleUIState(
+                doctorId = null,
+                screenState = ScreenState.SUCCESS,
+                hasAdminAccess = false
+            ),
             appointments = appointments.collectAsLazyPagingItems(),
             navigationActions = mockActions,
             onAction ={}
@@ -48,7 +52,9 @@ fun DoctorSchedulePreview(){
             uiState = DoctorScheduleUIState(
                 screenState = ScreenState.SUCCESS,
                 selectedDate = LocalDate.now(),
-                isPermissionGranted = true
+                isPermissionGranted = true,
+                doctorId = null,
+                hasAdminAccess = false
             ),
             appointments = appointments.collectAsLazyPagingItems(),
             navigationActions = mockActions,
@@ -61,23 +67,22 @@ internal val mockActions =  object : DoctorScheduleNavigationActions{
 
     }
 
+    override fun navigateToVaccineTable() {
+
+    }
+
     override fun navigateToDoctorProfile() {
-        TODO("Not yet implemented")
     }
 
     override fun navigateToNotifications() {
-        TODO("Not yet implemented")
     }
 
     override fun navigateToMedicalRecords() {
-        TODO("Not yet implemented")
     }
 
     override fun navigateToPrescriptions() {
-        TODO("Not yet implemented")
     }
 
     override fun navigateToVaccines() {
-        TODO("Not yet implemented")
     }
 }

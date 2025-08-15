@@ -27,7 +27,7 @@ class MedicineApiServiceImp(
         name: String?,
     ): Result<GetAllMedicinesResponse, NetworkError> {
         val response = try {
-            client.get(ApiRoutes.Medicine.GET_MEDICINES){
+            client.get(ApiRoutes.Doctor.GET_MEDICINES){
                 bearerAuth(token)
                 url{
                     parameters.apply {
@@ -71,7 +71,7 @@ class MedicineApiServiceImp(
             doApiCall<GetMedicineByIdResponse>(
                 tag = MEDICINE_TAG
             ) {
-                client.get(ApiRoutes.Medicine.GET_MEDICINE_BY_ID+"/$medicineId") {
+                client.get(ApiRoutes.Doctor.GET_MEDICINE_BY_ID+"/$medicineId") {
                     bearerAuth(token)
                 }
             }

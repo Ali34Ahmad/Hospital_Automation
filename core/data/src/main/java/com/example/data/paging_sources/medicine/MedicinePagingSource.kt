@@ -12,7 +12,7 @@ import com.example.utility.network.onSuccess
 
 
 class MedicinePagingSource(
-    private val token: String?,
+    private val token: String,
     private val medicineApi: MedicineApiService,
     private val name: String?
 ): PagingSource<Int, MedicineData>() {
@@ -26,9 +26,6 @@ class MedicinePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MedicineData> {
         val currentPage = params.key ?: 1
 
-        if (token.isNullOrBlank()){
-            return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-        }
         var data = emptyList<MedicineData>()
         medicineApi.getAllMedicines(
             token = token,

@@ -14,7 +14,10 @@ data class ClinicDetailsUIState(
     val sendRequestState: BottomBarState = BottomBarState.DISABLED,
     val toastMessage: UiText? = null,
     val isRefreshing: Boolean = false,
-    val isDialogShown: Boolean = false,
-    val dialogTitle: String = "",
-    val dialogSubtitle: String = ""
+    val isInfoDialogShown: Boolean = false,
+    val infoDialogTitle: String = "",
+    val infoDialogSubtitle: String = "",
+    val isWarningDialogShown: Boolean = false,
+    val deactivationReason: String = "",
+    val isLoadingDialogShown: Boolean = false,
 )

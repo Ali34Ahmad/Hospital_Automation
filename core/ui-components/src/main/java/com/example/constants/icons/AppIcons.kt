@@ -55,6 +55,7 @@ sealed interface AppIcons {
         val error = R.drawable.ic_error
         val workBriefcase = R.drawable.ic_work_brief_case
         val admin = R.drawable.ic_admin
+        val workHistory = R.drawable.work_history
         val finishLineFlag = R.drawable.ic_finish_line_flag
         val availabilityStatus = R.drawable.ic_availability_status
         val guardian = R.drawable.ic_guardian
@@ -72,6 +73,7 @@ sealed interface AppIcons {
         val medicalRecords = R.drawable.collections_bookmark
         val bulb = R.drawable.lightbulb
         val bulb_circle = R.drawable.lightbulb_circle
+        val stethoscope = R.drawable.stethoscope
         val pill_off = R.drawable.pill_off
         val list = R.drawable.ic_list
         val interactions = R.drawable.ic_alleries

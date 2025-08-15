@@ -1,10 +1,13 @@
 package com.example.doctor_schedule.presentation
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.doctor_schedule.navigation.DoctorScheduleRoute
 import com.example.doctor_schedule.presentation.model.AppointmentsFilter
 import com.example.doctor_schedule.presentation.model.upcomingMapper
 import com.example.domain.use_cases.doctor.appointment.GetAppointmentsFlowUseCase
@@ -43,26 +46,30 @@ class DoctorScheduleViewModel(
     private val checkEmployeePermissionUseCase: CheckEmployeePermissionUseCase,
     private val roleAppConfig:RoleAppConfig,
     private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
-    ): ViewModel() {
+    private val savedStateHandle: SavedStateHandle,
+): ViewModel() {
 
-
+    private val doctorId = 143
+    private val hasAdminAccess = true
 
     private val _uiState = MutableStateFlow(
-        DoctorScheduleUIState()
+        DoctorScheduleUIState(
+            doctorId = doctorId,
+            hasAdminAccess = hasAdminAccess
+        )
     )
 
     val uiState : StateFlow<DoctorScheduleUIState> = _uiState
+        .onStart {
+            readTheme()
+            checkPermissions()
+        }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             _uiState.value
         )
-    init {
-        viewModelScope.launch {
-            readTheme()
-            checkPermissions()
-        }
-    }
+
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
     private val queryFlow = uiState.map { it.searchQuery }.distinctUntilChanged()
     private val selectedTabFlow = uiState.map { it.selectedTab }.distinctUntilChanged()
@@ -72,7 +79,7 @@ class DoctorScheduleViewModel(
     val appointmentsFlow= combine(
         queryFlow,selectedTabFlow,selectedDateFlow,refreshTrigger.onStart { emit(Unit) },
     ) {
-        query,selectedTab,selectedDate,_ ->
+            query,selectedTab,selectedDate,_ ->
         AppointmentsFilter(
             tab = selectedTab,
             date = selectedDate,
@@ -166,6 +173,7 @@ class DoctorScheduleViewModel(
             onStatisticsChanged = onStatisticsChanged,
             dateFilter = dateFilter,
             queryFilter = queryFilter,
+            doctorId = uiState.value.doctorId
         )
     private fun updateRefreshState(isRefreshing: Boolean) {
         _uiState.value = _uiState.value.copy(isRefreshing = isRefreshing)

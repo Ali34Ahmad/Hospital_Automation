@@ -70,7 +70,8 @@ fun UserDto.toDoctorData() =
     DoctorData(
         id = userId,
         firstName = firstName,
+        middleName = middleName,
         lastName = lastName,
         imageUrl = imageUrl,
-        speciality = speciality
+        speciality = speciality,
     )

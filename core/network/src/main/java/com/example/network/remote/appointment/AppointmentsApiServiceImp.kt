@@ -1,5 +1,6 @@
 package com.example.network.remote.appointment
 
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.appointment.AddDiagnosisRequest
 import com.example.network.model.response.appointments.AddDiagnosisResponse
 import com.example.network.model.response.appointments.ShowAppointmentDetails
@@ -28,12 +29,14 @@ data class AppointmentsApiServiceImp(
         limit: Int,
         sort: String,
         dateFilter: String?,
-        queryFilter: String?
+        queryFilter: String?,
+        doctorId: Int?,
+        role: RoleDto
     ): Result<ShowAppointmentsResponse, NetworkError> =
         doApiCall<ShowAppointmentsResponse>(
             tag = APPOINTMENTS_API_TAG
         ) {
-            client.get(ApiRoutes.Doctor.SHOW_APPOINTMENTS){
+            client.get(ApiRoutes.getAppointmentsEndPointFor(role)){
                 bearerAuth(token)
                 url {
                     parameters.append("params", params)
@@ -45,6 +48,9 @@ data class AppointmentsApiServiceImp(
                     }
                     if (!queryFilter.isNullOrBlank()){
                         parameters.append("appointment_type",queryFilter)
+                    }
+                    doctorId?.let {
+                        parameters.append("id",doctorId.toString())
                     }
                 }
             }

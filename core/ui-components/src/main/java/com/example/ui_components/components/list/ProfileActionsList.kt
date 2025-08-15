@@ -24,7 +24,6 @@ fun ProfileActionsList(
     ) {
         content()
     }
-
 }
 
 @DarkAndLightModePreview

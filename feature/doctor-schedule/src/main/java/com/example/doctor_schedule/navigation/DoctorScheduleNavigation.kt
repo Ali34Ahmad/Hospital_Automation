@@ -11,17 +11,33 @@ import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
-@Serializable
-object DoctorScheduleRoute
 
-fun NavController.navigateToScheduleScreen(){
+@Serializable
+data class DoctorScheduleRoute(
+    val doctorId: Int? = null,
+    val hasAdminAccess: Boolean = false
+)
+
+fun NavController.navigateToScheduleScreen(
+    doctorId: Int? = null,
+    hasAdminAccess: Boolean = false
+){
     navigateToScreen(
-        route = DoctorScheduleRoute
+        route = DoctorScheduleRoute(
+            doctorId,
+            hasAdminAccess
+        )
     )
 }
-fun NavController.navigateToScheduleScreenReplacingCurrent(){
+fun NavController.navigateToScheduleScreenReplacingCurrent(
+    doctorId: Int? = null,
+    hasAdminAccess: Boolean = false
+){
     navigateReplacingCurrent(
-        route = DoctorScheduleRoute,
+        route = DoctorScheduleRoute(
+            doctorId,
+            hasAdminAccess
+        ),
     )
 }
 
@@ -32,6 +48,7 @@ fun NavGraphBuilder.doctorScheduleScreen(
     onNavigateToPrescriptions: () -> Unit,
     onNavigateToVaccines: () -> Unit,
     onNavigateToNotifications: () -> Unit,
+    onNavigateToVaccineTable: () -> Unit,
 ){
     composable<DoctorScheduleRoute> {
         val viewModel = koinViewModel<DoctorScheduleViewModel>()
@@ -42,6 +59,7 @@ fun NavGraphBuilder.doctorScheduleScreen(
             override fun navigateToMedicalRecords() = onNavigateToMedicalRecords()
             override fun navigateToPrescriptions() = onNavigateToPrescriptions()
             override fun navigateToVaccines() =onNavigateToVaccines()
+            override fun navigateToVaccineTable() = onNavigateToVaccineTable()
         }
         DoctorScheduleScreen(
             viewModel = viewModel,

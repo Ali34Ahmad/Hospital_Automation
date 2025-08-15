@@ -23,6 +23,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalShapes
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
+import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +60,6 @@ fun MessageDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -79,6 +79,7 @@ fun MessageDialog(
                     }
 
                 }
+
             }
         }
     }

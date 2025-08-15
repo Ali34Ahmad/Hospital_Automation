@@ -22,6 +22,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/admin_app" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/convention" />
@@ -49,8 +50,10 @@
             <option value="$PROJECT_DIR$/feature/doctor-schedule" />
             <option value="$PROJECT_DIR$/feature/doctor_profile" />
             <option value="$PROJECT_DIR$/feature/doctor_signup" />
+            <option value="$PROJECT_DIR$/feature/doctors_search" />
             <option value="$PROJECT_DIR$/feature/email_verification" />
             <option value="$PROJECT_DIR$/feature/employee_profile" />
+            <option value="$PROJECT_DIR$/feature/employees_search" />
             <option value="$PROJECT_DIR$/feature/employment_history" />
             <option value="$PROJECT_DIR$/feature/enter_email" />
             <option value="$PROJECT_DIR$/feature/generic_vaccination_table" />
@@ -63,6 +66,7 @@
             <option value="$PROJECT_DIR$/feature/medicine_details" />
             <option value="$PROJECT_DIR$/feature/medicines_search" />
             <option value="$PROJECT_DIR$/feature/pharmacies" />
+            <option value="$PROJECT_DIR$/feature/pharmacies_search" />
             <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
             <option value="$PROJECT_DIR$/feature/upload_child_documents" />

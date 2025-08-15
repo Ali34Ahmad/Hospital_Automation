@@ -17,7 +17,7 @@ class PrescriptionRepositoryImp(
         patientId: Int?,
         note: String,
         medicines: List<PrescriptionMedicineData>,
-    ) = dataStore.executeWithValidToken { token->
+    ) = dataStore.executeWithValidTokenNetwork { token->
         apiService.addPrescription(
             token = token,
             patientId = patientId,

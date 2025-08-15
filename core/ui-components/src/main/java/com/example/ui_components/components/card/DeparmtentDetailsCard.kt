@@ -59,7 +59,6 @@ fun DepartmentDetailsCard(
         }
     val sectionTitlePadding = PaddingValues(horizontal = MaterialTheme.spacing.medium16)
 
-
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)

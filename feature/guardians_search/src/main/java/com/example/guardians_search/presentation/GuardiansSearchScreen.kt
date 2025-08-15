@@ -29,7 +29,7 @@ import com.example.ui_components.R
 import com.example.ui_components.components.card.custom.ErrorComponent
 import com.example.ui_components.components.items.custom.CenteredMessage
 import com.example.ui_components.components.items.custom.FetchingDataItem
-import com.example.ui_components.components.list_items.GuardianListItem
+import com.example.ui_components.components.list_items.SimpleProfileListItem
 import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
@@ -67,11 +67,10 @@ fun GuardiansSearchScreen(
     guardians: LazyPagingItems<GuardianData>?,
     modifier: Modifier = Modifier
 ){
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-                GuardianSearchBar(
+            GuardianSearchBar(
                     query = uiState.searchQuery,
                     onQueryChange = {
                        onAction(GuardiansSearchActions.OnQueryChange(it))
@@ -198,7 +197,7 @@ fun GuardiansSearchScreen(
                                     items(numberOfGuardians) { index ->
                                         val guardianData = guardians[index]
                                         guardianData?.let {
-                                            GuardianListItem(
+                                            SimpleProfileListItem(
                                                 onClick = {
                                                     navigationActions.navigateToGuardianDetails(
                                                         it.id,
@@ -228,5 +227,4 @@ fun GuardiansSearchScreen(
             }
         }
     }
-
 }

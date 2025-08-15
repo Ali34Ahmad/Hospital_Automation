@@ -14,7 +14,7 @@ import com.example.utility.network.onSuccess
 
 
 class ChildrenSearchPagingSource(
-    private val token: String?,
+    private val token: String,
     private val childApiService: ChildApiService,
     private val query: String,
 ): PagingSource<Int, ChildData>(){
@@ -27,11 +27,6 @@ class ChildrenSearchPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ChildData> {
-
-        if(token == null){
-            return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-        }
-
         val nextPageNumber = params.key?:1
 
 

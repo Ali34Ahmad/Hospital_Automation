@@ -24,7 +24,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.custom.ErrorComponent
 import com.example.ui_components.components.items.custom.FetchingDataItem
-import com.example.ui_components.components.list_items.PharmacyListItem
+import com.example.ui_components.components.list_items.ProfileListItem
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
@@ -130,10 +130,10 @@ fun PharmaciesScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(items = uiState.data, key = {it.pharmacyId}) { pharmacy ->
-                                        PharmacyListItem(
+                                        ProfileListItem(
                                             imageUrl = pharmacy.pharmacist.imageUrl,
-                                            pharmacyName = pharmacy.name,
-                                            pharmacistName =pharmacy.pharmacist.fullName,
+                                            title = pharmacy.name,
+                                            subtitle =pharmacy.pharmacist.fullName,
                                             onClick = {
                                                 navigationActions.navigateToPharmacyDetails(
                                                     pharmacy.pharmacyId

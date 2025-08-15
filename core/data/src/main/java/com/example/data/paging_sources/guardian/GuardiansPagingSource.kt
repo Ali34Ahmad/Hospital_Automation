@@ -13,7 +13,7 @@ import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 
 class GuardiansPagingSource(
-    private val token: String?,
+    private val token: String,
     private val userApiService: UserApiService,
     private val query: String,
 ): PagingSource<Int, GuardianData>() {
@@ -27,9 +27,6 @@ class GuardiansPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GuardianData> {
         try {
-            if (token == null){
-                return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-            }
             val currentPage = params.key?:1
             var guardians = emptyList<GuardianData>()
 

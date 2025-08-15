@@ -53,25 +53,29 @@ val mockClinic = ClinicFullData(
             firstName = "Ahmad",
             lastName = "Majed",
             imageUrl = null,
-            speciality = "dentist"
+            speciality = "dentist",
+            middleName = "Ali"
         ),DoctorData(
             id = 2,
             firstName = "Salem",
             lastName = "Ahmad",
             imageUrl = null,
-            speciality = "dentist"
+            speciality = "dentist",
+            middleName = "Ali"
         ),DoctorData(
             id = 3,
             firstName = "Mira",
             lastName = "Kamal",
             imageUrl = null,
-            speciality = "dentist"
+            speciality = "dentist",
+            middleName = "Ali"
         ),DoctorData(
             id = 4,
             firstName = "Lara",
             lastName = "Joni",
             imageUrl = null,
-            speciality = "dentist"
+            speciality = "dentist",
+            middleName = "Ali"
         ),
     ),
     deactivatedByUser = null,
@@ -122,5 +126,24 @@ val mockAction = object : ClinicNavigationAction{
     }
 
     override fun navigateToVaccines() {
+    }
+
+    override fun navigateToAllDoctors() {
+
+    }
+
+    override fun navigateToAllAppointments() {
+    }
+
+    override fun navigateToPrescriptions() {
+    }
+
+    override fun navigateToMedicalRecords() {
+    }
+
+    override fun navigateToContractHistory() {
+    }
+
+    override fun navigateToEditClinic() {
     }
 }

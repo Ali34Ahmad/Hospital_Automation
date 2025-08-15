@@ -28,4 +28,5 @@ interface DoctorScheduleNavigationActions{
     fun navigateToMedicalRecords()
     fun navigateToPrescriptions()
     fun navigateToVaccines()
+    fun navigateToVaccineTable()
 }

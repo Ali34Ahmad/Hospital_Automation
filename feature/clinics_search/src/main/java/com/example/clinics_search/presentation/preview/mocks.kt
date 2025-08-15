@@ -29,6 +29,9 @@ val mockNavigationActions = object : ClinicsSearchNavigationActions{
     override fun navigateToVaccines() {
     }
 
+    override fun navigateToCreateNewClinic() {
+
+    }
 }
 val mockDays = listOf(
     DaySchedule(

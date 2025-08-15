@@ -57,6 +57,9 @@ fun FakeNavigation() {
             },
             onNavigateToVaccines = {
                 TODO("Need Navigation Route")
+            },
+            onNavigateToCreateNewClinic = {
+                //this feature is not applicable for doctor
             }
         )
         clinicDetailsScreen(
@@ -72,7 +75,13 @@ fun FakeNavigation() {
             },
             onNavigateToVaccines = {
                 TODO("Need Navigation Route")
-            }
+            },
+            onNavigateToAllDoctors = {},
+            onNavigateToAllAppointments = {},
+            onNavigateToMedicalRecords = {},
+            onNavigateToContractHistory = {},
+            onNavigateToPrescriptions = {},
+            onNavigateToEditClinic = {},
         )
         doctorScheduleScreen(
             onNavigateToAppointmentDetails = {appointmentId ->
@@ -96,6 +105,9 @@ fun FakeNavigation() {
             onNavigateToMedicalRecords = {
                 TODO("Need Navigation Route")
             },
+            onNavigateToVaccineTable = {
+                TODO("Need Navigation Route")
+            }
         )
         appointmentDetailsScreen(
             onNavigateUp = navController::navigateUp,
