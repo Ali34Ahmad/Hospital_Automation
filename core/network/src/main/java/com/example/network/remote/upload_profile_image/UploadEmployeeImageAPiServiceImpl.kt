@@ -13,5 +13,5 @@ class UploadEmployeeProfileImageApiImpl(
 ) : UploadEmployeeProfileImageApi {
 
     override fun uploadImage(token: String, uri: Uri,role: RoleDto): Flow<ProgressUpdateDto> =
-        uploadImageApi.uploadImage(token, uri, ApiRoutes.uploadProfileImageEndPointFor(role = role))
+        uploadImageApi.uploadImage(token, uri, ApiRoutes.getUploadProfileImageEndPointFor(role = role))
 }

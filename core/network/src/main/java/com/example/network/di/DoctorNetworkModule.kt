@@ -18,6 +18,10 @@ import com.example.network.remote.clinic.ClinicApiService
 import com.example.network.remote.clinic.ClinicApiServiceImp
 import com.example.network.remote.doctor.profile.DoctorProfileApiService
 import com.example.network.remote.doctor.profile.DoctorProfileApiServiceImpl
+import com.example.network.remote.employment_history.EmploymentHistoryApiService
+import com.example.network.remote.employment_history.EmploymentHistoryApiServiceImpl
+import com.example.network.remote.medical_record.MedicalRecordsApiService
+import com.example.network.remote.medical_record.MedicalRecordsApiServiceImpl
 import com.example.network.remote.medicine.MedicineApiService
 import com.example.network.remote.medicine.MedicineApiServiceImp
 import com.example.network.remote.pharmacy.PharmacyApiService
@@ -83,4 +87,9 @@ val doctorNetworkModule = module {
     singleOf(::DownloadCompletedReceiver)
 
     singleOf(::VaccineApiServiceImpl) { bind<VaccineApiService>() }
+
+    singleOf(::EmploymentHistoryApiServiceImpl) { bind<EmploymentHistoryApiService>() }
+
+    singleOf(::MedicalRecordsApiServiceImpl) { bind<MedicalRecordsApiService>() }
+
 }

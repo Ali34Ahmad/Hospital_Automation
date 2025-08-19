@@ -33,7 +33,7 @@ class EmployeeAccountManagementApiServiceImpl(
             Result<DeactivateMyEmployeeAccountResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.deactivateMyAccountEndPointFor(role)) {
+                client.post(ApiRoutes.getDeactivateMyAccountEndPointFor(role)) {
                     contentType(ContentType.Application.Json)
                     bearerAuth(token)
                     setBody(deactivateMyEmployeeAccountRequestDto)
@@ -65,7 +65,7 @@ class EmployeeAccountManagementApiServiceImpl(
     ): Result<ReactivateMyEmployeeAccountResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.reactivateMyAccountEndPointFor(role)) {
+                client.post(ApiRoutes.getReactivateMyAccountEndPointFor(role)) {
                     contentType(ContentType.Application.Json)
                     bearerAuth(token)
                 }
@@ -98,7 +98,7 @@ class EmployeeAccountManagementApiServiceImpl(
     ): Result<CheckPermissionResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.get(ApiRoutes.checkPermissionEndPointFor(role = role)) {
+                client.get(ApiRoutes.getCheckPermissionEndPointFor(role = role)) {
                     contentType(ContentType.Application.Json)
                     bearerAuth(token)
                 }

@@ -17,11 +17,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalShapes
 import com.example.ui.theme.sizing
@@ -66,7 +66,7 @@ fun HospitalAutomationOutLinedButton(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (icon != null) {
-                Icon(painter = painterResource(icon), null)
+                Icon(imageVector = ImageVector.vectorResource(icon), null)
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.extraSmall2))
             }
             if (isLoading){
@@ -106,7 +106,7 @@ fun HospitalAutomationOutlinedButtonWithIconPreview() {
         HospitalAutomationOutLinedButton(
             onClick = {},
             text = stringResource(R.string.upload_file),
-            icon = R.drawable.call,
+            icon = R.drawable.ic_call,
             enabled = false
 
         )

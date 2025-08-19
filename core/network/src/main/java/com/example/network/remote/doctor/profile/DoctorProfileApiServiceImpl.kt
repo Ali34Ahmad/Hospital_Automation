@@ -24,6 +24,7 @@ class DoctorProfileApiServiceImpl(
         val response = client.get(ApiRoutes.Doctor.PROFILE) {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
+            Log.v("DoctorProfileApi:", token)
         }
         when (response.status.value) {
             in 200..299 -> {
@@ -34,12 +35,12 @@ class DoctorProfileApiServiceImpl(
 
             else -> {
                 val errorMessage: NetworkMessage = response.body()
-                Log.v("DoctorProfileApi:Out of Range 2xx", errorMessage.message)
+                Log.e("DoctorProfileApi:Out of Range 2xx", errorMessage.message)
                 Result.Error(NetworkError.UNKNOWN)
             }
         }
     } catch (e: Exception) {
-        Log.v("DoctorProfileApi:Exception", e.message ?: "Unknown")
+        Log.e("DoctorProfileApi:Exception", e.message ?: "Unknown")
         Result.Error(NetworkError.UNKNOWN)
     }
 }

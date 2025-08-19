@@ -38,7 +38,7 @@ fun AppointmentTypesList(
     onDescriptionChanged: (index: Int, newDescription: String) -> Unit,
     onDelete: (index: Int) -> Unit,
     @StringRes title: Int = R.string.appointments,
-    @DrawableRes actionIcon: Int = R.drawable.add,
+    @DrawableRes actionIcon: Int = R.drawable.ic_add,
 ) {
 
     LazyColumn(

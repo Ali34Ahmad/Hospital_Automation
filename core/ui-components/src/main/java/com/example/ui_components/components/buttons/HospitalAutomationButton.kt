@@ -16,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
@@ -66,7 +68,7 @@ fun HospitalAutomationButton(
         ) {
             if (icon != null) {
                 Icon(
-                    painter = painterResource(icon),
+                    imageVector = ImageVector.vectorResource(icon),
                     contentDescription = null,
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small8))

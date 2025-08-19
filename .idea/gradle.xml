@@ -63,16 +63,21 @@
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />
             <option value="$PROJECT_DIR$/feature/medical_diagnosis" />
+            <option value="$PROJECT_DIR$/feature/medical_prescriptions" />
+            <option value="$PROJECT_DIR$/feature/medical_records" />
             <option value="$PROJECT_DIR$/feature/medicine_details" />
             <option value="$PROJECT_DIR$/feature/medicines_search" />
             <option value="$PROJECT_DIR$/feature/pharmacies" />
             <option value="$PROJECT_DIR$/feature/pharmacies_search" />
+            <option value="$PROJECT_DIR$/feature/pharmacy_details" />
+            <option value="$PROJECT_DIR$/feature/prescription_details" />
             <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
             <option value="$PROJECT_DIR$/feature/upload_child_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_profile_image" />
             <option value="$PROJECT_DIR$/feature/vaccine_details" />
+            <option value="$PROJECT_DIR$/feature/vaccines" />
           </set>
         </option>
       </GradleProjectSettings>

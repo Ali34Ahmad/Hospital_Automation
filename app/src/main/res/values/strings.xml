@@ -7,7 +7,7 @@
     <string name="mother">Mother</string>
     <string name="added_children">Added children</string>
     <string name="employement_history">Employement history</string>
-    <string name="deactivate_account">Deactivate my account</string>
+    <string name="deactivate_my_account">Deactivate my account</string>
     <string name="children">Children</string>
     <string name="verified">Verified</string>
     <string name="email_verified_description">Your email has been successfully verified</string>

@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
+import com.example.employee_profile.navigation.ProfileAccessType
 import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleEmployeeProfileResponse
@@ -34,7 +35,8 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
-import com.example.ui_components.components.card.EmployeeProfileActionsCard
+import com.example.ui_components.components.card.EmployeeProfileAdminActionsCard
+import com.example.ui_components.components.card.EmployeeProfileOwnerActionsCard
 import com.example.ui_components.components.card.EmployeeProfileCard
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
@@ -200,8 +202,33 @@ fun EmployeeProfileScreen(
                                 isAccepted = uiState.userInfo.profile.acceptedBy != null,
                                 showNavigateUp = true
                             )
-                            if (uiState.userInfo.isAccessedByOwner) {
-                                EmployeeProfileActionsCard(
+                            when(uiState.profileAccessType){
+                                ProfileAccessType.EMPLOYEE_ID_ACCESS,
+                                    ProfileAccessType.TOKEN_ACCESS->
+                                if (uiState.userInfo.isAccessedByOwner) {
+                                    EmployeeProfileOwnerActionsCard(
+                                        onAddedChildrenItemClick = {
+                                            uiActions.navigateToAddedChildrenScreen()
+                                        },
+                                        isAddedChildrenEnabled = isAddedChildrenEnabled,
+                                        onEmploymentHistoryItemClick = {
+                                            uiActions.navigateToEmploymentHistoryScreen()
+                                        },
+                                        isEmploymentEnabled = isEmploymentEnabled,
+                                        onDeactivateAccountItemClick = {
+                                            uiActions.onDeactivateMyAccount()
+                                        },
+                                        onReactivateAccountItemClick = {
+                                            uiActions.onReactivateMyAccount()
+                                        },
+                                        showDeactivateMyAccountItem = showDeactivationItem,
+                                        isAccountDeactivated = isSuspended,
+                                        onLogoutItemClick = {
+                                            uiActions.onLogout()
+                                        },
+                                    )
+                                }
+                                ProfileAccessType.ADMIN_ACCESS->EmployeeProfileAdminActionsCard(
                                     onAddedChildrenItemClick = {
                                         uiActions.navigateToAddedChildrenScreen()
                                     },
@@ -218,10 +245,12 @@ fun EmployeeProfileScreen(
                                     },
                                     showDeactivateMyAccountItem = showDeactivationItem,
                                     isAccountDeactivated = isSuspended,
-                                    onLogoutItemClick = {
-                                        uiActions.onLogout()
+                                    onResignItemClick = {
+                                        uiActions.onResign()
                                     },
                                 )
+
+                                null -> null
                             }
                         }
                     }

@@ -29,7 +29,6 @@ class EmploymentHistoryViewModel(
     private val downloadFileUseCase: DownloadFileUseCase,
     private val observeFileDownloadProgressUseCase: ObserveFileDownloadProgressUseCase,
     private val cancelFileDownloadUseCase: CancelFileDownloadUseCase,
-    private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EmploymentHistoryUiState())
     val uiState = _uiState.asStateFlow()
@@ -115,7 +114,7 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             updateScreenState(ScreenState.LOADING)
             Log.v("Getting EmploymentHistory", "EmploymentHistoryViewModel")
-            getEmploymentHistoryUseCase(roleAppConfig.role)
+            getEmploymentHistoryUseCase()
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateEmploymentHistory(data)
@@ -192,7 +191,7 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             updateIsRefreshing(true)
             Log.v("Getting EmploymentHistory", "EmploymentHistoryViewModel")
-            getEmploymentHistoryUseCase(roleAppConfig.role)
+            getEmploymentHistoryUseCase()
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)

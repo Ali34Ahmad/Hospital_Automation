@@ -20,6 +20,8 @@ data class UserDetails(
 
     val fullName: FullName,
 
+    val subInfo: String?,
+
     val isResigned: Boolean,
 
     val acceptedBy: Int?,

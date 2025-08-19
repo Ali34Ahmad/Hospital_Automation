@@ -5,7 +5,10 @@ import com.example.network.model.dto.vaccine.GenericVaccinationTableDto
 import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.vaccine.InteractionsWrapper
-import com.example.network.model.request.vaccine.UpdateVaccinationTableRequestDto
+import com.example.network.model.request.vaccine.VaccineIdToVisitNumberDto
+import com.example.network.model.request.vaccine.VaccinesIdsToVisitNumberDto
+import com.example.network.model.request.vaccine.VaccinesIdsWrapper
+import com.example.network.model.response.vaccine.GetAllVaccinesResponseDto
 import com.example.network.model.response.vaccine.VaccineResponseDto
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
@@ -22,11 +25,47 @@ import com.example.utility.network.rootError
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import kotlinx.serialization.json.Json
 
 class VaccineApiServiceImpl(
     private val client: HttpClient,
 ) : VaccineApiService {
+    override suspend fun getAllVaccines(
+        token: String,
+        page: Int,
+        limit: Int,
+        role: RoleDto,
+    ): Result<GetAllVaccinesResponseDto, NetworkError> =try {
+        val response = client.get(ApiRoutes.getAllVaccinesEndPointForRole(role)) {
+            url{
+                parameter("page",page)
+                parameter("limit",limit)
+            }
+            contentType(ContentType.Application.Json)
+            bearerAuth(token)
+        }
+        when (response.status.value) {
+            in 200..299 -> {
+                val responseText = response.bodyAsText()
+                Log.v("GetAllVaccinesApi${response.status.value}", responseText)
+
+                val addVaccineResponse: GetAllVaccinesResponseDto = response.body()
+                Log.v("GetAllVaccinesApi: in of range 2xx", addVaccineResponse.data.toString())
+                Result.Success(data = addVaccineResponse)
+            }
+
+            else -> {
+                val errorBody = response.bodyAsText()
+                Log.e("GetAllVaccinesApi: Out of range 2xx", errorBody)
+                Result.Error(NetworkError.UNKNOWN)
+            }
+        }
+    }catch (e: Exception){
+        Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
+        Result.Error(NetworkError.UNKNOWN)
+    }
+
     override suspend fun addNewVaccine(
         token: String,
         vaccineDto: VaccineDto,
@@ -39,22 +78,22 @@ class VaccineApiServiceImpl(
             bearerAuth(token)
             setBody(
                 MultiPartFormDataContent(
-                formData {
-                    append("name", vaccineDto.name)
-                    append("description", vaccineDto.description)
-                    append("quantity", vaccineDto.quantity)
-                    append("minAge", vaccineDto.minAge)
-                    append("maxAge", vaccineDto.maxAge)
-                    append("minAgeUnit", vaccineDto.minAgeUnit.toString())
-                    append("maxAgeUnit", vaccineDto.maxAgeUnit.toString())
+                    formData {
+                        append("name", vaccineDto.name)
+                        append("description", vaccineDto.description)
+                        append("quantity", vaccineDto.quantity)
+                        append("minAge", vaccineDto.minAge)
+                        append("maxAge", vaccineDto.maxAge)
+                        append("minAgeUnit", vaccineDto.minAgeUnit.toString())
+                        append("maxAgeUnit", vaccineDto.maxAgeUnit.toString())
 
-                    append("interactions", interactionsJsonString)
-                }
-            ))
+                        append("interactions", interactionsJsonString)
+                    }
+                ))
         }
         when (response.status.value) {
             in 200..299 -> {
-                val responseText= response.bodyAsText()
+                val responseText = response.bodyAsText()
                 Log.v("VaccineApi${response.status.value}", responseText)
 
                 val addVaccineResponse: VaccineResponseDto = response.body()
@@ -78,7 +117,7 @@ class VaccineApiServiceImpl(
         id: Int,
         role: RoleDto
     ): Result<VaccineResponseDto, rootError> = try {
-        val response = client.get("${ApiRoutes.Doctor.GET_VACCINE_BY_ID}/$id") {
+        val response = client.get("${ApiRoutes.getVaccineDetailsEndPointForRole(role)}/$id") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
         }
@@ -128,20 +167,21 @@ class VaccineApiServiceImpl(
         Result.Error(NetworkError.UNKNOWN)
     }
 
-    override suspend fun updateGenericVaccinationTable(
+    override suspend fun updateVaccineVisitNumber(
         token: String,
-        updateVaccinationTableRequestDto: UpdateVaccinationTableRequestDto
+        vaccineIdToVisitNumberDto: VaccineIdToVisitNumberDto
     ): Result<GenericVaccinationTableDto, rootError> = try {
-        val response = client.post(ApiRoutes.Doctor.UPDATE_GENERIC_VACCINATION_TABLE) {
+
+        val response = client.post(ApiRoutes.Doctor.UPDATE_VACCINE_VISIT_NUMBER) {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
-            setBody(updateVaccinationTableRequestDto)
+            setBody(vaccineIdToVisitNumberDto)
         }
         when (response.status.value) {
             in 200..299 -> {
                 val vaccinationTableResponse: GenericVaccinationTableDto = response.body()
                 Log.v(
-                    "UpdateVaccinationTableApi: in of range 2xx",
+                    "UpdateVaccineVisitNumberTableApi: in of range 2xx",
                     vaccinationTableResponse.toString()
                 )
                 Result.Success(data = vaccinationTableResponse)
@@ -149,14 +189,55 @@ class VaccineApiServiceImpl(
 
             else -> {
                 val errorBody = response.bodyAsText()
-                Log.e("UpdateVaccinationTableApi: Out of range 2xx", errorBody)
+                Log.e("UpdateVaccineVisitNumberTableApi: Out of range 2xx", errorBody)
                 Result.Error(NetworkError.UNKNOWN)
             }
         }
     } catch (e: Exception) {
-        Log.e("UpdateVaccinationTableApi Exception:", e.localizedMessage ?: "Unknown Error")
+        Log.e("UpdateVaccineVisitNumberTableApi Exception:", e.localizedMessage ?: "Unknown Error")
         Result.Error(NetworkError.UNKNOWN)
     }
 
+    override suspend fun updateVaccinesVisitNumber(
+        token: String,
+        vaccinesIdsToVisitNumberDto: VaccinesIdsToVisitNumberDto
+    ): Result<GenericVaccinationTableDto, rootError> = try {
+
+        val vaccinesIdsWrapper = VaccinesIdsWrapper(vaccinesIdsToVisitNumberDto.vaccinesIds)
+        val vaccinesIdsJsonString = Json.encodeToString(vaccinesIdsWrapper)
+
+        val response = client.post(ApiRoutes.Doctor.UPDATE_VACCINES_LIST_VISIT_NUMBER) {
+            contentType(ContentType.Application.Json)
+            bearerAuth(token)
+            setBody(
+                MultiPartFormDataContent(
+                    formData {
+                        if (vaccinesIdsToVisitNumberDto.visitNumber != null) {
+                            append("visitNumber", vaccinesIdsToVisitNumberDto.visitNumber)
+                        }
+                        append ("vaccinesIds", vaccinesIdsJsonString)
+                    }
+                ))
+        }
+        when (response.status.value) {
+            in 200..299 -> {
+                val vaccinationTableResponse: GenericVaccinationTableDto = response.body()
+                Log.v(
+                    "UpdateVaccinesVisitNumbersTableApi: in of range 2xx",
+                    vaccinationTableResponse.toString()
+                )
+                Result.Success(data = vaccinationTableResponse)
+            }
+
+            else -> {
+                val errorBody = response.bodyAsText()
+                Log.e("UpdateVaccinesVisitNumbersTableApi: Out of range 2xx", errorBody)
+                Result.Error(NetworkError.UNKNOWN)
+            }
+        }
+    } catch (e: Exception) {
+        Log.e("UpdateVaccinesVisitNumbersTableApi Exception:", e.localizedMessage ?: "Unknown Error")
+        Result.Error(NetworkError.UNKNOWN)
+    }
 
 }

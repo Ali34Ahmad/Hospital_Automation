@@ -32,7 +32,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.card.NotSpecifiedErrorCard
-import com.example.ui_components.components.complex_components.VaccineDetails
+import com.example.ui_components.components.complex_components.VaccineDetailsCard
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.vaccine_details_screen.navigation.VaccinePreviousScreen
@@ -137,7 +137,7 @@ fun VaccineDetailsScreen(
                                 .verticalScroll(scrollState),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
-                            VaccineDetails(
+                            VaccineDetailsCard(
                                 vaccine = uiState.vaccine,
                                 modifier = Modifier
                                     .fillMaxWidth()

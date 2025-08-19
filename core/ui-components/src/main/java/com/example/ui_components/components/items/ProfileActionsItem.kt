@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imeNestedScroll
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
@@ -128,7 +127,7 @@ fun UnderlinedProfileActionsItemPreview() {
                     onClick = {},
                     modifier = Modifier.fillMaxWidth(),
                     iconRes = R.drawable.ic_deactivate_account,
-                    title = stringResource(R.string.deactivate_account),
+                    title = stringResource(R.string.deactivate_my_account),
                     showUnderline = false,
                     titleColor = MaterialTheme.colorScheme.error,
                     iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
@@ -158,7 +157,7 @@ fun UnderlinedProfileActionsItemDisabledPreview() {
                     onClick = {},
                     modifier = Modifier.fillMaxWidth(),
                     iconRes = R.drawable.ic_deactivate_account,
-                    title = stringResource(R.string.deactivate_account),
+                    title = stringResource(R.string.deactivate_my_account),
                     showUnderline = false,
                     titleColor = MaterialTheme.colorScheme.error,
                     iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),

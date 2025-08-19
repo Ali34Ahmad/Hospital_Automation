@@ -45,7 +45,7 @@ fun VaccinationTable(
         }
         ProfileActionsItem(
             onClick = onAddNewVisit,
-            iconRes = R.drawable.add,
+            iconRes = R.drawable.ic_add,
             title = stringResource(R.string.add_visit),
         )
     }

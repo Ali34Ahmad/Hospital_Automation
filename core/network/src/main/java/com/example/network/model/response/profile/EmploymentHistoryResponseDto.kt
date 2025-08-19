@@ -36,6 +36,8 @@ data class UserDetailsDto(
     @SerialName("last_name")
     val lastName: String,
 
+    @SerialName("specialty")
+    val subInfo: String?=null,
 
     @SerialName("is_resigned")
     val isResigned: Boolean,

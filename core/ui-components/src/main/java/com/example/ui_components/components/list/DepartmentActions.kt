@@ -48,7 +48,7 @@ fun DepartmentActionsCard(
                 onClick = onAllDoctorsClick,
             )
             ProfileActionsItem(
-                iconRes = AppIcons.Outlined.pending,
+                iconRes = AppIcons.Outlined.upcomingEvent,
                 title = stringResource(R.string.appointments),
                 showUnderline = true,
                 onClick = onAppointmentsClick,

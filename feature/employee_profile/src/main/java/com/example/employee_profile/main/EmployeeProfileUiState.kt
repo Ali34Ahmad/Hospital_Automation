@@ -9,6 +9,7 @@ import com.example.utility.network.Error
 data class EmployeeProfileUiState(
     val userInfo: EmployeeProfileResponse?=null,
     val employeeId: Int?=null,
+
     val profileAccessType: ProfileAccessType?=null,
     val profileScreenState: ScreenState= ScreenState.IDLE,
 

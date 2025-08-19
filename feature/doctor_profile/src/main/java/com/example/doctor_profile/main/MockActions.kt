@@ -32,12 +32,12 @@ fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiAct
 
 }
 
-fun mockDoctorProfileBusinessUiActions()=object : DoctorProfileBusinessUiActions {
-    override fun onDeactivateMyAccount() {
+fun mockDoctorProfileBusinessUiActions()= object : DoctorProfileBusinessUiActions {
+    override fun onDeactivateAccount() {
 
     }
 
-    override fun onReactivateMyAccount() {
+    override fun onReactivateAccount() {
 
     }
 
@@ -45,7 +45,11 @@ fun mockDoctorProfileBusinessUiActions()=object : DoctorProfileBusinessUiActions
 
     }
 
-    override fun hideErrorDialog() {
+    override fun onResignDoctor() {
+
+    }
+
+    override fun onHideErrorDialog() {
 
     }
 
@@ -53,7 +57,11 @@ fun mockDoctorProfileBusinessUiActions()=object : DoctorProfileBusinessUiActions
 
     }
 
-    override fun clearToastMessage() {
+    override fun onClearToastMessage() {
+
+    }
+
+    override fun onUpdateSelectedAppointmentTypeDialog(index: Int?) {
 
     }
 

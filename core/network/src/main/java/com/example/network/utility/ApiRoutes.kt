@@ -74,19 +74,23 @@ object ApiRoutes {
         const val UPDATE_APPOINTMENT_STATE_TO_PASSED = "$DOCTOR/change-appointment-state-to-passed"
         const val UPDATE_APPOINTMENT_STATE_TO_MISSED = "$DOCTOR/change-appointment-state-to-missed"
         const val SEND_WORK_REQUEST = "$DOCTOR/send-doctor-request"
-        const val GET_MEDICINES = "${ApiRoutes.DOCTOR}/get-medicine-byname"
-        const val GET_MEDICINE_BY_ID = "${ApiRoutes.DOCTOR}/get-medicine-by-id"
-        const val SHOW_ALL_CLINICS = "${ApiRoutes.DOCTOR}/show-all-clinics"
-        const val GET_CLINIC_BY_ID = "${ApiRoutes.DOCTOR}/view-single-clinic-details"
+        const val GET_MEDICINES = "$DOCTOR/get-medicine-byname"
+        const val GET_MEDICINE_BY_ID = "$DOCTOR/get-medicine-by-id"
+        const val SHOW_ALL_CLINICS = "$DOCTOR/show-all-clinics"
+        const val GET_CLINIC_BY_ID = "$DOCTOR/view-single-clinic-details"
+
+        const val MEDICAL_PRESCRIPTIONS = "$DOCTOR/doctor_all_prescriptions"
+        const val PRESCRIPTION_DETAILS = "$DOCTOR/prescription-details"
+
+        const val ALL_VACCINES = "$DOCTOR/view-all-vaccines"
+        const val UPDATE_VACCINE_VISIT_NUMBER = "$DOCTOR/update-vaccines-visit-number"
+        const val UPDATE_VACCINES_LIST_VISIT_NUMBER = "$DOCTOR/update-vaccines-list-visit"
+
+        const val PHARMACY_DETAILS = "$DOCTOR/pharmacy-details"
+        const val ALL_MEDICAL_RECORDS = "$DOCTOR/doctor-record"
+
     }
 
-    object Clinic{
-        const val PROFILE = "$DOCTOR/show-profile"
-        const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
-        const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
-        const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/get-generic-vaccination-table"
-        const val UPDATE_GENERIC_VACCINATION_TABLE = "$DOCTOR/update-generic-vaccination-table"
-    }
     object Admin{
         const val ADMIN_GET_PHARMACIES = "$ADMIN/get-departments-pharmacies-states"
         const val ADMIN_GET_CLINICS = "$ADMIN/get-departments-pharmacies-states"
@@ -97,6 +101,9 @@ object ApiRoutes {
         const val DEACTIVATE_CLINIC = "$ADMIN/deactivate-clinic"
         const val REACTIVATE_CLINIC = "$ADMIN/reactivate-clinic"
         const val GET_ADMIN_DETAILS_FOR = "$ADMIN/admin-get-details-by-id-for"
+        const val ALL_VACCINES = "$ADMIN/show-all-vaccines"
+        const val GET_VACCINE_BY_ID = "$ADMIN/view-single-vaccine-details"
+        const val MEDICAL_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
     }
     object Prescription{
         const val ADD_PRESCRIPTION = "$DOCTOR/add-prescription"
@@ -104,7 +111,8 @@ object ApiRoutes {
     object Pharmacy{
         const val PHARMACIES_BY_MEDICINE_ID = "$DOCTOR/show-pharmacies-have-medicine"
     }
-    fun loginEndpointFor(role: RoleDto): String {
+
+    fun getLoginEndpointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGIN
             RoleDto.DOCTOR -> Doctor.LOGIN
@@ -112,7 +120,7 @@ object ApiRoutes {
         }
     }
 
-    fun verifyEmailEndpointFor(role: RoleDto): String {
+    fun getVerifyEmailEndpointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_VERIFY_OTP
             RoleDto.DOCTOR -> Doctor.VERIFY_OTP
@@ -120,7 +128,7 @@ object ApiRoutes {
         }
     }
 
-    fun sendOtpToEmailEndpointFor(role: RoleDto): String {
+    fun getSendOtpToEmailEndpointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_SEND_OTP
             RoleDto.DOCTOR -> Doctor.SEND_OTP
@@ -128,7 +136,7 @@ object ApiRoutes {
         }
     }
 
-    fun singUpEndpointFor(role: RoleDto): String {
+    fun getSingUpEndpointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_SIGNUP
             RoleDto.DOCTOR -> Doctor.SIGNUP
@@ -136,7 +144,7 @@ object ApiRoutes {
         }
     }
 
-    fun resetPasswordEndPointFor(role: RoleDto): String {
+    fun getResetPasswordEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_RESET_PASSWORD
             RoleDto.DOCTOR -> Doctor.RESET_PASSWORD
@@ -144,7 +152,7 @@ object ApiRoutes {
         }
     }
 
-    fun logoutEndPointFor(role: RoleDto): String {
+    fun getLogoutEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGOUT
             RoleDto.DOCTOR -> Doctor.LOGOUT
@@ -168,7 +176,7 @@ object ApiRoutes {
         }
     }
 
-    fun addResidentialAddressEndPointFor(role: RoleDto): String {
+    fun getAddResidentialAddressEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> ADD_RESIDENTIAL_ADDRESS
             RoleDto.DOCTOR -> Doctor.ADD_RESIDENTIAL_ADDRESS
@@ -176,7 +184,7 @@ object ApiRoutes {
         }
     }
 
-    fun uploadEmploymentDocumentsEndPointFor(role: RoleDto): String {
+    fun getUploadEmploymentDocumentsEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> UPLOAD_EMPLOYMENT_DOCUMENTS
             RoleDto.DOCTOR -> Doctor.UPLOAD_EMPLOYMENT_FILE
@@ -184,7 +192,7 @@ object ApiRoutes {
         }
     }
 
-    fun uploadProfileImageEndPointFor(role: RoleDto): String {
+    fun getUploadProfileImageEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> UPLOAD_PROFILE_IMAGE
             RoleDto.DOCTOR -> Doctor.UPLOAD_PROFILE_IMAGE
@@ -193,7 +201,7 @@ object ApiRoutes {
     }
 
 
-    fun deactivateMyAccountEndPointFor(role: RoleDto): String {
+    fun getDeactivateMyAccountEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> DEACTIVATE_MY_EMPLOYEE_ACCOUNT
             RoleDto.DOCTOR -> Doctor.DEACTIVATE_MY_ACCOUNT
@@ -201,7 +209,7 @@ object ApiRoutes {
         }
     }
 
-    fun reactivateMyAccountEndPointFor(role: RoleDto): String {
+    fun getReactivateMyAccountEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> REACTIVATE_MY_EMPLOYEE_ACCOUNT
             RoleDto.DOCTOR -> Doctor.REACTIVATE_MY_ACCOUNT
@@ -209,7 +217,7 @@ object ApiRoutes {
         }
     }
 
-    fun checkPermissionEndPointFor(role: RoleDto): String {
+    fun getCheckPermissionEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> CHECK_EMPLOYEE_PERMISSION
             RoleDto.DOCTOR -> Doctor.CHECK_PERMISSION
@@ -217,7 +225,7 @@ object ApiRoutes {
         }
     }
 
-    fun employmentHistoryEndPointFor(role: RoleDto): String {
+    fun getEmploymentHistoryEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_EMPLOYMENT_HISTORY
             RoleDto.DOCTOR -> Doctor.EMPLOYMENT_HISTORY
@@ -226,6 +234,27 @@ object ApiRoutes {
     }
 
 
+    fun getAllVaccinesEndPointForRole(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be used for EMPLOYEE")
+            RoleDto.DOCTOR -> Doctor.ALL_VACCINES
+            RoleDto.ADMIN -> Admin.ALL_VACCINES
+        }
+    }
 
+    fun getVaccineDetailsEndPointForRole(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be used for EMPLOYEE")
+            RoleDto.DOCTOR -> Doctor.GET_VACCINE_BY_ID
+            RoleDto.ADMIN -> Admin.GET_VACCINE_BY_ID
+        }
+    }
 
+    fun getPrescriptionsEndPointForRole(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be used for EMPLOYEE")
+            RoleDto.DOCTOR -> Doctor.MEDICAL_PRESCRIPTIONS
+            RoleDto.ADMIN -> Admin.MEDICAL_PRESCRIPTIONS
+        }
+    }
 }

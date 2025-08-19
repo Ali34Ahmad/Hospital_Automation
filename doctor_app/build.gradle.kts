@@ -82,7 +82,15 @@ dependencies {
     implementation(project(":feature:reset_password"))
     implementation(project(":feature:upload_employee_profile_image"))
     implementation(project(":feature:employment_history"))
+    implementation(project(":feature:prescription_details"))
+    implementation(project(":feature:medical_records"))
+
     implementation(project(":feature:vaccine_details"))
+    implementation(project(":feature:vaccines"))
+    implementation(project(":feature:pharmacy_details"))
+    implementation(project(":feature:admin_profile"))
+
+    implementation(project(":feature:medical_prescriptions"))
 
     implementation(project(":feature:doctor_profile"))
 

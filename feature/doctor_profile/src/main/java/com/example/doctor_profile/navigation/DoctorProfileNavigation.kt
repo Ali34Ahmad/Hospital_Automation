@@ -14,12 +14,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class DoctorProfileRoute(
-    val profileAccessType: ProfileAccessType,
+    val doctorProfileAccessType: DoctorProfileAccessType,
     val doctorId: Int?,
 )
 
-fun NavController.navigateToDoctorProfileScreen(profileAccessType: ProfileAccessType,doctorId: Int?) {
-    navigateToScreen(DoctorProfileRoute(profileAccessType,doctorId))
+fun NavController.navigateToDoctorProfileScreen(doctorProfileAccessType: DoctorProfileAccessType, doctorId: Int?) {
+    navigateToScreen(DoctorProfileRoute(doctorProfileAccessType,doctorId))
 }
 
 fun NavGraphBuilder.doctorProfileScreen(

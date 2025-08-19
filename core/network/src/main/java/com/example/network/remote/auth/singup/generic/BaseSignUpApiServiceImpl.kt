@@ -21,7 +21,7 @@ class BaseSignUpApiServiceImpl(
 ) : BaseSignUpApiService {
     override suspend fun signup(baseRegistrationRequestDto: BaseRegistrationRequestDto): Result<BaseRegistrationResponseDto, rootError> =
         try {
-            val response = client.post(ApiRoutes.singUpEndpointFor(baseRegistrationRequestDto.role)) {
+            val response = client.post(ApiRoutes.getSingUpEndpointFor(baseRegistrationRequestDto.role)) {
                 contentType(ContentType.Application.Json)
                 setBody(baseRegistrationRequestDto)
             }

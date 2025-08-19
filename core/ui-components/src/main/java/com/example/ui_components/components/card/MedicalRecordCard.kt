@@ -16,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,11 +37,14 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
+import com.example.ui_components.components.network_image.NetworkImage
 
 
 @Composable
 fun MedicalRecordCard(
-    imgUrl: String,
+    patientId: Int?,
+    childId: Int?,
+    imgUrl: String?,
     name: String,
     numberOfAppointments: Int,
     numberOfPrescriptions: Int,
@@ -52,7 +56,7 @@ fun MedicalRecordCard(
     @DrawableRes appointmentsIcon: Int = AppIcons.Outlined.prescription
 ) {
     Card(
-        modifier = modifier.clickable{onClick()},
+        modifier = modifier.clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
@@ -60,7 +64,7 @@ fun MedicalRecordCard(
     ) {
         Column(
             modifier = Modifier.padding(
-                MaterialTheme.spacing.medium16
+                vertical = MaterialTheme.spacing.medium16
             ),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
             horizontalAlignment = Alignment.Start,
@@ -69,23 +73,19 @@ fun MedicalRecordCard(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(
+                    horizontal = MaterialTheme.spacing.medium16,
+                )
             ) {
-                if (!LocalInspectionMode.current) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(imgUrl)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
+                if (imgUrl != null && patientId != null) {
+                    NetworkImage(
+                        model = imgUrl,
                         modifier = Modifier
-                            .background(
-                                color = MaterialTheme.colorScheme.primaryContainer
-                            )
                             .size(MaterialTheme.sizing.medium40)
                             .clip(CircleShape),
                         contentScale = ContentScale.Crop,
                     )
-                } else {
+                } else if (imgUrl == null && childId != null) {
                     Box(
                         modifier = Modifier
                             .size(MaterialTheme.sizing.medium40)
@@ -111,7 +111,7 @@ fun MedicalRecordCard(
             }
             // bottom section
             Row(
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 DetailsItem(
@@ -119,14 +119,14 @@ fun MedicalRecordCard(
                     modifier = Modifier.weight(1f),
                     title = stringResource(R.string.appointments),
                     description = numberOfAppointments.toString(),
-                    onClick = onAppointmentsClick
+                    onClick = onAppointmentsClick,
                 )
                 DetailsItem(
                     iconRes = prescriptionsIcon,
                     modifier = Modifier.weight(1f),
                     title = stringResource(R.string.prescriptions),
                     description = numberOfPrescriptions.toString(),
-                    onClick = onPrescriptionsClick
+                    onClick = onAppointmentsClick,
                 )
             }
         }
@@ -136,17 +136,47 @@ fun MedicalRecordCard(
 
 @DarkAndLightModePreview
 @Composable
-fun MedicalRecordCard2Preview() {
+fun MedicalRecordCardPatientPreview() {
     Hospital_AutomationTheme {
-        MedicalRecordCard(
-            imgUrl = "",
-            name = "Ali Ahmad",
-            numberOfAppointments = 3,
-            numberOfPrescriptions = 1,
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {},
-            onAppointmentsClick = {},
-            onPrescriptionsClick = {}
-        )
+        Surface {
+            MedicalRecordCard(
+                imgUrl = "",
+                name = "Ali Ahmad",
+                numberOfAppointments = 3,
+                numberOfPrescriptions = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium16),
+                onClick = {},
+                onAppointmentsClick = {},
+                onPrescriptionsClick = {},
+                patientId = 1,
+                childId = null,
+            )
+        }
     }
 }
+
+@DarkAndLightModePreview
+@Composable
+fun MedicalRecordCardChildPreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            MedicalRecordCard(
+                imgUrl = null,
+                name = "Ali Ahmad",
+                numberOfAppointments = 3,
+                numberOfPrescriptions = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium16),
+                onClick = {},
+                onAppointmentsClick = {},
+                onPrescriptionsClick = {},
+                patientId = null,
+                childId = 2,
+            )
+        }
+    }
+}
+

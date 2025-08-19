@@ -10,7 +10,7 @@ import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.clinic_details.navigation.clinicDetailsScreen
 import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.clinics_search.navigation.clinicsSearchScreen
-import com.example.doctor_profile.navigation.ProfileAccessType
+import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.DoctorScheduleRoute
 import com.example.doctor_schedule.navigation.doctorScheduleScreen
@@ -42,7 +42,7 @@ fun FakeNavigation() {
             },
             onNavigateToDoctorProfile = {
                 navController.navigateToDoctorProfileScreen(
-                    profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                     doctorId = null
                 )
             },
@@ -66,7 +66,7 @@ fun FakeNavigation() {
             onNavigateUp = navController::navigateUp,
             onNavigateToDoctorProfile = {
                 navController.navigateToDoctorProfileScreen(
-                    profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                     doctorId = null
                 )
             },
@@ -89,7 +89,7 @@ fun FakeNavigation() {
             },
             onNavigateToDoctorProfile = {
                 navController.navigateToDoctorProfileScreen(
-                    profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                     doctorId = null
                 )
             },

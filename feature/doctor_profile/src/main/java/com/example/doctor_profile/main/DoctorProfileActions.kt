@@ -8,12 +8,14 @@ class DoctorProfileUiActions(
 
 
 interface DoctorProfileBusinessUiActions {
-    fun onDeactivateMyAccount()
-    fun onReactivateMyAccount()
+    fun onDeactivateAccount()
+    fun onReactivateAccount()
     fun onLogout()
-    fun hideErrorDialog()
+    fun onResignDoctor()
+    fun onHideErrorDialog()
     fun onRefresh()
-    fun clearToastMessage()
+    fun onClearToastMessage()
+    fun onUpdateSelectedAppointmentTypeDialog(index:Int?)
 }
 
 interface DoctorProfileNavigationUiActions {

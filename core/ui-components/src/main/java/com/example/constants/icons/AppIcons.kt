@@ -5,10 +5,10 @@ import com.example.ui_components.R
 sealed interface AppIcons {
 
     data object Outlined : AppIcons {
-        val add = R.drawable.add
+        val add = R.drawable.ic_add
         val man = R.drawable.ic_male
-        val attachment = R.drawable.attachment
-        val call = R.drawable.call
+        val attachment = R.drawable.ic_attachment
+        val call = R.drawable.ic_call
         val mail = R.drawable.mail
         val calender = R.drawable.calendar
         val location = R.drawable.location_on
@@ -32,6 +32,7 @@ sealed interface AppIcons {
         val search2 = R.drawable.search2
         val file = R.drawable.ic_file
         val prescription = R.drawable.prescriptions
+        val fulfilledPrescription = R.drawable.ic_fulfilled_prescription
         val check = R.drawable.ic_check
         val refresh = R.drawable.ic_refresh
         val email = R.drawable.ic_email
@@ -46,9 +47,8 @@ sealed interface AppIcons {
         val edit = R.drawable.ic_edit
         val department = R.drawable.ic_department
         val checkWithBorder = R.drawable.ic_check_with_border
-        val upcomingEvent = R.drawable.ic_check_with_border
         val note = R.drawable.ic_note
-        val pending = R.drawable.pending
+        val upcomingEvent = R.drawable.pending
         val bloodType = R.drawable.bloodtype
         val medicalDiagnosis = R.drawable.ic_medical_diagnosis
         val clock = R.drawable.ic_clock
@@ -85,5 +85,11 @@ sealed interface AppIcons {
         val titer = R.drawable.titer
         val factory = R.drawable.factory
         val alternative = R.drawable.alternative
+        val update = R.drawable.update
+        val wavingHand = R.drawable.ic_waving_hand
+        val pharmacyLocation = R.drawable.ic_pharmacy_location
+        val medicine = R.drawable.ic_medicine
+        val code = R.drawable.ic_code
+        val pharmacy = R.drawable.ic_pharmacy
     }
 }

@@ -36,6 +36,9 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
+import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageLoader
+import com.example.ui_components.components.network_image.SmallNetworkImageError
 
 @Composable
 fun PrescriptionCard(
@@ -44,43 +47,55 @@ fun PrescriptionCard(
     numberOfMedicines: Int,
     date: String,
     onClick: () -> Unit,
+    isChild: Boolean,
     modifier: Modifier = Modifier,
     @DrawableRes medicinesIcon: Int = AppIcons.Outlined.bloodType,
-    @DrawableRes dateIcon: Int = AppIcons.Outlined.date
+    @DrawableRes dateIcon: Int = AppIcons.Outlined.update
 ) {
     Card(
-        modifier = modifier.clickable{onClick()},
+        modifier = modifier
+            .clip(MaterialTheme.shapes.small)
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
-        shape = MaterialTheme.shapes.small
     ) {
         Column(
-            modifier = Modifier.padding(
-                MaterialTheme.spacing.medium16
-            ),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small12),
             horizontalAlignment = Alignment.Start,
         ) {
             // top section
             Row(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(
+                    start = MaterialTheme.spacing.medium16,
+                    end = MaterialTheme.spacing.medium16,
+                    top = MaterialTheme.spacing.small12,
+
+                    ),
             ) {
-                if (!LocalInspectionMode.current) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(imgUrl)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
+                if (!isChild) {
+                    NetworkImage(
+                        model = imgUrl,
                         modifier = Modifier
-                            .background(
-                                color = MaterialTheme.colorScheme.primaryContainer
-                            )
                             .size(MaterialTheme.sizing.medium40)
                             .clip(CircleShape),
                         contentScale = ContentScale.Crop,
+                        loading = {
+                            NetworkImageLoader(
+                                modifier = Modifier
+                                    .size(MaterialTheme.sizing.medium40)
+                                    .clip(CircleShape)
+                            )
+                        },
+                        errorCompose = {
+                            SmallNetworkImageError(
+                                modifier = Modifier
+                                    .size(MaterialTheme.sizing.medium40)
+                                    .clip(CircleShape),
+                            )
+                        }
                     )
                 } else {
                     Box(
@@ -112,16 +127,16 @@ fun PrescriptionCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 DetailsItem(
-                    iconRes = dateIcon,
+                    iconRes = medicinesIcon,
                     modifier = Modifier.weight(1f),
-                    title = stringResource(R.string.appointments),
+                    title = stringResource(R.string.medicines),
                     description = numberOfMedicines.toString(),
                     iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer
                 )
                 DetailsItem(
-                    iconRes = medicinesIcon,
+                    iconRes = dateIcon,
                     modifier = Modifier.weight(1f),
-                    title = stringResource(R.string.prescriptions),
+                    title = stringResource(R.string.date),
                     description = date,
                     iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer
                 )
@@ -141,6 +156,23 @@ fun PrescriptionCardPreview() {
             numberOfMedicines = 2,
             date = "30/1/2025",
             onClick = {},
+            isChild = false,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PrescriptionChildCardPreview() {
+    Hospital_AutomationTheme {
+        PrescriptionCard(
+            imgUrl = "",
+            name = "Mariam Saoud",
+            numberOfMedicines = 2,
+            date = "30/1/2025",
+            onClick = {},
+            isChild = true,
             modifier = Modifier.fillMaxWidth(),
         )
     }

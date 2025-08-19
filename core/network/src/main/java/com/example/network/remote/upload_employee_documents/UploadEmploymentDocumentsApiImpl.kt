@@ -14,6 +14,6 @@ class UploadEmploymentDocumentsApiImpl(
         uploadFileApi.uploadFile(
             token = token,
             uri = uri,
-            endPoint = ApiRoutes.uploadEmploymentDocumentsEndPointFor(role)
+            endPoint = ApiRoutes.getUploadEmploymentDocumentsEndPointFor(role)
         )
 }

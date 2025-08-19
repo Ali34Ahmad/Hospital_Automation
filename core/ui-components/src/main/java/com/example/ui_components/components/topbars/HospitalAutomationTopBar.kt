@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,37 +32,40 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageError
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HospitalAutomationTopBar(
-    title: String,
-    onNavigationIconClick: () -> Unit,
     modifier: Modifier = Modifier,
+    title: String,
+    subTitle: String? = null,
+    onNavigationIconClick: () -> Unit,
     @DrawableRes navigationIcon: Int? = null,
     imageUrl: String? = null,
     @DrawableRes imagePlaceholder: Int = AppIcons.Outlined.child,
-    showImagePlaceHolder: Boolean =  false,
+    showImagePlaceHolder: Boolean = false,
     actionIcons: List<ActionIcon> = emptyList(),
-    trailingContent: @Composable ()-> Unit = {},
     hasTrailingContent: Boolean = false,
-    ) {
+    trailingContent: @Composable () -> Unit = {},
+) {
     TopAppBar(
         modifier = modifier,
         title = {
-            if(imageUrl.isNullOrBlank()&& !showImagePlaceHolder){
+            if (imageUrl.isNullOrBlank() && !showImagePlaceHolder) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-            }else{
+            } else {
                 Row(
                     modifier = Modifier.fillMaxWidth(1f),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if(showImagePlaceHolder){
+                    if (showImagePlaceHolder) {
                         Icon(
                             painterResource(imagePlaceholder),
                             contentDescription = null,
@@ -75,33 +79,45 @@ fun HospitalAutomationTopBar(
                                 .padding(MaterialTheme.spacing.extraSmall4),
                             tint = MaterialTheme.colorScheme.primary
                         )
-                    }else{
+                    } else {
                         NetworkImage(
                             model = imageUrl,
                             modifier = Modifier
+                                .padding(MaterialTheme.spacing.small8)
                                 .size(MaterialTheme.sizing.medium44)
-                                .clip(CircleShape)
-                            ,
+                                .clip(CircleShape),
                             contentScale = ContentScale.Crop,
                             loading = {
-                                Box(
+                                NetworkImageLoader(
                                     modifier = Modifier
-                                        .size(MaterialTheme.sizing.medium44)
                                         .clip(CircleShape)
-                                        .shimmerEffect()
+                                        .padding(MaterialTheme.sizing.small16)
+                                        .size(MaterialTheme.sizing.medium40)
                                 )
                             },
                             errorCompose = {
-                                FailedImage(
-                                    size = MaterialTheme.sizing.medium44,
-                                )
+                                NetworkImageError()
                             },
                         )
                     }
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(
+                            MaterialTheme.spacing.extraSmall4
+                        )
+                    ) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+
+                        subTitle?.let {
+                            Text(
+                                text = subTitle,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
             }
         },
@@ -159,16 +175,31 @@ fun HospitalAutomationTopBarWithImagePreview() {
             title = "Mail",
             navigationIcon = AppIcons.Outlined.menu,
             onNavigationIconClick = {},
-            imageUrl ="example"
+            imageUrl = "example"
         )
     }
 }
+
+@DarkAndLightModePreview
+@Composable
+fun HospitalAutomationTopBarWithImageAndSubtitlePreview() {
+    Hospital_AutomationTheme {
+        HospitalAutomationTopBar(
+            title = "Mail",
+            subTitle = "Mail",
+            navigationIcon = AppIcons.Outlined.menu,
+            onNavigationIconClick = {},
+            imageUrl = "example"
+        )
+    }
+}
+
 @DarkAndLightModePreview
 @Composable
 fun HospitalAutomationTopBarActionsPreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
-            title ="Mail",
+            title = "Mail",
             navigationIcon = AppIcons.Outlined.menu,
             onNavigationIconClick = {},
             imageUrl = null,
@@ -191,33 +222,11 @@ fun HospitalAutomationTopBarActionsPreview() {
 fun HospitalAutomationTopBarPlaceholderActionsPreview() {
     Hospital_AutomationTheme {
         HospitalAutomationTopBar(
-            title ="Mail",
+            title = "Mail",
             navigationIcon = AppIcons.Outlined.menu,
             onNavigationIconClick = {},
             imageUrl = null,
             showImagePlaceHolder = true
-        )
-    }
-}
-
-@DarkAndLightModePreview
-@Composable
-fun HospitalAutomationTopBarWithTrailingPreview() {
-    Hospital_AutomationTheme {
-        HospitalAutomationTopBar(
-            title ="Mail",
-            navigationIcon = AppIcons.Outlined.menu,
-            onNavigationIconClick = {},
-            imageUrl = null,
-            showImagePlaceHolder = true,
-            hasTrailingContent = true,
-            trailingContent = {
-                TextButton(
-                    onClick = {}
-                ) {
-                    Text("Skip")
-                }
-            }
         )
     }
 }

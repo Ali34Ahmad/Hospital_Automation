@@ -68,6 +68,10 @@ class EmployeeProfileViewModel(
                 logout()
             }
 
+            override fun onResign() {
+                TODO("Not yet implemented")
+            }
+
             override fun hideErrorDialog() {
                 setErrorDialogState(false, null)
             }
@@ -139,7 +143,8 @@ class EmployeeProfileViewModel(
     private fun getEmployeeProfile() {
         when (uiState.value.profileAccessType) {
             ProfileAccessType.TOKEN_ACCESS -> getCurrentEmployeeProfile()
-            ProfileAccessType.ID_ACCESS -> getEmployeeProfileById()
+            ProfileAccessType.EMPLOYEE_ID_ACCESS -> getEmployeeProfileById()
+            ProfileAccessType.ADMIN_ACCESS -> TODO()
             null -> null
         }
     }
@@ -261,7 +266,8 @@ class EmployeeProfileViewModel(
     private fun refreshData() {
         when (uiState.value.profileAccessType) {
             ProfileAccessType.TOKEN_ACCESS -> refreshCurrentEmployeeData()
-            ProfileAccessType.ID_ACCESS -> refreshEmployeeByIdData()
+            ProfileAccessType.EMPLOYEE_ID_ACCESS -> refreshEmployeeByIdData()
+            ProfileAccessType.ADMIN_ACCESS -> TODO()
             null -> null
         }
     }

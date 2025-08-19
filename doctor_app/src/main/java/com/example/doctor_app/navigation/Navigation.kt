@@ -1,6 +1,7 @@
 package com.example.doctor_app.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
@@ -8,7 +9,9 @@ import com.example.add_new_vaccine.navigation.addNewVaccineScreen
 import com.example.add_new_vaccine.navigation.navigateToAddNewVaccineScreen
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
-import com.example.doctor_profile.navigation.ProfileAccessType
+import com.example.admin_profile.navigation.navigateToAdminProfileScreen
+import com.example.vaccines.navigation.allVaccinesScreen
+import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_signup.navigation.DoctorSignUpRoute
@@ -18,11 +21,22 @@ import com.example.email_verification.email_verified_successfully.navigation.ema
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
 import com.example.email_verification.otp_verification.naviation.navigateToEmailOtpVerificationScreen
+import com.example.employment_history.navigation.EmploymentHistoryRoute
+import com.example.employment_history.navigation.employmentHistoryScreen
 import com.example.employment_history.navigation.navigateToEmploymentHistoryScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
+import com.example.login.navigation.LoginRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
+import com.example.medical_prescriptions.navigation.medicalPrescriptionsScreen
+import com.example.medical_records.navigation.MedicalRecordsRoute
+import com.example.medical_records.navigation.medicalRecordsScreen
+import com.example.navigation.extesion.navigateToCallApp
+import com.example.navigation.extesion.navigateToEmailApp
+import com.example.pharmacy_details.navigation.PharmacyAccessType
+import com.example.pharmacy_details.navigation.PharmacyDetailsRoute
+import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
 import com.example.reset_password.navigation.navigateToResetPasswordScreen
 import com.example.reset_password.navigation.resetPasswordScreen
 import com.example.upload_employee_documents.navigation.navigateToUploadEmployeeDocumentsScreen
@@ -35,14 +49,16 @@ import com.example.vaccine_details_screen.navigation.vaccineDetailsScreen
 
 @Composable
 fun Navigation() {
+    val context = LocalContext.current
+
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoute,
+        startDestination = EmploymentHistoryRoute,
     ) {
 
         navigation<AuthGraphRoute>(
-            startDestination = DoctorSignUpRoute,
+            startDestination = LoginRoute,
         ) {
             doctorSignUpScreen(
                 onNavigateToEmailVerificationScreen = { email, password ->
@@ -90,7 +106,7 @@ fun Navigation() {
                 onNavigateToHomeScreenScreen = {
 //                    navController.navigateToScheduleScreen()
                     navController.navigateToDoctorProfileScreen(
-                        profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                         doctorId = null
                     )
                 }
@@ -101,7 +117,10 @@ fun Navigation() {
                     navController.navigateToEnterEmailScreen()
                 },
                 onNavigateToHomeScreen = {
-                    navController.navigateToAddNewVaccineScreen()
+                    navController.navigateToDoctorProfileScreen(
+                        doctorId = null,
+                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS
+                    )
 //                    navController.navigate(
 //                        DoctorProfileRoute(
 //                            ProfileAccessType.TOKEN_ACCESS,
@@ -126,7 +145,7 @@ fun Navigation() {
             resetPasswordScreen(
                 onNavigateToHomeScreen = {
                     navController.navigateToDoctorProfileScreen(
-                        profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                         doctorId = null
                     )
                 }
@@ -171,7 +190,7 @@ fun Navigation() {
         vaccineDetailsScreen(
             onNavigateToVaccinationTableScreen = {
                 navController.navigateToDoctorProfileScreen(
-                    profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                     doctorId = null,
                 )
             },
@@ -179,5 +198,56 @@ fun Navigation() {
 //                navController.navigateToVaccinesScreen()
             },
         )
+
+        medicalPrescriptionsScreen(
+            onNavigateUp = {
+
+            },
+            onNavigateToPrescriptionDetailsScreen = {
+
+            }
+        )
+
+        allVaccinesScreen(
+            onNavigateUp = {},
+            onNavigateToVaccineDetailsScreen = { vaccineId ->
+                navController.navigateToVaccineDetailsScreen(
+                    vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
+                    vaccineId = vaccineId,
+                )
+            }
+        )
+
+        pharmacyDetailsScreen(
+            onNavigateUp = { },
+            onNavigateToEmailApp = { email, subject ->
+                context.navigateToEmailApp(email, subject)
+            },
+            onNavigateToCallApp = { phoneNumber ->
+                context.navigateToCallApp(phoneNumber)
+            },
+            onNavigateToFulfilledPrescriptionsScreen = {},
+            onNavigateToMedicinesScreen = {},
+            onNavigateToEmploymentHistoryScreen = {},
+        )
+
+        employmentHistoryScreen(
+            onNavigateToAcceptedByAdminProfileScreen = { },
+            onNavigateToToResignedByAdminProfileScreen = { },
+            onNavigateUp = { },
+            onNavigateToToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+                if (suspendedById != currentEmployeeId) {
+                    navController.navigateToAdminProfileScreen(suspendedById)
+                } else {
+                    navController.navigateUp()
+                }
+            }
+        )
+        medicalRecordsScreen(
+            onNavigateUp = {  },
+            onNavigateToAppointmentsScreen = {patientId,childId->  },
+            onNavigateToPrescriptionsScreen = {patientId,childId->  }
+        )
+
     }
 }

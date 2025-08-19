@@ -86,7 +86,8 @@ fun EmploymentHistoryScreen(
                 onNavigationIconClick = { uiActions.navigateUp() },
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = AppIcons.Outlined.arrowBack,
-                imageUrl = null,
+                subTitle = uiState.employmentHistory?.currentUser?.subInfo,
+                imageUrl = uiState.employmentHistory?.currentUser?.imageUrl,
             )
         }
     ) { contentPadding ->

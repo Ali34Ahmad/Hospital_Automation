@@ -32,7 +32,9 @@ class UserPreferencesServiceImpl(
                 } else {
                     val encryptedBytes = Base64.decode(encrypted, Base64.DEFAULT)
                     val decrypted = Crypto.decrypt(encryptedBytes)
-                    String(decrypted, Charsets.UTF_8)
+                    if (decrypted != null)
+                        String(decrypted, Charsets.UTF_8)
+                    else null
                 }
 
                 UserPreferences(

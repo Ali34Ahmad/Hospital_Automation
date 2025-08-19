@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.doctor_profile.navigation.DoctorProfileRoute
-import com.example.doctor_profile.navigation.ProfileAccessType
+import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.domain.use_cases.auth.LogoutUseCase
 import com.example.domain.use_cases.doctor.profile.GetCurrentDoctorProfileUseCase
 import com.example.domain.use_cases.employee_account_management.DeactivateMyAccountUseCase
@@ -40,7 +40,7 @@ class DoctorProfileViewModel(
 
     init {
         val route = savedStateHandle.toRoute<DoctorProfileRoute>()
-        updateNavArgs(route.profileAccessType, route.doctorId)
+        updateNavArgs(route.doctorProfileAccessType, route.doctorId)
         getDoctorProfile()
     }
 
@@ -53,11 +53,11 @@ class DoctorProfileViewModel(
 
     private fun getBusinessUiActions(): DoctorProfileBusinessUiActions =
         object : DoctorProfileBusinessUiActions {
-            override fun onDeactivateMyAccount() {
+            override fun onDeactivateAccount() {
                 deactivateMyAccount()
             }
 
-            override fun onReactivateMyAccount() {
+            override fun onReactivateAccount() {
                 reactivateMyAccount()
             }
 
@@ -66,7 +66,11 @@ class DoctorProfileViewModel(
                 logout()
             }
 
-            override fun hideErrorDialog() {
+            override fun onResignDoctor() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onHideErrorDialog() {
                 setErrorDialogState(false, null)
             }
 
@@ -74,16 +78,20 @@ class DoctorProfileViewModel(
                 refreshData()
             }
 
-            override fun clearToastMessage() {
+            override fun onClearToastMessage() {
                 updateToastMessage(null)
+            }
+
+            override fun onUpdateSelectedAppointmentTypeDialog(index: Int?) {
+                updateSelectedAppointmentType(selectedAppointmentTypeIndex =index)
             }
 
         }
 
-    private fun updateNavArgs(profileAccessType: ProfileAccessType, employeeId: Int?) {
+    private fun updateNavArgs(doctorProfileAccessType: DoctorProfileAccessType, employeeId: Int?) {
         _uiState.update {
             it.copy(
-                profileAccessType = profileAccessType,
+                doctorProfileAccessType = doctorProfileAccessType,
                 doctorId = employeeId
             )
         }
@@ -116,11 +124,16 @@ class DoctorProfileViewModel(
     }
 
     private fun getDoctorProfile() {
-        when (uiState.value.profileAccessType) {
-            ProfileAccessType.TOKEN_ACCESS -> getCurrentDoctorProfile()
-            ProfileAccessType.ID_ACCESS -> TODO()
+        when (uiState.value.doctorProfileAccessType) {
+            DoctorProfileAccessType.TOKEN_ACCESS -> getCurrentDoctorProfile()
+            DoctorProfileAccessType.VIEWER_ACCESS -> TODO()
+            DoctorProfileAccessType.ADMIN_ACCESS -> TODO()
             null -> null
         }
+    }
+
+    private fun updateSelectedAppointmentType(selectedAppointmentTypeIndex: Int?){
+        _uiState.update { it.copy(selectedAppointmentTypeIndex = selectedAppointmentTypeIndex) }
     }
 
     private fun setLoadingDialogState(showLoadingDialog: Boolean, text: UiText?) {
@@ -238,9 +251,10 @@ class DoctorProfileViewModel(
     }
 
     private fun refreshData() {
-        when (uiState.value.profileAccessType) {
-            ProfileAccessType.TOKEN_ACCESS -> refreshCurrentDoctorData()
-            ProfileAccessType.ID_ACCESS -> TODO()
+        when (uiState.value.doctorProfileAccessType) {
+            DoctorProfileAccessType.TOKEN_ACCESS -> refreshCurrentDoctorData()
+            DoctorProfileAccessType.VIEWER_ACCESS -> TODO()
+            DoctorProfileAccessType.ADMIN_ACCESS -> TODO()
             null -> null
         }
     }

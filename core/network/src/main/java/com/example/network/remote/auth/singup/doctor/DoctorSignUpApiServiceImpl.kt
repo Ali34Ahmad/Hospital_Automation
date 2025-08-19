@@ -21,7 +21,7 @@ class DoctorSignUpApiServiceImpl(
 ) : DoctorSignUpApiService {
     override suspend fun signup(doctorRegistrationRequestDto: DoctorRegistrationRequestDto): Result<BaseRegistrationResponseDto, rootError> =
         try {
-            val response = client.post(ApiRoutes.singUpEndpointFor(doctorRegistrationRequestDto.role)) {
+            val response = client.post(ApiRoutes.getSingUpEndpointFor(doctorRegistrationRequestDto.role)) {
                 contentType(ContentType.Application.Json)
                 setBody(doctorRegistrationRequestDto)
             }

@@ -14,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import com.example.ui_components.R
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -37,7 +39,7 @@ fun IconWithBackground(
         contentAlignment = Alignment.Center,
     ) {
         Icon(
-            painter = painterResource(iconRes),
+            imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = stringResource(contentDescription ?: R.string.blank),
             tint = iconColor,
             modifier=Modifier.size(MaterialTheme.sizing.small18),

@@ -33,6 +33,10 @@ fun mockEmployeeProfileBusinessUiActions()=object : EmployeeProfileBusinessUiAct
 
     }
 
+    override fun onResign() {
+
+    }
+
     override fun hideErrorDialog() {
 
     }

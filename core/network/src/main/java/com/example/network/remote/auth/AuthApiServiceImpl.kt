@@ -3,7 +3,6 @@ package com.example.network.remote.auth
 import android.util.Log
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.auth.LoginRequestDto
-import com.example.network.model.request.auth.LogoutRequestDto
 import com.example.network.model.request.auth.ResetPasswordRequestDto
 import com.example.network.model.request.auth.SendOtpRequestDto
 import com.example.network.model.request.auth.VerifyEmailOtpRequestDto
@@ -36,7 +35,7 @@ class AuthApiServiceImpl(
     ): Result<LoginResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.loginEndpointFor(role)) {
+                client.post(ApiRoutes.getLoginEndpointFor(role)) {
                     contentType(ContentType.Application.Json)
                     setBody(loginRequestDto)
                 }
@@ -65,7 +64,7 @@ class AuthApiServiceImpl(
     ): Result<VerifyEmailOtpResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.verifyEmailEndpointFor(role)) {
+                client.post(ApiRoutes.getVerifyEmailEndpointFor(role)) {
                     contentType(ContentType.Application.Json)
                     setBody(verifyEmailOtpRequestDto)
                 }
@@ -99,7 +98,7 @@ class AuthApiServiceImpl(
     ): Result<SendOtpResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.sendOtpToEmailEndpointFor(role)) {
+                client.post(ApiRoutes.getSendOtpToEmailEndpointFor(role)) {
                     contentType(ContentType.Application.Json)
                     setBody(sendOtpCodeRequest)
                 }
@@ -129,7 +128,7 @@ class AuthApiServiceImpl(
     ): Result<ResetPasswordResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.resetPasswordEndPointFor(role)) {
+                client.post(ApiRoutes.getResetPasswordEndPointFor(role)) {
                     contentType(ContentType.Application.Json)
                     setBody(resetPasswordRequestDto)
                 }
@@ -157,7 +156,7 @@ class AuthApiServiceImpl(
     ): Result<LogoutResponseDto, rootError> =
         try {
             val response: HttpResponse =
-                client.post(ApiRoutes.logoutEndPointFor(role)) {
+                client.post(ApiRoutes.getLogoutEndPointFor(role)) {
                     contentType(ContentType.Application.Json)
                     bearerAuth(token)
                 }

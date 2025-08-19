@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.doctor_app.navigation.FakeNavigation
+import com.example.datastore.utility.Crypto
+import com.example.doctor_app.navigation.Navigation
 import com.example.ui.theme.Hospital_AutomationTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Hospital_AutomationTheme {
-                FakeNavigation()
+                Navigation()
             }
         }
     }

@@ -13,6 +13,7 @@ interface EmployeeProfileBusinessUiActions {
     fun onDeactivateMyAccount()
     fun onReactivateMyAccount()
     fun onLogout()
+    fun onResign()
     fun hideErrorDialog()
     fun onRefresh()
     fun clearToastMessage()

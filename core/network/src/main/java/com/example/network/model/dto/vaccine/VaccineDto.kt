@@ -19,5 +19,5 @@ data class VaccineDto(
     val maxAge: Int,
     val maxAgeUnit: AgeUnitDto,
 
-    val interactions: List<VaccineInteractionDto>?,
+    val interactions: List<VaccineInteractionDto>?=null,
 )

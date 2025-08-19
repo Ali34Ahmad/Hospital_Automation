@@ -9,6 +9,7 @@ import com.example.data.repositories.doctor.DoctorProfileRepositoryImpl
 import com.example.data.repositories.download_file.DownloadFileRepositoryImpl
 import com.example.data.repositories.employee_account_management.EmployeeAccountManagementRepositoryImpl
 import com.example.data.repositories.employment_history.EmploymentHistoryRepositoryImpl
+import com.example.data.repositories.medical_record.MedicalRecordRepositoryImpl
 import com.example.data.repositories.medicine.MedicineRepositoryImp
 import com.example.data.repositories.pharmacy.PharmacyRepositoryImp
 import com.example.data.repositories.prescription.PrescriptionRepositoryImp
@@ -30,6 +31,7 @@ import com.example.domain.repositories.file.DownloadFileRepository
 import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
 import com.example.domain.repositories.file.UploadEmploymentDocumentsRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
+import com.example.domain.repositories.medical_record.MedicalRecordRepository
 import com.example.domain.repositories.pharmacy.PharmacyRepository
 import com.example.domain.repositories.prescription.PrescriptionRepository
 import com.example.domain.repositories.profile.AdminProfileRepository
@@ -71,6 +73,7 @@ val doctorDataModule = module {
     singleOf(::EmployeeAccountManagementRepositoryImpl) { bind<EmployeeAccountManagementRepository>() }
 
     singleOf(::VaccineRepositoryImpl) { bind<VaccineRepository>() }
+    singleOf(::MedicalRecordRepositoryImpl) { bind<MedicalRecordRepository>() }
 
 
 }

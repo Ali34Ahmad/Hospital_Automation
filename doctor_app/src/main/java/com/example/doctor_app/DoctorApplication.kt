@@ -15,14 +15,19 @@ import com.example.email_verification.emailVerificationModule
 import com.example.employment_history.employmentHistoryModule
 import com.example.enter_email.enterEmailModule
 import com.example.login.loginModule
+import com.example.medical_diagnosis.di.diagnosisModule
+import com.example.medical_prescription_details.prescriptionDetailsModule
+import com.example.medical_prescriptions.medicalPrescriptionsModule
+import com.example.medical_records.medicalRecordsModule
+import com.example.medicine_details.di.medicineDetailsModule
+import com.example.medicines_search.di.medicinesSearchModule
+import com.example.pharmacies.di.pharmaciesModule
+import com.example.pharmacy_details.pharmacyDetailsModule
 import com.example.reset_password.resetPasswordModule
 import com.example.upload_employee_documents.uploadEmploymentDocumentsModule
 import com.example.upload_employee_profile_image.uploadEmployeeProfileImageModule
 import com.example.vaccine_details_screen.vaccineDetailsModule
-import com.example.medical_diagnosis.di.diagnosisModule
-import com.example.medicine_details.di.medicineDetailsModule
-import com.example.medicines_search.di.medicinesSearchModule
-import com.example.pharmacies.di.pharmaciesModule
+import com.example.vaccines.allVaccinesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -32,7 +37,6 @@ class DoctorApplication: Application() {
         startKoin {
             androidContext(this@DoctorApplication)
             modules(
-
                 doctorDataModule,
                 addResidentialAddressModule,
                 doctorProfileModule,
@@ -58,6 +62,11 @@ class DoctorApplication: Application() {
                 medicineDetailsModule,
                 medicinesSearchModule,
                 pharmaciesModule,
+                medicalPrescriptionsModule,
+                allVaccinesModule,
+                pharmacyDetailsModule,
+                prescriptionDetailsModule,
+                medicalRecordsModule,
             )
         }
     }

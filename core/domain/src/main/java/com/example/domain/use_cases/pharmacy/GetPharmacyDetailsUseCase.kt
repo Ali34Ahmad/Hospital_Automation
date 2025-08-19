@@ -1,0 +1,14 @@
+package com.example.domain.use_cases.pharmacy
+
+import com.example.domain.repositories.pharmacy.PharmacyRepository
+import com.example.model.pharmacy.PharmacyDetailsResponse
+import com.example.utility.network.Result
+import com.example.utility.network.rootError
+
+class GetPharmacyDetailsUseCase(
+    private val pharmacyRepository: PharmacyRepository
+) {
+    suspend operator fun invoke(id:Int): Result<PharmacyDetailsResponse, rootError> {
+        return pharmacyRepository.getPharmacyDetailsById(id)
+    }
+}

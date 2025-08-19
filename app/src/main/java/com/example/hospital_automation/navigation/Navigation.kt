@@ -266,7 +266,7 @@ fun Navigation() {
             navigateToAddGuardianScreen = navController::navigateToGuardiansScreen,
             navigateToEmployeeProfileScreen = { employeeId ->
                 navController.navigateToEmployeeProfileScreen(
-                    profileAccessType = ProfileAccessType.ID_ACCESS,
+                    profileAccessType = ProfileAccessType.EMPLOYEE_ID_ACCESS,
                     employeeId = employeeId
                 )
             },

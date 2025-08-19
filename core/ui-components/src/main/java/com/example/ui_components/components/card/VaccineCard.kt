@@ -49,7 +49,7 @@ fun VaccineCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
             ) {
-                if (true) {
+                if (vaccine.quantity>0) {
                     Spacer(
                         modifier = Modifier
                             .size(MaterialTheme.sizing.extraSmall4)

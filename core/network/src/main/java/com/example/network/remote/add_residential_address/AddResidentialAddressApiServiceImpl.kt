@@ -1,7 +1,6 @@
 package com.example.network.remote.add_residential_address
 
 import android.util.Log
-import com.example.datastore.service.UserPreferencesService
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.AddressRequestDto
 import com.example.network.model.response.AddAddressResponseDto
@@ -15,7 +14,6 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.coroutines.flow.first
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
@@ -27,7 +25,7 @@ class AddResidentialAddressApiServiceImpl(
         addAddressRequestDto: AddressRequestDto,
         role: RoleDto,
     ): Result<AddAddressResponseDto, rootError> = try {
-        val response = client.post(ApiRoutes.addResidentialAddressEndPointFor(role)) {
+        val response = client.post(ApiRoutes.getAddResidentialAddressEndPointFor(role)) {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
             setBody(addAddressRequestDto)

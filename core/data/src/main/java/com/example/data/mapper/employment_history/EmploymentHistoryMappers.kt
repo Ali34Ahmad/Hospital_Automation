@@ -27,6 +27,7 @@ fun UserDetailsDto.toUserDetails(): UserDetails {
             middleName = this.middleName,
             lastName = this.lastName
         ),
+        subInfo=subInfo,
         isResigned = this.isResigned,
         acceptedBy = this.acceptedBy,
         suspendedBy = this.suspendedBy,

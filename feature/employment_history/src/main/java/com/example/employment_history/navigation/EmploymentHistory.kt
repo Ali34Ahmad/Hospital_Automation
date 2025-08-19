@@ -23,7 +23,7 @@ fun NavGraphBuilder.employmentHistoryScreen(
     onNavigateToAcceptedByAdminProfileScreen: (adminId: Int) -> Unit,
     onNavigateToToResignedByAdminProfileScreen: (resignedById: Int) -> Unit,
     onNavigateUp:()->Unit,
-    onNavigateToToSuspendedByAdminProfileScreen: (acceptedById: Int, currentEmployeeId: Int) -> Unit,
+    onNavigateToToSuspendedByAdminProfileScreen: (suspendedById: Int, currentEmployeeId: Int) -> Unit,
 ) {
     composable<EmploymentHistoryRoute> {
         val viewModel = koinViewModel<EmploymentHistoryViewModel>()

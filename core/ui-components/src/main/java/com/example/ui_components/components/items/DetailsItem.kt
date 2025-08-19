@@ -1,7 +1,9 @@
 package com.example.ui_components.components.items
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,7 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,10 +37,12 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
+import com.example.ui_components.components.network_image.NetworkImage
 
 @Composable
 fun DetailsItem(
-    @DrawableRes iconRes: Int,
+    @DrawableRes iconRes: Int?,
+    imageUrl: String?=null,
     modifier: Modifier = Modifier,
     iconBackgroundColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
     iconColor: Color = MaterialTheme.colorScheme.primary,
@@ -66,11 +73,34 @@ fun DetailsItem(
     }
 
     Row(modifier = rowModifier) {
-        IconWithBackground(
-            iconRes = iconRes,
-            backgroundColor = iconBackgroundColor,
-            iconColor = iconColor,
-        )
+        if (imageUrl==null&&iconRes!=null){
+            IconWithBackground(
+                iconRes = iconRes,
+                backgroundColor = iconBackgroundColor,
+                iconColor = iconColor,
+            )
+        }else{
+            NetworkImage(
+                model = imageUrl,
+                contentScale = ContentScale.Crop,
+                modifier=Modifier.size(MaterialTheme.sizing.small24)
+                    .clip(CircleShape),
+                loading = {
+                    Box(
+                        modifier=Modifier.size(MaterialTheme.sizing.small24)
+                            .background(color = MaterialTheme.colorScheme.outlineVariant)
+                            .clip(CircleShape),
+                    )
+                },
+                errorCompose = {
+                    Box(
+                        modifier=Modifier.size(MaterialTheme.sizing.small24)
+                            .background(color = MaterialTheme.colorScheme.outlineVariant)
+                            .clip(CircleShape),
+                    )
+                }
+            )
+        }
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium16))
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -130,7 +160,8 @@ fun DetailsItemPreview() {
                     .padding(
                         horizontal = MaterialTheme.spacing.medium16,
                         vertical = MaterialTheme.spacing.small12
-                    ),
+                    )
+                    .background((MaterialTheme.colorScheme.background)),
             )
         }
     }
@@ -153,7 +184,8 @@ fun ClickableDetailsItemPreview() {
                     .padding(
                         horizontal = MaterialTheme.spacing.medium16,
                         vertical = MaterialTheme.spacing.small12
-                    ),
+                    )
+                    .background((MaterialTheme.colorScheme.background)),
             )
         }
     }
@@ -176,7 +208,36 @@ fun ClickableDescriptionDetailsItemPreview() {
                     .padding(
                         horizontal = MaterialTheme.spacing.medium16,
                         vertical = MaterialTheme.spacing.small12
-                    ),
+                    )
+                    .background((MaterialTheme.colorScheme.background)),
+                descriptionClickableTextRange = "Uploaded by Zaid Ahmad".clickableTextRange("Zaid Ahmad"),
+                onDescriptionClick = {},
+            )
+        }
+    }
+}
+
+
+@DarkAndLightModePreview
+@Composable
+fun DetailsItemImagePreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            DetailsItem(
+                iconRes = null,
+                imageUrl = "",
+                iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                iconColor = MaterialTheme.colorScheme.primary,
+                title = stringResource(id = R.string.residential_address),
+                description = "Uploaded by Zaid Ahmad",
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = MaterialTheme.spacing.medium16,
+                        vertical = MaterialTheme.spacing.small12
+                    )
+                    .background((MaterialTheme.colorScheme.background)),
                 descriptionClickableTextRange = "Uploaded by Zaid Ahmad".clickableTextRange("Zaid Ahmad"),
                 onDescriptionClick = {},
             )

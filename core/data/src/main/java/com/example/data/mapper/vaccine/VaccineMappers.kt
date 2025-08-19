@@ -8,8 +8,10 @@ import com.example.model.vaccine.UpdateVaccinationTableRequest
 import com.example.model.vaccine.VaccinationTableUpdate
 import com.example.model.vaccine.VaccinationTableVisit
 import com.example.model.vaccine.VaccineData
+import com.example.model.vaccine.VaccineIdToVisitNumber
 import com.example.model.vaccine.VaccineInteraction
 import com.example.model.vaccine.VaccineMainInfo
+import com.example.model.vaccine.VaccinesIdsToVisitNumber
 import com.example.network.model.dto.vaccine.GenericVaccinationTableDto
 import com.example.network.model.dto.vaccine.VaccinationTableVisitDto
 import com.example.network.model.dto.vaccine.VaccineDto
@@ -17,6 +19,8 @@ import com.example.network.model.dto.vaccine.VaccineInteractionDto
 import com.example.network.model.dto.vaccine.VaccineMainInfoDto
 import com.example.network.model.request.vaccine.UpdateVaccinationTableRequestDto
 import com.example.network.model.request.vaccine.VaccinationTableUpdateDto
+import com.example.network.model.request.vaccine.VaccineIdToVisitNumberDto
+import com.example.network.model.request.vaccine.VaccinesIdsToVisitNumberDto
 import com.example.network.model.response.vaccine.VaccineResponseDto
 
 internal fun VaccineResponseDto.toVaccineData() =
@@ -89,5 +93,18 @@ internal  fun VaccinationTableUpdate.toUpdateVaccinationTableDto()=
         vaccineId = this.vaccineId,
     )
 
+
+internal fun VaccineIdToVisitNumber.toVaccineIdToVisitNumberDto() =
+    VaccineIdToVisitNumberDto(
+        visitNumber = this.visitNumber,
+        vaccineId = this.vaccineId!!,
+    )
+
+
+internal fun VaccinesIdsToVisitNumber.toVaccinesIdsToVisitNumberDto() =
+    VaccinesIdsToVisitNumberDto(
+        visitNumber = this.visitNumber,
+        vaccinesIds = this.vaccinesIds!!,
+    )
 
 
