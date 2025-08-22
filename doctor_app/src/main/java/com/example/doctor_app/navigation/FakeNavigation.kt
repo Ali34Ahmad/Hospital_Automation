@@ -31,7 +31,7 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = DoctorScheduleRoute
+        startDestination = DoctorScheduleRoute()
     ) {
         clinicsSearchScreen(
             onNavigateToDepartmentDetails = {clinicId->
@@ -85,7 +85,10 @@ fun FakeNavigation() {
         )
         doctorScheduleScreen(
             onNavigateToAppointmentDetails = {appointmentId ->
-                navController.navigateToAppointmentDetails(appointmentId)
+                navController.navigateToAppointmentDetails(
+                    appointmentId,
+                    canEdit = true
+                )
             },
             onNavigateToDoctorProfile = {
                 navController.navigateToDoctorProfileScreen(
@@ -132,7 +135,7 @@ fun FakeNavigation() {
             onNavigateToGuardianProfile = {guardianId->
                 navController.navigateToGuardianProfile(
                     guardianId = guardianId,
-                    userProfileMode = UserProfileMode.VIEW_ONLY,
+                    userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
                     childId = null
                 )
             },
@@ -143,7 +146,8 @@ fun FakeNavigation() {
         diagnosisScreen(
             onNavigateToAppointmentDetails = {appointmentId ->
                 navController.navigateToAppointmentDetailsReplacementCurrent(
-                    appointmentId = appointmentId
+                    appointmentId = appointmentId,
+                    canEdit = true
                 )
             },
             onNavigateToMedicinesSearchScreen = {
@@ -170,7 +174,8 @@ fun FakeNavigation() {
             },
             onNavigateToAppointmentDetails = { appointmentId->
                 navController.navigateToAppointmentDetailsReplacementCurrent(
-                    appointmentId = appointmentId
+                    appointmentId = appointmentId,
+                    canEdit = true
                 )
             }
         )

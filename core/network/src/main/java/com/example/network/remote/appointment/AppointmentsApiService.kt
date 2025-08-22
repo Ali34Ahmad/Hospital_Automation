@@ -30,6 +30,7 @@ interface AppointmentsApiService {
     suspend fun getAppointmentDetails(
         token: String,
         id: Int,
+        roleDto: RoleDto
     ): Result<ShowAppointmentDetails, NetworkError>
 
     suspend fun updateAppointmentStateToPassed(

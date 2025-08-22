@@ -25,9 +25,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.constants.icons.AppIcons
 import com.example.model.enums.AgeUnit
-import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
-import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.model.menu.DropDownMenuItem
 import com.example.model.tab.TabItemWithIcon
 import com.example.ui.helper.DarkAndLightModePreview
@@ -35,7 +34,6 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
-import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.dialog.TwoFieldsInputDialog
 import com.example.ui_components.components.tab.TabLayoutWithIcons
@@ -194,7 +192,7 @@ fun AddNewVaccineScreen(
                         },
                         selectedIndexItem = uiState.fromAgeUnit.ordinal,
                         isDropDownMenuError = uiState.fromAgeUnitError != null,
-                        dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.toCapitalizedString()) },
+                        dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.capitalFirstChar()) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Next
@@ -218,7 +216,7 @@ fun AddNewVaccineScreen(
                         onDropDownItemSelected = { uiActions.onUpdateSelectedToAgeUnitIndex(AgeUnit.entries[it]) },
                         selectedIndexItem = uiState.toAgeUnit.ordinal,
                         isDropDownMenuError = uiState.toAgeUnitError != null,
-                        dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.toCapitalizedString()) },
+                        dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.capitalFirstChar()) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Next

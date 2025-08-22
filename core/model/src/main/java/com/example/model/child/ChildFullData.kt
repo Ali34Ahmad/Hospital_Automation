@@ -1,7 +1,7 @@
 package com.example.model.child
 
 import com.example.model.age.Age
-import com.example.model.helper.ext.toAge
+import com.example.model.helper.ext.toAgeFromDate
 import java.time.LocalDate
 
 data class ChildFullData(
@@ -18,11 +18,14 @@ data class ChildFullData(
     val gender: String,
     val employeeId: Int? = null,
     val employeeName: String? = null,
+    val lastVaccination: LastVaccineData? = null,
+    val lastAppointment: LastAppointmentData? = null,
+    val nextVaccination: NextVaccineData? = null,
 ){
     val fullName: String
         get() = "$firstName $lastName"
     val age: Age
-        get() = dateOfBirth.toAge()
+        get() = dateOfBirth.toAgeFromDate()
     val fatherFullName: String
         get() = "$fatherFirstName $fatherLastName"
     val motherFullName: String

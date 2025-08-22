@@ -27,7 +27,7 @@ data class GuardianProfileRoute(
  * - [UserProfileMode.VIEW_ONLY]: View the user profile without any action.
  * - [UserProfileMode.SET_AS_GUARDIAN]: Display the user profile with the option to assign the current user as a guardian for a child.
  * - [UserProfileMode.ADD_CHILD]: Display the user profile with the option to add a child to the current user.
- *
+ * - [UserProfileMode.ONLY_COMMUNICATION_INFO] : Display the user profile without any private info.
  * If [userProfileMode] is [UserProfileMode.SET_AS_GUARDIAN], you must provide a non-null [childId].
  *
  * @param guardianId The ID of the current user.
@@ -55,6 +55,10 @@ fun NavGraphBuilder.guardianProfileScreen(
     onNavigateUp: () -> Unit,
     onNavigateToChildrenScreen: (guardianId: Int)-> Unit,
     onNavigateToAddChildScreen: (guardianId: Int)-> Unit,
+    onNavigateToAppointments: (guardianId: Int)-> Unit,
+    onNavigateToPrescriptions: (guardianId: Int)-> Unit,
+    onNavigateToMedicalRecord: (guardianId: Int)-> Unit,
+
 ){
     composable<GuardianProfileRoute> {
         val viewModel = koinViewModel<GuardianProfileViewModel>()
@@ -69,6 +73,11 @@ fun NavGraphBuilder.guardianProfileScreen(
             override fun navigateToAddChild(guardianId: Int) = onNavigateToAddChildScreen(guardianId)
 
             override fun navigateToChildren(guardianId: Int) = onNavigateToChildrenScreen(guardianId)
+            override fun navigateToAppointments(guardianId: Int) = onNavigateToAppointments(guardianId)
+
+            override fun navigateToPrescriptions(guardianId: Int) = onNavigateToPrescriptions(guardianId)
+
+            override fun navigateToMedicalRecord(guardianId: Int) = onNavigateToMedicalRecord(guardianId)
         }
         GuardianProfileScreen(
             viewModel = viewModel,

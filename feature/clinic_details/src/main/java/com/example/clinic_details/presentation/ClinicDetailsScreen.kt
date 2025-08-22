@@ -38,7 +38,7 @@ import com.example.ui_components.components.dialog.DialogWithDescription
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.WarningDialogWithInputField
 import com.example.ui_components.components.items.custom.FetchingDataItem
-import com.example.ui_components.components.list.DepartmentActionsCard
+import com.example.ui_components.components.list.DepartmentActions
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 
 
@@ -201,7 +201,7 @@ internal fun ClinicDetailsScreen(
                                 },
                             )
 
-                                DepartmentActionsCard(
+                                DepartmentActions(
                                     modifier = Modifier.padding(
                                         vertical = MaterialTheme.spacing.large24
                                     ),
@@ -254,8 +254,12 @@ internal fun ClinicDetailsScreen(
                                 },
                                 onDismissRequest = {
                                     onAction(ClinicDetailsUIAction.HideWarningDialog)
+                                    onAction(
+                                        ClinicDetailsUIAction.ClearDeactivationReason
+                                    )
                                 },
                                 onConfirm = {
+                                    onAction(ClinicDetailsUIAction.HideWarningDialog)
                                     onAction(
                                         ClinicDetailsUIAction.DeactivateClinic
                                     )
@@ -263,6 +267,9 @@ internal fun ClinicDetailsScreen(
                                 onDismiss = {
                                     onAction(ClinicDetailsUIAction.HideWarningDialog)
                                 },
+                                enableConfirmButton = uiState.isValidInput == true,
+                                hasError = uiState.isValidInput == false,
+                                isRequired = true,
                             )
                         }
                         LoadingDialog(

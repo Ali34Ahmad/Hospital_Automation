@@ -1,7 +1,7 @@
 package com.example.model.age
 
 import com.example.model.enums.AgeUnit
-import com.example.model.helper.ext.toCapitalized
+import com.example.model.helper.ext.capitalFirstChar
 
 data class Age(
     val value: Int,
@@ -12,7 +12,7 @@ fun Age.toAppropriateFormat():String{
     val value=this.value
     val unitText=if(value==1) this.unit
     else{
-        this.unit.name.toCapitalized()+"s"
+        this.unit.name.capitalFirstChar()+"s"
     }
     return "$value $unitText"
 }

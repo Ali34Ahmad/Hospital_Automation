@@ -46,11 +46,12 @@ fun MedicineCard(
     medicineName: String,
     drug: Int,
     price: Int,
-    numberOfPharmacies: Int,
+    numberOfPharmacies: Int?,
     onClick: () -> Unit,
     onPharmaciesClick: () -> Unit,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    hasActions: Boolean = true,
     currency: String = stringResource(R.string.syrian_pound),
     @DrawableRes secondaryIcon: Int = AppIcons.Outlined.location,
     @StringRes buttonText: Int = R.string.add_to_prescription
@@ -130,44 +131,48 @@ fun MedicineCard(
                 color = MaterialTheme.colorScheme.primary
             )
 
-            Spacer(Modifier.height(MaterialTheme.spacing.medium16))
 
             //pharmacies where it exists
-            Row(
-                modifier = Modifier.clickable(onClick = onPharmaciesClick),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
+            numberOfPharmacies?.let{numberOfPharmacies->
+            Spacer(Modifier.height(MaterialTheme.spacing.medium16))
+                Row(
+                    modifier = Modifier.clickable(onClick = onPharmaciesClick),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(MaterialTheme.sizing.small24)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primaryContainer),
+                        painter = painterResource(secondaryIcon),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(Modifier.width(MaterialTheme.spacing.small8))
+                    Text(
+                        text = "$numberOfPharmacies "+ stringResource(R.string.pharmacies),
+                        color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(Modifier.width(MaterialTheme.spacing.large36))
+                    Icon(
+                        modifier = Modifier.size(MaterialTheme.sizing.small18),
+                        painter = painterResource(AppIcons.Outlined.chevronRight),
+                        contentDescription = null,
+                        tint = MaterialTheme.additionalColorScheme.onBackgroundVariant
+                    )
+                }
+            }
+            if(hasActions){
+                Spacer(Modifier.height(MaterialTheme.spacing.medium16))
+                HospitalAutomationButton(
                     modifier = Modifier
-                        .size(MaterialTheme.sizing.small24)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    painter = painterResource(secondaryIcon),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(Modifier.width(MaterialTheme.spacing.small8))
-                Text(
-                    text = "$numberOfPharmacies "+ stringResource(R.string.pharmacies),
-                    color = MaterialTheme.additionalColorScheme.onBackgroundVariant,
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Spacer(Modifier.width(MaterialTheme.spacing.large36))
-                Icon(
-                    modifier = Modifier.size(MaterialTheme.sizing.small18),
-                    painter = painterResource(AppIcons.Outlined.chevronRight),
-                    contentDescription = null,
-                    tint = MaterialTheme.additionalColorScheme.onBackgroundVariant
+                        .align(Alignment.CenterHorizontally),
+                    onClick = onButtonClick,
+                    text = stringResource(buttonText),
                 )
             }
-            Spacer(Modifier.height(MaterialTheme.spacing.medium16))
-            HospitalAutomationButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                onClick = onButtonClick,
-                text = stringResource(buttonText),
-            )
         }
     }
 }
@@ -183,6 +188,24 @@ fun MedicineCardPreview() {
             drug = 1000,
             price = 11900,
             numberOfPharmacies = 2,
+            onClick = {},
+            onPharmaciesClick = {},
+            onButtonClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+fun MedicineSummaryCardPreview() {
+    Hospital_AutomationTheme {
+        MedicineCard(
+            imageUrl = "",
+            medicineName = "Vitamin D3",
+            drug = 1000,
+            price = 11900,
+            numberOfPharmacies = null,
+            hasActions = false,
             onClick = {},
             onPharmaciesClick = {},
             onButtonClick = {},

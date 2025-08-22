@@ -14,6 +14,8 @@ data class GuardianFullData(
     val addressNote: String?,
     val gender: String?,
     val imgUrl: String?,
+    val isSuspended: Boolean = false,
+    val suspendingReason: String? = null,
 ){
     val fullName: String
         get() = "$firstName $lastName"

@@ -1,6 +1,6 @@
 package com.example.appointment_details.presentation.preview
 
-import com.example.appointment_details.presentation.AppointmentNavigationActions
+import com.example.appointment_details.presentation.AppointmentDetailsNavigationActions
 import com.example.model.child.ChildData
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
@@ -11,7 +11,7 @@ import com.example.model.guardian.GuardianData
 import java.time.LocalDate
 import java.time.LocalTime
 
-val mockNavigationActions = object : AppointmentNavigationActions{
+val mockNavigationActions = object : AppointmentDetailsNavigationActions{
     override fun navigateUp() {
 
     }

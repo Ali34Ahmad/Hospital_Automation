@@ -6,6 +6,7 @@ import com.example.model.enums.ScreenState
 import com.example.util.UiText
 
 data class AppointmentDetailsUIState(
+    val canEdit: Boolean,
     val appointmentId: Int,
     val appointment: AppointmentData? = null,
     val screenState: ScreenState = ScreenState.IDLE,

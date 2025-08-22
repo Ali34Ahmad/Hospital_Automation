@@ -23,8 +23,11 @@ class MedicineDetailsViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getMedicine: GetMedicineByIdUseCase
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(MedicineDetailsUIState(
-        medicineId = savedStateHandle.toRoute<MedicineDetailsRoute>().medicineId
+    private val medicineId = 1
+    private val _uiState = MutableStateFlow(
+        MedicineDetailsUIState(
+        medicineId = medicineId
+            //savedStateHandle.toRoute<MedicineDetailsRoute>().medicineId
     ))
     val uiState: StateFlow<MedicineDetailsUIState> = _uiState.onStart {
         loadData()

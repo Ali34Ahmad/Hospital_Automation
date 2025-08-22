@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
 import com.example.model.enums.Gender
-import com.example.model.helper.ext.toCapitalized
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -134,7 +134,7 @@ fun AdminProfileCard(
         DetailsItem(
             iconRes = genderIcon,
             title = stringResource(id = R.string.gender),
-            description = gender.name.toCapitalized(),
+            description = gender.name.capitalFirstChar(),
             modifier = Modifier
                 .fillMaxWidth(),
         )

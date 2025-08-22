@@ -7,9 +7,11 @@ data class SearchForChildrenAddedByEmployeeByNameUseCase(
 ){
     suspend operator fun invoke(
         query : String,
+        employeeId: Int?
     ) =
         childRepository.searchForChildrenAddedByEmployeeByName(
-            name = query
+            name = query,
+            employeeId = employeeId
         )
 
 }

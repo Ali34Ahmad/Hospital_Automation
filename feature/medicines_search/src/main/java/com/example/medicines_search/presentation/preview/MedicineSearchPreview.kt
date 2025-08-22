@@ -23,7 +23,7 @@ fun MedicineSearchPreview() {
         MedicinesSearchScreen(
             uiState = MedicinesSearchUIState(
                 appointmentId = 1,
-                screenState = ScreenState.LOADING,
+                screenState = ScreenState.SUCCESS,
                 prescriptionMedicines = mockMedicines,
                 selectedMedicines = mockMedicines.map { it to "" },
                 isNoteDialogOpened = true,

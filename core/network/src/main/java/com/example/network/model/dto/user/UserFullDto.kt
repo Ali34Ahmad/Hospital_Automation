@@ -31,4 +31,8 @@ data class UserFullDto(
     val gender: String?= null,
     @SerialName("imgurl")
     val imgUrl: String? = null,
+    @SerialName("is_suspended")
+    val isSuspended: Boolean? = null,
+    @SerialName("suspending_reason")
+    val suspendingReason: String? = null
 )

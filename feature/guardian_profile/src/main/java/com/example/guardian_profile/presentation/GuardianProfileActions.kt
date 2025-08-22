@@ -18,6 +18,19 @@ sealed interface GuardianProfileActions {
     data class UpdateRefreshState(val isRefreshing: Boolean): GuardianProfileActions
     data object Refresh : GuardianProfileActions
     data class ShowToast(val message: UiText): GuardianProfileActions
+
+    //Account management
+    object DeactivateAccount: GuardianProfileActions
+    object ReactivateAccount: GuardianProfileActions
+
+    //warning dialog
+    object ShowWarningDialog: GuardianProfileActions
+    object HideWarningDialog: GuardianProfileActions
+    object ClearDeactivationReason: GuardianProfileActions
+    data class UpdateDeactivationReason(val  newValue: String) : GuardianProfileActions
+    //loading dialog
+    object ShowLoadingDialog: GuardianProfileActions
+    object HideLoadingDialog:GuardianProfileActions
 }
 
 interface GuardianProfileNavigationAction{
@@ -26,4 +39,7 @@ interface GuardianProfileNavigationAction{
     fun openContacts(phone: String)
     fun navigateToAddChild(guardianId: Int)
     fun navigateToChildren(guardianId: Int)
+    fun navigateToAppointments(guardianId: Int)
+    fun navigateToPrescriptions(guardianId: Int)
+    fun navigateToMedicalRecord(guardianId: Int)
 }

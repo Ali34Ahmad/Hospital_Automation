@@ -20,6 +20,7 @@ fun AppointmentDetailsPreview() {
                 appointmentId = 1,
                 appointment = mockVaccine,
                 screenState = ScreenState.SUCCESS,
+                canEdit = true,
             )
         ) }
         AppointmentDetailsScreen(

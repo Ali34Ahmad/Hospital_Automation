@@ -8,7 +8,8 @@ import com.example.datastore.utility.Crypto
 import com.example.doctor_app.navigation.Navigation
 import com.example.ui.theme.Hospital_AutomationTheme
 
-class MainActivity : ComponentActivity() {
+class
+MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

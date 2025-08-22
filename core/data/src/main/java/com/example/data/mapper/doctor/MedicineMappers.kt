@@ -26,7 +26,8 @@ fun MedicineSummaryDto.toMedicineSummaryData() = MedicineSummaryData(
     id = id,
     name = name,
     pharmaceuticalTiter = pharmaceuticalTiter,
-    imageUrl = imageUrl
+    imageUrl = imageUrl,
+    price = price
 )
 
 

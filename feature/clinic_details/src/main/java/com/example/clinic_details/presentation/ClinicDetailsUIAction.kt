@@ -13,10 +13,11 @@ interface ClinicDetailsUIAction {
     //warning dialog
     object ShowWarningDialog: ClinicDetailsUIAction
     object HideWarningDialog: ClinicDetailsUIAction
+    object ClearDeactivationReason: ClinicDetailsUIAction
     data class UpdateDeactivationReason(val  newValue: String) : ClinicDetailsUIAction
     //loading dialog
-    object ShowLoadingDialog
-    object HideLoadingDialog
+    object ShowLoadingDialog:ClinicDetailsUIAction
+    object HideLoadingDialog:ClinicDetailsUIAction
 }
 
 interface ClinicNavigationAction{

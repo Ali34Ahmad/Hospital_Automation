@@ -4,22 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.example.child_profile.presentation.ChildProfileNavigationAction
 import com.example.child_profile.presentation.ChildProfileScreen
-import com.example.child_profile.presentation.ChildProfileUIAction
 import com.example.child_profile.presentation.ChildProfileUIState
 import com.example.model.child.ChildFullData
 import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.util.UiText
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 
-private val mockActions = object : ChildProfileNavigationAction{
+private val mockActions =
+    object : ChildProfileNavigationAction{
     override fun navigateUp() {}
 
     override fun navigateToAddGuardianScreen(childId: Int) {}
@@ -27,7 +23,23 @@ private val mockActions = object : ChildProfileNavigationAction{
     override fun navigateToEmployeeProfileScreen(employeeId: Int) {}
 
     override fun navigateToGuardiansScreen(childId: Int){}
-}
+    override fun navigateToVaccinationTableScreen(childId: Int) {
+
+    }
+
+    override fun navigateToAppointments(childId: Int) {
+    }
+
+    override fun navigateToMedicalRecords(childId: Int) {
+    }
+
+    override fun navigateToPrescriptions(childId: Int) {
+    }
+
+        override fun navigateToAppointmentDetails(appointmentId: Int) {
+
+        }
+    }
 val fakeChild =  ChildFullData(
     numberOfGuardians = 3,
     childId = 1,
@@ -37,7 +49,7 @@ val fakeChild =  ChildFullData(
     fatherLastName = "Mansoura",
     motherFirstName = "Aida",
     motherLastName = "Ghanem",
-    dateOfBirth = "04-09-2002",
+    dateOfBirth = LocalDate.now(),
     birthCertificateImgUrl = "",
     gender = "male",
     employeeId = 1
@@ -51,7 +63,7 @@ val refreshedChild =  ChildFullData(
     fatherLastName = "kzelik",
     motherFirstName = "Aida",
     motherLastName = "Gogo",
-    dateOfBirth = "04-09-1972",
+    dateOfBirth = LocalDate.of(2003,10,10),
     birthCertificateImgUrl = "",
     gender = "male",
     employeeId = 1
@@ -63,7 +75,9 @@ fun ChildProfileScreenLoadingPreview() {
     Hospital_AutomationTheme {
         ChildProfileScreen(
             uiState = ChildProfileUIState(
-                state = ScreenState.LOADING
+                state = ScreenState.LOADING,
+                hasAdminAccess = true,
+                childId = 1
             ),
             navigationActions = mockActions,
             onAction = {}
@@ -76,7 +90,9 @@ fun ChildProfileScreenErrorPreview() {
     Hospital_AutomationTheme {
         ChildProfileScreen(
             uiState = ChildProfileUIState(
-                state = ScreenState.ERROR
+                state = ScreenState.ERROR,
+                hasAdminAccess = true,
+                childId = 1
             ),
             navigationActions = mockActions,
             onAction = {}
@@ -90,7 +106,10 @@ fun ChildProfileScreenSuccessPreview() {
     Hospital_AutomationTheme {
         var uiState by remember{ mutableStateOf( ChildProfileUIState(
             state = ScreenState.SUCCESS,
-            child = fakeChild
+            child = fakeChild,
+            hasAdminAccess = true,
+            childId = 1
+
         )) }
         ChildProfileScreen(
             uiState =uiState,

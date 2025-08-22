@@ -6,6 +6,7 @@ import com.example.model.guardian.GuardianFullData
 import com.example.model.guardian.PagedData
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
+import com.example.utility.network.UpdatedIds
 import kotlinx.coroutines.flow.Flow
 
 
@@ -37,4 +38,12 @@ interface UserRepository {
 
     suspend fun getGuardiansByNamePagingData(query: String): Flow<PagingData<GuardianData>>
 
+    suspend fun deactivateUser(
+        userId: Int,
+        deactivationReason: String
+    ): Result<UpdatedIds, NetworkError>
+
+    suspend fun reactivateUser(
+        userId: Int,
+    ): Result<UpdatedIds, NetworkError>
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
@@ -31,6 +32,8 @@ import com.example.ui_components.components.card.custom.ErrorComponent
 import com.example.ui_components.components.dialog.AddNoteDialog
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.items.custom.FetchingDataItem
+import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.topbars.custom.SearchBarWithTextAction
 
@@ -126,15 +129,19 @@ internal fun MedicinesSearchScreen(
         containerColor = MaterialTheme.colorScheme.surface
     ) { innerPadding->
         AnimatedContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier = Modifier.fillMaxSize().padding(innerPadding)
                 .padding(MaterialTheme.spacing.medium16),
             targetState = uiState.screenState
-        ) { state ->
+        ) {
+            state ->
             when (state) {
                 ScreenState.IDLE -> Unit
-                ScreenState.LOADING -> FetchingDataItem(Modifier.fillMaxSize())
+
+                ScreenState.LOADING -> FetchingDataItem(
+                    Modifier.fillMaxSize()
+                )
+
+
                 ScreenState.ERROR -> {
                     PullToRefreshColumn(
                         onRefresh = {
@@ -215,47 +222,66 @@ internal fun MedicinesSearchScreen(
                                 )
                             }
                         } else {
-                            LazyVerticalGrid(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                columns = GridCells.Fixed(2),
-                                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
-                                verticalArrangement =  Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                            PullToRefreshBox(
+                                refreshing = uiState.isRefreshing,
+                                onRefresh = {
+                                    onAction(
+                                        MedicinesSearchUIAction.Refresh
+                                    )
+                                },
+                                modifier = Modifier.fillMaxSize()
                             ) {
-                                items(count) { index ->
-                                    val medicine = medicines[index]
-                                    medicine?.run {
-                                        MedicineCard(
-                                            imageUrl = medImageUrl,
-                                            medicineName = name,
-                                            drug = pharmaceuticalTiter,
-                                            price = price,
-                                            numberOfPharmacies = numberOfPharmacies,
-                                            onClick = {
-                                                navigationActions.navigateToMedicineDetails(medicineId)
-                                            },
-                                            onPharmaciesClick = {
-                                                navigationActions.navigateToPharmacies(
-                                                    medicineId = medicineId,
-                                                    medicineName = name
-                                                )
-                                            },
-                                            onButtonClick = {
-                                                onAction(
-                                                    MedicinesSearchUIAction.AddMedicineToPrescription(
-                                                        this
+                                val maxLineSpan = 2
+                                LazyVerticalGrid(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    columns = GridCells.Fixed(maxLineSpan),
+                                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small12),
+                                    verticalArrangement =  Arrangement.spacedBy(MaterialTheme.spacing.small12),
+                                ) {
+                                    items(count) { index ->
+                                        val medicine = medicines[index]
+                                        medicine?.run {
+                                            MedicineCard(
+                                                imageUrl = medImageUrl,
+                                                medicineName = name,
+                                                drug = pharmaceuticalTiter,
+                                                price = price,
+                                                numberOfPharmacies = numberOfPharmacies,
+                                                onClick = {
+                                                    navigationActions.navigateToMedicineDetails(medicineId)
+                                                },
+                                                onPharmaciesClick = {
+                                                    navigationActions.navigateToPharmacies(
+                                                        medicineId = medicineId,
+                                                        medicineName = name
                                                     )
-                                                )
-                                            },
-                                        )
+                                                },
+                                                onButtonClick = {
+                                                    onAction(
+                                                        MedicinesSearchUIAction.AddMedicineToPrescription(
+                                                            this
+                                                        )
+                                                    )
+                                                },
+                                            )
+                                        }
                                     }
-                                }
-                                item {
-                                    //due to the bottom sheet is opened
-                                    Spacer(
-                                        modifier = Modifier.height(
-                                            MaterialTheme.spacing.sheetPeekHeight
-                                        ))
+                                    if(medicines.loadState.append == LoadState.Loading){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
+                                            SmallCircularProgressIndicator(
+                                                modifier = Modifier.fillMaxWidth()
+                                                    .padding(MaterialTheme.spacing.medium16)
+                                            )
+                                        }
+                                    }
+                                    item(span = { GridItemSpan(maxLineSpan)}) {
+                                        //due to the bottom sheet is opened
+                                        Spacer(
+                                            modifier = Modifier.height(
+                                                MaterialTheme.spacing.sheetPeekHeight
+                                            ))
+                                    }
                                 }
                             }
                         }

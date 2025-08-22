@@ -3,12 +3,11 @@ package com.example.clinic_details.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
-import com.example.clinic_details.navigation.ClinicDetailsRoute
 import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.domain.use_cases.admin.clinic.DeactivateClinicUseCase
 import com.example.domain.use_cases.admin.clinic.ReactivateClinicUseCase
 import com.example.domain.use_cases.doctor.clinic.GetClinicByIdUseCase
+import com.example.domain.use_cases.validator.ValidateTextUseCase
 import com.example.domain.use_cases.work_request.SendDoctorWorkRequestUseCase
 import com.example.model.doctor.clinic.ClinicFullData
 import com.example.model.enums.BottomBarState
@@ -31,7 +30,8 @@ class ClinicDetailsViewModel(
     private val getClinicById: GetClinicByIdUseCase,
     private val sendRequest: SendDoctorWorkRequestUseCase,
     private val deactivateClinicUseCase: DeactivateClinicUseCase,
-    private val reactivateClinicUseCase: ReactivateClinicUseCase
+    private val reactivateClinicUseCase: ReactivateClinicUseCase,
+    private val validateTextUseCase: ValidateTextUseCase
 ): ViewModel() {
 
     val clinicId = 1
@@ -71,7 +71,16 @@ class ClinicDetailsViewModel(
             is ClinicDetailsUIAction.UpdateDeactivationReason -> updateDeactivationReason(action.newValue)
             ClinicDetailsUIAction.DeactivateClinic -> deactivateClinic()
             ClinicDetailsUIAction.ReactivateClinic -> reactivateClinic()
+            ClinicDetailsUIAction.ClearDeactivationReason -> clearDeactivationReason()
         }
+    }
+    private fun validateInput(){
+        val textError = validateTextUseCase(uiState.value.deactivationReason)
+        val hasError = textError != null
+        updateIsValidInput(hasError)
+    }
+    private fun updateIsValidInput(newValue: Boolean?){
+        _uiState.value = _uiState.value.copy(isValidInput = newValue)
     }
     private fun reactivateClinic() = viewModelScope.launch{
         showLoadingDialog()
@@ -96,9 +105,12 @@ class ClinicDetailsViewModel(
             showToast(UiText.StringResource(R.string.success))
             refreshTrigger.emit(Unit)
         }
+        clearDeactivationReason()
         hideLoadingDialog()
     }
-
+    private fun clearDeactivationReason(){
+        _uiState.value = _uiState.value.copy(deactivationReason = "")
+    }
     private fun clearToast() {
         _uiState.value = _uiState.value.copy(toastMessage = null)
     }
@@ -124,10 +136,12 @@ class ClinicDetailsViewModel(
     }
     private fun updateDeactivationReason(newValue: String){
         _uiState.value = _uiState.value.copy(deactivationReason = newValue)
+        validateInput()
     }
 
     private fun hideInfoDialog(){
         _uiState.value = _uiState.value.copy(isInfoDialogShown = false)
+        updateIsValidInput(null)
     }
     private fun refresh()=viewModelScope.launch{
         refreshTrigger.emit(Unit)

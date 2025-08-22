@@ -30,7 +30,7 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
-import com.example.ui_components.components.topbars.custom.SearchTopBar
+import com.example.ui_components.components.topbars.SearchTopBar
 
 @Composable
 fun ClinicsSearchScreen(
@@ -140,7 +140,7 @@ internal fun ClinicsSearchScreen(
                                 ClinicsSearchUIAction.UpdateTopBarMode(TopBarState.SEARCH)
                             )
                         },
-                        onMenuOpen = {
+                        onNavigationIconClick = {
                             onAction(
                                 ClinicsSearchUIAction.ToggleDrawer
                             )

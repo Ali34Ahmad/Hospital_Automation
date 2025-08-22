@@ -1,4 +1,4 @@
-package com.example.ui_components.components.topbars.custom
+package com.example.ui_components.components.topbars
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -17,13 +17,11 @@ import com.example.model.enums.TopBarState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.ui_components.components.topbars.HospitalAutomationTopBar
-import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
 
 @Composable
 fun SearchTopBar(
     onSearchIconClick: ()-> Unit,
-    onMenuOpen: ()-> Unit,
+    onNavigationIconClick: ()-> Unit,
     onBackToDefault: () -> Unit,
     onClearIconClick:()-> Unit,
     query: String,
@@ -32,6 +30,7 @@ fun SearchTopBar(
     title: String,
     @StringRes placeholder: Int,
     modifier: Modifier = Modifier,
+    onTitleClick: () -> Unit = {},
     @DrawableRes defaultLeadingIcon: Int = AppIcons.Outlined.menu,
     @DrawableRes searchLeadingIcon: Int = AppIcons.Outlined.arrowBack,
     @DrawableRes searchTrailingIcon: Int = AppIcons.Outlined.close,
@@ -46,14 +45,15 @@ fun SearchTopBar(
                 HospitalAutomationTopBar(
                     title = title,
                     modifier = Modifier.fillMaxWidth(),
-                    onNavigationIconClick = onMenuOpen,
+                    onNavigationIconClick = onNavigationIconClick,
                     actionIcons = listOf(
                         ActionIcon(
                             icon = searchIcon,
                             onCLick = onSearchIconClick
                         )
                     ),
-                    navigationIcon = defaultLeadingIcon
+                    navigationIcon = defaultLeadingIcon,
+                    onTitleClick = onTitleClick
                 )
             }
             TopBarState.SEARCH -> {
@@ -79,14 +79,19 @@ fun ClinicsTopBarPreview() {
         var state by remember { mutableStateOf(TopBarState.SEARCH) }
         SearchTopBar(
             onSearchIconClick = { state = TopBarState.SEARCH },
-            onMenuOpen = { state = TopBarState.DEFAULT },
+            onNavigationIconClick = {  },
             onClearIconClick = { query = "" },
             query = query,
             state = state,
             onQueryChanged = { query = it },
             title = stringResource(id = R.string.search_for_clinics),
             placeholder = R.string.search_for_clinics,
-            onBackToDefault ={},
+            onBackToDefault ={
+                state = TopBarState.DEFAULT
+            },
+            onTitleClick = {
+                state = TopBarState.SEARCH
+            }
         )
     }
 }

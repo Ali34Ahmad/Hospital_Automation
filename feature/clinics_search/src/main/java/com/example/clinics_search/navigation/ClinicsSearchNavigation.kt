@@ -13,10 +13,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class ClinicsSearchRoute(
-    val hasAdminAccess: Boolean = false
+    val hasAdminAccess: Boolean = false,
 )
 
-fun NavController.navigateToClinicsSearch(hasAdminAccess: Boolean = false){
+fun NavController.navigateToClinicsSearch(
+    hasAdminAccess: Boolean = false,
+){
     navigateToScreen(
         route = ClinicsSearchRoute(
             hasAdminAccess

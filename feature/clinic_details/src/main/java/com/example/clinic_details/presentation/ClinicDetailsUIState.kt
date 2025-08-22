@@ -20,4 +20,5 @@ data class ClinicDetailsUIState(
     val isWarningDialogShown: Boolean = false,
     val deactivationReason: String = "",
     val isLoadingDialogShown: Boolean = false,
+    val isValidInput: Boolean? = null,
 )

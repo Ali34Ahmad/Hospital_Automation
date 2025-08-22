@@ -10,7 +10,6 @@ import kotlinx.serialization.Serializable
  * that return children filtered by name.
  * @author Ali Mansoura
  */
-@OptIn(InternalSerializationApi::class)
 @Serializable
 data class GetChildrenByNameResponse(
     val data: List<ChildDto>,

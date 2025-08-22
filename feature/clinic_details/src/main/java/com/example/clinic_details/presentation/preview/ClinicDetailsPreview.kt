@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.clinic_details.presentation.ClinicDetailsScreen
+import com.example.clinic_details.presentation.ClinicDetailsUIAction
 import com.example.clinic_details.presentation.ClinicDetailsUIState
 import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
@@ -22,13 +23,23 @@ fun ClinicDetailsPreview(){
                 clinicId = 1,
                 clinic = mockClinic,
                 screenState = ScreenState.SUCCESS,
-                type = ClinicDetailsType.FOR_REGISTERING
+                type = ClinicDetailsType.FOR_REGISTERING,
+                isWarningDialogShown = true
             )) }
         ClinicDetailsScreen(
             uiState = state,
             navigationAction = mockAction,
-            onAction = {},
+            onAction = {
+                when(it){
+                    is ClinicDetailsUIAction.UpdateDeactivationReason->{
+                        state = state.copy(
+                            deactivationReason = it.newValue,
+                            isValidInput = it.newValue.isNotBlank()
+                        )
+                    }
+                    else ->{}
+                }
+            },
         )
     }
-
 }

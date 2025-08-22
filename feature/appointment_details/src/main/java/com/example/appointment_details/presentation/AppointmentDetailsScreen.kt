@@ -13,16 +13,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constants.icons.AppIcons
@@ -32,6 +27,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.AppointmentBottomBar
 import com.example.ui_components.components.card.AppointmentDetailsCard
+import com.example.ui_components.components.card.custom.ErrorComponent
 import com.example.ui_components.components.dialog.DialogWithDescription
 import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.items.custom.SomeThingWentWrong
@@ -41,7 +37,7 @@ import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 @Composable
 fun AppointmentDetailsScreen(
     viewModel: AppointmentDetailsViewModel,
-    navigationActions: AppointmentNavigationActions,
+    navigationActions: AppointmentDetailsNavigationActions,
     modifier: Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -56,7 +52,7 @@ fun AppointmentDetailsScreen(
 internal fun AppointmentDetailsScreen(
     uiState: AppointmentDetailsUIState,
     onAction: (AppointmentDetailsAction) -> Unit,
-    navigationActions: AppointmentNavigationActions,
+    navigationActions: AppointmentDetailsNavigationActions,
     modifier: Modifier = Modifier
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -108,7 +104,8 @@ internal fun AppointmentDetailsScreen(
             uiState.appointment?.let{
                 AnimatedVisibility(
                     it.state == AppointmentState.UPCOMMING &&
-                            uiState.screenState == ScreenState.SUCCESS
+                            uiState.screenState == ScreenState.SUCCESS&&
+                    uiState.canEdit
                 ) {
                     AppointmentBottomBar(
                         markAsMissedButtonState = uiState.markAsMissedButtonState,
@@ -168,8 +165,9 @@ internal fun AppointmentDetailsScreen(
                             )
                         }
                     ) {
-                        SomeThingWentWrong(
-                            modifier = Modifier.fillMaxWidth()
+                        ErrorComponent(
+                            modifier = Modifier
+                                .fillMaxWidth()
                         )
                     }
                 }

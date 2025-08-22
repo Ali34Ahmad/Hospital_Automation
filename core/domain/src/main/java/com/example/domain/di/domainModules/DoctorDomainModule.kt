@@ -7,11 +7,9 @@ import com.example.domain.di.basic_account_creating.addResidentialAddressUseCase
 import com.example.domain.di.basic_account_creating.uploadEmploymentDocumentsUseCasesModule
 import com.example.domain.di.basic_account_creating.uploadProfileImageUseCasesModule
 import com.example.domain.di.doctor.doctorProfileUseCasesModule
-import com.example.domain.di.downloaderUseCaseModule
 import com.example.domain.di.employmentHistoryUseCasesModule
 import com.example.domain.di.getAdminProfileByIdUseCaseModule
 import com.example.domain.di.medical_record.medicalRecordModule
-import com.example.domain.di.medicine.medicinesUseCasesModule
 import com.example.domain.di.pharmacy.pharmacyUseCasesModule
 import com.example.domain.di.prescription.prescriptionUseCasesModule
 import com.example.domain.di.vaccine.vaccinesUseCasesModules
@@ -22,13 +20,11 @@ val doctorDomainModule = module {
     includes(
         sharedDomainModule,
         pharmacyUseCasesModule,
-        medicinesUseCasesModule,
         prescriptionUseCasesModule,
         authUseCasesModule,
         doctorSignUpModule,
         addResidentialAddressUseCaseModule,
         getAdminProfileByIdUseCaseModule,
-        downloaderUseCaseModule,
         accountManagementUseCasesModule,
         doctorProfileUseCasesModule,
         employmentHistoryUseCasesModule,

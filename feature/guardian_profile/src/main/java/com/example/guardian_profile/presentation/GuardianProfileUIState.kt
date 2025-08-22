@@ -7,13 +7,20 @@ import com.example.model.guardian.GuardianFullData
 import com.example.util.UiText
 
 data class GuardianProfileUIState(
-    val isGuardianDataLoading: Boolean = false,
     val guardianData: GuardianFullData? = null,
     val screenState: ScreenState = ScreenState.IDLE,
     val bottomBarState: BottomBarState = BottomBarState.IDLE,
-    val childId: Int? = null,
-    val guardianId: Int = -1,
+    val childId: Int?,
+    val guardianId: Int,
     val userProfileMode: UserProfileMode = UserProfileMode.VIEW_ONLY,
     val isRefreshing: Boolean = false,
     val toastMessage: UiText? = null,
-)
+    val isLoadingDialogShown: Boolean = false,
+    val isWarningDialogShown: Boolean = false,
+    val deactivationReason: String = "",
+    val isValidInput: Boolean? = null,
+
+    ){
+    val hasAdminAccess: Boolean
+        get() = userProfileMode == UserProfileMode.ADMIN_ACCESS
+}

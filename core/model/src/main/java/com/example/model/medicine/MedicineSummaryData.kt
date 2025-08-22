@@ -5,4 +5,5 @@ data class MedicineSummaryData(
     val name: String,
     val pharmaceuticalTiter: Int,
     val imageUrl: String?,
+    val price: Int? = null
 )

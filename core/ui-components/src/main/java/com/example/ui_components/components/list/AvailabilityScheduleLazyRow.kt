@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.ext.toAppropriateAddressFormat
 import com.example.model.doctor.day_scedule.DaySchedule
-import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -32,7 +32,7 @@ fun AvailabilityScheduleLazyRow(
     ) {
         items(workDays) { workDay ->
             SubDetailsItem(
-                title = workDay.dayOfWeek.name.toCapitalizedString(),
+                title = workDay.dayOfWeek.name.capitalFirstChar(),
                 description = (workDay.startTime..workDay.endTime).toAppropriateAddressFormat(),
                 onClick = {},
             )

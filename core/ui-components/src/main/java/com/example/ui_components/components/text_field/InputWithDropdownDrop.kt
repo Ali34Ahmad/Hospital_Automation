@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.model.enums.AgeUnit
-import com.example.model.helper.ext.toCapitalizedString
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.model.menu.DropDownMenuItem
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -98,7 +98,7 @@ fun InputWithDropdownSelectorPreview() {
                 modifier = Modifier,
                 selectedIndexItem = null,
                 editableTextLabel = R.string.from_age,
-                dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.toCapitalizedString()) }
+                dropDownMenuItems = AgeUnit.entries.map { DropDownMenuItem(it.name.capitalFirstChar()) }
             )
         }
     }

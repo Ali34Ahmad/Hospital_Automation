@@ -2,6 +2,7 @@ package com.example.ui_components.components.card.custom
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import com.example.ui_components.R
 import com.example.ui_components.components.card.GuardianProfileCard
 import com.example.ui_components.components.items.DetailsItem
 import com.example.ui_components.components.items.ProfileActionsItem
+import com.example.ui_components.components.list.GuardianProfileActionsCard
 
 @Composable
 fun CustomGuardianProfileCard(
@@ -31,13 +33,22 @@ fun CustomGuardianProfileCard(
     imageUrl: String,
     address: String?,
     gender: String?,
+    isActive: Boolean,
+    hasAdminAccess: Boolean,
+    onlyCommunicationInfo: Boolean,
     onNavigateUp: () -> Unit,
     onPhoneNumberButtonClick: ()-> Unit,
     onEmailButtonClick: () -> Unit,
     onChildrenButtonClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onAppointmentsClick: ()-> Unit,
+    onPrescriptionsClick: ()-> Unit,
+    onMedicalRecordClick: ()-> Unit,
+    onSuspendUserAccountClick: ()-> Unit,
+    onReactivateUserAccount: ()-> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -52,11 +63,11 @@ fun CustomGuardianProfileCard(
                        title = stringResource(id = R.string.residential_address),
                        description = it,
                        modifier = Modifier
-                           .fillMaxWidth()
-                           .padding(
-                               horizontal = MaterialTheme.spacing.medium16,
-                               vertical = MaterialTheme.spacing.small12
-                           ),
+                           .fillMaxWidth(),
+                       contentPadding = PaddingValues(
+                           horizontal = MaterialTheme.spacing.medium16,
+                           vertical = MaterialTheme.spacing.small12
+                       )
                    )
                }
                 gender?.let {
@@ -67,11 +78,11 @@ fun CustomGuardianProfileCard(
                         title = stringResource(id = R.string.gender),
                         description = it,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = MaterialTheme.spacing.medium16,
-                                vertical = MaterialTheme.spacing.small12
-                            ),
+                            .fillMaxWidth(),
+                        contentPadding = PaddingValues(
+                            horizontal = MaterialTheme.spacing.medium16,
+                            vertical = MaterialTheme.spacing.small12
+                        )
                     )
                 }
             },
@@ -80,15 +91,22 @@ fun CustomGuardianProfileCard(
             phoneNumber = phoneNumber,
             profileImageUrl = imageUrl,
             onNavigateUpButtonClick = onNavigateUp,
-            modifier = modifier,
         )
-        Spacer(Modifier.height(MaterialTheme.spacing.large24))
-        ProfileActionsItem(
-            onClick = onChildrenButtonClick,
-            modifier = Modifier.fillMaxWidth(),
-            iconRes = AppIcons.Outlined.child,
-            title = stringResource(R.string.children),
-        )
+        if(!onlyCommunicationInfo){
+            GuardianProfileActionsCard(
+                onChildrenClick = onChildrenButtonClick,
+                onAppointmentsClick = onAppointmentsClick,
+                onPrescriptionsClick = onPrescriptionsClick,
+                onMedicalRecordClick = onMedicalRecordClick,
+                onSuspendUserAccountClick = onSuspendUserAccountClick,
+                onReactivateUserAccount = onReactivateUserAccount,
+                hasAdminAccess = hasAdminAccess,
+                isActive = isActive,
+                modifier = Modifier.padding(
+                    vertical = MaterialTheme.spacing.large24,
+                ),
+            )
+        }
     }
 
 }
@@ -105,10 +123,18 @@ fun GuardianProfileCardPreview(){
                 address = "Lattakia - jableh",
                 gender = "male",
                 onNavigateUp = {},
-                onPhoneNumberButtonClick ={},
-                onEmailButtonClick = {  },
+                onPhoneNumberButtonClick = {},
+                onEmailButtonClick = { },
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16).fillMaxWidth(),
-                onChildrenButtonClick = {}
+                onChildrenButtonClick = {},
+                isActive = true,
+                hasAdminAccess = true,
+                onAppointmentsClick = {},
+                onPrescriptionsClick = {},
+                onMedicalRecordClick = {},
+                onSuspendUserAccountClick = {},
+                onReactivateUserAccount = {},
+                onlyCommunicationInfo = false
             )
         }
     }

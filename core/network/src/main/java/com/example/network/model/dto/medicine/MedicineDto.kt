@@ -23,7 +23,6 @@ data class MedicineDto(
     val updatedAt: String,
     @SerialName("pharmacy_medicines")
     val numberOfPharmaciesList: List<NumberOfPharmacies>,
-
 )
 @Serializable
 data class NumberOfPharmacies(

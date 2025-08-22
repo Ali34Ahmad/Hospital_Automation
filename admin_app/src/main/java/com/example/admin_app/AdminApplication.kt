@@ -2,13 +2,20 @@ package com.example.admin_app
 
 import android.app.Application
 import com.example.admin_app.main.appModule
+import com.example.appointment_details.di.appointmentDetailsModule
+import com.example.child_profile.di.childProfileModule
+import com.example.children.di.childrenModule
+import com.example.children_search.di.childrenSearchModule
 import com.example.clinic_details.di.clinicDetailsModule
 import com.example.clinics_search.di.clinicsSearchModule
 import com.example.data.di.adminDataModule
 import com.example.doctor_schedule.di.doctorScheduleModule
 import com.example.doctors.di.doctorsSearchModule
 import com.example.employees_search.di.employeesSearchModule
+import com.example.guardian_profile.di.guardianProfileModule
+import com.example.medicine_details.di.medicineDetailsModule
 import com.example.pharmacies_search.di.pharmaciesSearch
+import com.example.pharmacy_medicines.di.pharmacyMedicinesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -27,7 +34,14 @@ class AdminApplication : Application() {
                 clinicsSearchModule,
                 pharmaciesSearch,
                 doctorScheduleModule,
-                clinicDetailsModule
+                clinicDetailsModule,
+                guardianProfileModule,
+                childProfileModule,
+                appointmentDetailsModule,
+                medicineDetailsModule,
+                childrenSearchModule,
+                childrenModule,
+                pharmacyMedicinesModule
             )
         }
     }

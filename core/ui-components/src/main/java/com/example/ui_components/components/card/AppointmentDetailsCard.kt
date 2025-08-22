@@ -17,7 +17,7 @@ import com.example.ext.toAppropriateDateFormat
 import com.example.ext.toAppropriateDateTimeFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
-import com.example.model.helper.ext.toCapitalized
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.ui.fake.createSampleAppointments
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -114,7 +114,7 @@ fun AppointmentDetailsCard(
         DetailsItem(
             iconRes = statusIcon,
             title = stringResource(id = R.string.status),
-            description = appointment.state.name.toCapitalized(),
+            description = appointment.state.name.capitalFirstChar(),
             modifier = detailsItemModifier,
             iconColor = statusIconColor,
             iconBackgroundColor = statusBackgroundColor,

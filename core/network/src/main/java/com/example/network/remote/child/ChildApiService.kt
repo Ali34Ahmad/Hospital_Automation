@@ -1,6 +1,6 @@
 package com.example.network.remote.child
 
-import com.example.network.model.dto.child.ChildDto
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
@@ -16,14 +16,15 @@ interface ChildApiService {
 
     suspend fun getChildProfile(
         token: String,
-        id: Int
+        id: Int,
+        role: RoleDto
     ) : Result<ChildFullResponse, NetworkError>
 
     suspend fun getChildrenByName(
         page: Int,
         limit: Int,
         token: String,
-        name: String
+        name: String,
     ) : Result<GetChildrenByNameResponse, NetworkError>
 
     suspend fun addChild(
@@ -38,23 +39,25 @@ interface ChildApiService {
         image: File,
     ): Result<UploadCertificatedResponse, NetworkError>
 
-
     suspend fun getChildrenByGuardianId(
         token: String,
         guardianId: Int,
+        role: RoleDto
     ): Result<GetChildrenByGuardianIdResponse, NetworkError>
 
     suspend fun getChildrenAddedByEmployee(
         token: String,
         page: Int,
-        limit: Int
+        limit: Int,
     ): Result<GetChildrenAddedByEmployeeResponse, NetworkError>
 
     suspend fun searchForChildrenAddedByEmployee(
         token: String,
         name: String,
         page: Int,
-        limit: Int
+        limit: Int,
+        role: RoleDto,
+        employeeId: Int?
     ): Result<GetChildrenByNameResponse, NetworkError>
 
 }

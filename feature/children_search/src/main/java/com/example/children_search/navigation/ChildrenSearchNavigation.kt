@@ -12,7 +12,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class ChildrenSearchRoute(
-    val searchType: SearchType
+    val searchType: SearchType,
+    val employeeId: Int?
 )
 
 /**
@@ -24,10 +25,14 @@ data class ChildrenSearchRoute(
  * @see SearchType
  * @author Ali Mansoura.
  */
-fun NavController.navigateToChildrenSearch(searchType: SearchType){
+fun NavController.navigateToChildrenSearch(
+    searchType: SearchType,
+    employeeId: Int?
+){
     navigateToScreen(
         ChildrenSearchRoute(
-            searchType = searchType
+            searchType = searchType,
+            employeeId = employeeId
         )
     )
 }

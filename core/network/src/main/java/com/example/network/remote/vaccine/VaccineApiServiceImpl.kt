@@ -11,6 +11,7 @@ import com.example.network.model.request.vaccine.VaccinesIdsWrapper
 import com.example.network.model.response.vaccine.GetAllVaccinesResponseDto
 import com.example.network.model.response.vaccine.VaccineResponseDto
 import com.example.network.utility.ApiRoutes
+import com.example.network.utility.doApiCall
 import com.example.utility.network.NetworkError
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -36,35 +37,36 @@ class VaccineApiServiceImpl(
         page: Int,
         limit: Int,
         role: RoleDto,
-    ): Result<GetAllVaccinesResponseDto, NetworkError> =try {
-        val response = client.get(ApiRoutes.getAllVaccinesEndPointForRole(role)) {
-            url{
-                parameter("page",page)
-                parameter("limit",limit)
+    ): Result<GetAllVaccinesResponseDto, NetworkError> =
+        try {
+            val response = client.get(ApiRoutes.getAllVaccinesEndPointForRole(role)) {
+                url{
+                    parameter("page",page)
+                    parameter("limit",limit)
+                }
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
             }
-            contentType(ContentType.Application.Json)
-            bearerAuth(token)
-        }
-        when (response.status.value) {
-            in 200..299 -> {
-                val responseText = response.bodyAsText()
-                Log.v("GetAllVaccinesApi${response.status.value}", responseText)
+            when (response.status.value) {
+                in 200..299 -> {
+                    val responseText = response.bodyAsText()
+                    Log.v("GetAllVaccinesApi${response.status.value}", responseText)
 
-                val addVaccineResponse: GetAllVaccinesResponseDto = response.body()
-                Log.v("GetAllVaccinesApi: in of range 2xx", addVaccineResponse.data.toString())
-                Result.Success(data = addVaccineResponse)
-            }
+                    val addVaccineResponse: GetAllVaccinesResponseDto = response.body()
+                    Log.v("GetAllVaccinesApi: in of range 2xx", addVaccineResponse.data.toString())
+                    Result.Success(data = addVaccineResponse)
+                }
 
-            else -> {
-                val errorBody = response.bodyAsText()
-                Log.e("GetAllVaccinesApi: Out of range 2xx", errorBody)
-                Result.Error(NetworkError.UNKNOWN)
+                else -> {
+                    val errorBody = response.bodyAsText()
+                    Log.e("GetAllVaccinesApi: Out of range 2xx", errorBody)
+                    Result.Error(NetworkError.UNKNOWN)
+                }
             }
-        }
-    }catch (e: Exception){
-        Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
-        Result.Error(NetworkError.UNKNOWN)
-    }
+        }catch (e: Exception){
+            Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
+            Result.Error(NetworkError.UNKNOWN)
+            }
 
     override suspend fun addNewVaccine(
         token: String,

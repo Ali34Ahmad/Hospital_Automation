@@ -34,7 +34,7 @@ internal fun VaccineDto.toVaccineData() =
         quantity = quantity,
         minAge = Age(minAge, minAgeUnit.toAgeUnit()),
         maxAge = Age(minAge, maxAgeUnit.toAgeUnit()),
-        interactions=this.interactions?.map { it.toVaccineInteraction()},
+        interactions= interactions?.map { it.toVaccineInteraction()},
     )
 
 internal fun VaccineData.toVaccineDto() =
@@ -47,7 +47,7 @@ internal fun VaccineData.toVaccineDto() =
         minAgeUnit = minAge.unit.toAgeUnitDto(),
         maxAge = minAge.value,
         maxAgeUnit = maxAge.unit.toAgeUnitDto(),
-        interactions=this.interactions?.map { it.toVaccineInteractionDto()},
+        interactions= interactions?.map { it.toVaccineInteractionDto()},
     )
 
 

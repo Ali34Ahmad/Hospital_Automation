@@ -31,9 +31,15 @@ class ChildrenSearchViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow<ChildrenSearchUiState>(ChildrenSearchUiState(
-        savedStateHandle.toRoute<ChildrenSearchRoute>().searchType
-    ))
+    val searchType =  SearchType.EMPLOYEE
+    val employeeId = 45
+
+    private val _uiState = MutableStateFlow(
+        ChildrenSearchUiState(
+            searchType = searchType,
+            employeeId = employeeId
+            //savedStateHandle.toRoute<ChildrenSearchRoute>().searchType
+        ))
     val uiState: StateFlow<ChildrenSearchUiState> = _uiState
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
@@ -43,7 +49,6 @@ class ChildrenSearchViewModel(
     val childrenFlow = combine(queryFlow,refreshTrigger.onStart{ emit(Unit) }){
         query, _ -> query
     }
-        .filter{ it.isNotBlank() }
         .debounce(DurationConstants.SEARCH_DEBOUNCE_DELAY)
         .flatMapLatest{ query ->
             val result = getPagingSourceFactory(query)
@@ -89,7 +94,10 @@ class ChildrenSearchViewModel(
                 searchForChildrenByName(query)
             }
             SearchType.EMPLOYEE -> {
-                searchForChildrenAddedByEmployeeByName(query)
+                searchForChildrenAddedByEmployeeByName(
+                    query,
+                    employeeId
+                )
             }
         }
 }

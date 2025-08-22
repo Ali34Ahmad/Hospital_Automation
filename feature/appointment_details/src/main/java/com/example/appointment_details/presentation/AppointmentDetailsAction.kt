@@ -13,7 +13,7 @@ sealed interface AppointmentDetailsAction {
 
     object UpdateIsFirstLaunchToFalse : AppointmentDetailsAction
 }
-interface AppointmentNavigationActions{
+interface AppointmentDetailsNavigationActions{
     fun navigateUp()
     fun navigateToDepartmentDetails(deptId: Int)
     fun navigateToVaccineDetails(vaccineId: Int)

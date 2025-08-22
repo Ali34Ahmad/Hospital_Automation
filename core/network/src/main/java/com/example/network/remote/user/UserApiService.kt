@@ -1,15 +1,22 @@
 package com.example.network.remote.user
 
+import com.example.network.model.enums.RoleDto
+import com.example.network.model.response.UpdatedData
 import com.example.network.model.response.relations.ChildGuardianRelationResponse
 import com.example.network.model.response.user.GetGuardianByChildIdResponse
 import com.example.network.model.response.user.GetGuardianByIdResponse
 import com.example.network.model.response.user.GetUsersByNameResponse
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
+import com.example.utility.network.UpdatedIds
 
 interface UserApiService {
 
-    suspend fun getUserProfile(token: String, id: Int) : Result<GetGuardianByIdResponse, NetworkError>
+    suspend fun getUserProfile(
+        token: String,
+        id: Int,
+        roleDto: RoleDto
+    ) : Result<GetGuardianByIdResponse, NetworkError>
 
     suspend fun getGuardiansByChildId(
         token: String,
@@ -28,5 +35,16 @@ interface UserApiService {
         limit: Int,
         name: String
     ): Result<GetUsersByNameResponse, NetworkError>
+
+    suspend fun deactivateUser(
+        token: String,
+        userId: Int,
+        deactivationReason: String,
+    ): Result<UpdatedData, NetworkError>
+
+    suspend fun reactivateUser(
+        token: String,
+        userId: Int,
+    ): Result<UpdatedData, NetworkError>
 
 }
