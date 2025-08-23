@@ -3,6 +3,7 @@ package com.example.ui_components.components.bottom_sheets
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,8 +28,9 @@ import com.example.ui_components.components.card.PrescribedMedicineViewerCard
 
 @Composable
 fun ColumnScope.PrescriptionMedicineViewerBottomSheet(
-    openNoteDialog: (index:Int) -> Unit,
-    navigateToFulfillingPharmacy: (index:Int) -> Unit,
+    openNoteDialog: (index: Int) -> Unit,
+    navigateToFulfillingPharmacy: (index: Int) -> Unit,
+    navigateToMedicineDetailsScreen: (index: Int) -> Unit,
     prescriptionMedicines: List<DetailedPrescriptionMedicine>,
     modifier: Modifier = Modifier,
     title: String = stringResource(R.string.prescribed_medicines),
@@ -45,23 +47,25 @@ fun ColumnScope.PrescriptionMedicineViewerBottomSheet(
         )
         Spacer(Modifier.height(MaterialTheme.spacing.medium16))
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+            contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large24)
         ) {
-            items(prescriptionMedicines, key = { it.id }) { prescriptionMedicine ->
+            items(prescriptionMedicines.size, key = { prescriptionMedicines[it].id }) { index ->
                 PrescribedMedicineViewerCard(
-                    medicineName = prescriptionMedicine.medicine.name,
-                    titer = prescriptionMedicine.medicine.titer,
-                    imageUrl = prescriptionMedicine.medicine.imageUrl,
-                    hasNote = false,
+                    medicineName = prescriptionMedicines[index].medicine.name,
+                    titer = prescriptionMedicines[index].medicine.titer,
+                    imageUrl = prescriptionMedicines[index].medicine.imageUrl,
+                    hasNote = prescriptionMedicines[index].note != null,
                     onShowNote = {
-                        openNoteDialog(prescriptionMedicine.id)
+                        openNoteDialog(index)
                     },
                     onNavigateToFulfillingPharmacy = {
-                        navigateToFulfillingPharmacy(prescriptionMedicine.fulfilledBy?:-1)
+                        navigateToFulfillingPharmacy(prescriptionMedicines[index].fulfilledBy ?: -1)
                     },
                     modifier = Modifier,
-                    isFulfilled = true,
+                    isFulfilled = prescriptionMedicines[index].fulfilledBy != null,
                     onClick = {
+                        navigateToMedicineDetailsScreen(prescriptionMedicines[index].medicine.id)
                     },
                 )
             }
@@ -80,10 +84,11 @@ fun BottomSheetContentPreview() {
             sheetContent = {
                 PrescriptionMedicineViewerBottomSheet(
                     prescriptionMedicines = medicines,
-                    openNoteDialog = {  },
-                    navigateToFulfillingPharmacy = {  },
+                    openNoteDialog = { },
+                    navigateToFulfillingPharmacy = { },
                     modifier = Modifier,
                     title = stringResource(R.string.prescribed_medicines),
+                    navigateToMedicineDetailsScreen = {},
                 )
 
             },
@@ -96,11 +101,11 @@ fun BottomSheetContentPreview() {
 val medicines = listOf(
     DetailedPrescriptionMedicine(
         id = 1,
+        note = "Take it when you feel headache but only two pill allowed a day",
         medicine = PrescriptionMedicineMainInfo(
             id = 1,
             name = "Citamol",
             imageUrl = "",
-            note = "Take it when you feel headache but only two pill allowed a day",
             titer = 500
         ),
         fulfilledBy = 2
@@ -111,9 +116,9 @@ val medicines = listOf(
             id = 1,
             name = "Citamol",
             imageUrl = "",
-            note = "Take it when you feel headache but only two pill allowed a day",
             titer = 500
         ),
+        note = "Take it when you feel headache but only two pill allowed a day",
         fulfilledBy = 2
     ),
     DetailedPrescriptionMedicine(
@@ -122,10 +127,10 @@ val medicines = listOf(
             id = 1,
             name = "Citamol",
             imageUrl = "",
-            note = "Take it when you feel headache but only two pill allowed a day",
             titer = 500
         ),
+        note = "Take it when you feel headache but only two pill allowed a day",
         fulfilledBy = 2
     ),
 
-)
+    )

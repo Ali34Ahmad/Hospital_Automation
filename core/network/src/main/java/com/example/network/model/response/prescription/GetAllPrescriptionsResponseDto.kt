@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 data class GetAllPrescriptionsResponseDto(
     val data: List<PrescriptionDataFlatDto>,
     @SerialName("doctor")
-    val doctorMainInfoDto: UserMainInfoDto,
+    val userMainInfoDto: UserMainInfoDto,
     val pagination: NetworkPagination
 )
 

@@ -43,7 +43,7 @@ import com.example.ui_components.components.network_image.NetworkImage
 @Composable
 fun PrescribedMedicineViewerCard(
     medicineName: String,
-    titer: Int,
+    titer: Int?,
     imageUrl: String?,
     hasNote: Boolean,
     modifier: Modifier = Modifier,
@@ -57,13 +57,15 @@ fun PrescribedMedicineViewerCard(
     shape: Shape = RoundedCornerShape(MaterialTheme.sizing.small8)
 ) {
     Card(
-        modifier = modifier.clickable {
-            onClick()
-        },
+        modifier = modifier
+            .clip(shape)
+            .clickable {
+                onClick()
+            },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
-        shape = shape
+        shape = shape,
     ) {
         Row(
             modifier = Modifier.padding(
@@ -99,54 +101,74 @@ fun PrescribedMedicineViewerCard(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start,
             ) {
-                Text(
-                    text = medicineName,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                // Drug amount
-                Spacer(Modifier.height(MaterialTheme.spacing.extraSmall4))
-
                 Row(
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        MaterialTheme.spacing.extraSmall4
+                    ),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
-                        modifier = Modifier.size(MaterialTheme.sizing.small16),
-                        painter = painterResource(titerIcon),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                    Spacer(Modifier.width(MaterialTheme.spacing.extraSmall2))
+                    if (isFulfilled) {
+                        IconWithBackground(
+                            iconRes = AppIcons.Outlined.check,
+                            modifier = Modifier.size(MaterialTheme.spacing.small12),
+                            backgroundColor = MaterialTheme.colorScheme.primary,
+                            iconColor = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
                     Text(
-                        text = titer.toString(),
-                        style = MaterialTheme.typography.labelSmall,
+                        text = medicineName,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
+                }
+                // Drug amount
+                titer?.let {
+                    Spacer(Modifier.height(MaterialTheme.spacing.extraSmall4))
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(MaterialTheme.sizing.small16),
+                            painter = painterResource(titerIcon),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.secondary
+                        )
+                        Spacer(Modifier.width(MaterialTheme.spacing.extraSmall2))
+                        Text(
+                            text = titer.toString(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
                 }
 
             }
             Spacer(Modifier.weight(1f))
-            IconButton(
-                onClick = onNavigateToFulfillingPharmacy
-            ) {
-                IconWithBackground(
-                    iconRes = navigateToPharmacyIcon,
-                    contentDescription = null,
-                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
-                    iconColor = MaterialTheme.colorScheme.secondary
-                )
+            if (isFulfilled) {
+                IconButton(
+                    onClick = onNavigateToFulfillingPharmacy
+                ) {
+                    IconWithBackground(
+                        iconRes = navigateToPharmacyIcon,
+                        contentDescription = null,
+                        backgroundColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+                        iconColor = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
 
-            IconButton(
-                onClick = onShowNote
-            ) {
-                IconWithBackground(
-                    iconRes = showNoteIcon,
-                    contentDescription = null,
-                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
-                    iconColor = MaterialTheme.colorScheme.secondary
-                )
+            if (hasNote) {
+                IconButton(
+                    onClick = onShowNote
+                ) {
+                    IconWithBackground(
+                        iconRes = showNoteIcon,
+                        contentDescription = null,
+                        backgroundColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+                        iconColor = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
 
             //note actions

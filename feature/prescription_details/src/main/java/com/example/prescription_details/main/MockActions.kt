@@ -1,7 +1,4 @@
-package com.example.medical_prescription_details.main
-
-import com.example.prescription_details.main.PrescriptionDetailsBusinessUiActions
-import com.example.prescription_details.main.PrescriptionDetailsNavigationUiActions
+package com.example.prescription_details.main
 
 
 fun mockPrescriptionDetailsNavigationUiActions() = object : PrescriptionDetailsNavigationUiActions {
@@ -21,6 +18,10 @@ fun mockPrescriptionDetailsNavigationUiActions() = object : PrescriptionDetailsN
 
     }
 
+    override fun navigateToMedicineDetails(medicineId: Int) {
+
+    }
+
 }
 
 fun mockPrescriptionDetailsBusinessUiActions() = object : PrescriptionDetailsBusinessUiActions {
@@ -29,6 +30,14 @@ fun mockPrescriptionDetailsBusinessUiActions() = object : PrescriptionDetailsBus
     }
 
     override fun onUpdateSelectedMedicineIndex(index: Int?) {
+
+    }
+
+    override fun showBottomSheet() {
+
+    }
+
+    override fun hideBottomSheet() {
 
     }
 

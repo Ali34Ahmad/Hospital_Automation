@@ -35,12 +35,12 @@ import org.koin.dsl.module
 val employeeAppDataModule = module {
     includes(employeeNetworkModule, employeeDomainModule,commonDataModule)
 
-    single<UserRepository> { UserRepositoryImp(get(), get()) }
-    single<ChildRepository> { ChildRepositoryImp(get(), get()) }
-
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
 
     singleOf(::BaseSignUpRepositoryImpl) { bind<BaseSignUpRepository>() }
+
+    singleOf(::UserRepositoryImp) { bind<UserRepository>() }
+    singleOf(::ChildRepositoryImp) { bind<ChildRepository>() }
 
     singleOf(::EmployeeProfileRepositoryImpl) { bind<EmployeeProfileRepository>() }
 

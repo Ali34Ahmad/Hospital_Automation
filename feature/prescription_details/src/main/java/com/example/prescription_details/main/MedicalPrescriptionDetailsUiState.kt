@@ -9,6 +9,7 @@ data class PrescriptionDetailsUiState(
     val prescription: PrescriptionDetails? = null,
 
     val selectedMedicineIndex: Int? = null,
+    val isBottomSheetVisible: Boolean = false,
 
     val screenState: ScreenState = ScreenState.IDLE,
 

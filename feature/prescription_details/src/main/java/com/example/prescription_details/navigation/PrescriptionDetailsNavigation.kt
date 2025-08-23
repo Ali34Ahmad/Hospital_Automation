@@ -25,6 +25,8 @@ fun NavGraphBuilder.prescriptionDetailsScreen(
     onNavigateUp: () -> Unit,
     onNavigateToPatientProfile: (id: Int) -> Unit,
     onNavigateToChildProfile: (id: Int) -> Unit,
+    onNavigateToFulfillingPharmacy: (id: Int) -> Unit,
+    onNavigateToMedicineDetails: (id: Int) -> Unit,
 ) {
     composable<PrescriptionDetailsRoute> {
         val viewModel = koinViewModel<PrescriptionDetailsViewModel>()
@@ -44,7 +46,11 @@ fun NavGraphBuilder.prescriptionDetailsScreen(
             }
 
             override fun navigateToFulfillingPharmacy(pharmacyId: Int) {
-                TODO("Not yet implemented")
+                onNavigateToFulfillingPharmacy(pharmacyId)
+            }
+
+            override fun navigateToMedicineDetails(medicineId: Int) {
+                onNavigateToMedicineDetails(medicineId)
             }
         }
 

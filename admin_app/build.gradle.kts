@@ -57,6 +57,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    //navigation
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.compose)
+    implementation(project(":core:navigation"))
+
     //data
     implementation(project(":core:data"))
 
@@ -76,4 +82,18 @@ dependencies {
     implementation(project(":feature:doctor-schedule"))
     implementation(project(":feature:clinic_details"))
 
+    implementation(project(":feature:vaccines"))
+    implementation(project(":feature:vaccine_details"))
+
+    implementation(project(":feature:signup"))
+    implementation(project(":feature:email_verification"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:add_residential_address"))
+    implementation(project(":feature:enter_email"))
+    implementation(project(":feature:reset_password"))
+    implementation(project(":feature:upload_profile_image"))
+//    implementation(project(":feature:employment_history"))
+    implementation(project(":feature:employment_requests"))
+
+    implementation(project(":feature:employment_requests"))
 }

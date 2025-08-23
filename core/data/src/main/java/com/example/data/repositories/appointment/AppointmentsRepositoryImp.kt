@@ -38,15 +38,15 @@ class AppointmentsRepositoryImp(
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)
             SortType.ASC else SortType.DESC
 
-        //dataStore.executeFlowWithValidToken { token->
-        return   Pager(
+        return dataStore.executeFlowWithValidToken { token->
+           Pager(
                 config = PagingConfig(
                     pageSize = PagingConstants.PAGE_SIZE
                 ),
                 pagingSourceFactory = {
                     AppointmentPagingSource(
                         appointmentState = appointmentState,
-                        token = FAKE_TOKEN,
+                        token = token,
                         appointmentsApi = appointmentsApi,
                         sort = sortType,
                         onStatisticsChanged = onStatisticsChanged,
@@ -57,7 +57,7 @@ class AppointmentsRepositoryImp(
                     )
                 }
             ).flow
-       // }
+        }
 
     }
 

@@ -6,13 +6,14 @@ import androidx.paging.PagingData
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.mapper.prescription.toPrescriptionDetails
 import com.example.data.mapper.prescription.toPrescriptionMedicineDto
-import com.example.data.paging_sources.medical_prescription.MedicalPrescriptionPagingSource
+import com.example.data.paging_sources.medical_prescription.PrescriptionPagingSource
 import com.example.domain.model.constants.PagingConstants
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.domain.repositories.prescription.PrescriptionRepository
 import com.example.model.prescription.PrescriptionMedicineData
 import com.example.model.prescription.PrescriptionWithUser
 import com.example.model.role_config.RoleAppConfig
+import com.example.model.user.UserMainInfo
 import com.example.network.remote.prescription.PrescriptionApiService
 import com.example.utility.network.map
 import kotlinx.coroutines.flow.Flow
@@ -21,14 +22,13 @@ class PrescriptionRepositoryImp(
     private val apiService: PrescriptionApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val roleAppConfig: RoleAppConfig,
-)
-    : PrescriptionRepository{
+) : PrescriptionRepository {
     override suspend fun addPrescription(
         childId: Int?,
         patientId: Int?,
         note: String,
         medicines: List<PrescriptionMedicineData>,
-    ) = userPreferencesRepository.executeWithValidTokenNetwork { token->
+    ) = userPreferencesRepository.executeWithValidTokenNetwork { token ->
         apiService.addPrescription(
             token = token,
             patientId = patientId,
@@ -38,17 +38,20 @@ class PrescriptionRepositoryImp(
         ).map { it.prescription.id }
     }
 
-    override suspend fun getAllMedicalPrescriptionsForCurrentDoctor(): Flow<PagingData<PrescriptionWithUser>> =
+    override suspend fun getAllMedicalPrescriptionsForCurrentDoctor(
+        onMainUserInfoChanged: (UserMainInfo) -> Unit,
+    ): Flow<PagingData<PrescriptionWithUser>> =
         userPreferencesRepository.executeFlowWithValidToken { token ->
             Pager(
                 config = PagingConfig(
                     pageSize = PagingConstants.PAGE_SIZE
                 ),
                 pagingSourceFactory = {
-                    MedicalPrescriptionPagingSource(
+                    PrescriptionPagingSource(
                         token = token,
                         medicalPrescriptionsApiService = apiService,
-                        role=roleAppConfig.role.toRoleDto(),
+                        role = roleAppConfig.role.toRoleDto(),
+                        onMainUserInfoChanged = onMainUserInfoChanged,
                     )
                 }
             ).flow
@@ -56,7 +59,7 @@ class PrescriptionRepositoryImp(
 
     override suspend fun getPrescriptionDetailsById(id: Int) =
         userPreferencesRepository.executeWithValidToken { token ->
-            apiService.getPrescriptionDetailsById(token,id,roleAppConfig.role.toRoleDto())
+            apiService.getPrescriptionDetailsById(token, id, roleAppConfig.role.toRoleDto())
                 .map { prescriptionDetailsDto ->
                     prescriptionDetailsDto.toPrescriptionDetails()
                 }

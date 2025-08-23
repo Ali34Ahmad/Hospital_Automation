@@ -80,7 +80,7 @@ dependencies {
     implementation(project(":feature:add_residential_address"))
     implementation(project(":feature:enter_email"))
     implementation(project(":feature:reset_password"))
-    implementation(project(":feature:upload_employee_profile_image"))
+    implementation(project(":feature:upload_profile_image"))
     implementation(project(":feature:employment_history"))
     implementation(project(":feature:prescription_details"))
     implementation(project(":feature:medical_records"))
@@ -89,8 +89,7 @@ dependencies {
     implementation(project(":feature:vaccines"))
     implementation(project(":feature:pharmacy_details"))
     implementation(project(":feature:admin_profile"))
-
-    implementation(project(":feature:medical_prescriptions"))
+    implementation(project(":feature:prescriptions"))
 
     implementation(project(":feature:doctor_profile"))
 
@@ -107,6 +106,7 @@ dependencies {
     implementation(project(":feature:medicines_search"))
     implementation(project(":feature:pharmacies"))
     implementation(project(":feature:guardian_profile"))
+    implementation(project(":feature:child_profile"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

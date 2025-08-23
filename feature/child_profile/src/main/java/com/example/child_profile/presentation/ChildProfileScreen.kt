@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.FileInfo
 import com.example.model.enums.ScreenState
+import com.example.model.helper.ext.toAge
 import com.example.model.helper.ext.toGenderFromString
 import com.example.model.helper.ext.toLocalDate
 import com.example.ui.theme.spacing
@@ -154,7 +155,7 @@ fun ChildProfileScreen(
                                     fatherName = child.fatherLastName,
                                     motherName = child.motherLastName,
                                     gender = child.gender.toGenderFromString(),
-                                    dateOfBirth = child.dateOfBirth.toLocalDate(),
+                                    dateOfBirth = child.dateOfBirth,
                                     employeeName = child.employeeName
                                         ?: stringResource(R.string.not_provided),
                                     guardiansNumber = child.numberOfGuardians ?: 1,

@@ -6,18 +6,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DetailedPrescriptionMedicineDto(
     @SerialName("prescription_medicinesId")
-    val id:Int,
+    val id: Int,
     val medicine: PrescriptionMedicineMainInfoDto,
-    val fulfilledBy:Int?,
+    @SerialName("pharmacy_id")
+    val fulfilledBy: Int? = null,
+    @SerialName("howToTake")
+    val note: String? = null,
 )
 
 @Serializable
 data class PrescriptionMedicineMainInfoDto(
     @SerialName("medicinesId")
-    val id:Int,
-    val name:String,
+    val id: Int,
+    val name: String,
     @SerialName("medImageUrl")
-    val imgUrl:String?,
-    val note:String?=null,
-    val titer: Int,
+    val imgUrl: String?,
+    @SerialName("pharmaceuticalTiter")
+    val titer: Int? = null,
 )

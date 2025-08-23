@@ -36,6 +36,7 @@ class UserPreferencesServiceImpl(
                         String(decrypted, Charsets.UTF_8)
                     else null
                 }
+                Log.v("ReadToken:", token?:"NULLLLLLLLLLLLLLLLLL")
 
                 UserPreferences(
                     isDarkTheme = isDarkTheme,
@@ -76,9 +77,14 @@ class UserPreferencesServiceImpl(
                     preferences.remove(DataStoreKeys.AUTH_TOKEN)
                     return@edit
                 }
+                Log.v("PlainToken:", token)
                 val bytes = token.toByteArray()
+                Log.v("TokenStep1:", token)
                 val encryptedBytes = Crypto.encrypt(bytes)
+                Log.v("TokenStep2:", encryptedBytes.toString())
+                //here the exception
                 val encryptedBytesBase64 = Base64.encodeToString(encryptedBytes, Base64.DEFAULT)
+                Log.v("EncryptedToken:", encryptedBytesBase64?:"NULLLLLLLLLLLLLLLLLL")
                 preferences[DataStoreKeys.AUTH_TOKEN] = encryptedBytesBase64
             }
         } catch (e: Exception) {

@@ -57,6 +57,14 @@ class PrescriptionDetailsViewModel(
                 updateSelectedMedicineIndex(index)
             }
 
+            override fun showBottomSheet() {
+                updateIsBottomSheetVisible(true)
+            }
+
+            override fun hideBottomSheet() {
+                updateIsBottomSheetVisible(false)
+            }
+
             override fun onRefresh() {
                 refreshPrescriptionDetails()
             }
@@ -82,6 +90,9 @@ class PrescriptionDetailsViewModel(
         }
     }
 
+    private fun updateIsBottomSheetVisible(isBottomSheetVisible: Boolean){
+        _uiState.update { it.copy(isBottomSheetVisible=isBottomSheetVisible) }
+    }
 
     private fun updateScreenState(screenState: ScreenState) {
         _uiState.update {

@@ -219,7 +219,7 @@ fun DoctorProfileScreen(
                                 specialty = uiState.doctorInfo.profile.specialty ?: "",
                                 departmentName = uiState.doctorInfo.profile.department ?: "",
                                 onDepartmentItemClick = {
-                                    uiActions.navigateToDepartmentDetailsScreen()
+                                    uiActions.navigateToDepartmentDetailsScreen(uiState.doctorInfo.profile.clinicId?:-1)
                                 },
                                 currentStatus = uiState.doctorInfo.profile.currentStatus,
                                 workDays = uiState.doctorInfo.profile.availabilitySchedule,

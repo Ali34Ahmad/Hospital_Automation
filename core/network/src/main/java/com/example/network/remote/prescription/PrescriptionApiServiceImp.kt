@@ -88,6 +88,7 @@ class PrescriptionApiServiceImp(
             }
             contentType(ContentType.Application.Json)
             bearerAuth(token)
+            Log.v("GetAllMedicalPrescriptionsApi:", token)
         }
         when (response.status.value) {
             in 200..299 -> {

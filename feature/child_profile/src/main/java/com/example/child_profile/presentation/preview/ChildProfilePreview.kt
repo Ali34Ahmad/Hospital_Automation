@@ -18,6 +18,7 @@ import com.example.util.UiText
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 private val mockActions = object : ChildProfileNavigationAction{
     override fun navigateUp() {}
@@ -37,7 +38,7 @@ val fakeChild =  ChildFullData(
     fatherLastName = "Mansoura",
     motherFirstName = "Aida",
     motherLastName = "Ghanem",
-    dateOfBirth = "04-09-2002",
+    dateOfBirth = LocalDate.now(),
     birthCertificateImgUrl = "",
     gender = "male",
     employeeId = 1
@@ -51,7 +52,7 @@ val refreshedChild =  ChildFullData(
     fatherLastName = "kzelik",
     motherFirstName = "Aida",
     motherLastName = "Gogo",
-    dateOfBirth = "04-09-1972",
+    dateOfBirth = LocalDate.now(),
     birthCertificateImgUrl = "",
     gender = "male",
     employeeId = 1

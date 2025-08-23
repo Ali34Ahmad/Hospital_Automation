@@ -29,7 +29,7 @@ fun NavController.navigateToEmailVerifiedSuccessfullyScreen(
 
 fun NavGraphBuilder.emailVerifiedSuccessfullyScreen(
     onNavigateToResetPasswordScreen: (email: String) -> Unit,
-    onNavigateToUploadEmployeeDocumentsScreen: () -> Unit,
+    onNavigateToNextScreen: () -> Unit,
 ) {
     composable<EmailVerifiedSuccessfullyRoute> {
         val emailVerifiedSuccessfullyViewModel =
@@ -39,7 +39,7 @@ fun NavGraphBuilder.emailVerifiedSuccessfullyScreen(
 
         val navActions = object : EmailVerifiedSuccessfullyNavigationUiActions {
             override fun navigateToUploadEmployeeDocumentsScreen() {
-                onNavigateToUploadEmployeeDocumentsScreen()
+                onNavigateToNextScreen()
             }
 
             override fun navigateToResetPasswordScreen() {

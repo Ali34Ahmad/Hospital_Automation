@@ -29,7 +29,7 @@ fun NavGraphBuilder.doctorProfileScreen(
     onNavigateToAppointmentsScreen: () -> Unit,
     onNavigateToPrescriptionsScreen: () -> Unit,
     onNavigateToMedicalRecordsScreen: () -> Unit,
-    onNavigateToDepartmentScreen: () -> Unit,
+    onNavigateToDepartmentScreen: (clinicId:Int) -> Unit,
 ) {
     composable<DoctorProfileRoute> {
         val viewModel = koinViewModel<DoctorProfileViewModel>()
@@ -60,8 +60,8 @@ fun NavGraphBuilder.doctorProfileScreen(
                 onNavigateToMedicalRecordsScreen()
             }
 
-            override fun navigateToDepartmentDetailsScreen() {
-                onNavigateToDepartmentScreen()
+            override fun navigateToDepartmentDetailsScreen(clinicId: Int) {
+                onNavigateToDepartmentScreen(clinicId)
             }
         }
 

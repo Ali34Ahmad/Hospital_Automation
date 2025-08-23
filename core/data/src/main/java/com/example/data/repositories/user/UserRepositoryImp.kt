@@ -3,6 +3,7 @@ package com.example.data.repositories.user
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.data.mapper.enums.toRoleDto
 import com.example.data.mapper.user.toGuardianData
 import com.example.data.mapper.user.toGuardianFullData
 import com.example.data.paging_sources.guardian.GuardiansPagingSource
@@ -11,6 +12,7 @@ import com.example.domain.repositories.UserRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.guardian.GuardianData
 import com.example.model.guardian.GuardianFullData
+import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.user.UserApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
@@ -22,9 +24,8 @@ import kotlinx.coroutines.flow.first
 internal class UserRepositoryImp(
     private val userApiService: UserApiService,
     private val userPreferences: UserPreferencesRepository,
+    private val roleAppConfig: RoleAppConfig,
 ): UserRepository  {
-
-
     override suspend fun getGuardianById(id: Int): Result<GuardianFullData, NetworkError> {
         val token: String? = userPreferences.userPreferencesDataStoreFlow.first().token
         if(token == null)
@@ -32,7 +33,8 @@ internal class UserRepositoryImp(
 
         val response = userApiService.getUserProfile(
             token = token,
-            id = id
+            id = id,
+            roleDto = roleAppConfig.role.toRoleDto(),
         ).map { data->
             data.user.toGuardianFullData()
         }

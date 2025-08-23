@@ -23,7 +23,6 @@ interface UserPreferencesRepository {
         action: suspend (token: String) -> Result<T, NetworkError>
     ):Result<T, NetworkError>
 
-
     suspend fun <T> executeFlowWithValidToken(
         action: suspend (token: String) -> Flow<T>
     ): Flow<T>

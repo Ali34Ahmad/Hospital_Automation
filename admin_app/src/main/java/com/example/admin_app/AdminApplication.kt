@@ -1,14 +1,24 @@
 package com.example.admin_app
 
 import android.app.Application
+import com.example.add_residential_address.addResidentialAddressModule
 import com.example.admin_app.main.appModule
 import com.example.clinic_details.di.clinicDetailsModule
 import com.example.clinics_search.di.clinicsSearchModule
 import com.example.data.di.adminDataModule
 import com.example.doctor_schedule.di.doctorScheduleModule
 import com.example.doctors.di.doctorsSearchModule
+import com.example.email_verification.emailVerificationModule
 import com.example.employees_search.di.employeesSearchModule
+import com.example.employment_requests.employmentRequestsModule
+import com.example.enter_email.enterEmailModule
+import com.example.login.loginModule
 import com.example.pharmacies_search.di.pharmaciesSearch
+import com.example.reset_password.resetPasswordModule
+import com.example.signup.signUpModule
+import com.example.upload_profile_image.uploadProfileImageModule
+import com.example.vaccine_details_screen.vaccineDetailsModule
+import com.example.vaccines.vaccinesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -27,7 +37,17 @@ class AdminApplication : Application() {
                 clinicsSearchModule,
                 pharmaciesSearch,
                 doctorScheduleModule,
-                clinicDetailsModule
+                clinicDetailsModule,
+                signUpModule,
+                emailVerificationModule,
+                loginModule,
+                addResidentialAddressModule,
+                enterEmailModule,
+                resetPasswordModule,
+                uploadProfileImageModule,
+                employmentRequestsModule,
+                vaccinesModule,
+                vaccineDetailsModule
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.network.remote.child
 
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
@@ -35,11 +36,12 @@ internal class ChildApiServiceImpl(
     override suspend fun getChildProfile(
         token: String,
         id: Int,
+        roleDto: RoleDto
     ): Result<ChildFullResponse, NetworkError> =
         doApiCall<ChildFullResponse>(
             tag = CHILD_API_TAG
         ) {
-            client.get(ApiRoutes.CHILD_BY_ID) {
+            client.get(ApiRoutes.getChildProfileByIdEndPoint(role = roleDto)) {
                 bearerAuth(token)
                 parameter("id", id)
             }

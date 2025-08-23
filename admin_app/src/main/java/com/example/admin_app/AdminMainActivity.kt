@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.admin_app.main.AppViewModel
+import com.example.admin_app.navigation.Navigation
 import com.example.clinic_details.presentation.ClinicDetailsScreen
 import com.example.clinic_details.presentation.ClinicDetailsViewModel
 import com.example.clinic_details.presentation.ClinicNavigationAction
@@ -33,52 +34,7 @@ class AdminMainActivity : ComponentActivity() {
             val mainViewModel = koinViewModel<AppViewModel>()
             val appUIState = mainViewModel.uiState.collectAsStateWithLifecycle()
             Hospital_AutomationTheme(darkTheme = appUIState.value.isDarkTheme) {
-                val viewModel = koinViewModel<ClinicDetailsViewModel>()
-                ClinicDetailsScreen(
-                    viewModel = viewModel,
-                    navigationActions = object : ClinicNavigationAction{
-                        override fun navigateUp() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToDoctorProfile() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToScheduleScreen() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToVaccines() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToAllDoctors() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToAllAppointments() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToPrescriptions() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToMedicalRecords() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToContractHistory() {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun navigateToEditClinic() {
-                            TODO("Not yet implemented")
-                        }
-
-                    }
-                )
+                Navigation()
 
         }}
     }

@@ -14,6 +14,8 @@ import com.example.network.remote.auth.AuthApiService
 import com.example.network.remote.auth.AuthApiServiceImpl
 import com.example.network.remote.auth.singup.doctor.DoctorSignUpApiService
 import com.example.network.remote.auth.singup.doctor.DoctorSignUpApiServiceImpl
+import com.example.network.remote.child.ChildApiService
+import com.example.network.remote.child.ChildApiServiceImpl
 import com.example.network.remote.clinic.ClinicApiService
 import com.example.network.remote.clinic.ClinicApiServiceImp
 import com.example.network.remote.doctor.profile.DoctorProfileApiService
@@ -36,6 +38,8 @@ import com.example.network.remote.upload_image.UploadImageApi
 import com.example.network.remote.upload_image.UploadImageApiImpl
 import com.example.network.remote.upload_profile_image.UploadEmployeeProfileImageApi
 import com.example.network.remote.upload_profile_image.UploadEmployeeProfileImageApiImpl
+import com.example.network.remote.user.UserApiService
+import com.example.network.remote.user.UserApiServiceImpl
 import com.example.network.remote.vaccine.VaccineApiService
 import com.example.network.remote.vaccine.VaccineApiServiceImpl
 import com.example.network.remote.work_request.WorkRequestApiService
@@ -92,4 +96,8 @@ val doctorNetworkModule = module {
 
     singleOf(::MedicalRecordsApiServiceImpl) { bind<MedicalRecordsApiService>() }
 
+
+    singleOf(::ChildApiServiceImpl) { bind<ChildApiService>() }
+
+    singleOf(::UserApiServiceImpl) { bind<UserApiService>() }
 }

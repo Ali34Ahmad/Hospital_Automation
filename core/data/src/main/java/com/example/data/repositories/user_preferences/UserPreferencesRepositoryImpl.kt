@@ -1,5 +1,6 @@
 package com.example.data.repositories.user_preferences
 
+import android.util.Log
 import com.example.data.mapper.user_preferences.toUserPreferences
 import com.example.datastore.service.UserPreferencesService
 import com.example.domain.repositories.local.UserPreferencesRepository
@@ -50,6 +51,7 @@ class UserPreferencesRepositoryImpl(
     override suspend fun <T> executeFlowWithValidToken(
         action: suspend (String) -> Flow<T>
     ): Flow<T> {
+        //here
         val token = this.userPreferencesDataStoreFlow.firstOrNull()?.token
         return if (token == null) {
             throw Exception(NetworkError.UNAUTHORIZED.name)

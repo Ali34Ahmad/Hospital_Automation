@@ -14,7 +14,7 @@ class DoctorProfileRepositoryImpl(
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : DoctorProfileRepository {
     override suspend fun getDoctorInfo(): Result<DoctorProfileResponse, rootError> =
-        userPreferencesRepository.executeWithValidToken {token->
+        userPreferencesRepository.executeWithValidToken { token->
             doctorProfileService.getDoctorInfo(token)
                 .map { doctorProfileResponseDto ->
                     doctorProfileResponseDto.toDoctorProfileResponse()
