@@ -54,8 +54,7 @@ class AdminApplication : Application() {
                 uploadProfileImageModule,
                 employmentRequestsModule,
                 vaccinesModule,
-                vaccineDetailsModule
-                clinicDetailsModule,
+                vaccineDetailsModule,
                 guardianProfileModule,
                 childProfileModule,
                 appointmentDetailsModule,

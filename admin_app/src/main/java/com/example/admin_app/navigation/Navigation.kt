@@ -37,7 +37,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = VaccinesRoute,
+        startDestination = AuthGraphRoute,
     ) {
 
         navigation<AuthGraphRoute>(

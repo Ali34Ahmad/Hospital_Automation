@@ -273,7 +273,7 @@ fun Navigation() {
                 navController.navigateToGuardianProfile(userId, UserProfileMode.VIEW_ONLY, null)
             },
             onNavigateToChildProfile = { childId ->
-                navController.navigateToChildProfile(childId)
+                navController.navigateToChildProfile(childId,hasAdminAccess=false)
             },
             onNavigateToFulfillingPharmacy = { pharmacyId ->
                 navController.navigateToPharmacyDetailsScreen(
@@ -289,14 +289,22 @@ fun Navigation() {
         guardianProfileScreen(
             onNavigateUp = { navController.navigateUp() },
             onNavigateToChildrenScreen = { },
-            onNavigateToAddChildScreen = { }
+            onNavigateToAddChildScreen = { },
+            onNavigateToAppointments = {  },
+            onNavigateToPrescriptions = {  },
+            onNavigateToMedicalRecord = {  },
         )
 
         childProfileScreen(
             navigateToAddGuardianScreen = {},
             navigateToEmployeeProfileScreen = { },
             navigateToGuardianScreen = { },
-            navigateUp = { navController.navigateUp() }
+            navigateUp = { navController.navigateUp() },
+            onNavigateToVaccinationTable = {  },
+            onNavigateToAppointments = {  },
+            onNavigateToPrescriptions = {  },
+            onNavigateToMedicalRecords = {  },
+            onNavigateToAppointmentDetails = {  },
         )
 
         medicineDetailsScreen(
