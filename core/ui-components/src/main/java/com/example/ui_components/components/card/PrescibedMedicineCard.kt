@@ -64,7 +64,7 @@ fun PrescribedMedicineCard(
         modifier = modifier.clickable(
             enabled = !canEdit
         ){
-                onClick()
+            onClick()
             },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background

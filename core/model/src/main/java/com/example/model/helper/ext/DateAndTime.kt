@@ -5,7 +5,7 @@ import com.example.model.enums.AgeUnit
 import java.time.LocalDate
 import java.time.Period
 
-fun LocalDate.toAge()
+fun LocalDate.toAgeFromDate()
         : Age {
     val birthDate = this
     val today = LocalDate.now()

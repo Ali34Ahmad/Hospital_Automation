@@ -71,9 +71,8 @@ class VaccineRepositoryImpl(
                 token = token,
                 id = id,
                 role = role.toRoleDto()
-            )
-                .map { vaccineData ->
-                    vaccineData.toVaccineData()
+            ).map { vaccineDto ->
+                    vaccineDto.toVaccineData()
                 }
         }
 

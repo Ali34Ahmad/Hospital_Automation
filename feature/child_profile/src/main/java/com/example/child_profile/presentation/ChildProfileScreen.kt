@@ -17,9 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.FileInfo
 import com.example.model.enums.ScreenState
-import com.example.model.helper.ext.toAge
 import com.example.model.helper.ext.toGenderFromString
-import com.example.model.helper.ext.toLocalDate
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.custom.AddGuardianButton
@@ -83,17 +81,13 @@ fun ChildProfileScreen(
     )
 
     val child = uiState.child
-    var name = ""
-    child?.let {
-        name = "${it.firstName} ${it.lastName}"
-    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             ChildProfileTopBar(
                 modifier = Modifier.fillMaxWidth() ,
-                name = name,
+                name = child?.let { "${it.firstName} ${it.lastName}" }.orEmpty(),
                 onNavigateUpClick = navigationActions::navigateUp,
             )
         },
@@ -143,7 +137,7 @@ fun ChildProfileScreen(
                     }
                     }
                     ScreenState.SUCCESS ->{
-                        child?.let { child
+                        child?.run {
                         PullToRefreshColumn(
                             refreshing = uiState.isRefreshing,
                             onRefresh = {
@@ -152,27 +146,52 @@ fun ChildProfileScreen(
                             modifier = Modifier.fillMaxWidth(),
                         ){
                                 ChildProfileCard(
-                                    fatherName = child.fatherLastName,
-                                    motherName = child.motherLastName,
-                                    gender = child.gender.toGenderFromString(),
-                                    dateOfBirth = child.dateOfBirth,
-                                    employeeName = child.employeeName
+                                    fatherName = fatherLastName,
+                                    motherName = motherLastName,
+                                    gender = gender.toGenderFromString(),
+                                    dateOfBirth = dateOfBirth,
+                                    employeeName = employeeName
                                         ?: stringResource(R.string.not_provided),
-                                    guardiansNumber = child.numberOfGuardians ?: 1,
+                                    guardiansNumber = numberOfGuardians ?: 1,
                                     onBirthCertificateItemClick = {
                                         onAction(ChildProfileUIAction.ShowFileDownloaderDialog)
                                     },
                                     onBirthCertificateItemDescriptionClick = {
-                                        child.employeeId?.let {
+                                        employeeId?.let {
                                             navigationActions.navigateToEmployeeProfileScreen(it)
                                         }
                                     },
                                     onGuardianTagItemClick = {
-                                        child.childId?.let {
+                                        childId?.let {
                                             navigationActions.navigateToGuardiansScreen(it)
                                         }
                                     },
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onVaccinationTableClick = {
+                                        childId?.let {
+                                            navigationActions.navigateToVaccinationTableScreen(it)
+                                        }
+                                    },
+                                    onAppointmentsClick = {
+                                        childId?.let {
+                                            navigationActions.navigateToAppointments(it)
+                                        }
+                                    },
+                                    onPrescriptionsClick = {
+                                        childId?.let {
+                                            navigationActions.navigateToPrescriptions(it)
+                                        }
+                                    },
+                                    onMedicalRecordsClick = {
+                                        childId?.let {
+                                            navigationActions.navigateToMedicalRecords(it)
+                                        }
+                                    },
+                                    hasAdminAccess = uiState.hasAdminAccess,
+                                    lastVaccination = lastVaccination,
+                                    nextVaccination = nextVaccination,
+                                    lastAppointment = lastAppointment,
+                                    onAppointmentItemClick = navigationActions::navigateToAppointmentDetails
                                 )
                             }
 

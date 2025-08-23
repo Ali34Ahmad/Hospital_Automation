@@ -3,8 +3,10 @@ package com.example.data.paging_sources.childrenSearch
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.data.mapper.child.toChildData
+import com.example.data.mapper.enums.toRoleDto
 import com.example.model.child.ChildData
 import com.example.model.guardian.PagedData
+import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.child.ChildApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
@@ -37,7 +39,7 @@ class ChildrenSearchPagingSource(
             page = nextPageNumber,
             limit = params.loadSize,
             name = query,
-            token = token
+            token = token,
         ).map { response->
             val children = response.data.map { it.toChildData() }
             PagedData(

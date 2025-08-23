@@ -313,7 +313,7 @@
     <string name="emplyee_name">Employee name</string>
     <string name="deactivating_department">Deactivating department</string>
     <string name="deactivating_reason">Deactivating reason</string>
-    <string name="deactivation_msg_title">Are you sure you want to deactivate this department?</string>
+    <string name="deactivation_msg_title">Are you sure?</string>
     <string name="deactivation_msg_subtitle">You can reactivate this department later.</string>
     <string name="all_doctors">All doctors</string>
     <string name="work_history">Work history</string>
@@ -334,4 +334,14 @@
     <string name="patient">Patient</string>
     <string name="child">Child</string>
     <string name="code">Code</string>
+    <string name="medical_record">Medical record</string>
+    <string name="suspend_user_account">Suspend user account</string>
+    <string name="reactivate_user_account">Reactivate user account</string>
+    <string name="deactivate_account_message">This account has been successfully deactivated.</string>
+    <string name="reactivate_account_message">The account is now active.</string>
+    <string name="not_specified">Not specified</string>
+    <string name="no_detials_available">No details available</string>
+    <string name="last_appointment">Last appointment</string>
+    <string name="last_vaccination">Last vaccination</string>
+    <string name="next_vaccination">Next vaccination</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.children.presentation.preview
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +14,7 @@ import com.example.model.child.ChildFullData
 import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
+import java.time.LocalDate
 
 private val mockActions = object : ChildrenNavigationAction{
     override fun navigateUp() {}
@@ -28,7 +31,7 @@ private val children = listOf(
         fatherLastName = "Ahmad",
         motherFirstName = "Sara",
         motherLastName = "Sara",
-        dateOfBirth = "2002-11-11",
+        dateOfBirth = LocalDate.of(2011,10,30),
         birthCertificateImgUrl = "",
         gender = "Male",
         employeeId = 0
@@ -42,7 +45,7 @@ private val children = listOf(
         fatherLastName = "Ahmad",
         motherFirstName = "Sara",
         motherLastName = "Sara",
-        dateOfBirth = "2002-01-01",
+        dateOfBirth = LocalDate.of(2011,10,30),
         birthCertificateImgUrl = "",
         gender = "Male",
         employeeId = 0
@@ -56,7 +59,7 @@ private val children = listOf(
         fatherLastName = "Ahmad",
         motherFirstName = "Sara",
         motherLastName = "Sara",
-        dateOfBirth = "2002-01-01",
+        dateOfBirth = LocalDate.of(2011,10,30),
         birthCertificateImgUrl = "",
         gender = "Female",
         employeeId = 0

@@ -5,7 +5,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
-@Suppress("SERIALIZER_TYPE_INCOMPATIBLE")
 @Serializable
 data class ChildDto(
     @SerialName("childId") val childId: Int,

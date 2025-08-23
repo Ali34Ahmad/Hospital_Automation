@@ -16,6 +16,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,11 +41,15 @@ fun WarningDialogWithInputField(
     onDismissRequest: ()-> Unit,
     onConfirm:()-> Unit,
     onDismiss: ()-> Unit,
+    enableConfirmButton: Boolean,
+    hasError: Boolean,
+    isRequired: Boolean,
     modifier: Modifier = Modifier,
-    dismissButtonText: String = stringResource(R.string.cancel) ,
+    dismissButtonText: String = stringResource(R.string.cancel),
     confirmButtonText: String = stringResource(R.string.ok),
     @StringRes placeholder: Int = R.string.deactivating_reason,
     showCancelButton: Boolean = true,
+    minLines: Int = 2,
 ) {
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
@@ -59,7 +67,7 @@ fun WarningDialogWithInputField(
         ){
             Text(
                 text = title,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(Modifier.height(MaterialTheme.spacing.small8))
@@ -70,10 +78,12 @@ fun WarningDialogWithInputField(
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
             HospitalAutomationTextFiled(
+                isError = hasError,
                 value = text,
                 onValueChange = onTextValueChange,
                 placeholder = placeholder,
-                minLines = 2,
+                minLines = minLines,
+                isRequired = isRequired,
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
             Row(
@@ -90,6 +100,7 @@ fun WarningDialogWithInputField(
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
                 TextButton(
                     onClick = onConfirm,
+                    enabled = enableConfirmButton
                 ) {
                     Text(text = confirmButtonText)
                 }
@@ -103,16 +114,23 @@ fun WarningDialogWithInputField(
 @Composable
 fun WarningDialogWithInputFieldPreview() {
     Hospital_AutomationTheme {
+        var text by remember {
+            mutableStateOf("")
+        }
         WarningDialogWithInputField(
             title = "Are you sure?",
             subtitle = "you can reactivate the department again.",
-            text = "",
-            onTextValueChange = {},
+            text = text,
+            onTextValueChange = {
+                text = it
+            },
             onDismissRequest = {},
             modifier = Modifier.fillMaxWidth(),
             onConfirm = {},
-            onDismiss = {  },
-
+            onDismiss = {},
+            enableConfirmButton = false,
+            isRequired = true,
+            hasError = true ,
         )
     }
 }

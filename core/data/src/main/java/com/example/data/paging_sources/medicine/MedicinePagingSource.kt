@@ -33,9 +33,11 @@ class MedicinePagingSource(
             limit = params.loadSize,
             name = name
         ).onSuccess {
-            data = it.data.map { it.toMedicineData() }
+            data = it.data.map {
+                medicineDto-> medicineDto.toMedicineData()
+            }
         }.onError { error: NetworkError ->
-            return LoadResult.Error<Int, MedicineData>(NetworkException(error))
+            return LoadResult.Error(NetworkException(error))
         }
 
         return LoadResult.Page(

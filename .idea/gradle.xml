@@ -70,6 +70,7 @@
             <option value="$PROJECT_DIR$/feature/pharmacies" />
             <option value="$PROJECT_DIR$/feature/pharmacies_search" />
             <option value="$PROJECT_DIR$/feature/pharmacy_details" />
+            <option value="$PROJECT_DIR$/feature/pharmacy_medicines" />
             <option value="$PROJECT_DIR$/feature/prescription_details" />
             <option value="$PROJECT_DIR$/feature/prescriptions" />
             <option value="$PROJECT_DIR$/feature/reset_password" />

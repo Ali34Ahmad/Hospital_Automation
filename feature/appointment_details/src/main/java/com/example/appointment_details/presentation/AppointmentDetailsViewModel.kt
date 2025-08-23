@@ -37,7 +37,9 @@ class AppointmentDetailsViewModel(
 
     private val _uiState = MutableStateFlow(
         AppointmentDetailsUIState(
-            appointmentId = savedStateHandle.toRoute<AppointmentDetailsRoute>().appointmentId,
+            appointmentId = 1,
+            canEdit = false
+               // savedStateHandle.toRoute<AppointmentDetailsRoute>().appointmentId,
         )
     )
     val uiState : StateFlow<AppointmentDetailsUIState> = _uiState

@@ -58,6 +58,7 @@ fun HospitalAutomationTextFiled(
         disabledIndicatorColor = Color.Transparent,
         errorTextColor = MaterialTheme.colorScheme.onBackground,
         errorContainerColor = MaterialTheme.colorScheme.background,
+        errorPlaceholderColor = MaterialTheme.colorScheme.error
     ),
     shape:Shape= MaterialTheme.shapes.extraSmall,
 ) {
@@ -174,7 +175,6 @@ fun HospitalAutomationTextFiledErrorPreview() {
                 value = it
             },
             modifier = Modifier.fillMaxWidth(),
-            label = R.string.first_name,
             trailingIcon = AppIcons.Outlined.calender,
             isRequired = true,
             supportingText = stringResource(R.string.supporting_text),

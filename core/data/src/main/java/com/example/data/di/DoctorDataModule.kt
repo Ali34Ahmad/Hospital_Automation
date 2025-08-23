@@ -5,8 +5,6 @@ import com.example.data.repositories.auth.AuthRepositoryImpl
 import com.example.data.repositories.auth.signup.DoctorSignUpRepositoryImpl
 import com.example.data.repositories.child.ChildRepositoryImp
 import com.example.data.repositories.doctor.DoctorProfileRepositoryImpl
-import com.example.data.repositories.download_file.DownloadFileRepositoryImpl
-import com.example.data.repositories.employee_account_management.EmployeeAccountManagementRepositoryImpl
 import com.example.data.repositories.employment_history.EmploymentHistoryRepositoryImpl
 import com.example.data.repositories.medical_record.MedicalRecordRepositoryImpl
 import com.example.data.repositories.medicine.MedicineRepositoryImp
@@ -47,6 +45,9 @@ val doctorDataModule = module {
     singleOf(::PrescriptionRepositoryImp) { bind<PrescriptionRepository>() }
     singleOf(::PharmacyRepositoryImp) { bind<PharmacyRepository>() }
     singleOf(::MedicineRepositoryImp) { bind<MedicineRepository>() }
+    includes(doctorNetworkModule, doctorDomainModule,commonDataModule)
+    singleOf(::PrescriptionRepositoryImp){bind<PrescriptionRepository>()}
+    singleOf(::PharmacyRepositoryImp){bind<PharmacyRepository>()}
     singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
     singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
 
@@ -63,12 +64,7 @@ val doctorDataModule = module {
     singleOf(::EmploymentHistoryRepositoryImpl) { bind<EmploymentHistoryRepository>() }
 
     singleOf(::AdminProfileRepositoryImpl) { bind<AdminProfileRepository>() }
-
-    singleOf(::DownloadFileRepositoryImpl) { bind<DownloadFileRepository>() }
-
     singleOf(::UserPreferencesRepositoryImpl) { bind<UserPreferencesRepository>() }
-
-    singleOf(::EmployeeAccountManagementRepositoryImpl) { bind<EmployeeAccountManagementRepository>() }
 
     singleOf(::VaccineRepositoryImpl) { bind<VaccineRepository>() }
     singleOf(::MedicalRecordRepositoryImpl) { bind<MedicalRecordRepository>() }

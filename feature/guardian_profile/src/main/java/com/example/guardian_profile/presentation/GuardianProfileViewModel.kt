@@ -5,8 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.domain.use_cases.users.AddGuardianToChildUseCase
+import com.example.domain.use_cases.users.DeactivateUserUseCase
 import com.example.domain.use_cases.users.GetGuardianByIdUseCase
+import com.example.domain.use_cases.users.ReactivateUserUseCase
+import com.example.domain.use_cases.validator.ValidateTextUseCase
 import com.example.guardian_profile.navigation.GuardianProfileRoute
+import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
 import com.example.model.guardian.GuardianFullData
@@ -27,14 +31,19 @@ import kotlinx.coroutines.launch
 class GuardianProfileViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val guardianProfileUseCase: GetGuardianByIdUseCase,
-    private val addGuardianToChildUseCase: AddGuardianToChildUseCase
+    private val addGuardianToChildUseCase: AddGuardianToChildUseCase,
+    private val deactivateUserUseCase: DeactivateUserUseCase,
+    private val reactivateUserUseCase: ReactivateUserUseCase,
+    private val validateTextUseCase: ValidateTextUseCase
 ): ViewModel() {
-
+    val childId : Int? = null
+    val guardianId  = 129
+    val mode = UserProfileMode.ADMIN_ACCESS
     private val _uiState = MutableStateFlow(
         GuardianProfileUIState(
-        childId = savedStateHandle.toRoute<GuardianProfileRoute>().childId,
-        guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId,
-            userProfileMode = savedStateHandle.toRoute<GuardianProfileRoute>().userProfileMode
+            childId = childId,
+            guardianId = guardianId,
+            userProfileMode = mode
         )
     )
 
@@ -44,11 +53,7 @@ class GuardianProfileViewModel(
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            GuardianProfileUIState(
-                childId = savedStateHandle.toRoute<GuardianProfileRoute>().childId,
-                guardianId = savedStateHandle.toRoute<GuardianProfileRoute>().guardianId,
-                userProfileMode = savedStateHandle.toRoute<GuardianProfileRoute>().userProfileMode
-            )
+            _uiState.value
         )
 
     fun onAction(action: GuardianProfileActions){
@@ -94,7 +99,69 @@ class GuardianProfileViewModel(
             is GuardianProfileActions.UpdateRefreshState ->{
                 updateRefreshState(action.isRefreshing)
             }
+
+            GuardianProfileActions.DeactivateAccount -> deactivateAccount()
+            GuardianProfileActions.ReactivateAccount -> reactivateAccount()
+            GuardianProfileActions.ClearDeactivationReason -> clearDeactivationReason()
+            GuardianProfileActions.HideLoadingDialog -> hideLoadingDialog()
+            GuardianProfileActions.HideWarningDialog -> hideWarningDialog()
+            GuardianProfileActions.ShowLoadingDialog -> showLoadingDialog()
+            GuardianProfileActions.ShowWarningDialog -> showWarningDialog()
+            is GuardianProfileActions.UpdateDeactivationReason -> updateDeactivationReason(action.newValue)
         }
+    }
+
+    private fun validateInput(){
+        val textError = validateTextUseCase(uiState.value.deactivationReason)
+        val hasError = textError != null
+        updateIsValidInput(hasError)
+    }
+    private fun updateIsValidInput(newValue: Boolean?){
+        _uiState.value = _uiState.value.copy(isValidInput = newValue)
+    }
+    private fun deactivateAccount() = viewModelScope.launch{
+        showLoadingDialog()
+        deactivateUserUseCase(
+            userId = uiState.value.guardianId,
+            deactivationReason = uiState.value.deactivationReason
+        ).onSuccess{
+            refreshData()
+            showToast(UiText.StringResource(R.string.deactivate_account_message))
+        }.onError {
+            showToast(UiText.StringResource(R.string.something_went_wrong))
+        }
+        clearDeactivationReason()
+        hideLoadingDialog()
+    }
+    private fun reactivateAccount() = viewModelScope.launch{
+        showLoadingDialog()
+        reactivateUserUseCase(
+            userId = uiState.value.guardianId
+        ).onSuccess{
+            showToast(UiText.StringResource(R.string.reactivate_account_message))
+            refreshData()
+        }.onError {
+            showToast(UiText.StringResource(R.string.something_went_wrong))
+        }
+        hideLoadingDialog()
+    }
+    private fun clearDeactivationReason(){
+        _uiState.value = _uiState.value.copy(deactivationReason = "")
+    }
+    private fun hideLoadingDialog(){
+        _uiState.value = _uiState.value.copy(isLoadingDialogShown = false)
+    }
+    private fun showLoadingDialog(){
+        _uiState.value = _uiState.value.copy(isLoadingDialogShown = true)
+    }
+    private fun showWarningDialog(){
+        _uiState.value = _uiState.value.copy(isWarningDialogShown = true)
+    }
+    private fun hideWarningDialog(){
+        _uiState.value = _uiState.value.copy(isWarningDialogShown = false)
+    }
+    private fun updateDeactivationReason(newValue: String){
+        _uiState.value = _uiState.value.copy(deactivationReason = newValue)
     }
     private fun showToast(message: UiText){
         _uiState.value = _uiState.value.copy(toastMessage = message)
@@ -108,7 +175,7 @@ class GuardianProfileViewModel(
     private fun loadInitialData(){
         _uiState.value = _uiState.value.copy(screenState = ScreenState.LOADING)
         viewModelScope.launch {
-            guardianProfileUseCase(savedStateHandle.toRoute<GuardianProfileRoute>().guardianId)
+            guardianProfileUseCase(_uiState.value.guardianId)
                 .onSuccess{ data->
                     onAction(GuardianProfileActions.UpdateGuardianData(data))
                     _uiState.value = _uiState.value.copy(screenState = ScreenState.SUCCESS)
@@ -161,7 +228,6 @@ class GuardianProfileViewModel(
                     updateRefreshState(false)
                     showToast(UiText.StringResource(R.string.something_went_wrong))
                 }
-
         }
     }
 }

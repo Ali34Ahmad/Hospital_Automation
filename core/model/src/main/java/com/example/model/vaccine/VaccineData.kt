@@ -11,3 +11,4 @@ data class VaccineData(
     val maxAge: Age,
     val interactions:List<VaccineInteraction>?,
 )
+

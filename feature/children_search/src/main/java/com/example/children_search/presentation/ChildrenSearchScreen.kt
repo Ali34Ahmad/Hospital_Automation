@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.children_search.navigation.SearchType
 import com.example.model.Child
 import com.example.model.child.ChildData
 import com.example.model.enums.ScreenState
@@ -32,6 +33,7 @@ import com.example.ui_components.components.topbars.custom.ChildrenSearchBar
 import kotlin.Unit
 import com.example.ui_components.R
 import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 
@@ -43,7 +45,7 @@ fun ChildrenSearchScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val children = remember(uiState.query) {
-        if(uiState.query.isBlank()) null else viewModel.childrenFlow
+        if(uiState.query.isBlank() && uiState.searchType == SearchType.GLOBAL) null else viewModel.childrenFlow
     }?.collectAsLazyPagingItems()
     ChildrenSearchScreen(
         modifier = modifier,
@@ -189,13 +191,11 @@ fun ChildrenSearchScreen(
                                 }
                                 if (children.loadState.append == LoadState.Loading) {
                                     item {
-                                        Box(
+                                        SmallCircularProgressIndicator(
                                             modifier = Modifier
-                                                .fillMaxWidth(),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            CircularProgressIndicator()
-                                        }
+                                                .fillMaxWidth()
+                                                .padding(MaterialTheme.spacing.medium16)
+                                        )
                                     }
                                 }
                             }

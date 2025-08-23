@@ -32,5 +32,7 @@ internal fun UserFullDto.toGuardianFullData() = GuardianFullData(
     addressStreet = addressStreet,
     addressNote = addressNote,
     gender = gender,
-    imgUrl = "${ApiRoutes.BASE_URL}/$imgUrl"
+    imgUrl = "${ApiRoutes.BASE_URL}/$imgUrl",
+    isSuspended = isSuspended==true,
+    suspendingReason = suspendingReason
 )

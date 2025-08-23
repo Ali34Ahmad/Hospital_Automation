@@ -13,6 +13,7 @@ import com.example.utility.network.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -31,12 +32,12 @@ data class AppointmentsApiServiceImp(
         dateFilter: String?,
         queryFilter: String?,
         doctorId: Int?,
-        role: RoleDto
+        roleDto: RoleDto
     ): Result<ShowAppointmentsResponse, NetworkError> =
         doApiCall<ShowAppointmentsResponse>(
             tag = APPOINTMENTS_API_TAG
         ) {
-            client.get(ApiRoutes.getAppointmentsEndPointFor(role)){
+            client.get(ApiRoutes.getAppointmentsEndPointFor(roleDto)){
                 bearerAuth(token)
                 url {
                     parameters.append("params", params)
@@ -49,8 +50,10 @@ data class AppointmentsApiServiceImp(
                     if (!queryFilter.isNullOrBlank()){
                         parameters.append("appointment_type",queryFilter)
                     }
-                    doctorId?.let {
-                        parameters.append("id",doctorId.toString())
+                    if(roleDto == RoleDto.ADMIN){
+                        doctorId?.let {
+                            parameters.append("id",doctorId.toString())
+                        }
                     }
                 }
             }
@@ -59,11 +62,20 @@ data class AppointmentsApiServiceImp(
     override suspend fun getAppointmentDetails(
         token: String,
         id: Int,
+        role: RoleDto
     ): Result<ShowAppointmentDetails, NetworkError>  =
         doApiCall<ShowAppointmentDetails>(
             tag = APPOINTMENTS_API_TAG
         ) {
-            client.get(ApiRoutes.Doctor.SHOW_SINGLE_APPOINTMENT+"/$id"){
+            val url = ApiRoutes.getAppointmentByIdEndPointFor(role).let { base ->
+                if (role == RoleDto.DOCTOR) "$base/$id" else base
+            }
+
+            client.get(url){
+                if(role == RoleDto.ADMIN){
+                    parameter("type","appointment")
+                    parameter("id",id)
+                }
                 bearerAuth(token)
             }
         }

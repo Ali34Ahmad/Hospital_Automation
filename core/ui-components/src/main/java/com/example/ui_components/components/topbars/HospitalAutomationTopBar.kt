@@ -2,6 +2,8 @@ package com.example.ui_components.components.topbars
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,19 +53,30 @@ fun HospitalAutomationTopBar(
     actionIcons: List<ActionIcon> = emptyList(),
     hasTrailingContent: Boolean = false,
     trailingContent: @Composable () -> Unit = {},
+    onTitleClick: () -> Unit = {},
 ) {
     TopAppBar(
         modifier = modifier,
         title = {
+            //Simple Text
             if (imageUrl.isNullOrBlank() && !showImagePlaceHolder) {
                 Text(
+                    modifier = Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onTitleClick
+                    ),
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             } else {
+                //Image and Text
                 Row(
-                    modifier = Modifier.fillMaxWidth(1f),
+                    modifier = Modifier.fillMaxWidth(1f)
+                        .clickable{
+                            onTitleClick()
+                        },
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {

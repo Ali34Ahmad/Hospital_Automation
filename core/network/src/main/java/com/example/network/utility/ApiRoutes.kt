@@ -93,7 +93,7 @@ object ApiRoutes {
         const val CHILD_BY_ID = "$DOCTOR/find-child-byId"
     }
 
-    object Admin {
+    object Admin{
         const val LOGIN = "$ADMIN/login"
         const val SIGNUP = "$ADMIN/sign-up"
         const val SEND_OTP = "$ADMIN/send-otp"
@@ -102,6 +102,10 @@ object ApiRoutes {
         const val LOGOUT = "$ADMIN/logout"
         const val UPLOAD_PROFILE_IMAGE = "$ADMIN/add-image"
 
+        const val MEDICINES_IN_SPECIFIC_PHARMACY = "$ADMIN/pharmacy-medicines"
+        const val CHILDREN_ADDED_BY_EMPLOYEE = "$ADMIN/find-child-byname"
+        const val DEACTIVATE_USER = "$ADMIN/change-anyone-state-resign-suspend"
+        const val REACTIVATE_USER = "$ADMIN/reactivate-user"
         const val ADMIN_GET_PHARMACIES = "$ADMIN/get-departments-pharmacies-states"
         const val ADMIN_GET_CLINICS = "$ADMIN/get-departments-pharmacies-states"
         const val GET_ALL_EMPLOYEES = "$ADMIN/get-employees-states"
@@ -114,6 +118,7 @@ object ApiRoutes {
         const val ALL_VACCINES = "$ADMIN/show-all-vaccines"
         const val GET_VACCINE_BY_ID = "$ADMIN/get-vaccine-by-id"
         const val MEDICAL_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
+        const val CHILDREN_BY_GUARDIAN_ID = "$ADMIN/show-children-for-user"
     }
 
     object Prescription {
@@ -147,6 +152,18 @@ object ApiRoutes {
             RoleDto.ADMIN -> Admin.SEND_OTP
         }
     }
+    fun getChildrenByEmployeeEndPointFor(role: RoleDto) =
+        when(role){
+            RoleDto.EMPLOYEE -> SEARCH_FOR_CHILDREN_ADDED_BY_EMPLOYEE_BY_NAME
+            RoleDto.DOCTOR -> ""
+            RoleDto.ADMIN -> Admin.CHILDREN_ADDED_BY_EMPLOYEE
+        }
+    fun getMedicineByIdEndPointFor(role: RoleDto) : String =
+        when(role){
+            RoleDto.EMPLOYEE -> ""
+            RoleDto.DOCTOR -> Doctor.GET_MEDICINE_BY_ID
+            RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
+        }
 
     fun getSingUpEndpointFor(role: RoleDto): String {
         return when (role) {
@@ -180,6 +197,13 @@ object ApiRoutes {
         }
     }
 
+    fun getGuardianByIdEndPointForRole(role: RoleDto) : String=
+        when(role){
+            RoleDto.EMPLOYEE ->SHOW_USER_PROFILE
+            RoleDto.DOCTOR -> ""
+            RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
+        }
+
     fun getAppointmentsEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be use in Employee app")
@@ -187,8 +211,20 @@ object ApiRoutes {
             RoleDto.ADMIN -> Admin.SHOW_APPOINTMENTS
         }
     }
+    fun getChildrenByUserEndPointFor(role: RoleDto) =
+        when(role){
+            RoleDto.EMPLOYEE -> CHILDREN_BY_GUARDIAN_ID
+            RoleDto.DOCTOR -> ""
+            RoleDto.ADMIN -> Admin.CHILDREN_BY_GUARDIAN_ID
+        }
+        fun getChildByIdEndPointFor(role: RoleDto): String =
+            when (role) {
+                RoleDto.EMPLOYEE -> CHILD_BY_ID
+                RoleDto.DOCTOR -> ""
+                RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
+            }
 
-    fun getAddResidentialAddressEndPointFor(role: RoleDto): String {
+        fun getAddResidentialAddressEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> ADD_RESIDENTIAL_ADDRESS
             RoleDto.DOCTOR -> Doctor.ADD_RESIDENTIAL_ADDRESS
@@ -212,7 +248,12 @@ object ApiRoutes {
         }
     }
 
-
+    fun getAppointmentByIdEndPointFor(role: RoleDto): String =
+        when(role){
+            RoleDto.EMPLOYEE -> ""
+            RoleDto.DOCTOR -> Doctor.SHOW_SINGLE_APPOINTMENT
+            RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
+        }
     fun getDeactivateMyAccountEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> DEACTIVATE_MY_EMPLOYEE_ACCOUNT

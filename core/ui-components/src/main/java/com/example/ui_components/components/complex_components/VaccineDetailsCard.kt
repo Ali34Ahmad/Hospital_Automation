@@ -19,10 +19,10 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.items.DetailsItem
 import com.example.constants.icons.AppIcons
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.ui_components.R
 import com.example.ui_components.components.texts.IndexedText
 import com.example.ui_components.components.texts.TitleWithSubtitle
-import com.example.model.helper.ext.toCapitalized
 import com.example.model.vaccine.VaccineData
 import com.example.ui.fake.createSampleVaccineList
 import com.example.ui.helper.DarkAndLightModePreview
@@ -52,14 +52,14 @@ fun VaccineDetailsCard(
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.from_age),
-                description = "${vaccine.minAge.value} ${vaccine.minAge.unit.name.toCapitalized()}",
+                description = "${vaccine.minAge.value} ${vaccine.minAge.unit.name.capitalFirstChar()}",
             )
             DetailsItem(
                 iconRes = AppIcons.Outlined.toAge,
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.to_age),
-                description = "${vaccine.maxAge.value} ${vaccine.maxAge.unit.name.toCapitalized()}",
+                description = "${vaccine.maxAge.value} ${vaccine.maxAge.unit.name.capitalFirstChar()}",
             )
             DetailsItem(
                 iconRes = AppIcons.Outlined.vaccines,

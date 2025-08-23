@@ -45,5 +45,7 @@ data class ChildFullDto(
     @SerialName("employee_id")
     val employeeId: Int? = null,
 
-    val user: UserDto? = null
+    val user: UserDto? = null,
 )
+
+

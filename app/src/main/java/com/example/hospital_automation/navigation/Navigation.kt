@@ -154,7 +154,10 @@ fun Navigation() {
                     navController.navigateToGuardiansSearch()
                 },
                 onNavigateToAddGuardianScreen = {
-                    navController.navigateToChildrenSearch(SearchType.GLOBAL)
+                    navController.navigateToChildrenSearch(
+                        SearchType.GLOBAL,
+                        employeeId = null
+                    )
                 },
                 onNavigateToEmployeeProfileScreen = {
                     navController.navigateToEmployeeProfileScreen(
@@ -166,7 +169,10 @@ fun Navigation() {
 
                 },
                 onNavigateToAddedChildrenScreen = {
-                    navController.navigateToChildrenSearch(SearchType.EMPLOYEE)
+                    navController.navigateToChildrenSearch(
+                        SearchType.EMPLOYEE,
+                        employeeId = null
+                    )
                 }
             )
 
@@ -181,7 +187,10 @@ fun Navigation() {
                     navController.navigateUp()
                 },
                 onNavigateToAddedChildrenScreen = {
-                    navController.navigateToChildrenSearch(SearchType.EMPLOYEE)
+                    navController.navigateToChildrenSearch(
+                        SearchType.EMPLOYEE,
+                        employeeId = null
+                    )
                 }
             )
         }
@@ -234,11 +243,19 @@ fun Navigation() {
                 navController.navigateToAddChild(
                     guardianId
                 )
-            }
+            },
+            onNavigateToAppointments = {},
+            onNavigateToPrescriptions = {},
+            onNavigateToMedicalRecord = {},
         )
 
         childrenScreen(
-            navigateToChildProfile = navController::navigateToChildProfile,
+            navigateToChildProfile = {childId ->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    hasAdminAccess = false
+                )
+            },
             navigateUp = navController::navigateUp
         )
 
@@ -271,9 +288,14 @@ fun Navigation() {
                 )
             },
             navigateToGuardianScreen = navController::navigateToGuardiansScreen,
-            navigateUp = navController::navigateUp
+            navigateUp = navController::navigateUp,
+            //These actions are only available in the admin application.
+            onNavigateToVaccinationTable = {},
+            onNavigateToAppointments = {},
+            onNavigateToPrescriptions = {},
+            onNavigateToMedicalRecords = {},
+            onNavigateToAppointmentDetails = {}
         )
-
         guardiansScreen(
             onNavigateUp = navController::navigateUp,
             onNavigateToGuardianProfile = { guardianId ->
@@ -287,7 +309,12 @@ fun Navigation() {
 
         childrenSearchScreen(
             onNavigateUp = navController::navigateUp,
-            onNavigateToChildDetail = navController::navigateToChildProfile
+            onNavigateToChildDetail = {childId ->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    hasAdminAccess = false
+                )
+            }
         )
     }
 }

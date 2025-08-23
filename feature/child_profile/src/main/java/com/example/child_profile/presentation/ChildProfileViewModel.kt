@@ -33,12 +33,17 @@ class ChildProfileViewModel (
     private val cancelFileDownloadUseCase: CancelFileDownloadUseCase,
     private val downloadFileUseCase: DownloadFileUseCase,
     private val observeFileDownloadProgressUseCase: ObserveFileDownloadProgressUseCase,
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    val childId = savedStateHandle.toRoute<ChildProfileRoute>().childId
-
-    private val _uiState = MutableStateFlow(ChildProfileUIState())
+    val childId = 1
+    val hasAdminAccess = true
+    private val _uiState = MutableStateFlow(
+        ChildProfileUIState(
+            childId = childId,
+            hasAdminAccess = hasAdminAccess
+        )
+    )
     val uiState: StateFlow<ChildProfileUIState> = _uiState
         .onStart {
             loadData()
@@ -46,13 +51,13 @@ class ChildProfileViewModel (
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ChildProfileUIState()
+            initialValue = _uiState.value
         )
 
     private fun loadData() {
         viewModelScope.launch{
             updateScreenState(ScreenState.LOADING)
-            getChildByIdUseCase(childId)
+            getChildByIdUseCase(uiState.value.childId)
                 .onSuccess{ result->
                     updateChild(result)
                     updateScreenState(ScreenState.SUCCESS)
@@ -113,14 +118,12 @@ class ChildProfileViewModel (
     }
 
     private fun updateChild(child: ChildFullData) {
-        _uiState.value = _uiState.value.copy(child)
+        _uiState.value = _uiState.value.copy(child = child)
 
         val url = uiState.value.child?.birthCertificateImgUrl
         val fileInfo = uiState.value.child?.let {
             FileInfo(
                 fileName = getFileNameFromUrl(url) ?: "",
-//                fileSizeWithBytes = uiState.value.child?.birthCertificateFileSize
-//                    ?: 0L,
                 fileSizeWithBytes = 0L,
                 uploadingProgress = 0,
             )
@@ -141,7 +144,7 @@ class ChildProfileViewModel (
     private fun refreshData(){
         viewModelScope.launch{
             updateRefreshState(true)
-            getChildByIdUseCase(childId)
+            getChildByIdUseCase(uiState.value.childId)
                 .onSuccess{ result->
                     updateRefreshState(false)
                     showToast(UiText.StringResource(R.string.data_updated_successfully))

@@ -28,7 +28,7 @@ import io.ktor.http.headers
 import java.io.File
 
 
-private const val CHILD_API_TAG = "child_api_service"
+private const val CHILD_API_TAG = "Child API service"
 internal class ChildApiServiceImpl(
     private val client: HttpClient
 ): ChildApiService {
@@ -36,25 +36,33 @@ internal class ChildApiServiceImpl(
     override suspend fun getChildProfile(
         token: String,
         id: Int,
-        roleDto: RoleDto
+        role: RoleDto
     ): Result<ChildFullResponse, NetworkError> =
         doApiCall<ChildFullResponse>(
             tag = CHILD_API_TAG
         ) {
-            client.get(ApiRoutes.getChildProfileByIdEndPoint(role = roleDto)) {
+            val url = ApiRoutes.getChildByIdEndPointFor(role)
+            client.get(url) {
                 bearerAuth(token)
                 parameter("id", id)
+                if(role == RoleDto.ADMIN){
+                    parameter("type","child")
+                }
             }
         }
 
     override suspend fun getChildrenByGuardianId(
         token: String,
         guardianId: Int,
+        role: RoleDto
     ): Result<GetChildrenByGuardianIdResponse, NetworkError> =
         doApiCall<GetChildrenByGuardianIdResponse>(
             tag = CHILD_API_TAG
         ) {
-            client.get(ApiRoutes.CHILDREN_BY_GUARDIAN_ID + "/$guardianId") {
+            val url = ApiRoutes.getChildrenByUserEndPointFor(role).let { base->
+                "$base/$guardianId"
+            }
+            client.get(url) {
                 bearerAuth(token)
             }
         }
@@ -67,7 +75,7 @@ internal class ChildApiServiceImpl(
     override suspend fun getChildrenAddedByEmployee(
         token: String,
         page: Int,
-        limit: Int
+        limit: Int,
     ): Result<GetChildrenAddedByEmployeeResponse, NetworkError> =
         doApiCall<GetChildrenAddedByEmployeeResponse>(
             tag = CHILD_API_TAG
@@ -75,7 +83,6 @@ internal class ChildApiServiceImpl(
             client.get(ApiRoutes.CHILDREN_BY_EMPLOYEE_ID) {
 
                 bearerAuth(token)
-
                 parameter("page",page)
                 parameter("limit",limit)
             }
@@ -96,13 +103,13 @@ internal class ChildApiServiceImpl(
             tag = CHILD_API_TAG
         ) {
             client.get(ApiRoutes.CHILDREN_BY_NAME) {
-            //query parameters
-            parameter("name",name)
-            parameter("page",page)
-            parameter("limit",limit)
-            //auth token
-            bearerAuth(token)
-        }
+                url {
+                   parameter("name",name)
+                    parameter("page",page)
+                    parameter("limit",limit)
+                }
+                bearerAuth(token)
+            }
         }
 
     /**
@@ -162,14 +169,21 @@ internal class ChildApiServiceImpl(
         token: String,
         name: String,
         page: Int,
-        limit: Int
+        limit: Int,
+        role: RoleDto,
+        employeeId: Int?
     ): Result<GetChildrenByNameResponse, NetworkError> =
         doApiCall<GetChildrenByNameResponse>(
             tag = CHILD_API_TAG
         ) {
-            client.get(ApiRoutes.SEARCH_FOR_CHILDREN_ADDED_BY_EMPLOYEE_BY_NAME) {
+            val url = ApiRoutes.getChildrenByEmployeeEndPointFor(role).let { base->
+                if(role== RoleDto.ADMIN) "$base/$employeeId" else base
+            }
+            client.get(url) {
                 bearerAuth(token)
-                parameter("name",name)
+                if(name.isNotBlank()){
+                    parameter("name",name)
+                }
                 parameter("page",page)
                 parameter("limit",limit)
             }

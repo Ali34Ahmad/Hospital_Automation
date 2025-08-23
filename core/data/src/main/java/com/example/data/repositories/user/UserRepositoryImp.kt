@@ -3,6 +3,7 @@ package com.example.data.repositories.user
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.mapper.user.toGuardianData
 import com.example.data.mapper.user.toGuardianFullData
@@ -16,6 +17,7 @@ import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.user.UserApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
+import com.example.utility.network.UpdatedIds
 import com.example.utility.network.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -24,22 +26,36 @@ import kotlinx.coroutines.flow.first
 internal class UserRepositoryImp(
     private val userApiService: UserApiService,
     private val userPreferences: UserPreferencesRepository,
-    private val roleAppConfig: RoleAppConfig,
+    private val roleAppConfig: RoleAppConfig
 ): UserRepository  {
     override suspend fun getGuardianById(id: Int): Result<GuardianFullData, NetworkError> {
-        val token: String? = userPreferences.userPreferencesDataStoreFlow.first().token
-        if(token == null)
-            return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
-
         val response = userApiService.getUserProfile(
-            token = token,
+            token = FAKE_TOKEN,
             id = id,
-            roleDto = roleAppConfig.role.toRoleDto(),
+            roleDto = roleAppConfig.role.toRoleDto()
         ).map { data->
             data.user.toGuardianFullData()
         }
         return response
     }
+
+    override suspend fun deactivateUser(
+        userId: Int,
+        deactivationReason: String,
+    ): Result<UpdatedIds, NetworkError> =
+        userApiService.deactivateUser(
+            token = FAKE_TOKEN,
+            userId = userId,
+            deactivationReason = deactivationReason
+        ).map { it.updatedData }
+
+    override suspend fun reactivateUser(
+        userId: Int
+    ): Result<UpdatedIds, NetworkError> =
+        userApiService.reactivateUser(
+            token = FAKE_TOKEN,
+            userId = userId
+        ).map { it.updatedData }
 
     override suspend fun addGuardianToChild(
         childId: Int,

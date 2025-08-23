@@ -61,11 +61,6 @@ class AppointmentPagingSource(
                 prevKey = if (currentPage == 1) null else currentPage - 1,
                 nextKey = if (data.isEmpty()) null else currentPage + 1
             )
-            return LoadResult.Page(
-                data = data,
-                prevKey = if (currentPage == 1) null else currentPage.minus(1),
-                nextKey = if (data.isEmpty()) null else currentPage.plus(1)
-            )
         } catch (_: Exception) {
             return LoadResult.Error(NetworkException(NetworkError.UNKNOWN))
         }

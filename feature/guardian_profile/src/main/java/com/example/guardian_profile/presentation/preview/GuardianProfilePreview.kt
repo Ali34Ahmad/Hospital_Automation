@@ -25,6 +25,15 @@ private val mockActions = object : GuardianProfileNavigationAction{
     override fun navigateToAddChild(guardianId: Int){}
 
     override fun navigateToChildren(guardianId: Int) {}
+    override fun navigateToAppointments(guardianId: Int) {
+
+    }
+
+    override fun navigateToPrescriptions(guardianId: Int) {
+    }
+
+    override fun navigateToMedicalRecord(guardianId: Int) {
+    }
 }
 private val fakeUser = GuardianFullData(
     userId = 1,
@@ -39,7 +48,7 @@ private val fakeUser = GuardianFullData(
     addressStreet = "Domino Street",
     addressNote = "",
     gender = Gender.MALE.name,
-    imgUrl = null
+    imgUrl = null,
 )
 @DarkAndLightModePreview
 @Composable
@@ -47,9 +56,11 @@ fun GuardianProfileSuccessPreview() {
     var uiState by remember{
         mutableStateOf(
         GuardianProfileUIState(
+            userProfileMode = UserProfileMode.ADMIN_ACCESS,
             guardianData = fakeUser,
-            userProfileMode = UserProfileMode.VIEW_ONLY,
-            screenState = ScreenState.SUCCESS
+            screenState = ScreenState.SUCCESS,
+            childId = null,
+            guardianId = 1,
         )
         )
     }
@@ -69,8 +80,9 @@ fun GuardianProfileErrorPreview() {
         mutableStateOf(
             GuardianProfileUIState(
                 guardianData = fakeUser,
-                userProfileMode = UserProfileMode.VIEW_ONLY,
-                screenState = ScreenState.ERROR
+                screenState = ScreenState.ERROR,
+                childId = null,
+                guardianId = 1,
             )
         )
     }
@@ -89,8 +101,9 @@ fun GuardianProfileLoadingPreview() {
         mutableStateOf(
             GuardianProfileUIState(
                 guardianData = fakeUser,
-                userProfileMode = UserProfileMode.VIEW_ONLY,
-                screenState = ScreenState.LOADING
+                screenState = ScreenState.LOADING,
+                childId = null,
+                guardianId = 1,
             )
         )
     }
@@ -109,9 +122,10 @@ fun GuardianProfileSetAsGuardianPreview() {
         mutableStateOf(
             GuardianProfileUIState(
                 guardianData = fakeUser,
-                userProfileMode = UserProfileMode.SET_AS_GUARDIAN,
+                screenState = ScreenState.SUCCESS,
                 childId = 1,
-                screenState = ScreenState.SUCCESS
+                guardianId = 1,
+                userProfileMode = UserProfileMode.SET_AS_GUARDIAN,
             )
         )
     }
@@ -130,9 +144,10 @@ fun GuardianProfileAddChildPreview() {
         mutableStateOf(
             GuardianProfileUIState(
                 guardianData = fakeUser,
-                userProfileMode = UserProfileMode.ADD_CHILD,
                 screenState = ScreenState.SUCCESS,
-                childId = 1
+                childId = 1,
+                guardianId = 1,
+                userProfileMode = UserProfileMode.ADD_CHILD
             )
         )
     }

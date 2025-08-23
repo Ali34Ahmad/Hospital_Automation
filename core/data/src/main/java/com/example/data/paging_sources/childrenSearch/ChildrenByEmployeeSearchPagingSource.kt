@@ -3,8 +3,10 @@ package com.example.data.paging_sources.childrenSearch
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.data.mapper.child.toChildData
+import com.example.data.mapper.enums.toRoleDto
 import com.example.model.child.ChildData
 import com.example.model.guardian.PagedData
+import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.child.ChildApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
@@ -16,6 +18,8 @@ class ChildrenByEmployeeSearchPagingSource(
     private val token: String,
     private val childApiService: ChildApiService,
     private val query: String,
+    private val employeeId: Int?,
+    private val roleAppConfig: RoleAppConfig
 ): PagingSource<Int, ChildData>(){
     override fun getRefreshKey(state: PagingState<Int, ChildData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -34,7 +38,9 @@ class ChildrenByEmployeeSearchPagingSource(
             token = token,
             name = query,
             page = nextPageNumber,
-            limit = params.loadSize
+            limit = params.loadSize,
+            role = roleAppConfig.role.toRoleDto(),
+            employeeId = employeeId
         ).map { response->
            val children =  response.data.map { it.toChildData() }
             PagedData(

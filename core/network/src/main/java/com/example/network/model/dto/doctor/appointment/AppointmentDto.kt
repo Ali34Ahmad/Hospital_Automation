@@ -34,9 +34,8 @@ data class AppointmentDto(
     @Serializable(with = LocalTimeSerializer::class)
     val time: LocalTime,
 
-    val createdAt: String,
     val updatedAt: String,
-
+    val createdAt: String,
     @SerialName("clinic_id")
     val clinicId: Int,
 
@@ -65,3 +64,13 @@ data class AppointmentDto(
     val clinic: ClinicDto,
     val child: ChildDto? = null
 )
+
+
+
+
+//        "vaccine": {
+//            "name": "HepB"
+//        },
+//        "user": null
+//    }
+//}

@@ -2,23 +2,23 @@ package com.example.ui_components.components.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
-import com.example.ui.theme.sizing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.ProfileActionsItem
 
 @Composable
-fun DepartmentActionsCard(
+fun DepartmentActions(
     onAllDoctorsClick:()-> Unit,
     onAppointmentsClick:()-> Unit,
     onPrescriptionsClick:()-> Unit,
@@ -28,14 +28,15 @@ fun DepartmentActionsCard(
     onReactivateClinicClick:()-> Unit,
     isActive: Boolean,
     hasAdminAccess: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    shape: Shape = MaterialTheme.shapes.small,
+    colors: CardColors = CardDefaults
+        .cardColors(containerColor = MaterialTheme.colorScheme.background)
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(MaterialTheme.sizing.small8),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
-        )
+        shape = shape,
+        colors = colors
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -100,7 +101,7 @@ fun DepartmentActionsCard(
 @Composable
 fun DepartmentActionsPreview() {
     Hospital_AutomationTheme {
-        DepartmentActionsCard(
+        DepartmentActions(
             onAllDoctorsClick = {},
             onAppointmentsClick = {},
             onPrescriptionsClick = {},

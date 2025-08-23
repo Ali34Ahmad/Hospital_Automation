@@ -24,9 +24,11 @@ class ChildrenViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getChildrenByGuardianIdUseCase: GetChildrenByGuardianIdUseCase,
 ): ViewModel() {
-    val id : Int = savedStateHandle.toRoute<ChildrenRoute>().userId
+    val id : Int = 2
 
-    private val _uiState = MutableStateFlow(ChildrenUIState(guardianId = id))
+    private val _uiState = MutableStateFlow(
+        ChildrenUIState(guardianId = id)
+    )
     val uiState : StateFlow<ChildrenUIState> = _uiState
         .onStart {
             loadUserData()

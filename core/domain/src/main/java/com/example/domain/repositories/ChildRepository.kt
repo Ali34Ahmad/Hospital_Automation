@@ -14,6 +14,7 @@ interface ChildRepository {
 
     suspend fun searchForChildrenAddedByEmployeeByName(
         name: String,
+        employeeId: Int?
     ): Flow<PagingData<ChildData>>
 
 

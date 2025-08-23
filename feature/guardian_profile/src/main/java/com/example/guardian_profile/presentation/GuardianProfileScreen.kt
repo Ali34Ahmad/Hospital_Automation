@@ -18,12 +18,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.model.enums.Gender
 import com.example.model.enums.ScreenState
+import com.example.navigation.extesion.navigateToCallApp
+import com.example.navigation.extesion.navigateToEmailApp
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.card.custom.CustomGuardianProfileCard
 import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.dialog.LoadingDialog
+import com.example.ui_components.components.dialog.WarningDialogWithInputField
 import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.topbars.custom.GuardianProfileTopBar
@@ -50,6 +54,7 @@ fun GuardianProfileScreen(
     onAction: (GuardianProfileActions)-> Unit,
     modifier: Modifier = Modifier
 ) {
+    val defaultReason = stringResource(R.string.no_detials_available)
     val context = LocalContext.current
     val toastMessage = uiState.toastMessage
     LaunchedEffect(toastMessage) {
@@ -61,7 +66,7 @@ fun GuardianProfileScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
-            if(uiState.screenState!= ScreenState.SUCCESS){
+            if(uiState.screenState != ScreenState.SUCCESS){
                 GuardianProfileTopBar(
                     modifier = Modifier.fillMaxWidth(),
                     onNavigateUp = navigationActions::navigateUp,
@@ -72,7 +77,6 @@ fun GuardianProfileScreen(
             if(uiState.screenState == ScreenState.SUCCESS){
                 AnimatedContent(uiState.userProfileMode) { state ->
                     when (state) {
-                        UserProfileMode.VIEW_ONLY -> Unit
                         UserProfileMode.SET_AS_GUARDIAN -> {
                             SendingDataBottomBar(
                                 onSuccess = {
@@ -90,7 +94,6 @@ fun GuardianProfileScreen(
                                 text = stringResource(R.string.set_as_guardian),
                             )
                         }
-
                         UserProfileMode.ADD_CHILD -> {
                             HospitalAutomationButton(
                                 onClick = {
@@ -103,6 +106,7 @@ fun GuardianProfileScreen(
                                     .padding(MaterialTheme.spacing.medium16),
                             )
                         }
+                        else -> Unit
                     }
                 }
             }
@@ -156,19 +160,92 @@ fun GuardianProfileScreen(
                                         gender = gender ?: Gender.MALE.name.lowercase(),
                                         onNavigateUp = navigationActions::navigateUp,
                                         onPhoneNumberButtonClick = {
-                                            navigationActions.openContacts(phoneNumber)
+                                            context.navigateToCallApp(phoneNumber)
                                         },
                                         onEmailButtonClick = {
-                                            navigationActions.openEmail(email)
+                                            context.navigateToEmailApp(email)
                                         },
                                         modifier = Modifier.fillMaxWidth(),
                                         onChildrenButtonClick = {
                                             navigationActions.navigateToChildren(userId)
-                                        }
+                                        },
+                                        isActive = !isSuspended,
+                                        hasAdminAccess = uiState.hasAdminAccess,
+                                        onAppointmentsClick = {
+                                            navigationActions.navigateToAppointments(
+                                                guardianId = userId
+                                            )
+                                        },
+                                        onPrescriptionsClick = {
+                                            navigationActions.navigateToPrescriptions(
+                                                guardianId = userId
+                                            )
+                                        },
+                                        onMedicalRecordClick = {
+                                            navigationActions.navigateToMedicalRecord(
+                                                guardianId = userId
+                                            )
+                                        },
+                                        onSuspendUserAccountClick = {
+                                            onAction(
+                                                GuardianProfileActions.ShowWarningDialog
+                                            )
+                                        },
+                                        onReactivateUserAccount = {
+                                            onAction(
+                                                GuardianProfileActions.ReactivateAccount
+                                            )
+                                        },
+                                        onlyCommunicationInfo = uiState.userProfileMode == UserProfileMode.ONLY_COMMUNICATION_INFO,
+                                    )
+
+                                    //Show warning dialog when clicking on deactivation button
+                                    if (uiState.isWarningDialogShown) {
+                                        WarningDialogWithInputField(
+                                            title = stringResource(R.string.deactivation_msg_title),
+                                            subtitle = stringResource(R.string.deactivation_msg_subtitle),
+                                            text = uiState.deactivationReason,
+                                            onTextValueChange = {
+                                                onAction(
+                                                    GuardianProfileActions.UpdateDeactivationReason(it)
+                                                )
+                                            },
+                                            onDismissRequest = {
+                                                onAction(GuardianProfileActions.HideWarningDialog)
+                                                onAction(
+                                                    GuardianProfileActions.ClearDeactivationReason
+                                                )
+                                            },
+                                            onConfirm = {
+                                                if(uiState.deactivationReason.isBlank()){
+                                                    onAction(
+                                                        GuardianProfileActions.UpdateDeactivationReason(
+                                                            defaultReason
+                                                        )
+                                                    )
+                                                }
+                                                onAction(GuardianProfileActions.HideWarningDialog)
+                                                onAction(
+                                                    GuardianProfileActions.DeactivateAccount
+                                                )
+                                            },
+                                            onDismiss = {
+                                                onAction(GuardianProfileActions.HideWarningDialog)
+                                            },
+                                            enableConfirmButton = uiState.isValidInput == true,
+                                            hasError = uiState.isValidInput == false,
+                                            isRequired = true,
+                                        )
+                                    }
+                                    LoadingDialog(
+                                        title = stringResource(R.string.please_wait),
+                                        subtitle = stringResource(R.string.fetching_data_subtitle),
+                                        showDialog = uiState.isLoadingDialogShown,
                                     )
                                 }
                             }
                         }
+
                     }
                 }
             }

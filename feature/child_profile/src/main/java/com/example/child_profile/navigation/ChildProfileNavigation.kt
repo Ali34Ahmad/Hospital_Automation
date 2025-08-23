@@ -12,12 +12,19 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class ChildProfileRoute(
-    val childId: Int
+    val childId: Int,
+    val hasAdminAccess : Boolean
 )
 
-fun NavController.navigateToChildProfile(childId: Int) {
+fun NavController.navigateToChildProfile(
+    childId: Int,
+    hasAdminAccess: Boolean
+) {
     navigateToScreen(
-        route = ChildProfileRoute(childId = childId),
+        route = ChildProfileRoute(
+            childId = childId,
+            hasAdminAccess = hasAdminAccess
+        ),
     )
 }
 
@@ -25,12 +32,20 @@ fun NavGraphBuilder.childProfileScreen(
     navigateToAddGuardianScreen: (Int) -> Unit,
     navigateToEmployeeProfileScreen: (employeeId: Int) -> Unit,
     navigateToGuardianScreen: (Int) -> Unit,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    onNavigateToVaccinationTable: (Int)-> Unit,
+    onNavigateToAppointments: (Int)-> Unit,
+    onNavigateToPrescriptions: (Int)-> Unit,
+    onNavigateToMedicalRecords: (Int)-> Unit,
+    onNavigateToAppointmentDetails: (Int) -> Unit
 ) {
     composable<ChildProfileRoute> {
         val viewModel = koinViewModel<ChildProfileViewModel>()
         val navigationActions = object : ChildProfileNavigationAction {
             override fun navigateUp() = navigateUp()
+
+            override fun navigateToAppointmentDetails(appointmentId: Int) =
+                onNavigateToAppointmentDetails(appointmentId)
 
             override fun navigateToAddGuardianScreen(childId: Int) =
                 navigateToAddGuardianScreen(childId)
@@ -38,7 +53,20 @@ fun NavGraphBuilder.childProfileScreen(
             override fun navigateToEmployeeProfileScreen(employeeId: Int) =
                 navigateToEmployeeProfileScreen(employeeId)
 
-            override fun navigateToGuardiansScreen(childId: Int) = navigateToGuardianScreen(childId)
+            override fun navigateToGuardiansScreen(childId: Int) =
+                navigateToGuardianScreen(childId)
+
+            override fun navigateToVaccinationTableScreen(childId: Int) =
+                onNavigateToVaccinationTable(childId)
+
+            override fun navigateToAppointments(childId: Int) =
+                onNavigateToAppointments(childId)
+
+            override fun navigateToMedicalRecords(childId: Int) =
+                onNavigateToMedicalRecords(childId)
+
+            override fun navigateToPrescriptions(childId: Int) =
+                onNavigateToPrescriptions(childId)
         }
 
         ChildProfileScreen(

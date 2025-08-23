@@ -14,6 +14,7 @@ import com.example.model.enums.ScreenState
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import kotlinx.coroutines.flow.flowOf
+import java.time.LocalDate
 
 internal val mockActions = object : ChildrenSearchNavigationActions{
     override fun navigateUp() {}
@@ -30,7 +31,7 @@ internal val fakeChildren = flowOf(
                 fatherLastName = "Ali",
                 motherFirstName = "Laila",
                 motherLastName = "Ale",
-                dateOfBirth = "2002-02-01"
+                dateOfBirth = LocalDate.of(2010,10,10)
             ),
             ChildData(
                 id = 2,
@@ -40,7 +41,7 @@ internal val fakeChildren = flowOf(
                 fatherLastName = "Ali",
                 motherFirstName = "Laila",
                 motherLastName = "Ale",
-                dateOfBirth = "2002-02-01"
+                dateOfBirth = LocalDate.of(2010,10,10)
             ),
             ChildData(
                 id = 3,
@@ -50,7 +51,7 @@ internal val fakeChildren = flowOf(
                 fatherLastName = "Ali",
                 motherFirstName = "Laila",
                 motherLastName = "Ale",
-                dateOfBirth = "2002-02-01"
+                dateOfBirth = LocalDate.of(2010,10,10)
             )
         )
     )

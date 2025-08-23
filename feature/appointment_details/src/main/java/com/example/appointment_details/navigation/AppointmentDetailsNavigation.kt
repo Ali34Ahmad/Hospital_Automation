@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.appointment_details.presentation.AppointmentDetailsScreen
 import com.example.appointment_details.presentation.AppointmentDetailsViewModel
-import com.example.appointment_details.presentation.AppointmentNavigationActions
+import com.example.appointment_details.presentation.AppointmentDetailsNavigationActions
 import com.example.navigation.extesion.navigateReplacingCurrent
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
@@ -19,29 +19,35 @@ import org.koin.androidx.compose.koinViewModel
  * like adding a prescription
  *
  * @param appointmentId the ID of the appointment
+ * @param canEdit only a doctor can Edit.
  *
  * @author Ali Mansoura
  */
 @Serializable
 data class AppointmentDetailsRoute(
     val appointmentId : Int,
+    val canEdit: Boolean,
 )
 fun NavController.navigateToAppointmentDetailsReplacementCurrent(
     appointmentId: Int,
+    canEdit: Boolean
 ){
     navigateReplacingCurrent(
         route = AppointmentDetailsRoute(
             appointmentId = appointmentId,
+            canEdit
         )
     )
 }
 
 fun NavController.navigateToAppointmentDetails(
     appointmentId: Int,
+    canEdit: Boolean
 ){
     navigateToScreen(
         route = AppointmentDetailsRoute(
             appointmentId = appointmentId,
+            canEdit = canEdit
         )
     )
 }
@@ -62,7 +68,7 @@ fun NavGraphBuilder.appointmentDetailsScreen(
 ){
     composable<AppointmentDetailsRoute>{
         val viewModel = koinViewModel<AppointmentDetailsViewModel>()
-        val navigationActions = object : AppointmentNavigationActions{
+        val navigationActions = object : AppointmentDetailsNavigationActions{
             override fun navigateToGuardianProfile(guardianId: Int) = onNavigateToGuardianProfile(guardianId)
 
             override fun navigateUp() = onNavigateUp()

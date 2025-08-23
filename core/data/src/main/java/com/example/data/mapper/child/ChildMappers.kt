@@ -2,11 +2,18 @@ package com.example.data.mapper.child
 
 import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
+import com.example.model.child.LastAppointmentData
+import com.example.model.child.LastVaccineData
+import com.example.model.child.NextVaccineData
 import com.example.network.model.dto.child.ChildDto
 import com.example.network.model.dto.child.ChildFullDto
 import com.example.network.model.request.child.AddChildRequest
 import com.example.network.model.response.child.AddChildResponse
 import com.example.network.model.response.child.ChildFullResponse
+import com.example.network.model.response.child.GetChildrenByGuardianResponseItem
+import com.example.network.model.response.child.LastAppointmentDto
+import com.example.network.model.response.child.LastVaccineDto
+import com.example.network.model.response.child.NextVaccineDto
 import com.example.network.utility.ApiRoutes
 
 internal fun ChildDto.toChildData() =
@@ -22,19 +29,22 @@ internal fun ChildDto.toChildData() =
     )
 
 internal fun ChildFullResponse.toChildFullData(): ChildFullData = ChildFullData(
-        numberOfGuardians = numOfGuardians ,
-        childId = child.childId,
-        firstName = child.firstName,
-        lastName = child.lastName,
-        fatherFirstName = child.fatherFirstName,
-        fatherLastName = child.fatherLastName,
-        motherFirstName = child.motherFirstName,
-        motherLastName = child.motherLastName,
-        dateOfBirth = child.dateOfBirth,
-        birthCertificateImgUrl = "${ApiRoutes.BASE_URL}/${child.birthCertificateImgUrl}",
-        gender = child.gender,
-        employeeId = child.employeeId
-    )
+    numberOfGuardians = numOfGuardians ,
+    childId = child.childId,
+    firstName = child.firstName,
+    lastName = child.lastName,
+    fatherFirstName = child.fatherFirstName,
+    fatherLastName = child.fatherLastName,
+    motherFirstName = child.motherFirstName,
+    motherLastName = child.motherLastName,
+    dateOfBirth = child.dateOfBirth,
+    birthCertificateImgUrl = "${ApiRoutes.BASE_URL}/${child.birthCertificateImgUrl}",
+    gender = child.gender,
+    employeeId = child.employeeId,
+    lastAppointment = lastAppointment?.toLastAppointmentData(),
+    lastVaccination = lastVaccination?.toLastVaccineData(),
+    nextVaccination = nextVaccination?.toNextVaccineData()
+)
 
 
 internal fun ChildFullData.toAddChildRequest(): AddChildRequest =
@@ -76,4 +86,19 @@ internal fun ChildFullDto.toChildFullData(): ChildFullData = ChildFullData(
     gender = gender,
     employeeId = employeeId,
     employeeName = user?.let {user-> "${user.firstName} ${user.lastName}" }
+)
+
+fun LastVaccineDto.toLastVaccineData() = LastVaccineData(
+    id = id,
+    date = date
+)
+
+fun NextVaccineDto.toNextVaccineData() = NextVaccineData(
+    id = id,
+    date = date
+)
+
+fun LastAppointmentDto.toLastAppointmentData() = LastAppointmentData(
+    id = id,
+    date = date
 )

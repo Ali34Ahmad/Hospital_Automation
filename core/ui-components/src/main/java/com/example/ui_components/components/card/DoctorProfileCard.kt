@@ -28,7 +28,7 @@ import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.model.doctor.day_scedule.DaySchedule
 import com.example.model.enums.DoctorStatus
 import com.example.model.enums.Gender
-import com.example.model.helper.ext.toCapitalized
+import com.example.model.helper.ext.capitalFirstChar
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -203,7 +203,7 @@ fun DoctorProfileCard(
         DetailsItem(
             iconRes = genderIcon,
             title = stringResource(id = R.string.gender),
-            description = gender.name.toCapitalized(),
+            description = gender.name.capitalFirstChar(),
             modifier = detailsItemModifier,
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))

@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.doctor.toAppointmentData
+import com.example.data.mapper.enums.toRoleDto
 import com.example.data.paging_sources.appointment.AppointmentPagingSource
 import com.example.domain.model.constants.PagingConstants
 import com.example.domain.repositories.AppointmentsRepository
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 class AppointmentsRepositoryImp(
     private val dataStore: UserPreferencesRepository,
     private val appointmentsApi: AppointmentsApiService,
-    private val role: RoleAppConfig,
+    private val roleAppConfig: RoleAppConfig,
 ): AppointmentsRepository {
     override suspend fun getAppointments(
         appointmentState: AppointmentState,
@@ -52,7 +53,7 @@ class AppointmentsRepositoryImp(
                         onStatisticsChanged = onStatisticsChanged,
                         queryFilter = queryFilter,
                         dateFilter = dateFilter,
-                        role = role.role,
+                        role = roleAppConfig.role,
                         doctorId = doctorId,
                     )
                 }
@@ -62,10 +63,10 @@ class AppointmentsRepositoryImp(
     }
 
     override suspend fun getAppointmentDetails(id: Int) =
-        dataStore.executeWithValidTokenNetwork { token->
-            appointmentsApi.getAppointmentDetails(id = id , token = token)
+
+            appointmentsApi.getAppointmentDetails(id = id , token = FAKE_TOKEN, roleDto = roleAppConfig.role.toRoleDto())
                 .map { it.data.toAppointmentData() }
-        }
+
 
     override suspend fun updateAppointmentStateToPassed(appointmentId: Int): Result<UpdatedIds, NetworkError> =
         dataStore.executeWithValidTokenNetwork { token ->

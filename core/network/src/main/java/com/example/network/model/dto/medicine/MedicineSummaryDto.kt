@@ -11,4 +11,5 @@ data class MedicineSummaryDto(
     val pharmaceuticalTiter: Int,
     @SerialName("medImageUrl")
     val imageUrl: String?=null,
+    val price: Int? = null,
 )

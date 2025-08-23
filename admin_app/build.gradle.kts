@@ -81,6 +81,13 @@ dependencies {
     implementation(project(":feature:pharmacies_search"))
     implementation(project(":feature:doctor-schedule"))
     implementation(project(":feature:clinic_details"))
+    implementation(project(":feature:guardian_profile"))
+    implementation(project(":feature:child_profile"))
+    implementation(project(":feature:appointment_details"))
+    implementation(project(":feature:medicine_details"))
+    implementation(project(":feature:children_search"))
+    implementation(project(":feature:children"))
+    implementation(project(":feature:pharmacy_medicines"))
 
     implementation(project(":feature:vaccines"))
     implementation(project(":feature:vaccine_details"))
