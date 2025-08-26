@@ -55,7 +55,7 @@ class PharmacyDetailsViewModel(
             }
 
             override fun onRefresh() {
-                refreshData()
+                refreshPharmacyData()
             }
 
             override fun clearToastMessage() {
@@ -82,7 +82,7 @@ class PharmacyDetailsViewModel(
         _uiState.update { it.copy(profileScreenState = screenState) }
     }
 
-    private fun getCurrentPharmacyDetails() {
+    private fun getPharmacyDetails() {
         val pharmacyId = uiState.value.pharmacyId
         if (pharmacyId == null) return
         viewModelScope.launch {
@@ -101,27 +101,12 @@ class PharmacyDetailsViewModel(
         }
     }
 
-    private fun getPharmacyDetails() {
-        when (uiState.value.pharmacyAccessType) {
-            PharmacyAccessType.NON_OWNER_ACCESS -> getCurrentPharmacyDetails()
-            PharmacyAccessType.ADMIN_ACCESS -> TODO()
-            null -> null
-        }
-    }
 
     private fun updateIsRefreshing(isRefreshing: Boolean) {
         _uiState.update { it.copy(isRefreshing = isRefreshing) }
     }
 
-    private fun refreshData() {
-        when (uiState.value.pharmacyAccessType) {
-            PharmacyAccessType.NON_OWNER_ACCESS -> refreshCurrentDoctorData()
-            PharmacyAccessType.ADMIN_ACCESS -> TODO()
-            null -> null
-        }
-    }
-
-    private fun refreshCurrentDoctorData() {
+    private fun refreshPharmacyData() {
         val pharmacyId = uiState.value.pharmacyId
         if (pharmacyId == null) return
         viewModelScope.launch {

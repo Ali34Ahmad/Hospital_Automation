@@ -15,10 +15,11 @@ import com.example.doctor_signup.doctorSignUpModule
 import com.example.email_verification.emailVerificationModule
 import com.example.employment_history.employmentHistoryModule
 import com.example.enter_email.enterEmailModule
+import com.example.generic_vaccination_table.genericVaccinationTableModule
 import com.example.guardian_profile.di.guardianProfileModule
 import com.example.login.loginModule
 import com.example.medical_diagnosis.di.diagnosisModule
-import com.example.medical_prescription_details.prescriptionDetailsModule
+import com.example.prescription_details.prescriptionDetailsModule
 import com.example.prescriptions.medicalPrescriptionsModule
 import com.example.medical_records.medicalRecordsModule
 import com.example.medicine_details.di.medicineDetailsModule
@@ -71,6 +72,7 @@ class DoctorApplication: Application() {
                 medicalRecordsModule,
                 childProfileModule,
                 guardianProfileModule,
+                genericVaccinationTableModule,
             )
         }
     }

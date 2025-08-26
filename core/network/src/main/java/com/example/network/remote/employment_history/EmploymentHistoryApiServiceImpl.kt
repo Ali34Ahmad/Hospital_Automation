@@ -19,11 +19,11 @@ import io.ktor.http.contentType
 class EmploymentHistoryApiServiceImpl(
     private val client: HttpClient,
 ) : EmploymentHistoryApiService {
-    override suspend fun getEmploymentHistory(token: String,role: RoleDto): Result<EmploymentHistoryResponseDto, rootError> = try {
-        val response = client.get(ApiRoutes.getEmploymentHistoryEndPointFor(role)) {
+    override suspend fun getEmploymentHistory(token: String,role: RoleDto,id:Int?): Result<EmploymentHistoryResponseDto, rootError> = try {
+        val routeSuffix=if (id!=null) "/$id" else ""
+        val response = client.get("${ApiRoutes.getEmploymentHistoryEndPointFor(role)}$routeSuffix") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
-            Log.v("EmploymentHistoryApi:", token)
         }
         when (response.status.value) {
             in 200..299 -> {

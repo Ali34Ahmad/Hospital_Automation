@@ -75,7 +75,7 @@ class DoctorProfileViewModel(
             }
 
             override fun onRefresh() {
-                refreshData()
+                refreshDoctorData()
             }
 
             override fun onClearToastMessage() {
@@ -83,16 +83,16 @@ class DoctorProfileViewModel(
             }
 
             override fun onUpdateSelectedAppointmentTypeDialog(index: Int?) {
-                updateSelectedAppointmentType(selectedAppointmentTypeIndex =index)
+                updateSelectedAppointmentType(selectedAppointmentTypeIndex = index)
             }
 
         }
 
-    private fun updateNavArgs(doctorProfileAccessType: DoctorProfileAccessType, employeeId: Int?) {
+    private fun updateNavArgs(doctorProfileAccessType: DoctorProfileAccessType, doctorId: Int?) {
         _uiState.update {
             it.copy(
                 doctorProfileAccessType = doctorProfileAccessType,
-                doctorId = employeeId
+                doctorId = doctorId
             )
         }
     }
@@ -106,11 +106,11 @@ class DoctorProfileViewModel(
         _uiState.update { it.copy(profileScreenState = screenState) }
     }
 
-    private fun getCurrentDoctorProfile() {
+    private fun getDoctorProfile() {
         viewModelScope.launch {
             updateProfileScreenState(ScreenState.LOADING)
             Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
-            getCurrentDoctorProfileUseCase()
+            getCurrentDoctorProfileUseCase(uiState.value.doctorId)
                 .onSuccess { data ->
                     Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
                     updateProfileScreenState(ScreenState.SUCCESS)
@@ -123,16 +123,9 @@ class DoctorProfileViewModel(
         }
     }
 
-    private fun getDoctorProfile() {
-        when (uiState.value.doctorProfileAccessType) {
-            DoctorProfileAccessType.TOKEN_ACCESS -> getCurrentDoctorProfile()
-            DoctorProfileAccessType.VIEWER_ACCESS -> TODO()
-            DoctorProfileAccessType.ADMIN_ACCESS -> TODO()
-            null -> null
-        }
-    }
 
-    private fun updateSelectedAppointmentType(selectedAppointmentTypeIndex: Int?){
+
+    private fun updateSelectedAppointmentType(selectedAppointmentTypeIndex: Int?) {
         _uiState.update { it.copy(selectedAppointmentTypeIndex = selectedAppointmentTypeIndex) }
     }
 
@@ -193,7 +186,7 @@ class DoctorProfileViewModel(
             deactivateMyAccountUseCase(
                 deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest(
                     deactivationReason = "Feeling Sick",
-                    role =roleAppConfig.role,
+                    role = roleAppConfig.role,
                 )
             ).onSuccess {
                 Log.v("Account Deactivated Successfully", "DoctorProfileViewModel")
@@ -250,20 +243,12 @@ class DoctorProfileViewModel(
         _uiState.update { it.copy(isRefreshing = isRefreshing) }
     }
 
-    private fun refreshData() {
-        when (uiState.value.doctorProfileAccessType) {
-            DoctorProfileAccessType.TOKEN_ACCESS -> refreshCurrentDoctorData()
-            DoctorProfileAccessType.VIEWER_ACCESS -> TODO()
-            DoctorProfileAccessType.ADMIN_ACCESS -> TODO()
-            null -> null
-        }
-    }
 
-    private fun refreshCurrentDoctorData() {
+    private fun refreshDoctorData() {
         viewModelScope.launch {
             updateIsRefreshing(true)
             Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
-            getCurrentDoctorProfileUseCase()
+            getCurrentDoctorProfileUseCase(uiState.value.doctorId)
                 .onSuccess { data ->
                     Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
                     updateIsRefreshing(false)

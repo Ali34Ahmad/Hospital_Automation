@@ -1,6 +1,6 @@
 package com.example.employee_profile.navigation
 
-enum class ProfileAccessType {
+enum class EmployeeProfileAccessType {
     TOKEN_ACCESS,
     EMPLOYEE_ID_ACCESS,
     ADMIN_ACCESS,

@@ -13,10 +13,12 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Serializable
-object EmploymentHistoryRoute
+data class EmploymentHistoryRoute(
+    val id: Int?,
+)
 
-fun NavController.navigateToEmploymentHistoryScreen() {
-    navigateToScreen(EmploymentHistoryRoute)
+fun NavController.navigateToEmploymentHistoryScreen(id: Int?=null) {
+    navigateToScreen(EmploymentHistoryRoute(id))
 }
 
 fun NavGraphBuilder.employmentHistoryScreen(

@@ -17,11 +17,12 @@ class EmploymentHistoryRepositoryImpl(
     private val userPreferencesRepository: UserPreferencesRepository,
     private val roleAppConfig: RoleAppConfig,
 ) : EmploymentHistoryRepository {
-    override suspend fun getEmploymentHistory(): Result<EmploymentHistoryResponse, rootError> =
+    override suspend fun getEmploymentHistory(id: Int?): Result<EmploymentHistoryResponse, rootError> =
         userPreferencesRepository.executeWithValidToken { token ->
             employmentHistoryApiService.getEmploymentHistory(
                 token = token,
                 role = roleAppConfig.role.toRoleDto(),
+                id = id,
             )
                 .map { employmentHistoryResponseDto ->
                     employmentHistoryResponseDto.toEmploymentHistoryResponse()

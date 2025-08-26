@@ -1,6 +1,7 @@
 package com.example.network.remote.employee_profile
 
 import android.util.Log
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.profile.EmployeeProfileResponseDto
 import com.example.network.model.response.employee.GetEmployeeProfileByIdResponseDto
@@ -41,9 +42,9 @@ class EmployeeProfileApiServiceImpl(
         Result.Error(NetworkError.UNKNOWN)
     }
 
-    override suspend fun getEmployeeInfoById(token: String,id: Int): Result<GetEmployeeProfileByIdResponseDto, rootError> =
+    override suspend fun getEmployeeInfoById(token: String,id: Int,roleDto: RoleDto): Result<GetEmployeeProfileByIdResponseDto, rootError> =
         try {
-            val response = client.get("${ApiRoutes.FIND_EMPLOYEE_BY_ID}/$id") {
+            val response = client.get("${ApiRoutes.getEmployeeProfileByIdEndPoint(roleDto)}/$id") {
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)
             }

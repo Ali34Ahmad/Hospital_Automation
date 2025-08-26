@@ -9,6 +9,7 @@ import com.example.data.mapper.vaccine.toUpdateVaccinationTableRequestDto
 import com.example.data.mapper.vaccine.toVaccineData
 import com.example.data.mapper.vaccine.toVaccineDto
 import com.example.data.mapper.vaccine.toVaccineIdToVisitNumberDto
+import com.example.data.mapper.vaccine.toVaccineMainInfo
 import com.example.data.mapper.vaccine.toVaccinesIdsToVisitNumberDto
 import com.example.data.paging_sources.vaccine.VaccinePagingSource
 import com.example.domain.model.constants.PagingConstants
@@ -20,7 +21,9 @@ import com.example.model.vaccine.GenericVaccinationTable
 import com.example.model.vaccine.UpdateVaccinationTableRequest
 import com.example.model.vaccine.VaccineData
 import com.example.model.vaccine.VaccineIdToVisitNumber
+import com.example.model.vaccine.VaccineMainInfo
 import com.example.model.vaccine.VaccinesIdsToVisitNumber
+import com.example.network.model.dto.vaccine.VaccineMainInfoDto
 import com.example.network.remote.vaccine.VaccineApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
@@ -48,6 +51,16 @@ class VaccineRepositoryImpl(
             ).flow
         }
 
+    override suspend fun getVaccinesWithNoVisitNumber(): Result<List<VaccineMainInfo>, rootError> =
+        userPreferencesRepository.executeWithValidToken { token ->
+            vaccineApiService.getVaccinesWithNoVisitNumber(
+                token,
+            )
+                .map { vaccinesWrapper ->
+                    vaccinesWrapper.vaccines.map { it.toVaccineMainInfo() }
+                }
+        }
+
 
     override suspend fun addNewVaccine(
         vaccineData: VaccineData
@@ -72,8 +85,8 @@ class VaccineRepositoryImpl(
                 id = id,
                 role = role.toRoleDto()
             ).map { vaccineDto ->
-                    vaccineDto.toVaccineData()
-                }
+                vaccineDto.toVaccineData()
+            }
         }
 
     override suspend fun getGenericVaccinationTable():
@@ -81,6 +94,7 @@ class VaccineRepositoryImpl(
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.getGenericVaccinationTable(
                 token,
+                roleAppConfig.role.toRoleDto()
             )
                 .map { genericVaccinationTable ->
                     genericVaccinationTable.toGenericVaccinationTable()

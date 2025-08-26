@@ -13,16 +13,16 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Serializable
-data object UploadEmployeeProfileImageRoute
+data object UploadProfileImageRoute
 
 fun NavController.navigateToUploadEmployeeProfileImageScreen() {
-    navigateToScreen(UploadEmployeeProfileImageRoute)
+    navigateToScreen(UploadProfileImageRoute)
 }
 
 fun NavGraphBuilder.uploadProfileImageScreen(
     onNavigateToHomeScreenScreen: () -> Unit,
 ) {
-    composable<UploadEmployeeProfileImageRoute> {
+    composable<UploadProfileImageRoute> {
         val viewModel = koinViewModel<UploadProfileImageViewModel>()
         val uiState = viewModel.uiState.collectAsState()
 

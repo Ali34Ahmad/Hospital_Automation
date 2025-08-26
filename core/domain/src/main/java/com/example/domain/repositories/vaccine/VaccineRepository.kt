@@ -6,6 +6,7 @@ import com.example.model.vaccine.GenericVaccinationTable
 import com.example.model.vaccine.UpdateVaccinationTableRequest
 import com.example.model.vaccine.VaccineData
 import com.example.model.vaccine.VaccineIdToVisitNumber
+import com.example.model.vaccine.VaccineMainInfo
 import com.example.model.vaccine.VaccinesIdsToVisitNumber
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
@@ -13,6 +14,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface VaccineRepository {
     suspend fun getAllVaccines(): Flow<PagingData<VaccineData>>
+
+    suspend fun getVaccinesWithNoVisitNumber(): Result<List<VaccineMainInfo>, rootError>
 
     suspend fun addNewVaccine(
         vaccineData: VaccineData,

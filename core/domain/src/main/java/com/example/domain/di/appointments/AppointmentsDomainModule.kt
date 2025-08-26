@@ -15,5 +15,4 @@ internal val appointmentUseCasesModule = module {
     singleOf(::UpdateAppointmentStateToPassedUseCase)
     singleOf(::UpdateAppointmentStateToMissedUseCase)
     singleOf(::AddDiagnosisUseCase)
-    singleOf(::GetCurrentDoctorProfileUseCase)
 }

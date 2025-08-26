@@ -6,10 +6,6 @@ fun mockEmployeeProfileNavigationUiActions()=object : GenericVaccinationTableNav
 
     }
 
-    override fun navigateToVaccinesScreen() {
-
-    }
-
     override fun navigateUp() {
 
     }
@@ -21,11 +17,42 @@ fun mockEmployeeProfileBusinessUiActions()=object : GenericVaccinationTableBusin
 
     }
 
-    override fun onAddVaccineToVisit(visitNumber: Int) {
+    override fun onAddVaccineToVisitClick(visitNumber: Int) {
+
+    }
+
+    override fun onHideVaccinesDialog() {
+
+    }
+
+    override fun onShowVaccinesDialog() {
 
     }
 
     override fun onRemoveVaccineFromVisit(visitNumber: Int, vaccineIndex: Int) {
+
+    }
+
+    override fun onSetVisitNumberAndVaccineIndex(
+        visitNumber: Int,
+        vaccineIndex: Int
+    ) {
+
+    }
+
+    override fun onShowDiscardChangesConfirmationDialog() {
+
+    }
+
+    override fun hideConfirmationDialog() {
+
+    }
+
+    override fun onShowDeleteConfirmationDialog() {
+
+    }
+
+    override fun onAddVaccinesToVisit(indexes: List<Int>) {
 
     }
 

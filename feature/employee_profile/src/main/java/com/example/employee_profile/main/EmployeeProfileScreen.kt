@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.employee_profile.navigation.ProfileAccessType
+import com.example.employee_profile.navigation.EmployeeProfileAccessType
 import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleEmployeeProfileResponse
@@ -202,33 +202,34 @@ fun EmployeeProfileScreen(
                                 isAccepted = uiState.userInfo.profile.acceptedBy != null,
                                 showNavigateUp = true
                             )
-                            when(uiState.profileAccessType){
-                                ProfileAccessType.EMPLOYEE_ID_ACCESS,
-                                    ProfileAccessType.TOKEN_ACCESS->
-                                if (uiState.userInfo.isAccessedByOwner) {
-                                    EmployeeProfileOwnerActionsCard(
-                                        onAddedChildrenItemClick = {
-                                            uiActions.navigateToAddedChildrenScreen()
-                                        },
-                                        isAddedChildrenEnabled = isAddedChildrenEnabled,
-                                        onEmploymentHistoryItemClick = {
-                                            uiActions.navigateToEmploymentHistoryScreen()
-                                        },
-                                        isEmploymentEnabled = isEmploymentEnabled,
-                                        onDeactivateAccountItemClick = {
-                                            uiActions.onDeactivateMyAccount()
-                                        },
-                                        onReactivateAccountItemClick = {
-                                            uiActions.onReactivateMyAccount()
-                                        },
-                                        showDeactivateMyAccountItem = showDeactivationItem,
-                                        isAccountDeactivated = isSuspended,
-                                        onLogoutItemClick = {
-                                            uiActions.onLogout()
-                                        },
-                                    )
-                                }
-                                ProfileAccessType.ADMIN_ACCESS->EmployeeProfileAdminActionsCard(
+                            when (uiState.employeeProfileAccessType) {
+                                EmployeeProfileAccessType.EMPLOYEE_ID_ACCESS,
+                                EmployeeProfileAccessType.TOKEN_ACCESS ->
+                                    if (uiState.userInfo.isAccessedByOwner) {
+                                        EmployeeProfileOwnerActionsCard(
+                                            onAddedChildrenItemClick = {
+                                                uiActions.navigateToAddedChildrenScreen()
+                                            },
+                                            isAddedChildrenEnabled = isAddedChildrenEnabled,
+                                            onEmploymentHistoryItemClick = {
+                                                uiActions.navigateToEmploymentHistoryScreen()
+                                            },
+                                            isEmploymentEnabled = isEmploymentEnabled,
+                                            onDeactivateAccountItemClick = {
+                                                uiActions.onDeactivateMyAccount()
+                                            },
+                                            onReactivateAccountItemClick = {
+                                                uiActions.onReactivateMyAccount()
+                                            },
+                                            showDeactivateMyAccountItem = showDeactivationItem,
+                                            isAccountDeactivated = isSuspended,
+                                            onLogoutItemClick = {
+                                                uiActions.onLogout()
+                                            },
+                                        )
+                                    }
+
+                                EmployeeProfileAccessType.ADMIN_ACCESS -> EmployeeProfileAdminActionsCard(
                                     onAddedChildrenItemClick = {
                                         uiActions.navigateToAddedChildrenScreen()
                                     },

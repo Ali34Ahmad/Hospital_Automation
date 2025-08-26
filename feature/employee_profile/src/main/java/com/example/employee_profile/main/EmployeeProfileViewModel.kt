@@ -11,7 +11,7 @@ import com.example.domain.use_cases.employee_account_management.ReactivateMyAcco
 import com.example.domain.use_cases.employee_profile.GetCurrentEmployeeProfileUseCase
 import com.example.domain.use_cases.employee_profile.GetEmployeeProfileByIdUseCase
 import com.example.employee_profile.navigation.EmployeeProfileRoute
-import com.example.employee_profile.navigation.ProfileAccessType
+import com.example.employee_profile.navigation.EmployeeProfileAccessType
 import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
 import com.example.model.auth.logout.LogoutRequest
 import com.example.model.employee.EmployeeProfileResponse
@@ -42,7 +42,7 @@ class EmployeeProfileViewModel(
 
     init {
         val route = savedStateHandle.toRoute<EmployeeProfileRoute>()
-        updateNavArgs(route.profileAccessType, route.employeeId)
+        updateNavArgs(route.employeeProfileAccessType, route.employeeId)
         getEmployeeProfile()
     }
 
@@ -86,10 +86,10 @@ class EmployeeProfileViewModel(
 
         }
 
-    private fun updateNavArgs(profileAccessType: ProfileAccessType, employeeId: Int?) {
+    private fun updateNavArgs(employeeProfileAccessType: EmployeeProfileAccessType, employeeId: Int?) {
         _uiState.update {
             it.copy(
-                profileAccessType = profileAccessType,
+                employeeProfileAccessType = employeeProfileAccessType,
                 employeeId = employeeId
             )
         }
@@ -141,10 +141,10 @@ class EmployeeProfileViewModel(
     }
 
     private fun getEmployeeProfile() {
-        when (uiState.value.profileAccessType) {
-            ProfileAccessType.TOKEN_ACCESS -> getCurrentEmployeeProfile()
-            ProfileAccessType.EMPLOYEE_ID_ACCESS -> getEmployeeProfileById()
-            ProfileAccessType.ADMIN_ACCESS -> TODO()
+        when (uiState.value.employeeProfileAccessType) {
+            EmployeeProfileAccessType.TOKEN_ACCESS -> getCurrentEmployeeProfile()
+            EmployeeProfileAccessType.EMPLOYEE_ID_ACCESS -> getEmployeeProfileById()
+            EmployeeProfileAccessType.ADMIN_ACCESS -> getEmployeeProfileById()
             null -> null
         }
     }
@@ -264,10 +264,10 @@ class EmployeeProfileViewModel(
     }
 
     private fun refreshData() {
-        when (uiState.value.profileAccessType) {
-            ProfileAccessType.TOKEN_ACCESS -> refreshCurrentEmployeeData()
-            ProfileAccessType.EMPLOYEE_ID_ACCESS -> refreshEmployeeByIdData()
-            ProfileAccessType.ADMIN_ACCESS -> TODO()
+        when (uiState.value.employeeProfileAccessType) {
+            EmployeeProfileAccessType.TOKEN_ACCESS -> refreshCurrentEmployeeData()
+            EmployeeProfileAccessType.EMPLOYEE_ID_ACCESS -> refreshEmployeeByIdData()
+            EmployeeProfileAccessType.ADMIN_ACCESS -> refreshEmployeeByIdData()
             null -> null
         }
     }

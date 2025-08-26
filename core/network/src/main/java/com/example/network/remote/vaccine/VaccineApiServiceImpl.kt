@@ -10,8 +10,8 @@ import com.example.network.model.request.vaccine.VaccinesIdsToVisitNumberDto
 import com.example.network.model.request.vaccine.VaccinesIdsWrapper
 import com.example.network.model.response.vaccine.GetAllVaccinesResponseDto
 import com.example.network.model.response.vaccine.VaccineResponseDto
+import com.example.network.model.response.vaccine.VaccinesMainInfoListWrapperDto
 import com.example.network.utility.ApiRoutes
-import com.example.network.utility.doApiCall
 import com.example.utility.network.NetworkError
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -67,6 +67,33 @@ class VaccineApiServiceImpl(
             Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
             Result.Error(NetworkError.UNKNOWN)
             }
+
+    override suspend fun getVaccinesWithNoVisitNumber(token: String): Result<VaccinesMainInfoListWrapperDto, NetworkError> =
+        try {
+            val response = client.get(ApiRoutes.Doctor.GET_VACCINE_WITH_NO_VISIT_NUMBER) {
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
+            }
+            when (response.status.value) {
+                in 200..299 -> {
+                    val responseText = response.bodyAsText()
+                    Log.v("GetVaccinesWithNoVisitNumberApi${response.status.value}", responseText)
+
+                    val addVaccineResponse: VaccinesMainInfoListWrapperDto = response.body()
+                    Log.v("GetVaccinesWithNoVisitNumberApi: in of range 2xx", addVaccineResponse.vaccines.toString())
+                    Result.Success(data = addVaccineResponse)
+                }
+
+                else -> {
+                    val errorBody = response.bodyAsText()
+                    Log.e("GetVaccinesWithNoVisitNumberApi: Out of range 2xx", errorBody)
+                    Result.Error(NetworkError.UNKNOWN)
+                }
+            }
+        }catch (e: Exception){
+            Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
+            Result.Error(NetworkError.UNKNOWN)
+        }
 
     override suspend fun addNewVaccine(
         token: String,
@@ -143,8 +170,9 @@ class VaccineApiServiceImpl(
 
     override suspend fun getGenericVaccinationTable(
         token: String,
+        roleDto: RoleDto
     ): Result<GenericVaccinationTableDto, rootError> = try {
-        val response = client.get(ApiRoutes.Doctor.GET_GENERIC_VACCINATION_TABLE) {
+        val response = client.get(ApiRoutes.getGenericVaccinationTableEndPoint(role = roleDto)) {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
         }
@@ -178,6 +206,7 @@ class VaccineApiServiceImpl(
             contentType(ContentType.Application.Json)
             bearerAuth(token)
             setBody(vaccineIdToVisitNumberDto)
+            Log.d("UpdateDataVVV",vaccineIdToVisitNumberDto.toString())
         }
         when (response.status.value) {
             in 200..299 -> {

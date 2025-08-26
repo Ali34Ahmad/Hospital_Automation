@@ -18,12 +18,13 @@ import com.example.ui_components.components.items.ProfileActionsItem
 import com.example.model.vaccine.GenericVaccinationTable
 
 @Composable
-fun VaccinationTable(
+fun GenericVaccinationTable(
     genericVaccinationTable: GenericVaccinationTable,
     onAddNewVisit: () -> Unit,
     onAddNewVaccineToVisit: (visitNumber:Int) -> Unit,
     onDeleteVaccine: (visitNumber:Int,vaccineIndex:Int) -> Unit,
     onVaccineItemClick: (Int) -> Unit,
+    isEditable: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -34,20 +35,23 @@ fun VaccinationTable(
             iconRes = AppIcons.Outlined.syringe,
             title = stringResource(R.string.vaccination_card),
         )
-        VaccinationTableHeader()
+        GenericVaccinationTableHeader()
         genericVaccinationTable.visits.forEach { visit ->
-            VaccinationTableItem(
+            GenericVaccinationTableItem(
                 visitNumberToVaccines = Pair(visit.visitNumber,visit.vaccines),
                 onClick = onVaccineItemClick,
                 onItemDelete = onDeleteVaccine,
-                onAddVaccineToVisit = onAddNewVaccineToVisit
+                onAddVaccineToVisit = onAddNewVaccineToVisit,
+                isEditable=isEditable
             )
         }
-        ProfileActionsItem(
-            onClick = onAddNewVisit,
-            iconRes = R.drawable.ic_add,
-            title = stringResource(R.string.add_visit),
-        )
+        if (isEditable){
+            ProfileActionsItem(
+                onClick = onAddNewVisit,
+                iconRes = R.drawable.ic_add,
+                title = stringResource(R.string.add_visit),
+            )
+        }
     }
 }
 
@@ -56,13 +60,33 @@ fun VaccinationTable(
 fun VaccinationTablePreview() {
     Hospital_AutomationTheme {
         Surface {
-            VaccinationTable(
+            GenericVaccinationTable(
                 genericVaccinationTable = GenericVaccinationTable(createFakeVaccinationData()),
                 onDeleteVaccine = {visitNumber,vaccineIndex->},
                 onVaccineItemClick = {},
                 onAddNewVisit = {},
                 onAddNewVaccineToVisit = {},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                isEditable=true,
+            )
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun VaccinationTableNonEditablePreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            GenericVaccinationTable(
+                genericVaccinationTable = GenericVaccinationTable(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
+                onDeleteVaccine = {visitNumber,vaccineIndex->},
+                onVaccineItemClick = {},
+                onAddNewVisit = {},
+                onAddNewVaccineToVisit = {},
+                modifier = Modifier.padding(MaterialTheme.spacing.medium16),
+                isEditable=false
+                ,
             )
         }
     }

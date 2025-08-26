@@ -14,12 +14,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class EmployeeProfileRoute(
-    val profileAccessType: ProfileAccessType,
+    val employeeProfileAccessType: EmployeeProfileAccessType,
     val employeeId: Int?,
 )
 
-fun NavController.navigateToEmployeeProfileScreen(profileAccessType: ProfileAccessType,employeeId: Int?) {
-    navigateToScreen(EmployeeProfileRoute(profileAccessType,employeeId))
+fun NavController.navigateToEmployeeProfileScreen(employeeProfileAccessType: EmployeeProfileAccessType, employeeId: Int?) {
+    navigateToScreen(EmployeeProfileRoute(employeeProfileAccessType,employeeId))
 }
 
 fun NavGraphBuilder.employeeProfileScreen(

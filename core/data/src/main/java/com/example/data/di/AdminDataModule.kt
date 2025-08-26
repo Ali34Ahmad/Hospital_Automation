@@ -6,6 +6,11 @@ import com.example.data.repositories.admin.employee.AdminEmployeeRepositoryImp
 import com.example.data.repositories.admin.pharmacy.AdminPharmacyRepositoryImp
 import com.example.data.repositories.auth.AuthRepositoryImpl
 import com.example.data.repositories.auth.signup.BaseSignUpRepositoryImpl
+import com.example.data.repositories.doctor.DoctorProfileRepositoryImpl
+import com.example.data.repositories.employee_profile.EmployeeProfileRepositoryImpl
+import com.example.data.repositories.employment_history.EmploymentHistoryRepositoryImpl
+import com.example.data.repositories.pharmacy.PharmacyRepositoryImp
+import com.example.data.repositories.prescription.PrescriptionRepositoryImp
 import com.example.data.repositories.residential_address.AddResidentialAddressRepositoryImpl
 import com.example.data.repositories.upload_employee_image.UploadEmployeeProfileImageRepositoryImpl
 import com.example.data.repositories.vaccine.VaccineRepositoryImpl
@@ -18,6 +23,11 @@ import com.example.domain.repositories.admin.employee.AdminEmployeeRepository
 import com.example.domain.repositories.auth.AuthRepository
 import com.example.domain.repositories.auth.singup.BaseSignUpRepository
 import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
+import com.example.domain.repositories.pharmacy.PharmacyRepository
+import com.example.domain.repositories.prescription.PrescriptionRepository
+import com.example.domain.repositories.profile.DoctorProfileRepository
+import com.example.domain.repositories.profile.EmployeeProfileRepository
+import com.example.domain.repositories.profile.EmploymentHistoryRepository
 import com.example.domain.repositories.vaccine.VaccineRepository
 import com.example.network.di.adminNetworkModule
 import org.koin.core.module.dsl.bind
@@ -42,4 +52,11 @@ val adminDataModule = module {
     singleOf(::AdminClinicRepositoryImp){bind<AdminClinicRepository>()}
     singleOf(::AdminPharmacyRepositoryImp){bind<AdminPharmacyRepository>()}
     singleOf(::VaccineRepositoryImpl) { bind<VaccineRepository>() }
+
+    singleOf(::DoctorProfileRepositoryImpl) { bind<DoctorProfileRepository>() }
+    singleOf(::EmployeeProfileRepositoryImpl) { bind<EmployeeProfileRepository>() }
+    singleOf(::PharmacyRepositoryImp){bind<PharmacyRepository>()}
+    singleOf(::EmploymentHistoryRepositoryImpl) { bind<EmploymentHistoryRepository>() }
+    singleOf(::PrescriptionRepositoryImp){bind<PrescriptionRepository>()}
+
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.add_new_vaccine.validator.AddNewVaccineValidationResult
 import com.example.add_new_vaccine.validator.AddNewVaccineValidator
-import com.example.domain.use_cases.vaccine.AddNewVaccineUseCase
+import com.example.domain.use_cases.prescription.AddNewVaccineUseCase
 import com.example.model.age.Age
 import com.example.model.enums.AgeUnit
 import com.example.model.enums.BottomBarState

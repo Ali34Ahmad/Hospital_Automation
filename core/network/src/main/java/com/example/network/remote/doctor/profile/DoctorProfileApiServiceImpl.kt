@@ -1,6 +1,7 @@
 package com.example.network.remote.doctor.profile
 
 import android.util.Log
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.NetworkMessage
 import com.example.network.model.response.profile.EmployeeProfileResponseDto
 import com.example.network.model.response.employee.GetEmployeeProfileByIdResponseDto
@@ -20,12 +21,13 @@ import io.ktor.http.contentType
 class DoctorProfileApiServiceImpl(
     private val client: HttpClient,
 ) : DoctorProfileApiService {
-    override suspend fun getDoctorInfo(token: String): Result<DoctorProfileResponseDto, rootError> = try {
-        val response = client.get(ApiRoutes.Doctor.PROFILE) {
+    override suspend fun getDoctorInfo(token: String,roleDto: RoleDto,id:Int?): Result<DoctorProfileResponseDto, rootError> = try {
+        val routeSuffix=if (id!=null) "/$id" else ""
+        val response = client.get("${ApiRoutes.getDoctorProfileByIdEndPoint(role = roleDto)}$routeSuffix") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
-            Log.v("DoctorProfileApi:", token)
         }
+
         when (response.status.value) {
             in 200..299 -> {
                 val employeeProfile: DoctorProfileResponseDto = response.body()

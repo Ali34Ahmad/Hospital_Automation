@@ -30,6 +30,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -99,8 +100,15 @@ dependencies {
     implementation(project(":feature:enter_email"))
     implementation(project(":feature:reset_password"))
     implementation(project(":feature:upload_profile_image"))
-//    implementation(project(":feature:employment_history"))
+    implementation(project(":feature:employment_history"))
     implementation(project(":feature:employment_requests"))
+    implementation(project(":feature:doctor_profile"))
+    implementation(project(":feature:employee_profile"))
+    implementation(project(":feature:pharmacy_details"))
+    implementation(project(":feature:prescription_details"))
+    implementation(project(":feature:generic_vaccination_table"))
 
     implementation(project(":feature:employment_requests"))
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

@@ -46,8 +46,6 @@ val doctorDataModule = module {
     singleOf(::PharmacyRepositoryImp) { bind<PharmacyRepository>() }
     singleOf(::MedicineRepositoryImp) { bind<MedicineRepository>() }
     includes(doctorNetworkModule, doctorDomainModule,commonDataModule)
-    singleOf(::PrescriptionRepositoryImp){bind<PrescriptionRepository>()}
-    singleOf(::PharmacyRepositoryImp){bind<PharmacyRepository>()}
     singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
     singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
 

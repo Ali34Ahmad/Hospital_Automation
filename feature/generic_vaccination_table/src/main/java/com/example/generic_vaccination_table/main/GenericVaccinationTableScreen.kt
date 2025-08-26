@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
+import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
 import com.example.model.enums.BottomBarState
 import com.example.model.enums.ScreenState
 import com.example.model.vaccine.GenericVaccinationTable
@@ -33,9 +34,14 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
 import com.example.ui_components.components.card.NotSpecifiedErrorCard
+import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.MultiSelectionsOptionsPickerDialog
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
-import com.example.ui_components.components.tables.vaccination_table.VaccinationTable
+import com.example.ui_components.components.tables.vaccination_table.GenericVaccinationTable
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
+import com.maxkeppeker.sheets.core.models.base.UseCaseState
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.option.models.Option
 
 
 @Composable
@@ -57,6 +63,39 @@ fun GenericVaccinationTableScreen(
         }
     }
 
+    val datePickerState: UseCaseState = rememberUseCaseState(visible = false)
+    if (uiState.showVaccinesDialog){
+        datePickerState.show()
+    }
+
+    MultiSelectionsOptionsPickerDialog(
+        state = datePickerState,
+        onConfirm = { selectedVaccinesIndexes ->
+            uiActions.onAddVaccinesToVisit(selectedVaccinesIndexes)
+        },
+        options = uiState.vaccines?.map { Option(titleText = it.name) } ?: emptyList()
+    )
+
+    val vaccineIdToDelete = uiState.vaccinationTable?.visits?.find {
+        uiState.visitNumberToUse == it.visitNumber
+    }
+        ?.vaccines?.find { it.id == uiState.vaccineIdToDelete }?.id
+    MessageDialog(
+        showDialog = uiState.isDeleteConfirmationDialogVisible,
+        title = uiState.dialogTitleText?.asString() ?: "",
+        description = uiState.dialogDescriptionText?.asString() ?: "",
+        onDismiss = { uiActions.onUpdateConfirmationDialogVisibility(false) },
+        onConfirm = {
+            uiActions.onRemoveVaccineFromVisit(
+                uiState.visitNumberToUse ?: -1,
+                vaccineIdToDelete ?: -1
+            )
+        },
+        showCancelButton = true,
+        dismissButtonText = uiState.dialogCancelText?.asString() ?: "",
+        confirmButtonText = uiState.dialogConfirmText?.asString() ?: ""
+    )
+
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {
@@ -69,7 +108,7 @@ fun GenericVaccinationTableScreen(
             )
         },
         bottomBar = {
-            if (uiState.showSaveButton) {
+            if (false) {
                 SendingDataBottomBar(
                     onSuccess = {},
                     text = stringResource(R.string.submit),
@@ -92,7 +131,6 @@ fun GenericVaccinationTableScreen(
                 .fillMaxSize()
                 .padding(contentPadding),
         ) {
-
             when {
                 uiState.screenState == ScreenState.LOADING -> {
                     Box(
@@ -137,21 +175,26 @@ fun GenericVaccinationTableScreen(
                                 .verticalScroll(scrollState),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
-                            VaccinationTable(
+                            GenericVaccinationTable(
+                                isEditable = uiState.genericVaccinationTableAccessType == GenericVaccinationTableAccessType.EDITOR_ACCESS,
                                 genericVaccinationTable = uiState.vaccinationTable,
                                 onAddNewVisit = {
                                     uiActions.onAddNewVisit()
                                 },
                                 onAddNewVaccineToVisit = {
-                                    uiActions.onAddVaccineToVisit(it)
+                                    uiActions.onAddVaccineToVisitClick(it)
                                 },
-                                onDeleteVaccine = {visitNumber,vaccineIndex->
-                                    uiActions.onRemoveVaccineFromVisit(visitNumber,vaccineIndex)
+                                onDeleteVaccine = { visitNumber, vaccineIndex ->
+                                    uiActions.onSetVisitNumberAndVaccineIndex(
+                                        visitNumber,
+                                        vaccineIndex
+                                    )
                                 },
                                 onVaccineItemClick = {
                                     uiActions.navigateToVaccineDetailsScreen()
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(MaterialTheme.spacing.medium16),
                             )
                         }
@@ -165,14 +208,32 @@ fun GenericVaccinationTableScreen(
 
 @DarkAndLightModePreview
 @Composable
-fun GenericVaccinationTableScreenPreview(){
+fun GenericVaccinationTableScreenPreview() {
     Hospital_AutomationTheme {
-        Surface{
+        Surface {
             GenericVaccinationTableScreen(
                 uiState = GenericVaccinationTableUiState(
-                    vaccinationTable = GenericVaccinationTable(createFakeVaccinationData()),
+                    vaccinationTable = GenericVaccinationTable(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
                     screenState = ScreenState.SUCCESS,
-                    showSaveButton = true
+                ),
+                uiActions = GenericVaccinationTableUiActions(
+                    navigationActions = mockEmployeeProfileNavigationUiActions(),
+                    businessActions = mockEmployeeProfileBusinessUiActions()
+                ),
+            )
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun GenericVaccinationTableScreenNonEditablePreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            GenericVaccinationTableScreen(
+                uiState = GenericVaccinationTableUiState(
+                    vaccinationTable = GenericVaccinationTable(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
+                    screenState = ScreenState.SUCCESS,
                 ),
                 uiActions = GenericVaccinationTableUiActions(
                     navigationActions = mockEmployeeProfileNavigationUiActions(),

@@ -21,7 +21,7 @@ import com.example.email_verification.email_verified_successfully.navigation.ema
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
 import com.example.email_verification.otp_verification.naviation.navigateToEmailOtpVerificationScreen
-import com.example.employee_profile.navigation.ProfileAccessType
+import com.example.employee_profile.navigation.EmployeeProfileAccessType
 import com.example.employee_profile.navigation.employeeProfileScreen
 import com.example.employee_profile.navigation.navigateToEmployeeProfileScreen
 import com.example.employment_history.navigation.employmentHistoryScreen
@@ -161,7 +161,7 @@ fun Navigation() {
                 },
                 onNavigateToEmployeeProfileScreen = {
                     navController.navigateToEmployeeProfileScreen(
-                        profileAccessType = ProfileAccessType.TOKEN_ACCESS,
+                        employeeProfileAccessType = EmployeeProfileAccessType.TOKEN_ACCESS,
                         employeeId = null
                     )
                 },
@@ -283,7 +283,7 @@ fun Navigation() {
             navigateToAddGuardianScreen = navController::navigateToGuardiansScreen,
             navigateToEmployeeProfileScreen = { employeeId ->
                 navController.navigateToEmployeeProfileScreen(
-                    profileAccessType = ProfileAccessType.EMPLOYEE_ID_ACCESS,
+                    employeeProfileAccessType = EmployeeProfileAccessType.EMPLOYEE_ID_ACCESS,
                     employeeId = employeeId
                 )
             },

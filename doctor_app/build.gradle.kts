@@ -94,6 +94,7 @@ dependencies {
     implementation(project(":feature:doctor_profile"))
 
     implementation(project(":feature:add_new_vaccine"))
+    implementation(project(":feature:generic_vaccination_table"))
 
     // Ali mansoura modules, delete this comment after successfully working.
 

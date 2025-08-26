@@ -1,4 +1,4 @@
-package com.example.medical_prescription_details
+package com.example.prescription_details
 
 import com.example.medical_prescription_details.main.PrescriptionDetailsViewModel
 import org.koin.core.module.dsl.viewModelOf

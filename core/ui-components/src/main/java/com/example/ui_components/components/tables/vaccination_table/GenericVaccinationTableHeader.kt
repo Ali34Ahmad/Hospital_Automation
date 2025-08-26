@@ -21,7 +21,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 
 @Composable
-fun VaccinationTableHeader(modifier: Modifier = Modifier) {
+fun GenericVaccinationTableHeader(modifier: Modifier = Modifier) {
     val surfaceColor = MaterialTheme.colorScheme.surface
     val borderWidth = MaterialTheme.sizing.extraSmall1
 
@@ -74,7 +74,7 @@ fun VaccinationTableHeader(modifier: Modifier = Modifier) {
 fun VaccinationTableHeaderPreview() {
     Hospital_AutomationTheme {
         Surface {
-            VaccinationTableHeader()
+            GenericVaccinationTableHeader()
         }
     }
 }

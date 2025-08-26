@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import com.example.constants.icons.AppIcons
-import com.example.model.vaccine.VaccineData
 import com.example.model.vaccine.VaccineMainInfo
 import com.example.ui.fake.createFakeVaccinationData
 import com.example.ui.helper.DarkAndLightModePreview
@@ -25,11 +24,12 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground
 
 @Composable
-fun VaccinationTableItem(
+fun GenericVaccinationTableItem(
     visitNumberToVaccines: Pair<Int, List<VaccineMainInfo>>,
     onClick: (Int) -> Unit,
-    onItemDelete: (visitNumber:Int,vaccineIndex:Int) -> Unit,
-    onAddVaccineToVisit: (visitNumber:Int) -> Unit,
+    onItemDelete: (visitNumber: Int, vaccineIndex: Int) -> Unit,
+    onAddVaccineToVisit: (visitNumber: Int) -> Unit,
+    isEditable: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val surfaceColor = MaterialTheme.colorScheme.surface
@@ -64,17 +64,22 @@ fun VaccinationTableItem(
                 strokeWidth = strokeWidth
             )
         }
+
+    val paddingModifierForText=if (!isEditable) Modifier.padding(
+        vertical = MaterialTheme.spacing.medium16
+    )else Modifier
     Row(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
             .then(rowModifier),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (visitNumberToVaccines.second.size > 1) {
+        if (visitNumberToVaccines.second.size > 1 || !isEditable) {
             VisitNumberColumn(
                 visitNumber = visitNumberToVaccines.first,
                 onAddVaccineToVisit = onAddVaccineToVisit,
                 modifier = Modifier.weight(0.15f),
+                isEditable = isEditable,
             )
         } else {
             VisitNumberCompactColumn(
@@ -86,7 +91,7 @@ fun VaccinationTableItem(
         Column(
             modifier = Modifier.weight(1f),
         ) {
-            visitNumberToVaccines.second.forEachIndexed {index, vaccine ->
+            visitNumberToVaccines.second.forEachIndexed { index, vaccine ->
                 Row(
                     modifier = innerRowModifier
                         .clickable { onClick(vaccine.id) }
@@ -98,17 +103,22 @@ fun VaccinationTableItem(
                 ) {
                     Text(
                         text = vaccine.name,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f)
+                            .then(paddingModifierForText),
                         style = MaterialTheme.typography.bodyMedium,
                     )
-                    IconButton(
-                        onClick = { onItemDelete(visitNumberToVaccines.first,index) }
-                    ) {
-                        IconWithBackground(
-                            iconRes = AppIcons.Outlined.delete,
-                            iconColor = MaterialTheme.colorScheme.error,
-                            backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f)
-                        )
+                    if (isEditable){
+                        IconButton(
+                            onClick = { onItemDelete(visitNumberToVaccines.first, index) }
+                        ) {
+                            IconWithBackground(
+                                iconRes = AppIcons.Outlined.delete,
+                                iconColor = MaterialTheme.colorScheme.error,
+                                backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(
+                                    alpha = 0.4f
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -122,11 +132,15 @@ fun VaccinationTableItem(
 fun VaccinationTableItemPreview() {
     Hospital_AutomationTheme {
         Surface {
-            VaccinationTableItem(
-                visitNumberToVaccines = Pair(createFakeVaccinationData()[0].visitNumber,createFakeVaccinationData()[0].vaccines),
+            GenericVaccinationTableItem(
+                visitNumberToVaccines = Pair(
+                    createFakeVaccinationData()[0].visitNumber,
+                    createFakeVaccinationData()[0].vaccines
+                ),
                 onClick = {},
-                onItemDelete = {visitNumber,vaccineIndex->},
+                onItemDelete = { visitNumber, vaccineIndex -> },
                 onAddVaccineToVisit = {},
+                isEditable = true
             )
         }
     }
@@ -137,11 +151,52 @@ fun VaccinationTableItemPreview() {
 fun VaccinationTableItemOneVaccinePreview() {
     Hospital_AutomationTheme {
         Surface {
-            VaccinationTableItem(
-                visitNumberToVaccines = Pair(createFakeVaccinationData()[1].visitNumber,createFakeVaccinationData()[0].vaccines),
+            GenericVaccinationTableItem(
+                visitNumberToVaccines = Pair(
+                    createFakeVaccinationData()[1].visitNumber,
+                    createFakeVaccinationData()[0].vaccines
+                ),
                 onClick = {},
-                onItemDelete = {visitNumber,vaccineIndex->},
+                onItemDelete = { visitNumber, vaccineIndex -> },
+                onAddVaccineToVisit = {},true
+            )
+        }
+    }
+}
+
+
+@DarkAndLightModePreview
+@Composable
+fun VaccinationTableItemNonEditablePreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            GenericVaccinationTableItem(
+                visitNumberToVaccines = Pair(
+                    createFakeVaccinationData()[0].visitNumber,
+                    createFakeVaccinationData()[0].vaccines
+                ),
+                onClick = {},
+                onItemDelete = { visitNumber, vaccineIndex -> },
                 onAddVaccineToVisit = {},
+                isEditable = false
+            )
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun VaccinationTableItemOneVaccineNonEditablePreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            GenericVaccinationTableItem(
+                visitNumberToVaccines = Pair(
+                    createFakeVaccinationData()[1].visitNumber,
+                    createFakeVaccinationData()[0].vaccines
+                ),
+                onClick = {},
+                onItemDelete = { visitNumber, vaccineIndex -> },
+                onAddVaccineToVisit = {},false
             )
         }
     }
