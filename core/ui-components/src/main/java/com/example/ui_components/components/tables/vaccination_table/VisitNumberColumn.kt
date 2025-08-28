@@ -17,6 +17,7 @@ import com.example.ui_components.components.icon.IconWithBackground
 fun VisitNumberColumn(
     visitNumber: Int,
     onAddVaccineToVisit: (visitNumber:Int) -> Unit,
+    isEditable: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -27,16 +28,18 @@ fun VisitNumberColumn(
             visitNumber.toOrdinalString(),
             style = MaterialTheme.typography.labelMedium,
         )
-        IconButton(
-            modifier = Modifier.padding(
-                top = MaterialTheme.spacing.extraSmall2
-            ),
-            onClick = { onAddVaccineToVisit(visitNumber) },
-        ) {
-            IconWithBackground(
-                iconRes = AppIcons.Outlined.add,
-                iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
+        if(isEditable){
+            IconButton(
+                modifier = Modifier.padding(
+                    top = MaterialTheme.spacing.extraSmall2
+                ),
+                onClick = { onAddVaccineToVisit(visitNumber) },
+            ) {
+                IconWithBackground(
+                    iconRes = AppIcons.Outlined.add,
+                    iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
+            }
         }
     }
 }

@@ -3,12 +3,11 @@ package com.example.network.utility
 import com.example.network.model.enums.RoleDto
 
 object ApiRoutes {
-
     const val BASE_URL = "https://dispensary-hkz3.onrender.com"
     private const val EMPLOYEE = "$BASE_URL/employee"
     private const val DOCTOR = "$BASE_URL/doctor"
     private const val ADMIN = "$BASE_URL/admin"
-
+    private const val EXCEPTION_MESSAGE = "This feature is not meant to be used in ROLE app"
 
     const val SEARCH_FOR_CHILD = "$EMPLOYEE/searchFor-child"
     const val ADD_CHILD = "$EMPLOYEE/addChild"
@@ -54,7 +53,7 @@ object ApiRoutes {
         const val PROFILE = "$DOCTOR/show-profile"
         const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
         const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
-        const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/get-generic-vaccination-table"
+        const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/generic-vaccination-table"
         const val UPDATE_GENERIC_VACCINATION_TABLE = "$DOCTOR/update-generic-vaccination-table"
         const val SIGNUP = "$DOCTOR/sign-up"
         const val LOGIN = "$DOCTOR/login"
@@ -83,15 +82,36 @@ object ApiRoutes {
         const val PRESCRIPTION_DETAILS = "$DOCTOR/prescription-details"
 
         const val ALL_VACCINES = "$DOCTOR/view-all-vaccines"
-        const val UPDATE_VACCINE_VISIT_NUMBER = "$DOCTOR/update-vaccines-visit-number"
-        const val UPDATE_VACCINES_LIST_VISIT_NUMBER = "$DOCTOR/update-vaccines-list-visit"
+        const val UPDATE_VACCINE_VISIT_NUMBER = "$DOCTOR/update-vaccine-visit"
+        const val UPDATE_VACCINES_LIST_VISIT_NUMBER = "$DOCTOR/update-vaccines-visit-number"
 
         const val PHARMACY_DETAILS = "$DOCTOR/pharmacy-details"
         const val ALL_MEDICAL_RECORDS = "$DOCTOR/doctor-record"
 
+        const val SHOW_USER_PROFILE = "$DOCTOR/find-user-byId"
+        const val CHILD_BY_ID = "$DOCTOR/find-child-byId"
+        const val GET_VACCINE_WITH_NO_VISIT_NUMBER = "$DOCTOR/show-vaccines-has-no-visit-number"
     }
 
+
+
     object Admin{
+        const val LOGIN = "$ADMIN/login"
+        const val SIGNUP = "$ADMIN/sign-up"
+        const val SEND_OTP = "$ADMIN/send-otp"
+        const val VERIFY_OTP = "$ADMIN/verify-otp"
+        const val RESET_PASSWORD = "$ADMIN/reset-password"
+        const val LOGOUT = "$ADMIN/logout"
+        const val UPLOAD_PROFILE_IMAGE = "$ADMIN/add-image"
+        const val PROFILE = "$ADMIN/get-doctor-profile-by-id"
+        const val ADD_RESIDENTIAL_ADDRESS = "$ADMIN/add-address"
+        const val FIND_EMPLOYEE_BY_ID = "$ADMIN/get-employee-profile-by-id"
+        const val FIND_PHARMACY_BY_ID = "$ADMIN/get-pharmacy-details-by-id"
+        const val GET_EMPLOYMENT_HISTORY = "$ADMIN/get-employment-history-for"
+        const val PRESCRIPTION_DETAILS = "$ADMIN/get-prescription-details-by-id"
+        const val GET_GENERIC_VACCINATION_TABLE = "$ADMIN/generic-vaccination-table"
+        const val GET_EMPLOYMENT_REQUESTS = "$ADMIN/get-requests"
+        const val CHANGE_EMPLOYMENT_REQUEST_STATE = "$ADMIN/change-request-state"
         const val CHILD_APPOINTMENTS = "$ADMIN/show-appointments-screen"
         const val USER_APPOINTMENTS = "$ADMIN/show-appointments-screen"
         const val MEDICINES_IN_SPECIFIC_PHARMACY = "$ADMIN/pharmacy-medicines"
@@ -104,18 +124,21 @@ object ApiRoutes {
         const val GET_ALL_DOCTORS = "$ADMIN/get-employees-states"
         const val SHOW_DOCTOR_APPOINTMENTS = "$ADMIN/doctor-appointment-screen"
         const val GET_DOCTORS_IN_SPECIFIC_CLINIC ="$ADMIN/doctors-in-specific-clinic_states"
+        const val SHOW_APPOINTMENTS = "$ADMIN/doctor-appointment-screen"
         const val DEACTIVATE_CLINIC = "$ADMIN/deactivate-clinic"
         const val REACTIVATE_CLINIC = "$ADMIN/reactivate-clinic"
         const val GET_ADMIN_DETAILS_FOR = "$ADMIN/admin-get-details-by-id-for"
         const val ALL_VACCINES = "$ADMIN/show-all-vaccines"
-        const val GET_VACCINE_BY_ID = "$ADMIN/view-single-vaccine-details"
+        const val GET_VACCINE_BY_ID = "$ADMIN/get-vaccine-by-id"
         const val MEDICAL_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
         const val CHILDREN_BY_GUARDIAN_ID = "$ADMIN/show-children-for-user"
     }
-    object Prescription{
+
+    object Prescription {
         const val ADD_PRESCRIPTION = "$DOCTOR/add-prescription"
     }
-    object Pharmacy{
+
+    object Pharmacy {
         const val PHARMACIES_BY_MEDICINE_ID = "$DOCTOR/show-pharmacies-have-medicine"
     }
 
@@ -136,7 +159,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGIN
             RoleDto.DOCTOR -> Doctor.LOGIN
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.LOGIN
             else -> ""
         }
     }
@@ -145,7 +168,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_VERIFY_OTP
             RoleDto.DOCTOR -> Doctor.VERIFY_OTP
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.VERIFY_OTP
             else -> ""
         }
     }
@@ -154,19 +177,21 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_SEND_OTP
             RoleDto.DOCTOR -> Doctor.SEND_OTP
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.SEND_OTP
             else -> ""
         }
     }
+
     fun getChildrenByEmployeeEndPointFor(role: RoleDto) =
-        when(role){
+        when (role) {
             RoleDto.EMPLOYEE -> SEARCH_FOR_CHILDREN_ADDED_BY_EMPLOYEE_BY_NAME
             RoleDto.DOCTOR -> ""
             RoleDto.ADMIN -> Admin.CHILDREN_ADDED_BY_EMPLOYEE
             else -> ""
         }
-    fun getMedicineByIdEndPointFor(role: RoleDto) : String =
-        when(role){
+
+    fun getMedicineByIdEndPointFor(role: RoleDto): String =
+        when (role) {
             RoleDto.EMPLOYEE -> ""
             RoleDto.DOCTOR -> Doctor.GET_MEDICINE_BY_ID
             RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
@@ -178,9 +203,8 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_SIGNUP
             RoleDto.DOCTOR -> Doctor.SIGNUP
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.SIGNUP
             else -> ""
-
         }
     }
 
@@ -188,7 +212,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_RESET_PASSWORD
             RoleDto.DOCTOR -> Doctor.RESET_PASSWORD
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.RESET_PASSWORD
             else -> ""
 
         }
@@ -198,15 +222,15 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGOUT
             RoleDto.DOCTOR -> Doctor.LOGOUT
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.LOGOUT
             else -> ""
 
         }
     }
 
-    fun getClinicByIdEndPointForRole(role: RoleDto) : String{
-        return when(role){
-            RoleDto.EMPLOYEE -> ""
+    fun getClinicByIdEndPointForRole(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.GET_CLINIC_BY_ID
             RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
             else -> ""
@@ -214,41 +238,48 @@ object ApiRoutes {
         }
     }
 
-    fun getGuardianByIdEndPointForRole(role: RoleDto) : String=
-        when(role){
-            RoleDto.EMPLOYEE ->SHOW_USER_PROFILE
+    fun getGuardianByIdEndPointForRole(role: RoleDto): String =
+        when (role) {
+            RoleDto.EMPLOYEE -> SHOW_USER_PROFILE
             RoleDto.DOCTOR -> ""
             RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
             else -> ""
 
         }
 
+    fun getAppointmentsEndPointFor(role: RoleDto): String {
+        return when (role) {
+            RoleDto.DOCTOR -> Doctor.SHOW_APPOINTMENTS
+            RoleDto.ADMIN -> Admin.SHOW_APPOINTMENTS
+            else -> ""
+        }
+    }
+
 
 
     fun getChildrenByUserEndPointFor(role: RoleDto) =
-        when(role){
+        when (role) {
             RoleDto.EMPLOYEE -> CHILDREN_BY_GUARDIAN_ID
             RoleDto.DOCTOR -> ""
             RoleDto.ADMIN -> Admin.CHILDREN_BY_GUARDIAN_ID
             else -> ""
 
         }
-        fun getChildByIdEndPointFor(role: RoleDto): String =
-            when (role) {
-                RoleDto.EMPLOYEE -> CHILD_BY_ID
-                RoleDto.DOCTOR -> ""
-                RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
-                else -> ""
 
-            }
+    fun getChildByIdEndPointFor(role: RoleDto): String =
+        when (role) {
+            RoleDto.EMPLOYEE -> CHILD_BY_ID
+            RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
+            else -> ""
+        }
 
-        fun getAddResidentialAddressEndPointFor(role: RoleDto): String {
+
+    fun getAddResidentialAddressEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> ADD_RESIDENTIAL_ADDRESS
             RoleDto.DOCTOR -> Doctor.ADD_RESIDENTIAL_ADDRESS
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.ADD_RESIDENTIAL_ADDRESS
             else -> ""
-
         }
     }
 
@@ -256,7 +287,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> UPLOAD_EMPLOYMENT_DOCUMENTS
             RoleDto.DOCTOR -> Doctor.UPLOAD_EMPLOYMENT_FILE
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> throw Exception(getForbiddenFeatureErrorMessage(role))
             else -> ""
 
         }
@@ -266,25 +297,26 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> UPLOAD_PROFILE_IMAGE
             RoleDto.DOCTOR -> Doctor.UPLOAD_PROFILE_IMAGE
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.UPLOAD_PROFILE_IMAGE
             else -> ""
 
         }
     }
 
     fun getAppointmentByIdEndPointFor(role: RoleDto): String =
-        when(role){
-            RoleDto.EMPLOYEE -> ""
+        when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.SHOW_SINGLE_APPOINTMENT
             RoleDto.ADMIN -> Admin.GET_ADMIN_DETAILS_FOR
             else -> ""
 
         }
+
     fun getDeactivateMyAccountEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> DEACTIVATE_MY_EMPLOYEE_ACCOUNT
             RoleDto.DOCTOR -> Doctor.DEACTIVATE_MY_ACCOUNT
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> throw Exception(getForbiddenFeatureErrorMessage(role))
             else -> ""
 
         }
@@ -294,7 +326,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> REACTIVATE_MY_EMPLOYEE_ACCOUNT
             RoleDto.DOCTOR -> Doctor.REACTIVATE_MY_ACCOUNT
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> throw Exception(getForbiddenFeatureErrorMessage(role))
             else -> ""
 
         }
@@ -304,7 +336,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> CHECK_EMPLOYEE_PERMISSION
             RoleDto.DOCTOR -> Doctor.CHECK_PERMISSION
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> throw Exception(getForbiddenFeatureErrorMessage(role))
             else -> ""
 
         }
@@ -314,7 +346,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> EMPLOYEE_EMPLOYMENT_HISTORY
             RoleDto.DOCTOR -> Doctor.EMPLOYMENT_HISTORY
-            RoleDto.ADMIN -> ""
+            RoleDto.ADMIN -> Admin.GET_EMPLOYMENT_HISTORY
             else -> ""
 
         }
@@ -323,7 +355,7 @@ object ApiRoutes {
 
     fun getAllVaccinesEndPointForRole(role: RoleDto): String {
         return when (role) {
-            RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be used for EMPLOYEE")
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.ALL_VACCINES
             RoleDto.ADMIN -> Admin.ALL_VACCINES
             else -> ""
@@ -333,7 +365,7 @@ object ApiRoutes {
 
     fun getVaccineDetailsEndPointForRole(role: RoleDto): String {
         return when (role) {
-            RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be used for EMPLOYEE")
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.GET_VACCINE_BY_ID
             RoleDto.ADMIN -> Admin.GET_VACCINE_BY_ID
             else -> ""
@@ -343,11 +375,76 @@ object ApiRoutes {
 
     fun getPrescriptionsEndPointForRole(role: RoleDto): String {
         return when (role) {
-            RoleDto.EMPLOYEE -> throw Exception("This feature is not meant to be used for EMPLOYEE")
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.MEDICAL_PRESCRIPTIONS
             RoleDto.ADMIN -> Admin.MEDICAL_PRESCRIPTIONS
             else -> ""
 
         }
+    }
+
+    fun getChildProfileByIdEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> CHILD_BY_ID
+            RoleDto.DOCTOR -> Doctor.CHILD_BY_ID
+            else -> ""
+        }
+    }
+
+    fun getUserProfileByIdEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> SHOW_USER_PROFILE
+            RoleDto.DOCTOR -> Doctor.SHOW_USER_PROFILE
+            else -> ""
+        }
+    }
+
+    fun getDoctorProfileByIdEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.DOCTOR -> Doctor.PROFILE
+            RoleDto.ADMIN -> Admin.PROFILE
+            else -> ""
+        }
+    }
+
+    fun getEmployeeProfileByIdEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> FIND_EMPLOYEE_BY_ID
+            RoleDto.DOCTOR -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.ADMIN -> Admin.FIND_EMPLOYEE_BY_ID
+            else -> ""
+        }
+    }
+
+    fun getPharmacyDetailsByIdEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.DOCTOR -> Doctor.PHARMACY_DETAILS
+            RoleDto.ADMIN -> Admin.FIND_PHARMACY_BY_ID
+            else -> ""
+        }
+    }
+
+    fun getPrescriptionDetailsByIdEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.DOCTOR -> Doctor.PRESCRIPTION_DETAILS
+            RoleDto.ADMIN -> Admin.PRESCRIPTION_DETAILS
+            else -> ""
+        }
+    }
+
+    fun getGenericVaccinationTableEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.DOCTOR -> Doctor.GET_GENERIC_VACCINATION_TABLE
+            RoleDto.ADMIN -> Admin.GET_GENERIC_VACCINATION_TABLE
+            else -> ""
+        }
+    }
+
+    private fun getForbiddenFeatureErrorMessage(role: RoleDto): String {
+        return EXCEPTION_MESSAGE.replaceFirst("ROLE", role.toString())
     }
 }

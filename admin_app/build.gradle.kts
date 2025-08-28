@@ -30,6 +30,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
@@ -57,6 +58,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    //navigation
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.compose)
+    implementation(project(":core:navigation"))
+
     //data
     implementation(project(":core:data"))
 
@@ -83,9 +90,26 @@ dependencies {
     implementation(project(":feature:children"))
     implementation(project(":feature:pharmacy_medicines"))
 
-    //navigation
-    implementation(project(":core:navigation"))
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.navigation.compose)
+    implementation(project(":feature:vaccines"))
+    implementation(project(":feature:vaccine_details"))
+
+    implementation(project(":feature:signup"))
+    implementation(project(":feature:email_verification"))
+    implementation(project(":feature:login"))
+    implementation(project(":feature:add_residential_address"))
+    implementation(project(":feature:enter_email"))
+    implementation(project(":feature:reset_password"))
+    implementation(project(":feature:upload_profile_image"))
+    implementation(project(":feature:employment_history"))
+    implementation(project(":feature:employment_requests"))
+    implementation(project(":feature:doctor_profile"))
+    implementation(project(":feature:employee_profile"))
+    implementation(project(":feature:pharmacy_details"))
+    implementation(project(":feature:prescription_details"))
+    implementation(project(":feature:generic_vaccination_table"))
+
+    implementation(project(":feature:employment_requests"))
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
 }

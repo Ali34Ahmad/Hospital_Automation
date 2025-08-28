@@ -93,11 +93,12 @@ fun MedicalRecordsScreen(
     Scaffold(
         topBar = {
             HospitalAutomationTopBar(
-                title = "",
+                title = uiState.userMainInfo?.fullName?.toAppropriateNameFormat()?:"",
                 onNavigationIconClick = { uiActions.navigateUp() },
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = AppIcons.Outlined.arrowBack,
-                imageUrl = null,
+                imageUrl = uiState.userMainInfo?.imageUrl,
+                subTitle = uiState.userMainInfo?.subInfo,
             )
         }
     ) { contentPadding ->

@@ -37,6 +37,7 @@ import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
 import com.example.ui_components.components.network_image.NetworkImageError
 import com.example.ui_components.components.network_image.NetworkImageLoader
+import com.example.ui_components.components.network_image.SmallNetworkImageError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,7 +111,7 @@ fun HospitalAutomationTopBar(
                                 )
                             },
                             errorCompose = {
-                                NetworkImageError()
+                                SmallNetworkImageError()
                             },
                         )
                     }

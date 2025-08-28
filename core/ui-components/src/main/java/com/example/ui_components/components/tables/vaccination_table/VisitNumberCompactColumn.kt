@@ -17,7 +17,7 @@ import com.example.ui_components.components.icon.IconWithBackground
 @Composable
 fun VisitNumberCompactColumn(
     visitNumber: Int,
-    onAddVaccineToVisit: (visitNumber:Int) -> Unit,
+    onAddVaccineToVisit: (visitNumber: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(

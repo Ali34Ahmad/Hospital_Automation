@@ -4,16 +4,23 @@ import com.example.utility.ui.AppNavigationUiAction
 
 
 class GenericVaccinationTableUiActions(
-    navigationActions:GenericVaccinationTableNavigationUiActions,
-    businessActions:GenericVaccinationTableBusinessUiActions,
-) :GenericVaccinationTableBusinessUiActions by businessActions,
+    navigationActions: GenericVaccinationTableNavigationUiActions,
+    businessActions: GenericVaccinationTableBusinessUiActions,
+) : GenericVaccinationTableBusinessUiActions by businessActions,
     GenericVaccinationTableNavigationUiActions by navigationActions
 
 
 interface GenericVaccinationTableBusinessUiActions {
     fun onSaveTableChanges()
-    fun onAddVaccineToVisit(visitNumber: Int)
-    fun onRemoveVaccineFromVisit(visitNumber: Int,vaccineIndex: Int)
+    fun onAddVaccineToVisitClick(visitNumber: Int)
+    fun onHideVaccinesDialog()
+    fun onShowVaccinesDialog()
+    fun onRemoveVaccineFromVisit(visitNumber: Int, vaccineIndex: Int)
+    fun onSetVisitNumberAndVaccineIndex(visitNumber: Int, vaccineIndex: Int)
+    fun onShowDiscardChangesConfirmationDialog()
+    fun hideConfirmationDialog()
+    fun onShowDeleteConfirmationDialog()
+    fun onAddVaccinesToVisit(indexes: List<Int>)
     fun onAddNewVisit()
     fun onUpdateVaccinesSelectionDialogVisibility(isVisible: Boolean)
     fun onUpdateConfirmationDialogVisibility(isVisible: Boolean)
@@ -22,8 +29,7 @@ interface GenericVaccinationTableBusinessUiActions {
     fun clearToastMessage()
 }
 
-interface GenericVaccinationTableNavigationUiActions:AppNavigationUiAction {
+interface GenericVaccinationTableNavigationUiActions {
     fun navigateToVaccineDetailsScreen()
-    fun navigateToVaccinesScreen()
     fun navigateUp()
 }

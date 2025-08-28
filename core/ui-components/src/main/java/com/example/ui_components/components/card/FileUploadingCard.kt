@@ -19,7 +19,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.HospitalAutomationOutLinedButton
-import com.example.ui_components.components.list_items.PDFUploadDownloadItem
+import com.example.ui_components.components.list_items.PDFUploadItem
 
 @Composable
 fun FileUploadingCard(
@@ -51,7 +51,7 @@ fun FileUploadingCard(
                 )
             }
             fileInfo?.let {
-                PDFUploadDownloadItem(
+                PDFUploadItem(
                     name = fileInfo.fileName,
                     fileSizeWithBytes = fileInfo.fileSizeWithBytes,
                     progress = fileInfo.uploadingProgress,

@@ -12,7 +12,7 @@ import com.example.network.utility.ApiRoutes
 
 fun GetEmployeeProfileByIdResponseDto.toEmployeeProfileResponse(): EmployeeProfileResponse {
     return EmployeeProfileResponse(
-        profile = this.data.toEmployeeProfile(),
+        profile = this.profile.toEmployeeProfile(),
         isAccessedByOwner = this.isAccessedByOwner,
     )
 }

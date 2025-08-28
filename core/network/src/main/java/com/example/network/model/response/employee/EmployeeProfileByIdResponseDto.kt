@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GetEmployeeProfileByIdResponseDto(
-    val data: GetEmployeeByIdDto,
+    val profile: GetEmployeeByIdDto,
     @SerialName("is_The_Same_Employee")
-    val isAccessedByOwner: Boolean,
+    val isAccessedByOwner: Boolean=false,
 )
 
 @Serializable

@@ -5,5 +5,5 @@ import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface DoctorProfileRepository {
-    suspend fun getDoctorInfo(): Result<DoctorProfileResponse, rootError>
+    suspend fun getDoctorInfo(id:Int?): Result<DoctorProfileResponse, rootError>
 }

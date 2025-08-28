@@ -13,10 +13,10 @@ import javax.crypto.spec.IvParameterSpec
 
 
 object Crypto {
-    private const val KEY_STORE_ALIAS = "bearer_token_key" // Use a more specific alias
+    private const val KEY_STORE_ALIAS = "bearer_token_key"
     private const val ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
-    private const val BLOCK_MODE = KeyProperties.BLOCK_MODE_GCM // Use GCM
-    private const val PADDING = KeyProperties.ENCRYPTION_PADDING_NONE // No padding for GCM
+    private const val BLOCK_MODE = KeyProperties.BLOCK_MODE_GCM
+    private const val PADDING = KeyProperties.ENCRYPTION_PADDING_NONE
 
     private const val GCM_IV_LENGTH = 12 // GCM recommends 12-byte IV (96 bits)
     private const val GCM_TAG_LENGTH = 128 // 128-bit authentication tag
@@ -29,10 +29,6 @@ object Crypto {
             load(null)
         }
 
-    // You should typically create/retrieve the cipher instance per operation or ensure
-    // its re-initialization for each operation. Keeping it as a property is okay if
-    // you properly re-init it for each encryption/decryption.
-    // However, it's often clearer to get a new instance in the encrypt/decrypt methods.
     private fun getKey(): SecretKey {
         val existingKey = keyStore.getEntry(KEY_STORE_ALIAS, null) as? KeyStore.SecretKeyEntry
         return existingKey?.secretKey ?: createKey()
@@ -50,7 +46,6 @@ object Crypto {
                         .setBlockModes(BLOCK_MODE)
                         .setEncryptionPaddings(PADDING)
                         .setKeySize(256)
-                        .setUserAuthenticationRequired(true)
                         .build()
                 )
             }
@@ -73,8 +68,6 @@ object Crypto {
         // Wrap in a try-catch to prevent a crash and handle failures gracefully
         return try {
             val cipher = Cipher.getInstance(TRANSFORMATION)
-//            val iv = ByteArray(GCM_IV_LENGTH).also { java.security.SecureRandom().nextBytes(it) }
-            // In encrypt function:
             cipher.init(
                 Cipher.ENCRYPT_MODE,
                 getKey() // Initialize cipher WITHOUT providing an IV

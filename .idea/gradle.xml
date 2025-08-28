@@ -55,6 +55,7 @@
             <option value="$PROJECT_DIR$/feature/employee_profile" />
             <option value="$PROJECT_DIR$/feature/employees_search" />
             <option value="$PROJECT_DIR$/feature/employment_history" />
+            <option value="$PROJECT_DIR$/feature/employment_requests" />
             <option value="$PROJECT_DIR$/feature/enter_email" />
             <option value="$PROJECT_DIR$/feature/generic_vaccination_table" />
             <option value="$PROJECT_DIR$/feature/guardian_profile" />
@@ -63,7 +64,6 @@
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />
             <option value="$PROJECT_DIR$/feature/medical_diagnosis" />
-            <option value="$PROJECT_DIR$/feature/medical_prescriptions" />
             <option value="$PROJECT_DIR$/feature/medical_records" />
             <option value="$PROJECT_DIR$/feature/medicine_details" />
             <option value="$PROJECT_DIR$/feature/medicines_search" />
@@ -72,11 +72,12 @@
             <option value="$PROJECT_DIR$/feature/pharmacy_details" />
             <option value="$PROJECT_DIR$/feature/pharmacy_medicines" />
             <option value="$PROJECT_DIR$/feature/prescription_details" />
+            <option value="$PROJECT_DIR$/feature/prescriptions" />
             <option value="$PROJECT_DIR$/feature/reset_password" />
             <option value="$PROJECT_DIR$/feature/signup" />
             <option value="$PROJECT_DIR$/feature/upload_child_documents" />
             <option value="$PROJECT_DIR$/feature/upload_employee_documents" />
-            <option value="$PROJECT_DIR$/feature/upload_employee_profile_image" />
+            <option value="$PROJECT_DIR$/feature/upload_profile_image" />
             <option value="$PROJECT_DIR$/feature/vaccine_details" />
             <option value="$PROJECT_DIR$/feature/vaccines" />
           </set>

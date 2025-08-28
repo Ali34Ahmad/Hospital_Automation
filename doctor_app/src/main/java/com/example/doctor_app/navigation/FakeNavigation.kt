@@ -3,6 +3,9 @@ package com.example.doctor_app.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import com.example.add_residential_address.navigation.addResidentialAddressScreen
+import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.appointment_details.navigation.navigateToAppointmentDetailsReplacementCurrent
@@ -16,8 +19,19 @@ import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.navigation.ScheduleRoute
 import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
+import com.example.doctor_signup.navigation.doctorSignUpScreen
+import com.example.doctor_signup.navigation.navigateToSignUpScreen
+import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
+import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
+import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
+import com.example.email_verification.otp_verification.naviation.navigateToEmailOtpVerificationScreen
+import com.example.enter_email.navigation.enterEmailScreen
+import com.example.enter_email.navigation.navigateToEnterEmailScreen
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.navigateToGuardianProfile
+import com.example.login.navigation.LoginRoute
+import com.example.login.navigation.loginScreen
+import com.example.login.navigation.navigateToLoginScreen
 import com.example.medical_diagnosis.navigation.diagnosisScreen
 import com.example.medical_diagnosis.navigation.navigateToDiagnosisScreen
 import com.example.medicine_details.navigation.medicineDetailsScreen
@@ -26,6 +40,12 @@ import com.example.medicines_search.navigation.medicinesScreen
 import com.example.medicines_search.navigation.navigateToMedicineSearchScreenReplacingCurrent
 import com.example.pharmacies.navigation.navigateToPharmacies
 import com.example.pharmacies.navigation.pharmaciesScreen
+import com.example.reset_password.navigation.navigateToResetPasswordScreen
+import com.example.reset_password.navigation.resetPasswordScreen
+import com.example.upload_employee_documents.navigation.navigateToUploadEmployeeDocumentsScreen
+import com.example.upload_employee_documents.navigation.uploadEmploymentDocumentsScreen
+import com.example.upload_profile_image.navigation.navigateToUploadEmployeeProfileImageScreen
+import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 
 @Composable
 fun FakeNavigation() {
@@ -41,6 +61,101 @@ fun FakeNavigation() {
             imageUrl = "fake"
         )
     ) {
+        navigation<AuthGraphRoute>(
+            startDestination = LoginRoute,
+        ) {
+            doctorSignUpScreen(
+                onNavigateToEmailVerificationScreen = { email, password ->
+                    navController.navigateToEmailOtpVerificationScreen(
+                        email,
+                        password,
+                        navigateToResetPassword = false
+                    )
+                },
+                onNavigateToLoginScreen = {
+                    navController.navigateToLoginScreen()
+                }
+            )
+
+            emailOtpVerificationScreen(
+                onNavigateToEmailVerifiedSuccessfullyScreen = { email, password, navigateToResetPassword ->
+                    navController.navigateToEmailVerifiedSuccessfullyScreen(
+                        email, password, navigateToResetPassword
+                    )
+                }
+            )
+
+            emailVerifiedSuccessfullyScreen(
+                onNavigateToResetPasswordScreen = { email ->
+                    navController.navigateToResetPasswordScreen(email)
+                },
+                onNavigateToNextScreen = {
+                    navController.navigateToUploadEmployeeDocumentsScreen()
+                }
+            )
+
+            uploadEmploymentDocumentsScreen(
+                onNavigateToAddResidentialAddressScreen = {
+                    navController.navigateToAddResidentialAddressScreen()
+                }
+            )
+
+            addResidentialAddressScreen(
+                onNavigateToUploadProfileImageScreen = {
+                    navController.navigateToUploadEmployeeProfileImageScreen()
+                }
+            )
+
+            uploadProfileImageScreen(
+                onNavigateToHomeScreenScreen = {
+//                    navController.navigateToScheduleScreen()
+                    navController.navigateToDoctorProfileScreen(
+                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+                        doctorId = null
+                    )
+                }
+            )
+
+            loginScreen(
+                onNavigateToEnterEmailScreen = {
+                    navController.navigateToEnterEmailScreen()
+                },
+                onNavigateToHomeScreen = {
+                    navController.navigateToDoctorProfileScreen(
+                        doctorId = null,
+                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS
+                    )
+//                    navController.navigate(
+//                        DoctorProfileRoute(
+//                            ProfileAccessType.TOKEN_ACCESS,
+//                            doctorId = null
+//                        )
+//                    )
+                },
+                onNavigateToToSignUpScreen = {
+                    navController.navigateToSignUpScreen()
+                }
+            )
+
+            enterEmailScreen(
+                onNavigateToEmailOtpVerificationScreen = { email, navigateToResetPassword ->
+                    navController.navigateToEmailOtpVerificationScreen(
+                        email = email,
+                        navigateToResetPassword = navigateToResetPassword
+                    )
+                }
+            )
+
+            resetPasswordScreen(
+                onNavigateToHomeScreen = {
+                    navController.navigateToDoctorProfileScreen(
+                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+                        doctorId = null
+                    )
+                }
+            )
+        }
+
         clinicsSearchScreen(
             onNavigateToDepartmentDetails = { clinicId ->
                 navController.navigateToClinicDetailsScreen(
@@ -205,5 +320,7 @@ fun FakeNavigation() {
         medicineDetailsScreen(
             onNavigateUp = navController::navigateUp
         )
+
+
     }
 }

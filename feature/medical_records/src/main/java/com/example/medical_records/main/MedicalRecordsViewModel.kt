@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.domain.use_cases.medical_prescription.GetAllMedicalRecordsUseCase
+import com.example.domain.use_cases.medical_record.GetAllMedicalRecordsUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
 import com.example.model.medical_record.MedicalRecord
+import com.example.model.user.UserMainInfo
 import com.example.util.UiText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -30,16 +30,23 @@ class MedicalRecordsViewModel(
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val medicalRecordsFlow: Flow<PagingData<MedicalRecord>> = combine(
+    val medicalRecordsFlow: Flow<PagingData<MedicalRecord>> =
         refreshTrigger.onStart { emit(Unit) }
-    ) {
+            .flatMapLatest {
+                updateIsRefreshing(false)
+                loadData(
+                    onMainUserInfoChanged = { userMainInfo ->
+                        updateUserMainInfo(userMainInfo)
+                    }
+                )
+            }
+            .cachedIn(viewModelScope)
 
-    }.flatMapLatest {
-        updateIsRefreshing(false)
-        getAllMedicalRecordsUseCase()
-    }
-        .cachedIn(viewModelScope)
-
+    suspend fun loadData(
+        onMainUserInfoChanged: (UserMainInfo) -> Unit,
+    ) = getAllMedicalRecordsUseCase(
+        onMainUserInfoChanged
+    )
 
     fun getUiActions(
         navActions: MedicalRecordsNavigationUiActions,
@@ -74,12 +81,16 @@ class MedicalRecordsViewModel(
             }
         }
 
-    private fun updateSearchText(searchText: String){
-        _uiState.update { it.copy(searchText=searchText) }
+    private fun updateUserMainInfo(userMainInfo: UserMainInfo) {
+        _uiState.update { it.copy(userMainInfo = userMainInfo) }
     }
 
-    private fun changeToolBarMode(topBarMode: TopBarState){
-        _uiState.update { it.copy(topBarMode=topBarMode) }
+    private fun updateSearchText(searchText: String) {
+        _uiState.update { it.copy(searchText = searchText) }
+    }
+
+    private fun changeToolBarMode(topBarMode: TopBarState) {
+        _uiState.update { it.copy(topBarMode = topBarMode) }
     }
 
     private fun updateScreenState(screenState: ScreenState) {

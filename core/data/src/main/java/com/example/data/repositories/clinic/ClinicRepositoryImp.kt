@@ -25,25 +25,28 @@ class ClinicRepositoryImp(
     private val roleAppConfig: RoleAppConfig,
 ): ClinicRepository{
     override suspend fun getAllClinics(name: String?): Flow<PagingData<ClinicFullData>> =
+        userPreferencesRepository.executeFlowWithValidToken{token->
             Pager(
                 config = PagingConfig(
                     pageSize = PagingConstants.PAGE_SIZE
                 ),
-            ){
+            ) {
                 ClinicPagingSource(
                     clinicApiService = clinicApiService,
-                    token = FAKE_TOKEN,
+                    token = token,
                     name = name
                 )
             }.flow
+        }
 
     override suspend fun getClinicById(
         clinicId: Int
     ): Result<ClinicFullData, NetworkError> =
-        clinicApiService.getClinicById(
-            roleDto = roleAppConfig.role.toRoleDto(),
-            token = FAKE_TOKEN,
-            clinicId = clinicId
-        ).map { it.data.toClinicFullData() }
-
+        userPreferencesRepository.executeWithValidTokenNetwork { token ->
+            clinicApiService.getClinicById(
+                roleDto = roleAppConfig.role.toRoleDto(),
+                token = token,
+                clinicId = clinicId
+            ).map { it.data.toClinicFullData() }
+        }
 }

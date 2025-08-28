@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.domain.use_cases.doctor.prescription.GetPrescriptionDetailsUseCase
+import com.example.domain.use_cases.prescription.GetPrescriptionDetailsUseCase
 import com.example.prescription_details.navigation.PrescriptionDetailsRoute
 import com.example.model.enums.ScreenState
 import com.example.model.prescription.PrescriptionDetails
@@ -57,6 +57,14 @@ class PrescriptionDetailsViewModel(
                 updateSelectedMedicineIndex(index)
             }
 
+            override fun showBottomSheet() {
+                updateIsBottomSheetVisible(true)
+            }
+
+            override fun hideBottomSheet() {
+                updateIsBottomSheetVisible(false)
+            }
+
             override fun onRefresh() {
                 refreshPrescriptionDetails()
             }
@@ -82,6 +90,9 @@ class PrescriptionDetailsViewModel(
         }
     }
 
+    private fun updateIsBottomSheetVisible(isBottomSheetVisible: Boolean){
+        _uiState.update { it.copy(isBottomSheetVisible=isBottomSheetVisible) }
+    }
 
     private fun updateScreenState(screenState: ScreenState) {
         _uiState.update {

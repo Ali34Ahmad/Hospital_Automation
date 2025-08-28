@@ -80,7 +80,7 @@ dependencies {
     implementation(project(":feature:add_residential_address"))
     implementation(project(":feature:enter_email"))
     implementation(project(":feature:reset_password"))
-    implementation(project(":feature:upload_employee_profile_image"))
+    implementation(project(":feature:upload_profile_image"))
     implementation(project(":feature:employment_history"))
 
     //

@@ -25,7 +25,7 @@ class PharmacyApiServiceImp(
         id:Int,
         role: RoleDto,
     ) : Result<PharmacyDetailsResponseDto, NetworkError> =try {
-        val response = client.get("${ApiRoutes.Doctor.PHARMACY_DETAILS}/$id") {
+        val response = client.get("${ApiRoutes.getPharmacyDetailsByIdEndPoint(role)}/$id") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
         }

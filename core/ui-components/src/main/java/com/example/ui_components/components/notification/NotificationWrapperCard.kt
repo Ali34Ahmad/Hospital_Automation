@@ -16,10 +16,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.example.constants.enums.NotificationType
-import com.example.constants.enums.RequestState
 import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateTimeFormat
 import com.example.model.Notification
+import com.example.model.work_request.RequestState
 import com.example.ui.fake.createSampleNotifications
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -38,12 +38,12 @@ fun NotificationWrapperCard(
     val notificationType = if (notification.type != null) {
         notification.type.text
     } else {
-        notification.request?.state?.text
+        notification.request?.state?.name
     }
     val (tagTextColor, tagBackgroundColor) =
         if (notification.request != null) {
             if (notification.request.state == RequestState.PENDING ||
-                notification.request.state == RequestState.CONFIRMED
+                notification.request.state == RequestState.ACCEPTED
             ) {
                 Pair(
                     MaterialTheme.additionalColorScheme.onPrimaryContainerBlue,

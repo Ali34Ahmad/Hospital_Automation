@@ -26,7 +26,7 @@ fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiAct
 
     }
 
-    override fun navigateToDepartmentDetailsScreen() {
+    override fun navigateToDepartmentDetailsScreen(clinicId: Int) {
 
     }
 

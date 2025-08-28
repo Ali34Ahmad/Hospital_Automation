@@ -6,5 +6,5 @@ import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface EmploymentHistoryApiService {
-    suspend fun getEmploymentHistory(token: String,role: RoleDto): Result<EmploymentHistoryResponseDto, rootError>
+    suspend fun getEmploymentHistory(token: String,role: RoleDto,id:Int?): Result<EmploymentHistoryResponseDto, rootError>
 }

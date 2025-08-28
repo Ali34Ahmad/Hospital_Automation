@@ -1,6 +1,6 @@
 package com.example.employee_profile.main
 
-import com.example.employee_profile.navigation.ProfileAccessType
+import com.example.employee_profile.navigation.EmployeeProfileAccessType
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.enums.ScreenState
 import com.example.util.UiText
@@ -10,7 +10,7 @@ data class EmployeeProfileUiState(
     val userInfo: EmployeeProfileResponse?=null,
     val employeeId: Int?=null,
 
-    val profileAccessType: ProfileAccessType?=null,
+    val employeeProfileAccessType: EmployeeProfileAccessType?=null,
     val profileScreenState: ScreenState= ScreenState.IDLE,
 
     val isLoggedOutSuccessfully: Boolean=false,

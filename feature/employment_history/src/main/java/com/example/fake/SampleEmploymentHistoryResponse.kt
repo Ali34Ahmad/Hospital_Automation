@@ -44,7 +44,8 @@ fun createSampleEmploymentHistoryResponse(): EmploymentHistoryResponse {
         imageUrl = "",
         workStartDate = LocalDate.of(2020, 12, 2),
         workEndDate = LocalDate.of(2022, 12, 2),
-        documentsFileUrl = null
+        documentsFileUrl = null,
+        subInfo = "Cardiologist"
     )
 
     return EmploymentHistoryResponse(

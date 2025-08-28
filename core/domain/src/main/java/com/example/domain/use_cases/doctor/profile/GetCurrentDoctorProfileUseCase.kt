@@ -8,7 +8,7 @@ import com.example.utility.network.rootError
 class GetCurrentDoctorProfileUseCase(
     private val doctorProfileRepository:DoctorProfileRepository
 ) {
-    suspend operator fun invoke(): Result<DoctorProfileResponse, rootError>{
-        return doctorProfileRepository.getDoctorInfo()
+    suspend operator fun invoke(id:Int?=null): Result<DoctorProfileResponse, rootError>{
+        return doctorProfileRepository.getDoctorInfo(id)
     }
 }

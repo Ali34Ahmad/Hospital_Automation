@@ -88,6 +88,7 @@ class PrescriptionApiServiceImp(
             }
             contentType(ContentType.Application.Json)
             bearerAuth(token)
+            Log.v("GetAllMedicalPrescriptionsApi:", token)
         }
         when (response.status.value) {
             in 200..299 -> {
@@ -117,7 +118,7 @@ class PrescriptionApiServiceImp(
         token: String, id: Int,
         role: RoleDto
     ): Result<PrescriptionDetailsWithMedicinesDto, NetworkError> = try {
-        val response = client.get("${ApiRoutes.Doctor.PRESCRIPTION_DETAILS}/$id") {
+        val response = client.get("${ApiRoutes.getPrescriptionDetailsByIdEndPoint(role)}/$id") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
             Log.v("PrescriptionId:", id.toString())

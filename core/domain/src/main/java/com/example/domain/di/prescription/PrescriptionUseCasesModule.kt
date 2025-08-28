@@ -1,8 +1,8 @@
 package com.example.domain.di.prescription
 
-import com.example.domain.use_cases.doctor.prescription.AddPrescriptionUseCase
-import com.example.domain.use_cases.doctor.prescription.GetPrescriptionDetailsUseCase
-import com.example.domain.use_cases.vaccine.GetAllPrescriptionsUseCase
+import com.example.domain.use_cases.prescription.AddPrescriptionUseCase
+import com.example.domain.use_cases.prescription.GetPrescriptionDetailsUseCase
+import com.example.domain.use_cases.prescription.GetAllPrescriptionsUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

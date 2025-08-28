@@ -9,7 +9,7 @@ import com.example.utility.network.rootError
 class GetEmploymentHistoryUseCase(
     private val employmentHistoryRepository:EmploymentHistoryRepository
 ) {
-    suspend operator fun invoke(): Result<EmploymentHistoryResponse, rootError> {
-        return employmentHistoryRepository.getEmploymentHistory()
+    suspend operator fun invoke(id:Int?): Result<EmploymentHistoryResponse, rootError> {
+        return employmentHistoryRepository.getEmploymentHistory(id)
     }
 }

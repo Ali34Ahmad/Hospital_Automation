@@ -11,6 +11,6 @@ data class GetAllMedicalRecordsResponseDto(
     @SerialName("record")
     val data: List<MedicalRecordDto>,
     @SerialName("doctorInfo")
-    val doctorMainInfoDto: UserMainInfoDto,
+    val userMainInfoDto: UserMainInfoDto,
     val pagination: NetworkPagination
 )

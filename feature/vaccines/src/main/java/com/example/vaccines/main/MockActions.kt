@@ -3,7 +3,7 @@ package com.example.vaccines.main
 import com.example.model.enums.ScreenState
 
 
-fun mockAllVaccinesNavigationUiActions() = object : AllVaccinesNavigationUiActions {
+fun mockAllVaccinesNavigationUiActions() = object : VaccinesNavigationUiActions {
     override fun navigateUp() {
 
     }
@@ -14,7 +14,7 @@ fun mockAllVaccinesNavigationUiActions() = object : AllVaccinesNavigationUiActio
 
 }
 
-fun mockAllVaccinesBusinessUiActions() = object : AllVaccinesBusinessUiActions {
+fun mockAllVaccinesBusinessUiActions() = object : VaccinesBusinessUiActions {
     override fun onRefresh() {
 
     }

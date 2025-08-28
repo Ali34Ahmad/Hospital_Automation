@@ -22,17 +22,19 @@ class UploadImageApiImpl(
     private val client: HttpClient,
     private val fileReader: FileReader,
 ) : UploadImageApi {
-    override fun uploadImage(token:String,uri: Uri,endPoint: String): Flow<ProgressUpdateDto> = channelFlow {
+    override fun uploadImage(token:String,uri: Uri,endPoint: String,isEmployee: Boolean): Flow<ProgressUpdateDto> = channelFlow {
         val info = fileReader.uriToFileInfo(uri)
 
         try {
             val response = client.submitFormWithBinaryData(
                 url = endPoint,
                 formData = formData {
-                    append(
-                        "request_type",
-                        RoleDto.EMPLOYEE.name.lowercase()
-                    )
+                    if (isEmployee){
+                        append(
+                            "request_type",
+                            RoleDto.EMPLOYEE.name
+                        )
+                    }
                     append(
                         "image",
                         info.bytes,

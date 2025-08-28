@@ -25,5 +25,5 @@ interface DoctorProfileNavigationUiActions {
     fun navigateToLoginScreen()
     fun navigateToPrescriptionsScreen()
     fun navigateToMedicalRecordsScreen()
-    fun navigateToDepartmentDetailsScreen()
+    fun navigateToDepartmentDetailsScreen(clinicId: Int)
 }

@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.example.model.prescription.PrescriptionDetails
 import com.example.model.prescription.PrescriptionMedicineData
 import com.example.model.prescription.PrescriptionWithUser
+import com.example.model.user.UserMainInfo
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
@@ -17,7 +18,9 @@ interface PrescriptionRepository {
         medicines: List<PrescriptionMedicineData>
     ) : Result<Int, NetworkError>
 
-    suspend fun getAllMedicalPrescriptionsForCurrentDoctor(): Flow<PagingData<PrescriptionWithUser>>
+    suspend fun getAllMedicalPrescriptionsForCurrentDoctor(
+        onMainUserInfoChanged: (UserMainInfo) -> Unit,
+    ): Flow<PagingData<PrescriptionWithUser>>
 
     suspend fun getPrescriptionDetailsById(id:Int): Result<PrescriptionDetails,rootError>
 }

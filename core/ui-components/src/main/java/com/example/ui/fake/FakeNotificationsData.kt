@@ -2,11 +2,11 @@ package com.example.ui.fake
 
 import com.example.constants.enums.NotificationType
 import com.example.model.Notification
-import com.example.model.Request
+import com.example.model.work_request.SingleRequestResponse
 import java.time.LocalDateTime
 
 fun createSampleNotifications(): List<Notification> {
-    val requests: List<Request> = createSampleRequests()
+    val requests: List<SingleRequestResponse> = createSampleRequests()
     val now = LocalDateTime.now()
     return listOf(
         // General notification (no request, appointment, vaccine, or pharmacist)
