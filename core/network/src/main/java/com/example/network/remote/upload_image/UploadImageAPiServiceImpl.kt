@@ -32,7 +32,7 @@ class UploadImageApiImpl(
                     if (isEmployee){
                         append(
                             "request_type",
-                            RoleDto.EMPLOYEE.name.lowercase()
+                            RoleDto.EMPLOYEE.name
                         )
                     }
                     append(

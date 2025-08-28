@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.domain.use_cases.vaccine.GetAllPrescriptionsUseCase
+import com.example.domain.use_cases.prescription.GetAllPrescriptionsUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
 import com.example.model.prescription.PrescriptionWithUser

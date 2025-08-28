@@ -63,11 +63,7 @@ fun GenericVaccinationTableScreen(
         }
     }
 
-    val datePickerState: UseCaseState = rememberUseCaseState(visible = false)
-    if (uiState.showVaccinesDialog){
-        datePickerState.show()
-    }
-
+    val datePickerState: UseCaseState = rememberUseCaseState()
     MultiSelectionsOptionsPickerDialog(
         state = datePickerState,
         onConfirm = { selectedVaccinesIndexes ->
@@ -183,6 +179,7 @@ fun GenericVaccinationTableScreen(
                                 },
                                 onAddNewVaccineToVisit = {
                                     uiActions.onAddVaccineToVisitClick(it)
+                                    datePickerState.show()
                                 },
                                 onDeleteVaccine = { visitNumber, vaccineIndex ->
                                     uiActions.onSetVisitNumberAndVaccineIndex(

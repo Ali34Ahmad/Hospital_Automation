@@ -108,6 +108,8 @@ object ApiRoutes {
         const val GET_EMPLOYMENT_HISTORY = "$ADMIN/get-employment-history-for"
         const val PRESCRIPTION_DETAILS = "$ADMIN/get-prescription-details-by-id"
         const val GET_GENERIC_VACCINATION_TABLE = "$ADMIN/generic-vaccination-table"
+        const val GET_EMPLOYMENT_REQUESTS = "$ADMIN/get-requests"
+        const val CHANGE_EMPLOYMENT_REQUEST_STATE = "$ADMIN/change-request-state"
 
         const val MEDICINES_IN_SPECIFIC_PHARMACY = "$ADMIN/pharmacy-medicines"
         const val CHILDREN_ADDED_BY_EMPLOYEE = "$ADMIN/find-child-byname"

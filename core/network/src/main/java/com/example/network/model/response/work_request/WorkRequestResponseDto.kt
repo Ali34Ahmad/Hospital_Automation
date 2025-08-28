@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class WorkRequestResponse(
+data class WorkRequestResponseDto(
     @SerialName("myrequest")
     val request: WorkRequestDto
 )

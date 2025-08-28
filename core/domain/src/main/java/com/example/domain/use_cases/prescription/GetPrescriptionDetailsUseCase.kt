@@ -1,4 +1,4 @@
-package com.example.domain.use_cases.doctor.prescription
+package com.example.domain.use_cases.prescription
 
 import com.example.domain.repositories.prescription.PrescriptionRepository
 import com.example.model.prescription.PrescriptionDetails

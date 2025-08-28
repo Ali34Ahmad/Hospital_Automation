@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.domain.use_cases.doctor.prescription.GetPrescriptionDetailsUseCase
+import com.example.domain.use_cases.prescription.GetPrescriptionDetailsUseCase
 import com.example.prescription_details.navigation.PrescriptionDetailsRoute
 import com.example.model.enums.ScreenState
 import com.example.model.prescription.PrescriptionDetails

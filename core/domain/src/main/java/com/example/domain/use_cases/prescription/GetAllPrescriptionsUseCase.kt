@@ -1,10 +1,10 @@
-package com.example.domain.use_cases.vaccine
+package com.example.domain.use_cases.prescription
 
 import androidx.paging.PagingData
 import com.example.domain.repositories.prescription.PrescriptionRepository
-import kotlinx.coroutines.flow.Flow
 import com.example.model.prescription.PrescriptionWithUser
 import com.example.model.user.UserMainInfo
+import kotlinx.coroutines.flow.Flow
 
 class GetAllPrescriptionsUseCase(
     private val prescriptionRepository: PrescriptionRepository

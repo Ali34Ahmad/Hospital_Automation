@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import androidx.paging.cachedIn
-import com.example.domain.use_cases.doctor.prescription.AddPrescriptionUseCase
+import com.example.domain.use_cases.prescription.AddPrescriptionUseCase
 import com.example.domain.use_cases.medicine.GetMedicinesFlowUseCase
 import com.example.medicines_search.navigation.MedicinesSearchRoute
 import com.example.model.prescription.PrescriptionMedicineData

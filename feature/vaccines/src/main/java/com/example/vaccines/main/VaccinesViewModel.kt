@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 class VaccinesViewModel(
     private val getAllVaccinesUseCase: GetAllVaccinesUseCase,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(AllVaccinesUiState())
-    val uiState: StateFlow<AllVaccinesUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(VaccinesUiState())
+    val uiState: StateFlow<VaccinesUiState> = _uiState.asStateFlow()
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
 

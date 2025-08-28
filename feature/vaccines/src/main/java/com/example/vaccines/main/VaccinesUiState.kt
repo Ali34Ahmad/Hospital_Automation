@@ -4,8 +4,8 @@ import com.example.model.enums.ScreenState
 import com.example.model.vaccine.VaccineData
 import com.example.util.UiText
 
-data class AllVaccinesUiState(
-    val vaccines: List<VaccineData>? =null,
+data class VaccinesUiState(
+//    val vaccines: List<VaccineData>? =null,
 
     val screenState: ScreenState = ScreenState.IDLE,
     val isRefreshing: Boolean = false,

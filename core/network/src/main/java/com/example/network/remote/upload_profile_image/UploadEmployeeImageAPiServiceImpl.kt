@@ -12,7 +12,9 @@ class UploadEmployeeProfileImageApiImpl(
     private val uploadImageApi: UploadImageApi,
 ) : UploadEmployeeProfileImageApi {
 
-    override fun uploadImage(token: String, uri: Uri,role: RoleDto): Flow<ProgressUpdateDto> =
-        uploadImageApi.uploadImage(token, uri, ApiRoutes.getUploadProfileImageEndPointFor(role = role),
-            role== RoleDto.EMPLOYEE)
+    override fun uploadImage(token: String, uri: Uri, role: RoleDto): Flow<ProgressUpdateDto> =
+        uploadImageApi.uploadImage(
+            token, uri, ApiRoutes.getUploadProfileImageEndPointFor(role = role),
+            isEmployee = role == RoleDto.EMPLOYEE
+        )
 }

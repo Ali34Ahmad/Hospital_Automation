@@ -1,4 +1,4 @@
-package com.example.domain.use_cases.prescription
+package com.example.domain.use_cases.vaccine
 
 import com.example.domain.repositories.vaccine.VaccineRepository
 import com.example.model.vaccine.VaccineData

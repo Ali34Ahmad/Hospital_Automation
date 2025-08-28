@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GenericVaccinationTableDto(
+    @SerialName("data")
     val visits: List<VaccinationTableVisitDto>
 )
 
@@ -17,6 +18,7 @@ data class VaccinationTableVisitDto(
 
 @Serializable
 data class VaccineMainInfoDto(
+    @SerialName("vaccinesId")
     val id: Int,
     val name: String
 )

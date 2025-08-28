@@ -35,7 +35,7 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun PDFUploadDownloadItem(
+fun PDFUploadItem(
     name: String,
     fileSizeWithBytes: Long,
     progress: Int,
@@ -143,10 +143,10 @@ fun PDFUploadDownloadItem(
 
 @DarkAndLightModePreview
 @Composable
-fun PDFDownloaderDownloadingPreview() {
+fun PDFUploaderDownloadPreview() {
     Hospital_AutomationTheme {
         Surface {
-            PDFUploadDownloadItem(
+            PDFUploadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 1000014,
@@ -162,10 +162,10 @@ fun PDFDownloaderDownloadingPreview() {
 
 @DarkAndLightModePreview
 @Composable
-fun PDFDownloaderUploadingPreview() {
+fun PDFUploaderUploadingPreview() {
     Hospital_AutomationTheme {
         Surface {
-            PDFUploadDownloadItem(
+            PDFUploadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 1014257,
@@ -181,10 +181,10 @@ fun PDFDownloaderUploadingPreview() {
 
 @DarkAndLightModePreview
 @Composable
-fun PDFDownloaderPausedPreview() {
+fun PDFUploaderPausePreview() {
     Hospital_AutomationTheme {
         Surface {
-            PDFUploadDownloadItem(
+            PDFUploadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 104743037,
@@ -200,10 +200,10 @@ fun PDFDownloaderPausedPreview() {
 
 @DarkAndLightModePreview
 @Composable
-fun PDFDownloadedCompletePreview() {
+fun PDFUploadedCompletedPreview() {
     Hospital_AutomationTheme {
         Surface {
-            PDFUploadDownloadItem(
+            PDFUploadItem(
                 modifier = Modifier.width(348.dp),
                 name = "Cam-Scanner-152314",
                 fileSizeWithBytes = 21014525,

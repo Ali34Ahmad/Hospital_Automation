@@ -11,7 +11,7 @@ import com.example.ui.fake.createSampleNotifications
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
-import com.example.ui_components.components.list_items.PDFUploadDownloadItem
+import com.example.ui_components.components.list_items.PDFUploadItem
 
 @Composable
 fun RequestSentNotification(
@@ -28,7 +28,7 @@ fun RequestSentNotification(
     NotificationWrapperCard(
         notification = notification,
         actions = {
-            PDFUploadDownloadItem(
+            PDFUploadItem(
                 name = fileName,
                 fileSizeWithBytes = fileSizeWithBytes,
                 progress = progress,

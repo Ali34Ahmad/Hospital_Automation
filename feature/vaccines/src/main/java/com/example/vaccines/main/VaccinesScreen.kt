@@ -41,7 +41,7 @@ import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 
 @Composable
 fun VaccinesScreen(
-    uiState: AllVaccinesUiState,
+    uiState: VaccinesUiState,
     uiActions: VaccinesUiActions,
     vaccines: LazyPagingItems<VaccineData>,
     modifier: Modifier = Modifier

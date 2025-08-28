@@ -1,8 +1,7 @@
-package com.example.domain.use_cases.medical_prescription
+package com.example.domain.use_cases.medical_record
 
 import androidx.paging.PagingData
 import com.example.domain.repositories.medical_record.MedicalRecordRepository
-import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.medical_record.MedicalRecord
 import com.example.model.user.UserMainInfo
 import kotlinx.coroutines.flow.Flow

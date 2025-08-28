@@ -1,7 +1,6 @@
 package com.example.vaccines.main
 
 import com.example.model.enums.ScreenState
-import com.example.utility.ui.AppNavigationUiAction
 
 class VaccinesUiActions(
     navigationActions: VaccinesNavigationUiActions,

@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -16,7 +17,8 @@ import com.example.ui_components.R
 fun HospitalAutomationTextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    @StringRes text: Int
+    @StringRes text: Int,
+    textColor: Color= MaterialTheme.colorScheme.primary,
 ) {
     TextButton(
         onClick = onClick,
@@ -26,7 +28,7 @@ fun HospitalAutomationTextButton(
         Text(
             stringResource(text),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
+            color = textColor,
         )
     }
 }

@@ -40,9 +40,9 @@ class VaccineApiServiceImpl(
     ): Result<GetAllVaccinesResponseDto, NetworkError> =
         try {
             val response = client.get(ApiRoutes.getAllVaccinesEndPointForRole(role)) {
-                url{
-                    parameter("page",page)
-                    parameter("limit",limit)
+                url {
+                    parameter("page", page)
+                    parameter("limit", limit)
                 }
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)
@@ -63,10 +63,10 @@ class VaccineApiServiceImpl(
                     Result.Error(NetworkError.UNKNOWN)
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
             Result.Error(NetworkError.UNKNOWN)
-            }
+        }
 
     override suspend fun getVaccinesWithNoVisitNumber(token: String): Result<VaccinesMainInfoListWrapperDto, NetworkError> =
         try {
@@ -80,7 +80,10 @@ class VaccineApiServiceImpl(
                     Log.v("GetVaccinesWithNoVisitNumberApi${response.status.value}", responseText)
 
                     val addVaccineResponse: VaccinesMainInfoListWrapperDto = response.body()
-                    Log.v("GetVaccinesWithNoVisitNumberApi: in of range 2xx", addVaccineResponse.vaccines.toString())
+                    Log.v(
+                        "GetVaccinesWithNoVisitNumberApi: in of range 2xx",
+                        addVaccineResponse.vaccines.toString()
+                    )
                     Result.Success(data = addVaccineResponse)
                 }
 
@@ -90,7 +93,7 @@ class VaccineApiServiceImpl(
                     Result.Error(NetworkError.UNKNOWN)
                 }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("GetAllVaccinesApi Exception:", e.localizedMessage ?: "Unknown Error")
             Result.Error(NetworkError.UNKNOWN)
         }
@@ -206,7 +209,7 @@ class VaccineApiServiceImpl(
             contentType(ContentType.Application.Json)
             bearerAuth(token)
             setBody(vaccineIdToVisitNumberDto)
-            Log.d("UpdateDataVVV",vaccineIdToVisitNumberDto.toString())
+            Log.d("UpdateDataVVV", vaccineIdToVisitNumberDto.toString())
         }
         when (response.status.value) {
             in 200..299 -> {
@@ -244,9 +247,13 @@ class VaccineApiServiceImpl(
                 MultiPartFormDataContent(
                     formData {
                         if (vaccinesIdsToVisitNumberDto.visitNumber != null) {
-                            append("visitNumber", vaccinesIdsToVisitNumberDto.visitNumber)
+                            append("visit_number", vaccinesIdsToVisitNumberDto.visitNumber)
                         }
-                        append ("vaccinesIds", vaccinesIdsJsonString)
+                        append("vaccinesIds", vaccinesIdsToVisitNumberDto.vaccinesIds.toString())
+                        Log.d(
+                            "vaccineUpdate",
+                            vaccinesIdsToVisitNumberDto.visitNumber.toString() + " " + vaccinesIdsToVisitNumberDto.vaccinesIds.toString()
+                        )
                     }
                 ))
         }
@@ -267,7 +274,10 @@ class VaccineApiServiceImpl(
             }
         }
     } catch (e: Exception) {
-        Log.e("UpdateVaccinesVisitNumbersTableApi Exception:", e.localizedMessage ?: "Unknown Error")
+        Log.e(
+            "UpdateVaccinesVisitNumbersTableApi Exception:",
+            e.localizedMessage ?: "Unknown Error"
+        )
         Result.Error(NetworkError.UNKNOWN)
     }
 

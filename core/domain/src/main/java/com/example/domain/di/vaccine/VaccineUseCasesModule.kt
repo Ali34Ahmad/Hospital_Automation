@@ -1,6 +1,6 @@
 package com.example.domain.di.vaccine
 
-import com.example.domain.use_cases.prescription.AddNewVaccineUseCase
+import com.example.domain.use_cases.vaccine.AddNewVaccineUseCase
 import com.example.domain.use_cases.vaccine.GetAllVaccinesUseCase
 import com.example.domain.use_cases.vaccine.GetGenericVaccinationTableUseCase
 import com.example.domain.use_cases.vaccine.GetVaccineByIdUseCase

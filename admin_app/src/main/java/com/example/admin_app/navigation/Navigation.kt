@@ -18,12 +18,15 @@ import com.example.employee_profile.navigation.EmployeeProfileRoute
 import com.example.employee_profile.navigation.employeeProfileScreen
 import com.example.employment_history.navigation.EmploymentHistoryRoute
 import com.example.employment_history.navigation.employmentHistoryScreen
+import com.example.employment_requests.navigation.EmploymentRequestsRoute
 import com.example.employment_requests.navigation.employmentRequestsScreen
+import com.example.employment_requests.navigation.navigateToEmploymentRequestsScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableRoute
 import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
+import com.example.login.navigation.LoginRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
 import com.example.pharmacy_details.navigation.PharmacyAccessType
@@ -51,13 +54,11 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = GenericVaccinationTableRoute(
-            genericVaccinationTableAccessType = GenericVaccinationTableAccessType.VIEWER_ACCESS
-        ),
+        startDestination = EmploymentRequestsRoute,
     ) {
 
         navigation<AuthGraphRoute>(
-            startDestination = UploadProfileImageRoute,
+            startDestination = LoginRoute,
         ) {
             signUpScreen(
                 onNavigateToEmailVerificationScreen = { email, password ->
@@ -109,7 +110,7 @@ fun Navigation() {
                     navController.navigateToEnterEmailScreen()
                 },
                 onNavigateToHomeScreen = {
-                    navController.navigateToVaccinesScreen()
+                    navController.navigateToEmploymentRequestsScreen()
                 },
                 onNavigateToToSignUpScreen = {
                     navController.navigateToSignUpScreen()
