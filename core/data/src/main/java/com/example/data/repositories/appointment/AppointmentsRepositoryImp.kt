@@ -14,6 +14,7 @@ import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.appointment.SortType
+import com.example.model.enums.Role
 import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.appointment.AppointmentsApiService
 import com.example.utility.network.NetworkError
@@ -27,7 +28,7 @@ class AppointmentsRepositoryImp(
     private val appointmentsApi: AppointmentsApiService,
     private val roleAppConfig: RoleAppConfig,
 ): AppointmentsRepository {
-    override suspend fun getAppointments(
+    override suspend fun getDoctorAppointments(
         appointmentState: AppointmentState,
         onStatisticsChanged: (AppointmentsStatisticsData)-> Unit,
         queryFilter: String?,
@@ -53,12 +54,85 @@ class AppointmentsRepositoryImp(
                         onStatisticsChanged = onStatisticsChanged,
                         queryFilter = queryFilter,
                         dateFilter = dateFilter,
-                        role = roleAppConfig.role,
-                        doctorId = doctorId,
+                        callerRole = roleAppConfig.role,
+                        id = doctorId,
+                        targetRole = Role.DOCTOR
                     )
                 }
             ).flow
        // }
+
+    }
+
+    override suspend fun getUserAppointment(
+        appointmentState: AppointmentState,
+        onStatisticsChanged: (AppointmentsStatisticsData) -> Unit,
+        queryFilter: String?,
+        dateFilter: String?,
+        userId: Int,
+    ): Flow<PagingData<AppointmentData>> {
+
+        //decide the sort type depending on appointment state.
+        val sortType = if(appointmentState == AppointmentState.UPCOMMING)
+            SortType.ASC else SortType.DESC
+
+        //dataStore.executeFlowWithValidToken { token->
+        return   Pager(
+            config = PagingConfig(
+                pageSize = PagingConstants.PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                AppointmentPagingSource(
+                    appointmentState = appointmentState,
+                    token = FAKE_TOKEN,
+                    appointmentsApi = appointmentsApi,
+                    sort = sortType,
+                    onStatisticsChanged = onStatisticsChanged,
+                    queryFilter = queryFilter,
+                    dateFilter = dateFilter,
+                    callerRole = roleAppConfig.role,
+                    id = userId,
+                    targetRole = Role.USER
+                )
+            }
+        ).flow
+        // }
+
+    }
+
+    override suspend fun getChildAppointments(
+        appointmentState: AppointmentState,
+        onStatisticsChanged: (AppointmentsStatisticsData) -> Unit,
+        queryFilter: String?,
+        dateFilter: String?,
+        childId: Int,
+    ): Flow<PagingData<AppointmentData>> {
+
+        //decide the sort type depending on appointment state.
+        val sortType = if(appointmentState == AppointmentState.UPCOMMING)
+            SortType.ASC else SortType.DESC
+
+        //dataStore.executeFlowWithValidToken { token->
+        return   Pager(
+            config = PagingConfig(
+                pageSize = PagingConstants.PAGE_SIZE
+            ),
+            pagingSourceFactory = {
+                AppointmentPagingSource(
+                    appointmentState = appointmentState,
+                    token = FAKE_TOKEN,
+                    appointmentsApi = appointmentsApi,
+                    sort = sortType,
+                    onStatisticsChanged = onStatisticsChanged,
+                    queryFilter = queryFilter,
+                    dateFilter = dateFilter,
+                    callerRole = roleAppConfig.role,
+                    id = childId,
+                    targetRole = Role.CHILD
+                )
+            }
+        ).flow
+        // }
 
     }
 

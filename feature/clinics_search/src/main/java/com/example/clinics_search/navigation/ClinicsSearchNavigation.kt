@@ -34,17 +34,24 @@ fun NavGraphBuilder.clinicsSearchScreen(
     onNavigateToPrescriptions: ()-> Unit,
     onNavigateToVaccines: ()-> Unit,
     onNavigateToCreateNewClinic: ()-> Unit ,
+    onNavigateToAdminProfile: ()-> Unit,
+    onNavigateToVaccineTable: ()-> Unit
     ){
     composable<ClinicsSearchRoute> {
         val viewModel = koinViewModel<ClinicsSearchViewModel>()
         val navigationActions = object : ClinicsSearchNavigationActions{
             override fun navigateToDepartmentDetails(clinicId: Int) = onNavigateToDepartmentDetails(clinicId)
             override fun navigateToDoctorProfile() = onNavigateToDoctorProfile()
+            override fun navigateToAdminProfile() = onNavigateToAdminProfile()
+
             override fun navigateToNotifications() = onNavigateToNotifications()
             override fun navigateToMedicalRecords() = onNavigateToMedicalRecords()
             override fun navigateToPrescriptions() = onNavigateToPrescriptions()
             override fun navigateToVaccines() = onNavigateToVaccines()
+            override fun navigateToVaccineTable() = onNavigateToVaccineTable()
+
             override fun navigateToCreateNewClinic() = onNavigateToCreateNewClinic()
+
         }
         ClinicsSearchScreen(
             viewModel = viewModel,

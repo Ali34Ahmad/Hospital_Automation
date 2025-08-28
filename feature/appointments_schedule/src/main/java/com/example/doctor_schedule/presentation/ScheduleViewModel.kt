@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.doctor_schedule.navigation.DoctorScheduleRoute
+import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.presentation.model.AppointmentsFilter
 import com.example.doctor_schedule.presentation.model.upcomingMapper
-import com.example.domain.use_cases.doctor.appointment.GetAppointmentsFlowUseCase
+import com.example.domain.use_cases.appointment.GetChildAppointmentsUseCase
+import com.example.domain.use_cases.appointment.GetDoctorAppointmentsUseCase
+import com.example.domain.use_cases.appointment.GetUserAppointmentsUseCase
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
 import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
@@ -18,6 +19,7 @@ import com.example.ext.toAppropriateDateFormat
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
+import com.example.model.enums.Role
 import com.example.model.enums.ScreenState
 import com.example.model.role_config.RoleAppConfig
 import com.example.utility.network.map
@@ -33,6 +35,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -40,9 +43,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class DoctorScheduleViewModel(
+class ScheduleViewModel(
     private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
-    private val getAppointmentsFlowUseCase: GetAppointmentsFlowUseCase,
+    private val getDoctorAppointmentsUseCase: GetDoctorAppointmentsUseCase,
+    private val getUserAppointmentsUseCase: GetUserAppointmentsUseCase,
+    private val getChildAppointmentsUseCase: GetChildAppointmentsUseCase,
     private val checkEmployeePermissionUseCase: CheckEmployeePermissionUseCase,
     private val roleAppConfig:RoleAppConfig,
     private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
@@ -50,16 +55,28 @@ class DoctorScheduleViewModel(
 ): ViewModel() {
 
     private val doctorId = 143
+    private val childId = 1
+    private val userId = 128
+
+    private val id = userId
     private val hasAdminAccess = true
+    private val targetRole = AppointmentSearchType.USER
+    private val name = "Ali Mansoura"
+    private val speciality: String? = null
+    private val imageUrl : String? = "https://randomuser.me/api/portraits/men/32.jpg"
 
     private val _uiState = MutableStateFlow(
-        DoctorScheduleUIState(
-            doctorId = doctorId,
-            hasAdminAccess = hasAdminAccess
+        ScheduleUIState(
+            id = id,
+            hasAdminAccess = hasAdminAccess,
+            searchType = targetRole,
+            name = name,
+            speciality = speciality,
+            imageUrl = imageUrl
         )
     )
 
-    val uiState : StateFlow<DoctorScheduleUIState> = _uiState
+    val uiState : StateFlow<ScheduleUIState> = _uiState
         .onStart {
             readTheme()
             checkPermissions()
@@ -101,22 +118,22 @@ class DoctorScheduleViewModel(
         }
         .cachedIn(viewModelScope)
 
-    fun onAction(action: DoctorScheduleUIAction){
+    fun onAction(action: ScheduleUIAction){
         when(action){
-            is DoctorScheduleUIAction.UpdateTab ->updateTab(action.selectedTab)
-            is DoctorScheduleUIAction.UpdateState -> updateScreenState(action.newState)
-            DoctorScheduleUIAction.Refresh ->refresh()
-            DoctorScheduleUIAction.HideSearchBar ->hideSearchBar()
-            DoctorScheduleUIAction.ShowSearchBar ->showSearchBar()
-            DoctorScheduleUIAction.HideDatePicker ->hideDatePicker()
-            DoctorScheduleUIAction.ToggleDrawer -> toggleDrawer()
-            DoctorScheduleUIAction.ShowDatePicker -> showDatePicker()
-            is DoctorScheduleUIAction.UpdateSearchQuery -> updateSearchQuery(action.newValue)
-            is DoctorScheduleUIAction.UpdateDate -> updateDate(action.newDate)
-            DoctorScheduleUIAction.ToggleTheme -> toggleTheme()
-            DoctorScheduleUIAction.RefreshPermission ->checkPermissions()
-            DoctorScheduleUIAction.ClearDateFilter -> clearDateFilter()
-            DoctorScheduleUIAction.UpdateIsFirstLaunchToFalse -> updateIsFirstLaunchToFalse()
+            is ScheduleUIAction.UpdateTab ->updateTab(action.selectedTab)
+            is ScheduleUIAction.UpdateState -> updateScreenState(action.newState)
+            ScheduleUIAction.Refresh ->refresh()
+            ScheduleUIAction.HideSearchBar ->hideSearchBar()
+            ScheduleUIAction.ShowSearchBar ->showSearchBar()
+            ScheduleUIAction.HideDatePicker ->hideDatePicker()
+            ScheduleUIAction.ToggleDrawer -> toggleDrawer()
+            ScheduleUIAction.ShowDatePicker -> showDatePicker()
+            is ScheduleUIAction.UpdateSearchQuery -> updateSearchQuery(action.newValue)
+            is ScheduleUIAction.UpdateDate -> updateDate(action.newDate)
+            ScheduleUIAction.ToggleTheme -> toggleTheme()
+            ScheduleUIAction.RefreshPermission ->checkPermissions()
+            ScheduleUIAction.ClearDateFilter -> clearDateFilter()
+            ScheduleUIAction.UpdateIsFirstLaunchToFalse -> updateIsFirstLaunchToFalse()
         }
     }
 
@@ -168,18 +185,45 @@ class DoctorScheduleViewModel(
         dateFilter: String?,
         queryFilter: String?
     ) :Flow<PagingData<AppointmentData>> =
-        getAppointmentsFlowUseCase(
-            appointmentState = selectedTab,
-            onStatisticsChanged = onStatisticsChanged,
-            dateFilter = dateFilter,
-            queryFilter = queryFilter,
-            doctorId = uiState.value.doctorId
-        )
+        when(uiState.value.searchType){
+            AppointmentSearchType.DOCTOR ->
+                getDoctorAppointmentsUseCase(
+                    appointmentState = selectedTab,
+                    onStatisticsChanged = onStatisticsChanged,
+                    dateFilter = dateFilter,
+                    queryFilter = queryFilter,
+                    doctorId = uiState.value.id
+                )
+
+            AppointmentSearchType.CHILD ->
+                uiState.value.id?.let { childId ->
+                    getChildAppointmentsUseCase(
+                        appointmentState = selectedTab,
+                        onStatisticsChanged = onStatisticsChanged,
+                        dateFilter = dateFilter,
+                        queryFilter = queryFilter,
+                        childId = childId
+                    )
+                }?: emptyFlow()
+            AppointmentSearchType.USER ->
+                uiState.value.id?.let { userId ->
+                    getUserAppointmentsUseCase(
+                        appointmentState = selectedTab,
+                        onStatisticsChanged = onStatisticsChanged,
+                        dateFilter = dateFilter,
+                        queryFilter = queryFilter,
+                        userId = userId
+                    )
+                }?:emptyFlow()
+        }
+
+
+
     private fun updateRefreshState(isRefreshing: Boolean) {
         _uiState.value = _uiState.value.copy(isRefreshing = isRefreshing)
     }
     private fun updateStatistics(statistics: AppointmentsStatisticsData){
-        _uiState.value = _uiState.value.copy(statistics=statistics)
+        _uiState.value = _uiState.value.copy(statistics =statistics)
     }
     private fun updatePermission(isGranted: Boolean){
         _uiState.value = _uiState.value.copy(isPermissionGranted = isGranted)

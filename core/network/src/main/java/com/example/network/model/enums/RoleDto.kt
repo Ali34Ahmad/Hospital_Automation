@@ -4,4 +4,6 @@ enum class RoleDto {
     EMPLOYEE,
     DOCTOR,
     ADMIN,
+    CHILD,
+    USER
 }

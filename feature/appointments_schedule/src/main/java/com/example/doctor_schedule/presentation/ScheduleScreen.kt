@@ -28,6 +28,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.constants.icons.AppIcons
+import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.presentation.custom_screens.PermissionRequiredScreen
 import com.example.doctor_schedule.presentation.custom_screens.SuccessScreen
 import com.example.doctor_schedule.presentation.model.AppointmentUIModel
@@ -39,17 +40,18 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
 import com.example.ui_components.components.items.FilterItem
-import com.example.ui_components.components.topbars.custom.DoctorScheduleTopBar
+import com.example.ui_components.components.topbars.custom.ScheduleTopBar
 
 @Composable
-fun DoctorScheduleScreen(
-    viewModel: DoctorScheduleViewModel,
-    navigationActions: DoctorScheduleNavigationActions,
+fun ScheduleScreen(
+    viewModel: ScheduleViewModel,
+    navigationActions: ScheduleNavigationActions,
     modifier: Modifier = Modifier
 ) {
+
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val appointments = viewModel.appointmentsFlow.collectAsLazyPagingItems()
-    DoctorScheduleScreen(
+    ScheduleScreen(
         uiState = uiState.value,
         appointments = appointments,
         navigationActions = navigationActions,
@@ -57,12 +59,13 @@ fun DoctorScheduleScreen(
         modifier = modifier
     )
 }
+
 @Composable
-internal fun DoctorScheduleScreen(
-    uiState: DoctorScheduleUIState,
+internal fun ScheduleScreen(
+    uiState: ScheduleUIState,
     appointments: LazyPagingItems<AppointmentUIModel>,
-    navigationActions: DoctorScheduleNavigationActions,
-    onAction:(DoctorScheduleUIAction)-> Unit,
+    navigationActions: ScheduleNavigationActions,
+    onAction:(ScheduleUIAction)-> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -82,11 +85,11 @@ internal fun DoctorScheduleScreen(
                 Log.d("Doctor Screen Observer","is first launch :${uiState.isFirstLaunch}")
                 if (uiState.isFirstLaunch) {
                     onAction(
-                        DoctorScheduleUIAction.UpdateIsFirstLaunchToFalse
+                        ScheduleUIAction.UpdateIsFirstLaunchToFalse
                     )
                 } else {
                     onAction(
-                        DoctorScheduleUIAction.Refresh
+                        ScheduleUIAction.Refresh
                     )
                 }
             }
@@ -100,13 +103,13 @@ internal fun DoctorScheduleScreen(
     appointments.let {
         when(it.loadState.refresh){
             is LoadState.Error ->{
-                onAction(DoctorScheduleUIAction.UpdateState(ScreenState.ERROR))
+                onAction(ScheduleUIAction.UpdateState(ScreenState.ERROR))
             }
             LoadState.Loading -> {
-                onAction(DoctorScheduleUIAction.UpdateState(ScreenState.LOADING))
+                onAction(ScheduleUIAction.UpdateState(ScreenState.LOADING))
             }
             is LoadState.NotLoading -> {
-                onAction(DoctorScheduleUIAction.UpdateState(ScreenState.SUCCESS))
+                onAction(ScheduleUIAction.UpdateState(ScreenState.SUCCESS))
             }
         }
     }
@@ -167,11 +170,11 @@ internal fun DoctorScheduleScreen(
         selectedIndex = null,
         onItemSelected = {
             drawerButtons[it].onClick()
-            onAction(DoctorScheduleUIAction.ToggleDrawer)
+            onAction(ScheduleUIAction.ToggleDrawer)
         },
         onChangeThemeClick = {
             onAction(
-                DoctorScheduleUIAction.ToggleTheme
+                ScheduleUIAction.ToggleTheme
             )
         },
         isDarkTheme = uiState.isDarkTheme
@@ -180,41 +183,56 @@ internal fun DoctorScheduleScreen(
             modifier = modifier,
             containerColor = MaterialTheme.colorScheme.surface,
             topBar = {
-                DoctorScheduleTopBar(
-                    isPermissionsGranted = uiState.isPermissionGranted||uiState.hasAdminAccess,
+                ScheduleTopBar(
+                    isPermissionsGranted = uiState.isPermissionGranted || uiState.hasAdminAccess,
                     isSearchBarVisible = uiState.isSearchBarVisible,
                     searchQuery = uiState.searchQuery,
                     onQueryChanged = { newValue ->
                         onAction(
-                            DoctorScheduleUIAction.UpdateSearchQuery(newValue)
+                            ScheduleUIAction.UpdateSearchQuery(newValue)
                         )
                     },
                     onQueryDeleted = {
                         onAction(
-                            DoctorScheduleUIAction.UpdateSearchQuery("")
+                            ScheduleUIAction.UpdateSearchQuery("")
                         )
                     },
                     onSearch = {
                         onAction(
-                            DoctorScheduleUIAction.ShowSearchBar
+                            ScheduleUIAction.ShowSearchBar
                         )
                     },
                     onBackButtonClick = {
                         onAction(
-                            DoctorScheduleUIAction.HideSearchBar
+                            ScheduleUIAction.HideSearchBar
                         )
                     },
                     onDatePickerIconClick = {
                         onAction(
-                            DoctorScheduleUIAction.ShowDatePicker
+                            ScheduleUIAction.ShowDatePicker
                         )
                     },
                     onDrawerOpened = {
                         onAction(
-                            DoctorScheduleUIAction.ToggleDrawer
+                            ScheduleUIAction.ToggleDrawer
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
+                    imageUrl = uiState.imageUrl,
+                    name = uiState.name,
+                    speciality = uiState.speciality,
+                    showChildPlaceholder = uiState.searchType == AppointmentSearchType.CHILD,
+                    onTitleClick = {
+                        uiState.id?.let { id->
+                            when(uiState.searchType){
+                                AppointmentSearchType.DOCTOR -> navigationActions.navigateToDoctorProfile(id = id)
+                                AppointmentSearchType.CHILD -> navigationActions.navigateToChildProfile(id = id)
+                                AppointmentSearchType.USER -> navigationActions.navigateToUserProfileProfile(id = id)
+                            }
+                        }
+                    },
+                    onNavigateUp = navigationActions::navigateUp,
+                    canNavigateUp = uiState.canNavigateUp,
                 )
             }
         ) { innerPadding ->
@@ -237,7 +255,7 @@ internal fun DoctorScheduleScreen(
                     subtitle = uiState.selectedDate?.toAppropriateDateFormat()?.toString().orEmpty(),
                     onClose = {
                         onAction(
-                            DoctorScheduleUIAction.ClearDateFilter
+                            ScheduleUIAction.ClearDateFilter
                         )
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -265,7 +283,7 @@ internal fun DoctorScheduleScreen(
                                 state = uiState.permissionsState,
                                 isRefreshing = uiState.isRefreshing,
                                 onRefresh = {
-                                    onAction(DoctorScheduleUIAction.RefreshPermission)
+                                    onAction(ScheduleUIAction.RefreshPermission)
                                 },
                                 modifier = modifier
                                     .padding(MaterialTheme.spacing.medium16)

@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.example.doctor_schedule.presentation.DoctorScheduleUIAction
-import com.example.doctor_schedule.presentation.DoctorScheduleUIState
+import com.example.doctor_schedule.presentation.ScheduleUIAction
+import com.example.doctor_schedule.presentation.ScheduleUIState
 import com.example.doctor_schedule.presentation.model.AppointmentUIModel
 import com.example.ext.toAppropriateDateTimeFormat
 import com.example.model.LabeledBadgeData
@@ -38,8 +38,8 @@ import java.time.LocalDateTime
 
 @Composable
 fun SuccessScreen(
-    uiState: DoctorScheduleUIState,
-    onAction: (DoctorScheduleUIAction)-> Unit,
+    uiState: ScheduleUIState,
+    onAction: (ScheduleUIAction)-> Unit,
     appointments: LazyPagingItems<AppointmentUIModel>,
     onNavigateToAppointmentDetails: (id: Int)-> Unit,
     modifier: Modifier = Modifier
@@ -61,7 +61,7 @@ fun SuccessScreen(
                 selectedItemIndex = AppointmentState.entries.indexOf(uiState.selectedTab),
                 onItemSelected = {
                     onAction(
-                        DoctorScheduleUIAction.UpdateTab(
+                        ScheduleUIAction.UpdateTab(
                             AppointmentState.entries[it]
                         )
                     )
@@ -74,20 +74,20 @@ fun SuccessScreen(
                     DatePickerDialog(
                         onConfirm = {
                             onAction(
-                                DoctorScheduleUIAction.UpdateDate(it)
+                                ScheduleUIAction.UpdateDate(it)
                             )
                         },
                         datePickerState = rememberUseCaseState(
                             visible = uiState.isDatePickerVisible,
                             onCloseRequest = {
                                 onAction(
-                                    DoctorScheduleUIAction.HideDatePicker
+                                    ScheduleUIAction.HideDatePicker
                                 )
                             },
                             onDismissRequest = {
                                 {
                                     onAction(
-                                        DoctorScheduleUIAction.HideDatePicker
+                                        ScheduleUIAction.HideDatePicker
                                     )
                                 }
                             }
@@ -110,7 +110,7 @@ fun SuccessScreen(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxHeight(),
                         onRefresh = {
-                            onAction(DoctorScheduleUIAction.Refresh)
+                            onAction(ScheduleUIAction.Refresh)
                         },
                     ) {
                         ErrorComponent(
@@ -129,7 +129,7 @@ fun SuccessScreen(
                             refreshing = uiState.isRefreshing,
                             onRefresh = {
                                 onAction(
-                                    DoctorScheduleUIAction.Refresh
+                                    ScheduleUIAction.Refresh
                                 )
                             },
                         ) {
@@ -146,7 +146,7 @@ fun SuccessScreen(
                         refreshing = uiState.isRefreshing,
                         onRefresh = {
                             onAction(
-                                DoctorScheduleUIAction.Refresh
+                                ScheduleUIAction.Refresh
                             )
                         },
                     ){

@@ -1,13 +1,18 @@
 package com.example.doctor_schedule.presentation
 
+import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.enums.ScreenState
 import java.time.LocalDate
 
-data class DoctorScheduleUIState(
+data class ScheduleUIState(
     val hasAdminAccess: Boolean,
-    val doctorId: Int?,
+    val id: Int?,
+    val searchType: AppointmentSearchType,
+    val name: String?,
+    val speciality: String?,
+    val imageUrl: String?,
     val isRefreshing: Boolean = false,
     val screenState: ScreenState = ScreenState.IDLE,
     val permissionsState: ScreenState = ScreenState.IDLE,
@@ -23,5 +28,12 @@ data class DoctorScheduleUIState(
     val isFirstLaunch: Boolean = true
 ){
     fun hasDateFilter() = selectedDate !=null
+
+    // if we are looking for appointments that are related to someone
+    val showProfileInfo : Boolean
+        get() = searchType !== AppointmentSearchType.DOCTOR
+
+    val canNavigateUp : Boolean
+        get() = name != null
 }
 

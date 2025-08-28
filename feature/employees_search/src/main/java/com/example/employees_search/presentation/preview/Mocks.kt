@@ -37,4 +37,28 @@ val mockNavigationActions = object : EmployeesSearchNavigationActions{
     override fun navigateToEmployeeProfile(employeeId: Int) {
 
     }
+
+    override fun navigateToAdminProfile() {
+
+    }
+
+    override fun navigateToVaccines() {
+
+    }
+
+    override fun navigateToNotifications() {
+
+    }
+
+    override fun navigateToPrescriptions() {
+
+    }
+
+    override fun navigateToMedicalRecords() {
+
+    }
+
+    override fun navigateToVaccineTable() {
+
+    }
 }

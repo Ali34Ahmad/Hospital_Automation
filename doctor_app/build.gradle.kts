@@ -100,7 +100,7 @@ dependencies {
 
     implementation(project(":feature:clinics_search"))
     implementation(project(":feature:clinic_details"))
-    implementation(project(":feature:doctor-schedule"))
+    implementation(project(":feature:appointments_schedule"))
     implementation(project(":feature:appointment_details"))
     implementation(project(":feature:medical_diagnosis"))
     implementation(project(":feature:medicine_details"))

@@ -3,11 +3,9 @@ package com.example.appointment_details.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
-import com.example.appointment_details.navigation.AppointmentDetailsRoute
-import com.example.domain.use_cases.doctor.appointment.GetAppointmentDetailsUseCase
-import com.example.domain.use_cases.doctor.appointment.UpdateAppointmentStateToMissedUseCase
-import com.example.domain.use_cases.doctor.appointment.UpdateAppointmentStateToPassedUseCase
+import com.example.domain.use_cases.appointment.GetAppointmentDetailsUseCase
+import com.example.domain.use_cases.appointment.UpdateAppointmentStateToMissedUseCase
+import com.example.domain.use_cases.appointment.UpdateAppointmentStateToPassedUseCase
 import com.example.model.doctor.appointment.AppointmentData
 import com.example.model.doctor.appointment.AppointmentState
 import com.example.model.enums.BottomBarState

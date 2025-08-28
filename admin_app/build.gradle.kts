@@ -73,7 +73,7 @@ dependencies {
     implementation(project(":feature:employees_search"))
     implementation(project(":feature:clinics_search"))
     implementation(project(":feature:pharmacies_search"))
-    implementation(project(":feature:doctor-schedule"))
+    implementation(project(":feature:appointments_schedule"))
     implementation(project(":feature:clinic_details"))
     implementation(project(":feature:guardian_profile"))
     implementation(project(":feature:child_profile"))
@@ -82,5 +82,10 @@ dependencies {
     implementation(project(":feature:children_search"))
     implementation(project(":feature:children"))
     implementation(project(":feature:pharmacy_medicines"))
+
+    //navigation
+    implementation(project(":core:navigation"))
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.compose)
 
 }

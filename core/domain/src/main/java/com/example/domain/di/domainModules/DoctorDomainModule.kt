@@ -1,6 +1,5 @@
 package com.example.domain.di.domainModules
 
-import com.example.domain.di.accountManagementUseCasesModule
 import com.example.domain.di.auth.authUseCasesModule
 import com.example.domain.di.auth.singup.doctorSignUpModule
 import com.example.domain.di.basic_account_creating.addResidentialAddressUseCaseModule
@@ -25,7 +24,6 @@ val doctorDomainModule = module {
         doctorSignUpModule,
         addResidentialAddressUseCaseModule,
         getAdminProfileByIdUseCaseModule,
-        accountManagementUseCasesModule,
         doctorProfileUseCasesModule,
         employmentHistoryUseCasesModule,
         uploadEmploymentDocumentsUseCasesModule,

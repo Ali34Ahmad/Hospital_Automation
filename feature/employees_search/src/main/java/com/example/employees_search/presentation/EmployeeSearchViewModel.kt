@@ -3,6 +3,8 @@ package com.example.employees_search.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.use_cases.admin.employee.GetEmployeesUseCase
+import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
+import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
 import com.example.model.admin.EmploymentStatistics
 import com.example.model.employee.EmployeeState
 import com.example.model.enums.ScreenState
@@ -22,12 +24,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class EmployeeSearchViewModel(
-    private val getEmployeesUseCase: GetEmployeesUseCase
+    private val getEmployeesUseCase: GetEmployeesUseCase,
+    private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(EmployeesSearchUIState())
     val uiState : StateFlow<EmployeesSearchUIState> = _uiState
         .onStart {
-
+            readTheme()
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
@@ -64,9 +68,27 @@ class EmployeeSearchViewModel(
             is EmployeesSearchUIAction.UpdateScreenState -> updateScreenState(action.newState)
             is EmployeesSearchUIAction.UpdateSearchQuery -> updateSearchQuery(action.newValue)
             is EmployeesSearchUIAction.UpdateTab -> updateSelectedTab(action.newTab)
+            EmployeesSearchUIAction.ToggleTheme -> toggleTheme()
+            EmployeesSearchUIAction.ToggleDrawer -> toggleDrawer()
+
         }
     }
-
+    private fun toggleDrawer(){
+        _uiState.value = _uiState.value.copy(isDrawerOpened = !uiState.value.isDrawerOpened)
+    }
+    private fun updateTheme(isDarkTheme: Boolean) {
+        _uiState.value = _uiState.value.copy(isDarkTheme = isDarkTheme)
+    }
+    private fun readTheme() {
+        viewModelScope.launch {
+            getUserPreferencesUseCase().collect { userPreference ->
+                updateTheme(userPreference.isDarkTheme)
+            }
+        }
+    }
+    private fun toggleTheme() = viewModelScope.launch{
+        updateIsDarkThemeUseCase(!_uiState.value.isDarkTheme)
+    }
     private fun updateStatistics(statistics: EmploymentStatistics){
         _uiState.value = _uiState.value.copy(statistics=statistics)
     }

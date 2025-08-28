@@ -8,8 +8,16 @@ interface EmployeesSearchUIAction{
     data class UpdateSearchQuery(val newValue: String): EmployeesSearchUIAction
     data class UpdateTab(val newTab: EmployeeState): EmployeesSearchUIAction
     data class UpdateScreenState(val newState: ScreenState): EmployeesSearchUIAction
+    object ToggleTheme: EmployeesSearchUIAction
+    object ToggleDrawer: EmployeesSearchUIAction
 }
 
 interface EmployeesSearchNavigationActions{
     fun navigateToEmployeeProfile(employeeId: Int)
+    fun navigateToAdminProfile()
+    fun navigateToVaccines()
+    fun navigateToNotifications()
+    fun navigateToPrescriptions()
+    fun navigateToMedicalRecords()
+    fun navigateToVaccineTable()
 }

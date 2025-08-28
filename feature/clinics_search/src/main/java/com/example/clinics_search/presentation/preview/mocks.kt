@@ -17,6 +17,10 @@ val mockNavigationActions = object : ClinicsSearchNavigationActions{
     override fun navigateToDoctorProfile() {
     }
 
+    override fun navigateToAdminProfile() {
+
+    }
+
     override fun navigateToNotifications() {
     }
 
@@ -27,6 +31,10 @@ val mockNavigationActions = object : ClinicsSearchNavigationActions{
     }
 
     override fun navigateToVaccines() {
+    }
+
+    override fun navigateToVaccineTable() {
+
     }
 
     override fun navigateToCreateNewClinic() {

@@ -23,12 +23,29 @@ fun NavController.switchToEmployeesSearch(
 }
 
 fun NavGraphBuilder.employeeSearch(
-    onNavigateToEmployeeProfile: (Int)-> Unit
+    onNavigateToEmployeeProfile: (Int)-> Unit,
+    onNavigateToAdminProfile: ()-> Unit,
+    onNavigateToVaccines: ()-> Unit,
+    onNavigateToNotifications: ()-> Unit,
+    onNavigateToToPrescriptions: ()-> Unit,
+    onNavigateToToMedicalRecords: ()-> Unit,
+    onNavigateToToVaccineTable: ()-> Unit,
 ){
     composable<EmployeesSearchRoute> {
         val viewModel = koinViewModel<EmployeeSearchViewModel>()
         val navigationActions = object : EmployeesSearchNavigationActions{
             override fun navigateToEmployeeProfile(employeeId: Int) = onNavigateToEmployeeProfile(employeeId)
+            override fun navigateToAdminProfile() = onNavigateToAdminProfile()
+
+            override fun navigateToVaccines() = onNavigateToVaccines()
+
+            override fun navigateToNotifications() = onNavigateToNotifications()
+
+            override fun navigateToPrescriptions() = onNavigateToToPrescriptions()
+
+            override fun navigateToMedicalRecords() = onNavigateToToMedicalRecords()
+
+            override fun navigateToVaccineTable() = onNavigateToToVaccineTable()
         }
         EmployeesSearchScreen(
             viewModel = viewModel,

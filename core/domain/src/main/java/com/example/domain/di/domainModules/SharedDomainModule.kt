@@ -1,5 +1,6 @@
 package com.example.domain.di.domainModules
 
+import com.example.domain.di.accountManagementUseCasesModule
 import com.example.domain.di.appointments.appointmentUseCasesModule
 import com.example.domain.di.children.childDomainModule
 import com.example.domain.di.clinics.clinicsUseCasesModule
@@ -16,7 +17,7 @@ import org.koin.dsl.module
 internal val sharedDomainModule = module {
     includes(
         userPreferencesUseCasesModule,
-
+        accountManagementUseCasesModule,
         clinicsUseCasesModule,
         appointmentUseCasesModule,
         workRequestUseCasesModule,

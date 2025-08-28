@@ -3,7 +3,9 @@ package com.example.clinics_search.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.example.clinics_search.navigation.ClinicsSearchRoute
 import com.example.domain.use_cases.admin.clinic.GetFilteredClinicsFlowUseCase
 import com.example.domain.use_cases.doctor.clinic.GetClinicsFlowUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
@@ -30,11 +32,9 @@ class ClinicsSearchViewModel(
     private val updateIsDarkTheme: UpdateIsDarkThemeUseCase,
     private val getFilteredClinicsFlowUseCase: GetFilteredClinicsFlowUseCase
 ): ViewModel() {
-    val hasAdminAccess = true
     private val _uiState = MutableStateFlow(
         ClinicsSearchUIState(
-            hasAdminAccess = hasAdminAccess
-                //savedStateHandle.toRoute<ClinicsSearchRoute>().hasAdminAccess
+            hasAdminAccess = savedStateHandle.toRoute<ClinicsSearchRoute>().hasAdminAccess
         )
     )
     val uiState : StateFlow<ClinicsSearchUIState> = _uiState

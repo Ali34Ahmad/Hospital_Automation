@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.domain.use_cases.doctor.appointment.AddDiagnosisUseCase
+import com.example.domain.use_cases.appointment.AddDiagnosisUseCase
 import com.example.medical_diagnosis.navigation.DiagnosisRoute
 import com.example.model.enums.BottomBarState
 import com.example.util.UiText
@@ -16,9 +16,6 @@ import com.example.utility.constants.DurationConstants
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class DiagnosisViewModel(

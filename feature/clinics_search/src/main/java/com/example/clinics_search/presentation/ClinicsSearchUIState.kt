@@ -17,7 +17,10 @@ data class ClinicsSearchUIState(
     val isDarkTheme: Boolean = false,
     val selectedTab: DepartmentState = DepartmentState.ACTIVE,
     val statistics: DepartmentStatistics = DepartmentStatistics()
-)
+){
+    val topAppBarState
+        get() = if(hasAdminAccess) TopBarState.SEARCH else topBarMode
+}
 enum class ScreenStep{
     INTRO,
     SELECTION

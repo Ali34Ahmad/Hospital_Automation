@@ -9,5 +9,7 @@ data class EmployeesSearchUIState(
     val isRefreshing: Boolean = false,
     val selectedTab: EmployeeState = EmployeeState.EMPLOYED,
     val searchQuery: String = "",
-    val statistics: EmploymentStatistics = EmploymentStatistics()
+    val statistics: EmploymentStatistics = EmploymentStatistics(),
+    val isDrawerOpened: Boolean = false,
+    val isDarkTheme: Boolean = false,
 )

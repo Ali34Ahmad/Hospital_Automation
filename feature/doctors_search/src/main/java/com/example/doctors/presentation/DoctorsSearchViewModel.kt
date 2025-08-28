@@ -3,7 +3,9 @@ package com.example.doctors.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.example.doctors.navigation.DoctorSearchRoute
 import com.example.domain.use_cases.admin.doctor.GetDoctorsByClinicUseCase
 import com.example.domain.use_cases.admin.doctor.GetDoctorsUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
@@ -34,13 +36,11 @@ class DoctorsSearchViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getDoctorsByClinicUseCase: GetDoctorsByClinicUseCase
     ): ViewModel() {
-    val clinicId = 1
-    val clinicName = "Department of Digestive"
 
     private val _uiState = MutableStateFlow(
         DoctorsSearchUIState(
-            clinicId = clinicId,
-            clinicName = clinicName
+            clinicId = savedStateHandle.toRoute<DoctorSearchRoute>().clinicId,
+            clinicName =  savedStateHandle.toRoute<DoctorSearchRoute>().clinicName
         )
     )
     val uiState: StateFlow<DoctorsSearchUIState> = _uiState
@@ -137,18 +137,17 @@ class DoctorsSearchViewModel(
         query: String,
         status: EmployeeState,
         onStatisticsUpdated: (EmploymentStatistics)-> Unit,
-    ) = if (uiState.value.clinicId != null){
+    ) =uiState.value.clinicId?.let { clinicId->
         getDoctorsByClinicUseCase(
             query = query,
             status = status,
             onStatisticsUpdated = onStatisticsUpdated,
             clinicId = clinicId
         )
-    } else {
-        getDoctorsUseCase(
+    }?: getDoctorsUseCase(
             query = query,
             status = status,
             onStatisticsUpdated = onStatisticsUpdated
         )
-    }
+
 }

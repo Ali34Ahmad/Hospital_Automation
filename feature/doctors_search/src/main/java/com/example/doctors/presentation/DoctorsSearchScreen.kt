@@ -90,13 +90,6 @@ fun DoctorSearchScreen(
             }
         ),
         DrawerButton(
-            text = R.string.vaccines,
-            image = AppIcons.Outlined.vaccines,
-            onClick = {
-                navigationActions.navigateToVaccines()
-            },
-        ),
-        DrawerButton(
             text = R.string.notifications,
             image = AppIcons.Outlined.notification,
             onClick = {
@@ -118,15 +111,16 @@ fun DoctorSearchScreen(
             },
         ),
         DrawerButton(
-            text = R.string.vaccine_table,
-            image = AppIcons.Outlined.medicalRecords,
+            text = R.string.vaccines,
+            image = AppIcons.Outlined.vaccines,
             onClick = {
-                navigationActions.navigateToMedicalRecords()
+                navigationActions.navigateToVaccines()
             },
         ),
+
         DrawerButton(
-            text = R.string.vaccine_table,
-            image = AppIcons.Outlined.medicalRecords,
+            text = R.string.vaccination_table,
+            image = AppIcons.Outlined.vaccinationTable,
             onClick = {
                 navigationActions.navigateToVaccineTable()
             },

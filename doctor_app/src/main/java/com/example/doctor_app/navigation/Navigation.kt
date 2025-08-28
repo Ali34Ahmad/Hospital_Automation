@@ -124,7 +124,7 @@ fun Navigation() {
 //                    navController.navigate(
 //                        DoctorProfileRoute(
 //                            ProfileAccessType.TOKEN_ACCESS,
-//                            doctorId = null
+//                            id = null
 //                        )
 //                    )
                 },

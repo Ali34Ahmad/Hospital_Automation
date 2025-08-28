@@ -12,8 +12,9 @@ import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.clinics_search.navigation.clinicsSearchScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
-import com.example.doctor_schedule.navigation.DoctorScheduleRoute
-import com.example.doctor_schedule.navigation.doctorScheduleScreen
+import com.example.doctor_schedule.navigation.AppointmentSearchType
+import com.example.doctor_schedule.navigation.ScheduleRoute
+import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.navigateToGuardianProfile
@@ -31,10 +32,17 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = DoctorScheduleRoute()
+        startDestination = ScheduleRoute(
+            id = null,
+            hasAdminAccess = false,
+            searchType = AppointmentSearchType.DOCTOR,
+            name = "Ali Mansoura",
+            speciality = "Dentist",
+            imageUrl = "fake"
+        )
     ) {
         clinicsSearchScreen(
-            onNavigateToDepartmentDetails = {clinicId->
+            onNavigateToDepartmentDetails = { clinicId ->
                 navController.navigateToClinicDetailsScreen(
                     clinicId = clinicId,
                     type = ClinicDetailsType.FOR_REGISTERING
@@ -60,7 +68,11 @@ fun FakeNavigation() {
             },
             onNavigateToCreateNewClinic = {
                 //this feature is not applicable for doctor
-            }
+            },
+            onNavigateToAdminProfile = {
+
+            },
+            onNavigateToVaccineTable = {},
         )
         clinicDetailsScreen(
             onNavigateUp = navController::navigateUp,
@@ -83,8 +95,9 @@ fun FakeNavigation() {
             onNavigateToPrescriptions = {},
             onNavigateToEditClinic = {},
         )
-        doctorScheduleScreen(
-            onNavigateToAppointmentDetails = {appointmentId ->
+
+        scheduleScreen(
+            onNavigateToAppointmentDetails = { appointmentId ->
                 navController.navigateToAppointmentDetails(
                     appointmentId,
                     canEdit = true
@@ -110,7 +123,11 @@ fun FakeNavigation() {
             },
             onNavigateToVaccineTable = {
                 TODO("Need Navigation Route")
-            }
+            },
+            onNavigateToDoctorProfileById = {},
+            onNavigateToUserProfile = {},
+            onNavigateToChildProfile = {},
+            onNavigateUp = {},
         )
         appointmentDetailsScreen(
             onNavigateUp = navController::navigateUp,
