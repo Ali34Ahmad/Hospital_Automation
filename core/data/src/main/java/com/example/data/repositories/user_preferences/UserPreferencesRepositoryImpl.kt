@@ -51,7 +51,6 @@ class UserPreferencesRepositoryImpl(
     override suspend fun <T> executeFlowWithValidToken(
         action: suspend (String) -> Flow<T>
     ): Flow<T> {
-        //here
         val token = this.userPreferencesDataStoreFlow.firstOrNull()?.token
         return if (token == null) {
             throw Exception(NetworkError.UNAUTHORIZED.name)

@@ -8,5 +8,5 @@ import org.koin.dsl.module
 val appModule = module {
     viewModelOf(::AppViewModel)
 
-    single { RoleAppConfig(role = Role.DOCTOR) }
+    factory { RoleAppConfig(role = Role.DOCTOR) }
 }

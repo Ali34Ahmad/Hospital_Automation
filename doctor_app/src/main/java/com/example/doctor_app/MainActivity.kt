@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
 import com.example.datastore.utility.Crypto
 import com.example.doctor_app.main.AppViewModel
+import com.example.doctor_app.navigation.FakeNavigation
 import com.example.doctor_app.navigation.Navigation
 import com.example.ui.theme.Hospital_AutomationTheme
 import org.koin.androidx.compose.koinViewModel

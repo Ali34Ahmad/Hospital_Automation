@@ -9,6 +9,7 @@ interface MedicalRecordsApiService {
         token: String,
         page: Int,
         limit: Int,
+        name:String?,
     ) : Result<GetAllMedicalRecordsResponseDto, NetworkError>
 
 }

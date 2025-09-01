@@ -8,5 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface MedicalRecordRepository {
     suspend fun getAllMedicalRecordsForCurrentDoctor(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
+        name:String?,
     ): Flow<PagingData<MedicalRecord>>
 }

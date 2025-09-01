@@ -11,12 +11,17 @@ import com.example.model.medical_record.MedicalRecord
 import com.example.model.user.UserMainInfo
 import com.example.util.UiText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,25 +33,41 @@ class MedicalRecordsViewModel(
     val uiState: StateFlow<MedicalRecordsUiState> = _uiState.asStateFlow()
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
+    private val queryFlow = uiState.map { it.searchText }.distinctUntilChanged()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val medicalRecordsFlow: Flow<PagingData<MedicalRecord>> =
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+    val medicalRecordsFlow: Flow<PagingData<MedicalRecord>> = combine(
+        queryFlow,
         refreshTrigger.onStart { emit(Unit) }
-            .flatMapLatest {
-                updateIsRefreshing(false)
-                loadData(
-                    onMainUserInfoChanged = { userMainInfo ->
-                        updateUserMainInfo(userMainInfo)
-                    }
-                )
-            }
-            .cachedIn(viewModelScope)
+    ) { query, _ ->
+        query
+    }
+        .debounce(500)
+        .flatMapLatest {queryText->
+            updateIsRefreshing(false)
+            loadData(
+                onMainUserInfoChanged = { userMainInfo ->
+                    updateUserMainInfo(userMainInfo)
+                },
+                searchText =queryText
+            )
+        }
+        .cachedIn(viewModelScope)
 
     suspend fun loadData(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
-    ) = getAllMedicalRecordsUseCase(
-        onMainUserInfoChanged
-    )
+        searchText: String?,
+    ): Flow<PagingData<MedicalRecord>> {
+        val name = if (
+            searchText?.isNotBlank() == true &&
+            searchText.isNotEmpty() == true
+        ) searchText
+        else null
+        return getAllMedicalRecordsUseCase(
+            onMainUserInfoChanged = onMainUserInfoChanged,
+            name = name,
+        )
+    }
 
     fun getUiActions(
         navActions: MedicalRecordsNavigationUiActions,
@@ -59,6 +80,10 @@ class MedicalRecordsViewModel(
         object : MedicalRecordsBusinessUiActions {
             override fun onUpdateSearchText(searchText: String) {
                 updateSearchText(searchText)
+            }
+
+            override fun onDeleteQuery() {
+                updateSearchText("")
             }
 
             override fun onChangeToolBarMode(topBarMode: TopBarState) {
@@ -79,7 +104,23 @@ class MedicalRecordsViewModel(
             override fun clearToastMessage() {
                 updateToastMessage(null)
             }
+
+            override fun onShowSearchBar() {
+                showSearchBar()
+            }
+
+            override fun onHideSearchBar() {
+                hideSearchBar()
+            }
         }
+
+    private fun showSearchBar() {
+        _uiState.value = _uiState.value.copy(topBarMode = TopBarState.SEARCH)
+    }
+
+    private fun hideSearchBar() {
+        _uiState.value = _uiState.value.copy(topBarMode = TopBarState.DEFAULT)
+    }
 
     private fun updateUserMainInfo(userMainInfo: UserMainInfo) {
         _uiState.update { it.copy(userMainInfo = userMainInfo) }

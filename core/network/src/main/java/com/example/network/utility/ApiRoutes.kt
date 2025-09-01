@@ -78,7 +78,7 @@ object ApiRoutes {
         const val SHOW_ALL_CLINICS = "$DOCTOR/show-all-clinics"
         const val GET_CLINIC_BY_ID = "$DOCTOR/view-single-clinic-details"
 
-        const val MEDICAL_PRESCRIPTIONS = "$DOCTOR/doctor_all_prescriptions"
+        const val GET_PRESCRIPTIONS = "$DOCTOR/doctor_all_prescriptions"
         const val PRESCRIPTION_DETAILS = "$DOCTOR/prescription-details"
 
         const val ALL_VACCINES = "$DOCTOR/view-all-vaccines"
@@ -126,7 +126,7 @@ object ApiRoutes {
         const val GET_ADMIN_DETAILS_FOR = "$ADMIN/admin-get-details-by-id-for"
         const val ALL_VACCINES = "$ADMIN/show-all-vaccines"
         const val GET_VACCINE_BY_ID = "$ADMIN/get-vaccine-by-id"
-        const val MEDICAL_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
+        const val GET_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
         const val CHILDREN_BY_GUARDIAN_ID = "$ADMIN/show-children-for-user"
     }
 
@@ -320,8 +320,8 @@ object ApiRoutes {
     fun getPrescriptionsEndPointForRole(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
-            RoleDto.DOCTOR -> Doctor.MEDICAL_PRESCRIPTIONS
-            RoleDto.ADMIN -> Admin.MEDICAL_PRESCRIPTIONS
+            RoleDto.DOCTOR -> Doctor.GET_PRESCRIPTIONS
+            RoleDto.ADMIN -> Admin.GET_PRESCRIPTIONS
         }
     }
 

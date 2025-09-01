@@ -9,14 +9,18 @@ import com.example.add_new_vaccine.navigation.addNewVaccineScreen
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
+import com.example.appointment_details.navigation.appointmentDetailsScreen
+import com.example.appointment_details.navigation.navigateToAppointmentDetails
+import com.example.appointment_details.navigation.navigateToAppointmentDetailsReplacementCurrent
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.clinic_details.navigation.clinicDetailsScreen
 import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
+import com.example.clinics_search.navigation.clinicsSearchScreen
+import com.example.clinics_search.navigation.navigateToClinicsSearch
 import com.example.vaccines.navigation.vaccinesScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
-import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.doctorScheduleScreen
@@ -32,47 +36,53 @@ import com.example.employment_history.navigation.navigateToEmploymentHistoryScre
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
-import com.example.generic_vaccination_table.navigation.GenericVaccinationTableRoute
 import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
+import com.example.generic_vaccination_table.navigation.navigateToGenericVaccinationTableScreen
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.guardianProfileScreen
 import com.example.guardian_profile.navigation.navigateToGuardianProfile
 import com.example.login.navigation.LoginRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
-import com.example.prescriptions.navigation.PrescriptionsScreen
+import com.example.medical_diagnosis.navigation.diagnosisScreen
+import com.example.medical_diagnosis.navigation.navigateToDiagnosisScreen
+import com.example.medical_records.navigation.MedicalRecordsRoute
+import com.example.prescriptions.navigation.prescriptionsScreen
 import com.example.medical_records.navigation.medicalRecordsScreen
 import com.example.medical_records.navigation.navigateToMedicalRecordsScreen
 import com.example.medicine_details.navigation.medicineDetailsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
+import com.example.medicines_search.navigation.medicinesScreen
+import com.example.medicines_search.navigation.navigateToMedicineSearchScreenReplacingCurrent
 import com.example.navigation.extesion.navigateToCallApp
 import com.example.navigation.extesion.navigateToEmailApp
+import com.example.pharmacies.navigation.navigateToPharmacies
+import com.example.pharmacies.navigation.pharmaciesScreen
 import com.example.pharmacy_details.navigation.PharmacyAccessType
 import com.example.pharmacy_details.navigation.navigateToPharmacyDetailsScreen
 import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
 import com.example.prescription_details.navigation.navigateToPrescriptionDetailsScreen
 import com.example.prescription_details.navigation.prescriptionDetailsScreen
+import com.example.prescriptions.navigation.PrescriptionsRoute
 import com.example.prescriptions.navigation.navigateToPrescriptionsScreen
 import com.example.reset_password.navigation.navigateToResetPasswordScreen
 import com.example.reset_password.navigation.resetPasswordScreen
 import com.example.upload_employee_documents.navigation.navigateToUploadEmployeeDocumentsScreen
 import com.example.upload_employee_documents.navigation.uploadEmploymentDocumentsScreen
-import com.example.upload_profile_image.navigation.navigateToUploadEmployeeProfileImageScreen
+import com.example.upload_profile_image.navigation.navigateToUploadProfileImageScreen
 import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 import com.example.vaccine_details_screen.navigation.VaccinePreviousScreen
 import com.example.vaccine_details_screen.navigation.navigateToVaccineDetailsScreen
 import com.example.vaccine_details_screen.navigation.vaccineDetailsScreen
+import com.example.vaccines.navigation.navigateToVaccinesScreen
 
 @Composable
 fun Navigation() {
     val context = LocalContext.current
-
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = GenericVaccinationTableRoute(
-            genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS,
-        ),
+        startDestination = MedicalRecordsRoute
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -115,17 +125,13 @@ fun Navigation() {
 
             addResidentialAddressScreen(
                 onNavigateToUploadProfileImageScreen = {
-                    navController.navigateToUploadEmployeeProfileImageScreen()
+                    navController.navigateToUploadProfileImageScreen()
                 }
             )
 
             uploadProfileImageScreen(
                 onNavigateToHomeScreenScreen = {
-//                    navController.navigateToScheduleScreen()
-                    navController.navigateToDoctorProfileScreen(
-                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
-                        doctorId = null
-                    )
+                    navController.navigateToClinicsSearch()
                 }
             )
 
@@ -134,16 +140,11 @@ fun Navigation() {
                     navController.navigateToEnterEmailScreen()
                 },
                 onNavigateToHomeScreen = {
-                    navController.navigateToDoctorProfileScreen(
-                        doctorId = null,
-                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS
+                    navController.navigateToPrescriptionsScreen(
+                        patientId = null,
+                        childId = null,
                     )
-//                    navController.navigate(
-//                        DoctorProfileRoute(
-//                            ProfileAccessType.TOKEN_ACCESS,
-//                            doctorId = null
-//                        )
-//                    )
+//                    navController.navigateToScheduleScreen()
                 },
                 onNavigateToToSignUpScreen = {
                     navController.navigateToSignUpScreen()
@@ -161,10 +162,7 @@ fun Navigation() {
 
             resetPasswordScreen(
                 onNavigateToHomeScreen = {
-                    navController.navigateToDoctorProfileScreen(
-                        doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
-                        doctorId = null
-                    )
+                    navController.navigateToScheduleScreen()
                 }
             )
         }
@@ -207,29 +205,11 @@ fun Navigation() {
                 navController.navigateUp()
             }
         )
-        vaccineDetailsScreen(
-            onNavigateToVaccinationTableScreen = {
-                navController.navigateToDoctorProfileScreen(
-                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
-                    doctorId = null,
-                )
-            },
-            onNavigateUp = {
-//                navController.navigateToVaccinesScreen()
-            },
-        )
-
-        PrescriptionsScreen(
-            onNavigateUp = {
-
-            },
-            onNavigateToPrescriptionDetailsScreen = { id ->
-                navController.navigateToPrescriptionDetailsScreen(id)
-            }
-        )
 
         vaccinesScreen(
-            onNavigateUp = {},
+            onNavigateUp = {
+                navController.navigateUp()
+            },
             onNavigateToVaccineDetailsScreen = { vaccineId ->
                 navController.navigateToVaccineDetailsScreen(
                     vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
@@ -238,35 +218,24 @@ fun Navigation() {
             }
         )
 
-        pharmacyDetailsScreen(
-            onNavigateUp = { },
-            onNavigateToEmailApp = { email, subject ->
-                context.navigateToEmailApp(email, subject)
+        vaccineDetailsScreen(
+            onNavigateToVaccinationTableScreen = {
+                navController.navigateToGenericVaccinationTableScreen(
+                    genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
+                )
             },
-            onNavigateToCallApp = { phoneNumber ->
-                context.navigateToCallApp(phoneNumber)
+            onNavigateUp = {
+                navController.navigateUp()
             },
-            onNavigateToFulfilledPrescriptionsScreen = {},
-            onNavigateToMedicinesScreen = {},
-            onNavigateToEmploymentHistoryScreen = {},
         )
 
-        employmentHistoryScreen(
-            onNavigateToAcceptedByAdminProfileScreen = { },
-            onNavigateToToResignedByAdminProfileScreen = { },
-            onNavigateUp = { },
-            onNavigateToToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
-                if (suspendedById != currentEmployeeId) {
-                    navController.navigateToAdminProfileScreen(suspendedById)
-                } else {
-                    navController.navigateUp()
-                }
+        prescriptionsScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToPrescriptionDetailsScreen = { id ->
+                navController.navigateToPrescriptionDetailsScreen(id)
             }
-        )
-        medicalRecordsScreen(
-            onNavigateUp = { },
-            onNavigateToAppointmentsScreen = { patientId, childId -> },
-            onNavigateToPrescriptionsScreen = { patientId, childId -> }
         )
 
         prescriptionDetailsScreen(
@@ -275,7 +244,7 @@ fun Navigation() {
                 navController.navigateToGuardianProfile(userId, UserProfileMode.VIEW_ONLY, null)
             },
             onNavigateToChildProfile = { childId ->
-                navController.navigateToChildProfile(childId,hasAdminAccess=false)
+                navController.navigateToChildProfile(childId, hasAdminAccess = false)
             },
             onNavigateToFulfillingPharmacy = { pharmacyId ->
                 navController.navigateToPharmacyDetailsScreen(
@@ -288,59 +257,269 @@ fun Navigation() {
             },
         )
 
+        employmentHistoryScreen(
+            onNavigateToAcceptedByAdminProfileScreen = { adminId ->
+                navController.navigateToAdminProfileScreen(adminId)
+            },
+            onNavigateToToResignedByAdminProfileScreen = { adminId ->
+                navController.navigateToAdminProfileScreen(adminId)
+            },
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+                if (suspendedById != currentEmployeeId) {
+                    navController.navigateToAdminProfileScreen(suspendedById)
+                } else {
+                    navController.navigateUp()
+                }
+            }
+        )
+
+        medicalRecordsScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToAppointmentsScreen = { patientId, childId ->
+                navController.navigateToScheduleScreen()
+            },
+            onNavigateToPrescriptionsScreen = { patientId, childId ->
+                navController.navigateToPrescriptionsScreen(patientId, childId)
+            }
+        )
+
         guardianProfileScreen(
             onNavigateUp = { navController.navigateUp() },
             onNavigateToChildrenScreen = { },
             onNavigateToAddChildScreen = { },
-            onNavigateToAppointments = {  },
-            onNavigateToPrescriptions = {  },
-            onNavigateToMedicalRecord = {  },
-        )
-
-        childProfileScreen(
-            navigateToAddGuardianScreen = {},
-            navigateToEmployeeProfileScreen = { },
-            navigateToGuardianScreen = { },
-            navigateUp = { navController.navigateUp() },
-            onNavigateToVaccinationTable = {  },
-            onNavigateToAppointments = {  },
-            onNavigateToPrescriptions = {  },
-            onNavigateToMedicalRecords = {  },
-            onNavigateToAppointmentDetails = {  },
-        )
-
-        medicineDetailsScreen(
-            onNavigateUp = {
-                navController.navigateUp()
+            onNavigateToAppointments = { patientId ->
+                navController.navigateToScheduleScreen()
+            },
+            onNavigateToPrescriptions = { patientId ->
+                navController.navigateToPrescriptionsScreen(patientId = patientId, null)
+            },
+            onNavigateToMedicalRecord = { patientId ->
+                navController.navigateToPrescriptionsScreen(patientId = patientId, null)
             },
         )
 
-        doctorScheduleScreen(
-            onNavigateToAppointmentDetails = {},
-            onNavigateToDoctorProfile = {},
-            onNavigateToMedicalRecords = {},
-            onNavigateToPrescriptions = {},
-            onNavigateToVaccines = {},
-            onNavigateToNotifications = {},
-            onNavigateToVaccineTable = {},
+        childProfileScreen(
+            navigateToAddGuardianScreen = { },
+            navigateToEmployeeProfileScreen = { },
+            navigateToGuardianScreen = { },
+            navigateUp = { navController.navigateUp() },
+            onNavigateToVaccinationTable = {},
+            onNavigateToAppointments = {
+                navController.navigateToScheduleScreen()
+            },
+            onNavigateToPrescriptions = { childId ->
+                navController.navigateToPrescriptionsScreen(patientId = null, childId = childId)
+            },
+            onNavigateToMedicalRecords = { childId ->
+                navController.navigateToMedicalRecordsScreen()
+            },
+            onNavigateToAppointmentDetails = { appointmentId ->
+                navController.navigateToAppointmentDetails(
+                    appointmentId = appointmentId,
+                    canEdit = false
+                )
+            },
+        )
+
+        genericVaccineDetailsScreen(
+            onNavigateToVaccineDetailsScreen = { vaccineId ->
+                navController.navigateToVaccineDetailsScreen(
+                    vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
+                    vaccineId = vaccineId
+                )
+            },
+            onNavigateUp = {
+                navController.navigateUp()
+            }
+        )
+
+        clinicsSearchScreen(
+            onNavigateToDepartmentDetails = { clinicId ->
+                navController.navigateToClinicDetailsScreen(
+                    clinicId = clinicId,
+                    type = ClinicDetailsType.FOR_REGISTERING
+                )
+            },
+            onNavigateToDoctorProfile = {
+                navController.navigateToDoctorProfileScreen(
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+                    doctorId = null
+                )
+            },
+            onNavigateToNotifications = {
+
+            },
+            onNavigateToMedicalRecords = {
+                navController.navigateToMedicalRecordsScreen()
+            },
+            onNavigateToPrescriptions = {
+                navController.navigateToPrescriptionsScreen(null, null)
+            },
+            onNavigateToVaccines = {
+                navController.navigateToVaccinesScreen()
+            },
+            onNavigateToCreateNewClinic = {
+                //this feature is not applicable for doctor
+            }
         )
 
         clinicDetailsScreen(
-            onNavigateUp = {},
-            onNavigateToDoctorProfile = {},
-            onNavigateToScheduleScreen = {},
-            onNavigateToVaccines = {},
+            onNavigateUp = navController::navigateUp,
+            onNavigateToDoctorProfile = {
+                navController.navigateToDoctorProfileScreen(
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+                    doctorId = null
+                )
+            },
+            onNavigateToScheduleScreen = {
+                navController.navigateToScheduleScreen()
+            },
+            onNavigateToVaccines = {
+                navController.navigateToVaccinesScreen()
+            },
             onNavigateToAllDoctors = {},
             onNavigateToAllAppointments = {},
             onNavigateToMedicalRecords = {},
             onNavigateToContractHistory = {},
             onNavigateToPrescriptions = {},
-            onNavigateToEditClinic = {}
+            onNavigateToEditClinic = {},
         )
 
-        genericVaccineDetailsScreen(
-            onNavigateToVaccineDetailsScreen = {  },
-            onNavigateUp = {  }
+        doctorScheduleScreen(
+            onNavigateToAppointmentDetails = { appointmentId ->
+                navController.navigateToAppointmentDetails(
+                    appointmentId,
+                    canEdit = true
+                )
+            },
+            onNavigateToDoctorProfile = {
+                navController.navigateToDoctorProfileScreen(
+                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+                    doctorId = null
+                )
+            },
+            onNavigateToPrescriptions = {
+                navController.navigateToPrescriptionsScreen(null, null)
+            },
+            onNavigateToVaccines = {
+                navController.navigateToVaccinesScreen()
+            },
+            onNavigateToNotifications = {
+            },
+            onNavigateToMedicalRecords = {
+                navController.navigateToMedicalRecordsScreen()
+            },
+            onNavigateToVaccineTable = {
+                navController.navigateToGenericVaccinationTableScreen(
+                    genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
+                )
+            }
         )
+        appointmentDetailsScreen(
+            onNavigateUp = navController::navigateUp,
+            onNavigateToDepartmentDetails = { clinicId ->
+                navController.navigateToClinicDetailsScreen(
+                    clinicId = clinicId,
+                    type = ClinicDetailsType.JUST_INFO
+                )
+            },
+            onNavigateToVaccineDetails = { vaccineId ->
+                navController.navigateToVaccineDetailsScreen(
+                    vaccineId = vaccineId,
+                    vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS
+                )
+            },
+            onNavigateToAddMedicalDiagnosis = { appointmentId, fullName, patientId, childId, canSkip ->
+                navController.navigateToDiagnosisScreen(
+                    appointmentId = appointmentId,
+                    fullName = fullName,
+                    patientId = patientId,
+                    childId = childId,
+                    canSkip = canSkip
+                )
+            },
+            onNavigateToGuardianProfile = { guardianId ->
+                navController.navigateToGuardianProfile(
+                    guardianId = guardianId,
+                    userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
+                    childId = null
+                )
+            },
+            onNavigateToDoctorSchedule = {
+                navController.navigateToScheduleScreen()
+            }
+        )
+        diagnosisScreen(
+            onNavigateToAppointmentDetails = { appointmentId ->
+                navController.navigateToAppointmentDetailsReplacementCurrent(
+                    appointmentId = appointmentId,
+                    canEdit = true
+                )
+            },
+            onNavigateToMedicinesSearchScreen = { childId, patientId, appointmentId ->
+                navController.navigateToMedicineSearchScreenReplacingCurrent(
+                    childId = childId,
+                    patientId = patientId,
+                    appointmentId = appointmentId
+                )
+            }
+        )
+
+        medicinesScreen(
+            onNavigateUp = navController::navigateUp,
+            onNavigateToPharmacies = { medicineId, medicineName ->
+                navController.navigateToPharmacies(
+                    medicineId = medicineId,
+                    medicineName = medicineName
+                )
+            },
+            onNavigateToMedicineDetails = { medicineId ->
+                navController.navigateToMedicineDetails(
+                    medicineId = medicineId
+                )
+            },
+            onNavigateToAppointmentDetails = { appointmentId ->
+                navController.navigateToAppointmentDetailsReplacementCurrent(
+                    appointmentId = appointmentId,
+                    canEdit = true
+                )
+            }
+        )
+        pharmaciesScreen(
+            onNavigateUp = navController::navigateUp,
+            onNavigateToPharmacyDetails = { pharmacyId ->
+                navController.navigateToPharmacyDetailsScreen(
+                    pharmacyId = pharmacyId,
+                    pharmacyAccessType = PharmacyAccessType.NON_OWNER_ACCESS
+                )
+            },
+        )
+
+        pharmacyDetailsScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToEmailApp = { email, subject ->
+                context.navigateToEmailApp(email, subject)
+            },
+            onNavigateToCallApp = { phoneNumber ->
+                context.navigateToCallApp(phoneNumber)
+            },
+            onNavigateToFulfilledPrescriptionsScreen = {
+            },
+            onNavigateToMedicinesScreen = {},
+            onNavigateToEmploymentHistoryScreen = {},
+        )
+
+        medicineDetailsScreen(
+            onNavigateUp = navController::navigateUp
+        )
+
+
     }
 }

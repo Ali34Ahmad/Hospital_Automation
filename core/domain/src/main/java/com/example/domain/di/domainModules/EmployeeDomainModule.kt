@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val employeeDomainModule = module {
     includes(
-        sharedDomainModule,
+        domainModule,
         authUseCasesModule,
         baseSignUpModule,
         addResidentialAddressUseCaseModule,

@@ -30,6 +30,6 @@ interface GenericVaccinationTableBusinessUiActions {
 }
 
 interface GenericVaccinationTableNavigationUiActions {
-    fun navigateToVaccineDetailsScreen()
+    fun navigateToVaccineDetailsScreen(vaccineId: Int)
     fun navigateUp()
 }

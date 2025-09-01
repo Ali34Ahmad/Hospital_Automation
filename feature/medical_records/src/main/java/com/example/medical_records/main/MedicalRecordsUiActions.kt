@@ -14,10 +14,13 @@ class MedicalRecordsUiActions(
 
 interface MedicalRecordsBusinessUiActions {
     fun onUpdateSearchText(searchText: String)
+    fun onDeleteQuery()
     fun onChangeToolBarMode(topBarMode:TopBarState)
     fun onRefresh()
     fun onUpdateScreenState(screenState: ScreenState)
     fun clearToastMessage()
+    fun onShowSearchBar()
+    fun onHideSearchBar()
 }
 
 interface MedicalRecordsNavigationUiActions : AppNavigationUiAction {

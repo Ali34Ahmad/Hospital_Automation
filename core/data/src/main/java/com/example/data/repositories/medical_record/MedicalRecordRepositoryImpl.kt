@@ -19,6 +19,7 @@ class MedicalRecordRepositoryImpl(
 ) : MedicalRecordRepository {
     override suspend fun getAllMedicalRecordsForCurrentDoctor(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
+        name:String?,
     ): Flow<PagingData<MedicalRecord>> =
         userPreferencesRepository.executeFlowWithValidToken { token ->
             Pager(
@@ -30,6 +31,7 @@ class MedicalRecordRepositoryImpl(
                         token = token,
                         medicalRecordsApiService = medicalRecordsApiService,
                         onMainUserInfoChanged=onMainUserInfoChanged,
+                        name = name,
                     )
                 }
             ).flow

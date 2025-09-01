@@ -36,7 +36,7 @@ import org.koin.dsl.module
 
 val adminDataModule = module {
     includes(
-        commonDataModule,
+        dataModule,
         adminDomainModule,
         adminNetworkModule,
     )

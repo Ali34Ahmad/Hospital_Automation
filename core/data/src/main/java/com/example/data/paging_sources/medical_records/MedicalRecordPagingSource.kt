@@ -17,6 +17,7 @@ class MedicalRecordPagingSource(
     private val token: String,
     private val medicalRecordsApiService: MedicalRecordsApiService,
     private val onMainUserInfoChanged: (UserMainInfo) -> Unit,
+    private val name:String?,
 ): PagingSource<Int, MedicalRecord>(){
     override fun getRefreshKey(state: PagingState<Int, MedicalRecord>): Int? {
         return  state.anchorPosition?.let { anchorPosition->
@@ -35,6 +36,7 @@ class MedicalRecordPagingSource(
                 token = token,
                 page = nextPageNumber,
                 limit = params.loadSize,
+                name=name,
             ).onSuccess { response ->
                 list = response.data.map { item ->
                     item.toMedicalRecord()

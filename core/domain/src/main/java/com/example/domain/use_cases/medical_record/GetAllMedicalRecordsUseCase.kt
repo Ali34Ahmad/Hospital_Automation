@@ -11,9 +11,11 @@ class GetAllMedicalRecordsUseCase(
 ) {
     suspend operator fun invoke(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
+        name:String?,
     ): Flow<PagingData<MedicalRecord>> {
         return medicalRecordRepository.getAllMedicalRecordsForCurrentDoctor(
-            onMainUserInfoChanged=onMainUserInfoChanged
+            onMainUserInfoChanged=onMainUserInfoChanged,
+            name = name,
         )
     }
 }

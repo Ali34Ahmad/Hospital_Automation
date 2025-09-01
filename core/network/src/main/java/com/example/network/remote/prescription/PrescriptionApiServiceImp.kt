@@ -78,17 +78,49 @@ class PrescriptionApiServiceImp(
         token: String,
         page: Int,
         limit: Int,
-        role: RoleDto
+        role: RoleDto,
+        patientId: Int?,
+        childId: Int?,
+        name: String?,
+        doctorId: Int?,
     ): Result<GetAllPrescriptionsResponseDto, NetworkError> = try {
-        val response = client.get(ApiRoutes.getPrescriptionsEndPointForRole(role)) {
+        val routeSuffix=if (doctorId!=null) "/$doctorId"
+        else ""
+        val response = client.get("${ApiRoutes.getPrescriptionsEndPointForRole(role)}$routeSuffix") {
             url {
                 parameter("page", page)
                 parameter("limit", limit)
-                parameter("filter", "NONE")
+                when {
+                    name != null -> {
+                        parameter("filter", "NAME")
+                        parameter("name", name)
+                    }
+
+                    patientId != null -> {
+                        parameter("filter", "ID")
+                        parameter(
+                            "who",
+                            "patient"
+                        )
+                        parameter("id", patientId)
+                    }
+
+                    childId != null -> {
+                        parameter("filter", "ID")
+                        parameter(
+                            "who",
+                            "child"
+                        )
+                        parameter("id", childId)
+                    }
+
+                    else -> {
+                        parameter("filter","NONE")
+                    }
+                }
             }
             contentType(ContentType.Application.Json)
             bearerAuth(token)
-            Log.v("GetAllMedicalPrescriptionsApi:", token)
         }
         when (response.status.value) {
             in 200..299 -> {

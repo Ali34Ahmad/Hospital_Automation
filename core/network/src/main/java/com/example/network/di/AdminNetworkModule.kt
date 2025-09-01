@@ -33,12 +33,11 @@ import com.example.network.remote.vaccine.VaccineApiServiceImpl
 import com.example.network.utility.file.FileReader
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.binds
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val adminNetworkModule = module {
-    includes(sharedNetworkModule)
+    includes(networkModule)
     singleOf(::AdminDoctorApiServiceImp){bind<AdminDoctorApiService>()}
     singleOf(::AdminEmployeeApiServiceImp){bind<AdminEmployeeApiService>()}
     singleOf(::AdminClinicApiServiceImp){bind<AdminClinicApiService>()}

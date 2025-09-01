@@ -30,6 +30,10 @@ fun mockAllVaccinesBusinessUiActions() = object :
 
     }
 
+    override fun onDeleteQuery() {
+
+    }
+
     override fun onChangeToolBarMode(topBarMode: TopBarState) {
 
     }
@@ -43,6 +47,14 @@ fun mockAllVaccinesBusinessUiActions() = object :
     }
 
     override fun clearToastMessage() {
+
+    }
+
+    override fun onShowSearchBar() {
+
+    }
+
+    override fun onHideSearchBar() {
 
     }
 

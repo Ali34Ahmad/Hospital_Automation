@@ -24,7 +24,7 @@ val adminDomainModule = module {
         authUseCasesModule,
         validatorUseCasesModule,
         addResidentialAddressUseCaseModule,
-        sharedDomainModule,
+        domainModule,
         adminDoctorUseCases,
         adminEmployeeUseCases,
         adminClinicUseCases,

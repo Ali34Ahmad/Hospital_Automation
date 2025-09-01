@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -30,16 +32,23 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateDateFormat
 import com.example.ext.toAppropriateNameFormat
+import com.example.model.ActionIcon
 import com.example.model.enums.ScreenState
+import com.example.model.enums.TopBarState
 import com.example.model.prescription.PrescriptionWithUser
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.card.PrescriptionCard
+import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
+import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
+import com.example.ui_components.components.topbars.SearchTopBar
 
 
 @Composable
@@ -86,14 +95,46 @@ fun PrescriptionsScreen(
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {
-            HospitalAutomationTopBar(
-                title = uiState.userMainInfo?.fullName?.toAppropriateNameFormat()?:"",
-                onNavigationIconClick = { uiActions.navigateUp() },
-                modifier = Modifier.fillMaxWidth(),
-                navigationIcon = AppIcons.Outlined.arrowBack,
-                imageUrl = uiState.userMainInfo?.imageUrl,
-                subTitle = uiState.userMainInfo?.subInfo,
-            )
+            when (uiState.topBarMode) {
+                TopBarState.DEFAULT -> {
+                    val showSearchIcon = uiState.screenState == ScreenState.SUCCESS &&
+                            uiState.childId == null && uiState.patientId == null
+                    HospitalAutomationTopBar(
+                        title = uiState.userMainInfo?.fullName?.toAppropriateNameFormat() ?: "",
+                        onNavigationIconClick = { uiActions.navigateUp() },
+                        modifier = Modifier.fillMaxWidth(),
+                        navigationIcon = AppIcons.Outlined.arrowBack,
+                        imageUrl = uiState.userMainInfo?.imageUrl,
+                        subTitle = uiState.userMainInfo?.subInfo,
+                        actionIcons = if (showSearchIcon)
+                            listOf(
+                                ActionIcon(
+                                    icon = AppIcons.Outlined.search,
+                                    onCLick = { uiActions.onShowSearchBar() }
+                                )
+                            ) else emptyList()
+                    )
+                }
+
+                TopBarState.SEARCH ->
+                    HospitalAutomationTopBarWithSearchBar(
+                        query = uiState.searchText,
+                        onQueryChange = { uiActions.onUpdateSearchText(it) },
+                        onTrailingIconClick = { uiActions.onDeleteQuery() },
+                        placeholderText = R.string.patient_name,
+                        onNavigationIconCLick = {
+                            when (uiState.topBarMode) {
+                                TopBarState.SEARCH -> {
+                                    uiActions.onDeleteQuery()
+                                    uiActions.onHideSearchBar()
+                                }
+
+                                TopBarState.DEFAULT -> uiActions.navigateUp()
+                            }
+                        },
+                        modifier = modifier,
+                    )
+            }
         }
     ) { contentPadding ->
         Surface(
@@ -102,17 +143,15 @@ fun PrescriptionsScreen(
                 .padding(contentPadding),
         ) {
 
-            if (uiState.screenState == ScreenState.LOADING) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize)
+            when (uiState.screenState) {
+                ScreenState.IDLE -> null
+                ScreenState.LOADING ->
+                    FetchingDataItem(
+                        Modifier
+                            .fillMaxSize()
                     )
-                }
-            } else if (uiState.screenState == ScreenState.ERROR) {
-                PullToRefreshBox(
+
+                ScreenState.ERROR -> PullToRefreshBox(
                     refreshing = uiState.isRefreshing,
                     onRefresh = { uiActions.onRefresh() }
                 ) {
@@ -139,54 +178,69 @@ fun PrescriptionsScreen(
                         )
                     }
                 }
-            }
-            if (uiState.screenState == ScreenState.SUCCESS) {
-                PullToRefreshBox(
-                    refreshing = uiState.isRefreshing,
-                    onRefresh = { uiActions.onRefresh() }
-                ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
-                        contentPadding = PaddingValues(
-                            vertical = MaterialTheme.spacing.medium16,
-                            horizontal = MaterialTheme.spacing.medium16,
-                        )
+
+                ScreenState.SUCCESS -> if (prescriptions.itemCount > 0) {
+                    PullToRefreshBox(
+                        refreshing = uiState.isRefreshing,
+                        onRefresh = { uiActions.onRefresh() }
                     ) {
-                        items(prescriptions.itemCount) { index ->
-                            val medicalPrescription = prescriptions[index]
-                            when (medicalPrescription) {
-                                null -> Unit
-                                else -> PrescriptionCard(
-                                    onClick = {
-                                        uiActions.navigateToPrescriptionDetailsScreen(
-                                            prescriptionId = medicalPrescription.prescription.id
-                                        )
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    imgUrl = medicalPrescription.userMainInfo?.imageUrl ?: "",
-                                    name = medicalPrescription.userMainInfo?.fullName?.toAppropriateNameFormat()
-                                        ?: medicalPrescription.childMainInfo?.fullName?.toAppropriateNameFormat()
-                                        ?: "",
-                                    numberOfMedicines = medicalPrescription.prescription.numberOfMedicines
-                                        ?: -1,
-                                    date = medicalPrescription.prescription.createdAt.toAppropriateDateFormat(),
-                                    isChild = medicalPrescription.childMainInfo!=null,
-                                )
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                            contentPadding = PaddingValues(
+                                vertical = MaterialTheme.spacing.medium16,
+                                horizontal = MaterialTheme.spacing.medium16,
+                            )
+                        ) {
+                            items(prescriptions.itemCount) { index ->
+                                val medicalPrescription = prescriptions[index]
+                                when (medicalPrescription) {
+                                    null -> Unit
+                                    else -> PrescriptionCard(
+                                        onClick = {
+                                            uiActions.navigateToPrescriptionDetailsScreen(
+                                                prescriptionId = medicalPrescription.prescription.id
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        imgUrl = medicalPrescription.userMainInfo?.imageUrl ?: "",
+                                        name = medicalPrescription.userMainInfo?.fullName?.toAppropriateNameFormat()
+                                            ?: medicalPrescription.childMainInfo?.fullName?.toAppropriateNameFormat()
+                                            ?: "",
+                                        numberOfMedicines = medicalPrescription.prescription.numberOfMedicines
+                                            ?: -1,
+                                        date = medicalPrescription.prescription.createdAt.toAppropriateDateFormat(),
+                                        isChild = medicalPrescription.childMainInfo != null,
+                                    )
+                                }
                             }
-                        }
-                        if (prescriptions.loadState.append == LoadState.Loading) {
-                            item {
-                                SmallCircularProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(MaterialTheme.spacing.medium16)
-                                )
+                            if (prescriptions.loadState.append == LoadState.Loading) {
+                                item {
+                                    SmallCircularProgressIndicator(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(MaterialTheme.spacing.medium16)
+                                    )
+                                }
                             }
                         }
                     }
+                } else PullToRefreshColumn(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxHeight(),
+                    refreshing = uiState.isRefreshing,
+                    onRefresh = {
+                        uiActions.onRefresh()
+                    },
+                ) {
+                    ErrorComponent(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        title = stringResource(R.string.no_matching_result),
+                        description = stringResource(R.string.no_appointment_subtitle)
+                    )
                 }
             }
         }

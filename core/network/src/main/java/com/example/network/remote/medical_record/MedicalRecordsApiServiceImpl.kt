@@ -20,12 +20,19 @@ class MedicalRecordsApiServiceImpl(
     override suspend fun getAllMedicalRecordsForCurrentDoctor(
         token: String,
         page: Int,
-        limit: Int
+        limit: Int,
+        name:String?,
     ): Result<GetAllMedicalRecordsResponseDto, NetworkError> = try {
         val response = client.get(ApiRoutes.Doctor.ALL_MEDICAL_RECORDS) {
             url{
                 parameter("page",page)
                 parameter("limit",limit)
+                if (name==null){
+                    parameter("filter","NONE")
+                }else{
+                    parameter("filter","NAME")
+                    parameter("name",name)
+                }
             }
             contentType(ContentType.Application.Json)
             bearerAuth(token)
