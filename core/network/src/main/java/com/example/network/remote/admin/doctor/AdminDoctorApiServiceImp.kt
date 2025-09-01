@@ -49,7 +49,7 @@ class AdminDoctorApiServiceImp(
         doApiCall(
             tag = ADMIN_DOCTOR_TAG
         ) {
-            client.get(ApiRoutes.Admin.GET_DOCTORS_IN_SPECIFIC_CLINIC) {
+            client.get(ApiRoutes.Admin.GET_DOCTORS_IN_SPECIFIC_CLINIC+"/$clinicId") {
                 url {
                     parameters.append("state",status)
                     if(query.isNotBlank()){

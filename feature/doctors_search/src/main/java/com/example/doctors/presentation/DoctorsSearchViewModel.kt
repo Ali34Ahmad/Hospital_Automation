@@ -3,7 +3,9 @@ package com.example.doctors.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
+import com.example.doctors.navigation.DoctorSearchRoute
 import com.example.domain.use_cases.admin.doctor.GetDoctorsByClinicUseCase
 import com.example.domain.use_cases.admin.doctor.GetDoctorsUseCase
 import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
@@ -27,22 +29,21 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DoctorsSearchViewModel(
-    private val getDoctorsUseCase: GetDoctorsUseCase,
-    private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
-    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
-    private val savedStateHandle: SavedStateHandle,
-    private val getDoctorsByClinicUseCase: GetDoctorsByClinicUseCase
-    ): ViewModel() {
-    val clinicId = 1
-    val clinicName = "Department of Digestive"
+    class DoctorsSearchViewModel(
+        private val getDoctorsUseCase: GetDoctorsUseCase,
+        private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
+        private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
+        private val savedStateHandle: SavedStateHandle,
+        private val getDoctorsByClinicUseCase: GetDoctorsByClinicUseCase
+        ): ViewModel() {
+        private val route: DoctorSearchRoute = savedStateHandle.toRoute()
 
-    private val _uiState = MutableStateFlow(
-        DoctorsSearchUIState(
-            clinicId = clinicId,
-            clinicName = clinicName
+        private val _uiState = MutableStateFlow(
+            DoctorsSearchUIState(
+                clinicId = route.clinicId,
+                clinicName =  route.clinicName
+            )
         )
-    )
     val uiState: StateFlow<DoctorsSearchUIState> = _uiState
         .onStart {
             readTheme()
@@ -93,7 +94,7 @@ class DoctorsSearchViewModel(
         val newState = if(currentState == TopBarState.DEFAULT) TopBarState.SEARCH
         else TopBarState.DEFAULT
 
-        _uiState.value = _uiState.value.copy(topBarState = newState)
+        _uiState.value = _uiState.value.copy(topBarMode = newState)
     }
     private fun toggleDrawer(){
         _uiState.value = _uiState.value.copy(isDrawerOpened = !uiState.value.isDrawerOpened)
@@ -137,18 +138,17 @@ class DoctorsSearchViewModel(
         query: String,
         status: EmployeeState,
         onStatisticsUpdated: (EmploymentStatistics)-> Unit,
-    ) = if (uiState.value.clinicId != null){
+    ) =uiState.value.clinicId?.let { clinicId->
         getDoctorsByClinicUseCase(
             query = query,
             status = status,
             onStatisticsUpdated = onStatisticsUpdated,
             clinicId = clinicId
         )
-    } else {
-        getDoctorsUseCase(
+    }?: getDoctorsUseCase(
             query = query,
             status = status,
             onStatisticsUpdated = onStatisticsUpdated
         )
-    }
+
 }

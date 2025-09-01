@@ -1,5 +1,6 @@
 package com.example.network.remote.appointment
 
+import android.util.Log
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.appointment.AddDiagnosisRequest
 import com.example.network.model.response.appointments.AddDiagnosisResponse
@@ -11,6 +12,7 @@ import com.example.network.utility.doApiCall
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -23,7 +25,7 @@ private const val APPOINTMENTS_API_TAG = "AppointmentsApi"
 data class AppointmentsApiServiceImp(
     val client: HttpClient,
 ) : AppointmentsApiService {
-    override suspend fun showAppointments(
+    override suspend fun showDoctorAppointments(
         token: String,
         params: String,
         page: Int,
@@ -32,12 +34,17 @@ data class AppointmentsApiServiceImp(
         dateFilter: String?,
         queryFilter: String?,
         doctorId: Int?,
-        roleDto: RoleDto
+        roleDto: RoleDto,
     ): Result<ShowAppointmentsResponse, NetworkError> =
         doApiCall<ShowAppointmentsResponse>(
             tag = APPOINTMENTS_API_TAG
         ) {
-            client.get(ApiRoutes.getAppointmentsEndPointFor(roleDto)){
+            Log.d(APPOINTMENTS_API_TAG,"showDoctorAppointments")
+            val url = ApiRoutes.getDoctorAppointmentsEndPointFor(roleDto).let { base->
+                if(roleDto == RoleDto.ADMIN) "$base/$doctorId"
+                else base
+            }
+            client.get(url){
                 bearerAuth(token)
                 url {
                     parameters.append("params", params)
@@ -50,29 +57,90 @@ data class AppointmentsApiServiceImp(
                     if (!queryFilter.isNullOrBlank()){
                         parameters.append("appointment_type",queryFilter)
                     }
-                    if(roleDto == RoleDto.ADMIN){
-                        doctorId?.let {
-                            parameters.append("id",doctorId.toString())
-                        }
-                    }
                 }
+            }
+        }
+
+    override suspend fun showUserAppointments(
+        token: String,
+        page: Int,
+        limit: Int,
+        userId: Int,
+        state: String,
+        sort: String,
+        dateFilter: String?,
+        queryFilter: String?,
+    ): Result<ShowAppointmentsResponse, NetworkError> =
+        doApiCall(
+            tag = APPOINTMENTS_API_TAG
+        ){
+            Log.d(APPOINTMENTS_API_TAG,"showUserAppointments")
+
+            client.get(ApiRoutes.Admin.USER_APPOINTMENTS) {
+
+                parameter("page",page)
+                parameter("limit",limit)
+                parameter("state",state)
+                parameter("id",userId)
+                parameter("dateOrder",sort)
+                parameter("forWho","user")
+                if(!dateFilter.isNullOrBlank()){
+                    parameter("dateFilter",dateFilter)
+                }
+                if (!queryFilter.isNullOrBlank()){
+                    parameter("appointmentType",queryFilter)
+                }
+
+                bearerAuth(token)
+            }
+        }
+
+    override suspend fun showChildAppointments(
+        token: String,
+        page: Int,
+        limit: Int,
+        childId: Int,
+        state: String,
+        sort: String,
+        dateFilter: String?,
+        queryFilter: String?,
+    ): Result<ShowAppointmentsResponse, NetworkError> =
+        doApiCall(
+            tag = APPOINTMENTS_API_TAG
+        ){
+            Log.d(APPOINTMENTS_API_TAG,"showChildAppointments")
+            client.get(ApiRoutes.Admin.CHILD_APPOINTMENTS) {
+
+                parameter("page",page)
+                parameter("limit",limit)
+                parameter("state",state)
+                parameter("id",childId)
+                parameter("dateOrder",sort)
+                parameter("forWho","child")
+                if(!dateFilter.isNullOrBlank()){
+                    parameter("dateFilter",dateFilter)
+                }
+                if (!queryFilter.isNullOrBlank()){
+                    parameter("appointmentType",queryFilter)
+                }
+                bearerAuth(token)
             }
         }
 
     override suspend fun getAppointmentDetails(
         token: String,
         id: Int,
-        role: RoleDto
+        roleDto: RoleDto
     ): Result<ShowAppointmentDetails, NetworkError>  =
         doApiCall<ShowAppointmentDetails>(
             tag = APPOINTMENTS_API_TAG
         ) {
-            val url = ApiRoutes.getAppointmentByIdEndPointFor(role).let { base ->
-                if (role == RoleDto.DOCTOR) "$base/$id" else base
+            val url = ApiRoutes.getAppointmentByIdEndPointFor(roleDto).let { base ->
+                if (roleDto == RoleDto.DOCTOR) "$base/$id" else base
             }
 
             client.get(url){
-                if(role == RoleDto.ADMIN){
+                if(roleDto == RoleDto.ADMIN){
                     parameter("type","appointment")
                     parameter("id",id)
                 }

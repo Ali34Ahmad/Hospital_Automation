@@ -27,7 +27,7 @@ private val mockActions =
 
     }
 
-    override fun navigateToAppointments(childId: Int) {
+    override fun navigateToAppointments(childId: Int,name: String) {
     }
 
     override fun navigateToMedicalRecords(childId: Int) {

@@ -23,36 +23,29 @@ fun NavController.switchToPharmaciesSearchSearch(
 }
 
 fun NavGraphBuilder.pharmaciesSearch(
-    onNavigateToPharmacyDetails: (pharmacyId: Int)-> Unit
+    onNavigateToPharmacyDetails: (pharmacyId: Int)-> Unit,
+    onNavigateToAdminProfile: ()-> Unit,
+    onNavigateToVaccines: ()-> Unit,
+    onNavigateToNotifications: ()-> Unit,
+    onNavigateToPrescriptions: ()-> Unit,
+    onNavigateToMedicalRecords: ()-> Unit,
+    onNavigateToVaccineTable: ()-> Unit,
 ){
     composable<PharmaciesSearchSearchRoute> {
         val viewModel = koinViewModel<PharmaciesSearchViewModel>()
         val navigationActions = object : PharmaciesSearchNavigationActions{
             override fun navigateToPharmacyDetails(pharmacyId: Int) = onNavigateToPharmacyDetails(pharmacyId)
 
-            override fun navigateToAdminProfile() {
-                TODO("Not yet implemented")
-            }
+            override fun navigateToAdminProfile() = onNavigateToAdminProfile()
+            override fun navigateToVaccines() = onNavigateToVaccines()
 
-            override fun navigateToVaccines() {
-                TODO("Not yet implemented")
-            }
+            override fun navigateToNotifications() = onNavigateToNotifications()
 
-            override fun navigateToNotifications() {
-                TODO("Not yet implemented")
-            }
+            override fun navigateToPrescriptions() = onNavigateToPrescriptions()
 
-            override fun navigateToPrescriptions() {
-                TODO("Not yet implemented")
-            }
+            override fun navigateToMedicalRecords() = onNavigateToMedicalRecords()
 
-            override fun navigateToMedicalRecords() {
-                TODO("Not yet implemented")
-            }
-
-            override fun navigateToVaccineTable() {
-                TODO("Not yet implemented")
-            }
+            override fun navigateToVaccineTable() = onNavigateToVaccineTable()
         }
         PharmaciesSearchScreen(
             viewModel = viewModel,

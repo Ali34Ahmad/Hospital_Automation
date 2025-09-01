@@ -8,6 +8,9 @@ sealed interface AppIcons {
         val add = R.drawable.ic_add
         val man = R.drawable.ic_male
         val attachment = R.drawable.ic_attachment
+        val doctors = R.drawable.doctors
+        val employees = R.drawable.employees
+        val clinics = R.drawable.clinics
         val call = R.drawable.ic_call
         val mail = R.drawable.mail
         val calender = R.drawable.calendar
@@ -91,5 +94,6 @@ sealed interface AppIcons {
         val medicine = R.drawable.ic_medicine
         val code = R.drawable.ic_code
         val pharmacy = R.drawable.ic_pharmacy
+        val vaccinationTable = R.drawable.vaccination_table
     }
 }

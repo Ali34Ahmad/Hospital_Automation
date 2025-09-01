@@ -14,6 +14,7 @@ sealed interface DoctorsSearchUIAction {
 }
 
 interface DoctorsSearchNavigationActions{
+    fun navigateUp()
     fun navigateToDoctorProfile(doctorId: Int)
     fun navigateToAdminProfile()
     fun navigateToVaccines()

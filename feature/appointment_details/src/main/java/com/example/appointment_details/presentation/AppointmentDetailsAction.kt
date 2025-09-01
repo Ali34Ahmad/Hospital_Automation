@@ -17,7 +17,7 @@ interface AppointmentDetailsNavigationActions{
     fun navigateUp()
     fun navigateToDepartmentDetails(deptId: Int)
     fun navigateToVaccineDetails(vaccineId: Int)
-    fun navigateToDoctorSchedule()
+//    fun navigateToDoctorSchedule()
     fun navigateToAddMedicalDiagnosis(
         appointmentId: Int,
         fullName: String,

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.common.android.application.compose)
     alias(libs.plugins.common.android.application)
     alias(libs.plugins.kotlin.serialization)
+
 }
 
 android {
@@ -80,7 +81,7 @@ dependencies {
     implementation(project(":feature:employees_search"))
     implementation(project(":feature:clinics_search"))
     implementation(project(":feature:pharmacies_search"))
-    implementation(project(":feature:doctor-schedule"))
+    implementation(project(":feature:appointments_schedule"))
     implementation(project(":feature:clinic_details"))
     implementation(project(":feature:guardian_profile"))
     implementation(project(":feature:child_profile"))
@@ -89,6 +90,8 @@ dependencies {
     implementation(project(":feature:children_search"))
     implementation(project(":feature:children"))
     implementation(project(":feature:pharmacy_medicines"))
+    implementation(project(":feature:guardians"))
+
 
     implementation(project(":feature:vaccines"))
     implementation(project(":feature:vaccine_details"))
@@ -112,4 +115,5 @@ dependencies {
     implementation(project(":feature:employment_requests"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
 }

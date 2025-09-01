@@ -1,5 +1,6 @@
 package com.example.network.remote.user
 
+import android.util.Log
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.request.user.DeactivateUserRequest
 import com.example.network.model.response.UpdatedData
@@ -83,11 +84,14 @@ internal class UserApiServiceImpl(
         ) {
             client.post(ApiRoutes.Admin.DEACTIVATE_USER+"/$userId") {
                 contentType(ContentType.Application.Json)
+                val body= DeactivateUserRequest(
+                    state = "suspend",
+                    suspendingReason = deactivationReason.ifBlank { "reason not provided" }
+                )
+                Log.d(TAG,"body : $body")
                 setBody(
-                    DeactivateUserRequest(
-                        state = "suspend",
-                        suspendingReason = deactivationReason
-                    )
+                    body
+
                 )
                 bearerAuth(token)
             }
@@ -108,11 +112,16 @@ internal class UserApiServiceImpl(
     override suspend fun getGuardiansByChildId(
         token: String,
         childId: Int,
+        roleDto: RoleDto
     ): Result<GetGuardianByChildIdResponse, NetworkError> =
         doApiCall(
             tag = TAG
         ) {
-            client.get(ApiRoutes.GUARDIANS_BY_CHILD_ID+"/$childId") {
+            client.get(
+                ApiRoutes.getGuardiansByChildIdEndPointFor(
+                    roleDto
+                )+"/$childId"
+            ) {
                 bearerAuth(token)
             }
         }

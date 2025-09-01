@@ -42,11 +42,11 @@ class ClinicRepositoryImp(
     override suspend fun getClinicById(
         clinicId: Int
     ): Result<ClinicFullData, NetworkError> =
-        userPreferencesRepository.executeWithValidTokenNetwork { token ->
+        //userPreferencesRepository.executeWithValidTokenNetwork { token ->
             clinicApiService.getClinicById(
                 roleDto = roleAppConfig.role.toRoleDto(),
-                token = token,
+                token = FAKE_TOKEN,
                 clinicId = clinicId
             ).map { it.data.toClinicFullData() }
-        }
+        //}
 }

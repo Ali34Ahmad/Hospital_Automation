@@ -5,6 +5,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 object AuthGraphRoute
 
-@Serializable
-object MainGraphRoute
 

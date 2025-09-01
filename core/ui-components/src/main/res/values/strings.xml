@@ -249,7 +249,7 @@
     <string name="invalid_number">Invalid number</string>
     <string name="number_must_be_positive">Number must be positive</string>
     <string name="age_unit_must_be_specified">Age unit must be specified</string>
-    <string name="notifications">Notification</string>
+    <string name="notifications">Notifications</string>
     <string name="vaccine_table">Vaccine table</string>
     <string name="date_filter">Date Filter</string>
     <string name="mark_as_missed">Mark as missed</string>
@@ -358,5 +358,8 @@
     <string name="request_rejected_successfully">Request rejected successfully</string>
     <string name="accepted">Accepted</string>
     <string name="rejected">Rejected</string>
+    <string name="doctors">Doctors</string>
+    <string name="employees">Employees</string>
+    <string name="clinics">Clinics</string>
     <string name="patient_name">Patient name</string>
 </resources>

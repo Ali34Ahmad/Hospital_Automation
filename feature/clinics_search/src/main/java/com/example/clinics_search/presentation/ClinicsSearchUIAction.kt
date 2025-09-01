@@ -18,9 +18,11 @@ interface ClinicsSearchUIAction {
 interface ClinicsSearchNavigationActions{
     fun navigateToDepartmentDetails(clinicId: Int)
     fun navigateToDoctorProfile()
+    fun navigateToAdminProfile()
     fun navigateToNotifications()
     fun navigateToMedicalRecords()
     fun navigateToPrescriptions()
     fun navigateToVaccines()
+    fun navigateToVaccineTable()
     fun navigateToCreateNewClinic()
 }

@@ -119,7 +119,7 @@ fun WarningDialogWithInputFieldPreview() {
         }
         WarningDialogWithInputField(
             title = "Are you sure?",
-            subtitle = "you can reactivate the department again.",
+            subtitle = "you can reactivate this department again.",
             text = text,
             onTextValueChange = {
                 text = it
@@ -128,9 +128,9 @@ fun WarningDialogWithInputFieldPreview() {
             modifier = Modifier.fillMaxWidth(),
             onConfirm = {},
             onDismiss = {},
-            enableConfirmButton = false,
+            enableConfirmButton = true,
             isRequired = true,
-            hasError = true ,
+            hasError = false ,
         )
     }
 }

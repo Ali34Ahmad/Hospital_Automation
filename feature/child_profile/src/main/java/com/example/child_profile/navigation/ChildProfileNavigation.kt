@@ -31,10 +31,10 @@ fun NavController.navigateToChildProfile(
 fun NavGraphBuilder.childProfileScreen(
     navigateToAddGuardianScreen: (Int) -> Unit,
     navigateToEmployeeProfileScreen: (employeeId: Int) -> Unit,
-    navigateToGuardianScreen: (Int) -> Unit,
+    navigateToGuardiansScreen: (Int) -> Unit,
     navigateUp: () -> Unit,
     onNavigateToVaccinationTable: (Int)-> Unit,
-    onNavigateToAppointments: (Int)-> Unit,
+    onNavigateToAppointments: (Int,String)-> Unit,
     onNavigateToPrescriptions: (Int)-> Unit,
     onNavigateToMedicalRecords: (Int)-> Unit,
     onNavigateToAppointmentDetails: (Int) -> Unit
@@ -54,13 +54,13 @@ fun NavGraphBuilder.childProfileScreen(
                 navigateToEmployeeProfileScreen(employeeId)
 
             override fun navigateToGuardiansScreen(childId: Int) =
-                navigateToGuardianScreen(childId)
+                navigateToGuardiansScreen(childId)
 
             override fun navigateToVaccinationTableScreen(childId: Int) =
                 onNavigateToVaccinationTable(childId)
 
-            override fun navigateToAppointments(childId: Int) =
-                onNavigateToAppointments(childId)
+            override fun navigateToAppointments(childId: Int,name: String) =
+                onNavigateToAppointments(childId,name)
 
             override fun navigateToMedicalRecords(childId: Int) =
                 onNavigateToMedicalRecords(childId)

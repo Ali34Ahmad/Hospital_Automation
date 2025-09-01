@@ -6,11 +6,14 @@ import com.example.network.model.dto.user.UserDto
 import com.example.network.model.dto.vaccine.VaccineSummaryDto
 import com.example.network.serializer.LocalDateSerializer
 import com.example.network.serializer.LocalTimeSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNames
 import java.time.LocalDate
 import java.time.LocalTime
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class AppointmentDto(
     @SerialName("appointmentsId")
@@ -57,6 +60,7 @@ data class AppointmentDto(
     @SerialName("appointment_type")
     val appointmentType: AppointmentTypeDto,
 
+    @JsonNames("user","doctor")
     val user: UserDto? = null,
 
     val vaccine: VaccineSummaryDto? = null,

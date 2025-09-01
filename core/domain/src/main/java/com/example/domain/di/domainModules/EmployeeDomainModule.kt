@@ -1,6 +1,5 @@
 package com.example.domain.di.domainModules
 
-import com.example.domain.di.accountManagementUseCasesModule
 import com.example.domain.di.auth.authUseCasesModule
 import com.example.domain.di.auth.singup.baseSignUpModule
 import com.example.domain.di.basic_account_creating.addResidentialAddressUseCaseModule
@@ -18,7 +17,6 @@ val employeeDomainModule = module {
         baseSignUpModule,
         addResidentialAddressUseCaseModule,
         getAdminProfileByIdUseCaseModule,
-        accountManagementUseCasesModule,
         employeeProfileUseCasesModule,
         employmentHistoryUseCasesModule,
         uploadEmploymentDocumentsUseCasesModule,

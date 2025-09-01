@@ -29,6 +29,7 @@ import com.example.model.LabeledBadgeData
 import com.example.model.doctor.DoctorData
 import com.example.model.employee.EmployeeState
 import com.example.model.enums.ScreenState
+import com.example.model.enums.TopBarState
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.custom.ErrorComponent
@@ -90,13 +91,6 @@ fun DoctorSearchScreen(
             }
         ),
         DrawerButton(
-            text = R.string.vaccines,
-            image = AppIcons.Outlined.vaccines,
-            onClick = {
-                navigationActions.navigateToVaccines()
-            },
-        ),
-        DrawerButton(
             text = R.string.notifications,
             image = AppIcons.Outlined.notification,
             onClick = {
@@ -118,15 +112,16 @@ fun DoctorSearchScreen(
             },
         ),
         DrawerButton(
-            text = R.string.vaccine_table,
-            image = AppIcons.Outlined.medicalRecords,
+            text = R.string.vaccines,
+            image = AppIcons.Outlined.vaccines,
             onClick = {
-                navigationActions.navigateToMedicalRecords()
+                navigationActions.navigateToVaccines()
             },
         ),
+
         DrawerButton(
-            text = R.string.vaccine_table,
-            image = AppIcons.Outlined.medicalRecords,
+            text = R.string.vaccination_table,
+            image = AppIcons.Outlined.vaccinationTable,
             onClick = {
                 navigationActions.navigateToVaccineTable()
             },
@@ -140,7 +135,7 @@ fun DoctorSearchScreen(
     }
     EmployeeDrawer(
         state = drawerState,
-        title = R.string.admin,
+        title = R.string.medicare,
         modifier = Modifier,
         buttons = drawerButtons,
         selectedIndex = null,
@@ -177,6 +172,7 @@ fun DoctorSearchScreen(
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
+                    onNavigateUp = navigationActions::navigateUp
                 )
             },
             modifier = modifier,

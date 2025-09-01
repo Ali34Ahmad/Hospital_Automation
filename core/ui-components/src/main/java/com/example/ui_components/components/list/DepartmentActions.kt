@@ -20,10 +20,6 @@ import com.example.ui_components.components.items.ProfileActionsItem
 @Composable
 fun DepartmentActions(
     onAllDoctorsClick:()-> Unit,
-    onAppointmentsClick:()-> Unit,
-    onPrescriptionsClick:()-> Unit,
-    onMedicalRecordsClick:()-> Unit,
-    onContractHistoryClick:()-> Unit,
     onDeactivateClinicClick:()-> Unit,
     onReactivateClinicClick:()-> Unit,
     isActive: Boolean,
@@ -48,30 +44,30 @@ fun DepartmentActions(
                 showUnderline = true,
                 onClick = onAllDoctorsClick,
             )
-            ProfileActionsItem(
-                iconRes = AppIcons.Outlined.upcomingEvent,
-                title = stringResource(R.string.appointments),
-                showUnderline = true,
-                onClick = onAppointmentsClick,
-            )
-            ProfileActionsItem(
-                iconRes = AppIcons.Outlined.prescription,
-                title = stringResource(R.string.prescriptions),
-                showUnderline = true,
-                onClick = onPrescriptionsClick,
-            )
-            ProfileActionsItem(
-                iconRes = AppIcons.Outlined.medicalRecords,
-                title = stringResource(R.string.medical_records),
-                showUnderline = true,
-                onClick = onMedicalRecordsClick,
-            )
-            ProfileActionsItem(
-                iconRes = AppIcons.Outlined.workHistory,
-                title = stringResource(R.string.contract_history),
-                showUnderline = true,
-                onClick = onContractHistoryClick,
-            )
+//            ProfileActionsItem(
+//                iconRes = AppIcons.Outlined.upcomingEvent,
+//                title = stringResource(R.string.appointments),
+//                showUnderline = true,
+//                onClick = onAppointmentsClick,
+//            )
+//            ProfileActionsItem(
+//                iconRes = AppIcons.Outlined.prescription,
+//                title = stringResource(R.string.prescriptions),
+//                showUnderline = true,
+//                onClick = onPrescriptionsClick,
+//            )
+//            ProfileActionsItem(
+//                iconRes = AppIcons.Outlined.medicalRecords,
+//                title = stringResource(R.string.medical_records),
+//                showUnderline = true,
+//                onClick = onMedicalRecordsClick,
+//            )
+//            ProfileActionsItem(
+//                iconRes = AppIcons.Outlined.workHistory,
+//                title = stringResource(R.string.contract_history),
+//                showUnderline = true,
+//                onClick = onContractHistoryClick,
+//            )
             if(hasAdminAccess){
                 if (isActive) {
                     ProfileActionsItem(
@@ -103,10 +99,6 @@ fun DepartmentActionsPreview() {
     Hospital_AutomationTheme {
         DepartmentActions(
             onAllDoctorsClick = {},
-            onAppointmentsClick = {},
-            onPrescriptionsClick = {},
-            onMedicalRecordsClick = {},
-            onContractHistoryClick = {},
             onDeactivateClinicClick = {},
             onReactivateClinicClick = {},
             isActive = true,

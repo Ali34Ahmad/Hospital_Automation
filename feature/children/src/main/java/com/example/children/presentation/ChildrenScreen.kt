@@ -115,7 +115,7 @@ internal fun ChildrenScreen(
                                     modifier = Modifier
                                         .fillMaxWidth(),
                                     title = stringResource(R.string.no_matching_result),
-                                    description = stringResource(R.string.no_children_subtitle)
+                                    description = stringResource(R.string.no_items_subtitle)
                                 )
                             }
                         }else{

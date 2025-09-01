@@ -244,7 +244,7 @@ fun Navigation() {
                     guardianId
                 )
             },
-            onNavigateToAppointments = {},
+            onNavigateToAppointments = {id,name,imageUrl->},
             onNavigateToPrescriptions = {},
             onNavigateToMedicalRecord = {},
         )
@@ -287,11 +287,11 @@ fun Navigation() {
                     employeeId = employeeId
                 )
             },
-            navigateToGuardianScreen = navController::navigateToGuardiansScreen,
+            navigateToGuardiansScreen = navController::navigateToGuardiansScreen,
             navigateUp = navController::navigateUp,
             //These actions are only available in the admin application.
             onNavigateToVaccinationTable = {},
-            onNavigateToAppointments = {},
+            onNavigateToAppointments = {id,name->},
             onNavigateToPrescriptions = {},
             onNavigateToMedicalRecords = {},
             onNavigateToAppointmentDetails = {}

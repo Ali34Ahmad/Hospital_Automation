@@ -3,6 +3,8 @@ package com.example.clinic_details.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.example.clinic_details.navigation.ClinicDetailsRoute
 import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.domain.use_cases.admin.clinic.DeactivateClinicUseCase
 import com.example.domain.use_cases.admin.clinic.ReactivateClinicUseCase
@@ -34,15 +36,14 @@ class ClinicDetailsViewModel(
     private val validateTextUseCase: ValidateTextUseCase
 ): ViewModel() {
 
-    val clinicId = 1
-    val type = ClinicDetailsType.ADMIN_ACCESS
+    private val route = savedStateHandle.toRoute<ClinicDetailsRoute>()
 
     private val refreshTrigger = MutableSharedFlow<Unit>()
 
     private val _uiState = MutableStateFlow(
         ClinicDetailsUIState(
-            clinicId = clinicId,
-            type = type
+            clinicId = route.clinicId,
+            type = route.type
         )
     )
     val uiState: StateFlow<ClinicDetailsUIState> = combine(
@@ -77,7 +78,7 @@ class ClinicDetailsViewModel(
     private fun validateInput(){
         val textError = validateTextUseCase(uiState.value.deactivationReason)
         val hasError = textError != null
-        updateIsValidInput(hasError)
+        updateIsValidInput(!hasError)
     }
     private fun updateIsValidInput(newValue: Boolean?){
         _uiState.value = _uiState.value.copy(isValidInput = newValue)
@@ -90,7 +91,7 @@ class ClinicDetailsViewModel(
             showToast(UiText.StringResource(R.string.something_went_wrong))
         }.onSuccess {
             showToast(UiText.StringResource(R.string.success))
-            refreshTrigger.emit(Unit)
+            refreshData()
         }
         hideLoadingDialog()
     }
@@ -102,11 +103,12 @@ class ClinicDetailsViewModel(
         ).onError{
             showToast(UiText.StringResource(R.string.something_went_wrong))
         }.onSuccess {
-            showToast(UiText.StringResource(R.string.success))
-            refreshTrigger.emit(Unit)
+            refreshData()
+            showToast(UiText.StringResource(R.string.deactivate_account_message))
         }
         clearDeactivationReason()
         hideLoadingDialog()
+
     }
     private fun clearDeactivationReason(){
         _uiState.value = _uiState.value.copy(deactivationReason = "")
@@ -129,6 +131,8 @@ class ClinicDetailsViewModel(
         _uiState.value = _uiState.value.copy(isLoadingDialogShown = true)
     }
     private fun showWarningDialog(){
+        updateDeactivationReason("")
+        updateIsValidInput(null)
         _uiState.value = _uiState.value.copy(isWarningDialogShown = true)
     }
     private fun hideWarningDialog(){
@@ -141,7 +145,6 @@ class ClinicDetailsViewModel(
 
     private fun hideInfoDialog(){
         _uiState.value = _uiState.value.copy(isInfoDialogShown = false)
-        updateIsValidInput(null)
     }
     private fun refresh()=viewModelScope.launch{
         refreshTrigger.emit(Unit)

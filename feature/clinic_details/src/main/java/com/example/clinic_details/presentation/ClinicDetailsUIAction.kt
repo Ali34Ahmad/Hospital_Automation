@@ -25,7 +25,10 @@ interface ClinicNavigationAction{
     fun navigateToDoctorProfile()
     fun navigateToScheduleScreen()
     fun navigateToVaccines()
-    fun navigateToAllDoctors()
+    fun navigateToAllDoctors(
+        clinicId:Int,
+        clinicName: String
+    )
     fun navigateToAllAppointments()
     fun navigateToPrescriptions()
     fun navigateToMedicalRecords()

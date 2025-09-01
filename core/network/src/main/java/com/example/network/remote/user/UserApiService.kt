@@ -20,7 +20,8 @@ interface UserApiService {
 
     suspend fun getGuardiansByChildId(
         token: String,
-        childId: Int
+        childId: Int,
+        roleDto: RoleDto
     ): Result<GetGuardianByChildIdResponse, NetworkError>
 
     suspend fun addGuardianToChild(

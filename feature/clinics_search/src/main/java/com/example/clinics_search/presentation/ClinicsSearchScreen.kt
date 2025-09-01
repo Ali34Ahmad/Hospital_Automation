@@ -69,7 +69,7 @@ internal fun ClinicsSearchScreen(
             text = R.string.profile,
             image = AppIcons.Outlined.accountCircle,
             onClick = {
-                navigationActions.navigateToDoctorProfile()
+                navigationActions.navigateToAdminProfile()
             }
         ),
         DrawerButton(
@@ -85,7 +85,6 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToMedicalRecords()
             },
-            enabled = uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.prescriptions,
@@ -93,7 +92,6 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToPrescriptions()
             },
-            enabled =  uiState.hasAdminAccess
         ),
         DrawerButton(
             text = R.string.vaccines,
@@ -101,20 +99,18 @@ internal fun ClinicsSearchScreen(
             onClick = {
                 navigationActions.navigateToVaccines()
             },
-            enabled =  uiState.hasAdminAccess
         ),
         DrawerButton(
-            text = R.string.vaccine_table,
-            image = AppIcons.Outlined.medicalRecords,
+            text = R.string.vaccination_table,
+            image = AppIcons.Outlined.vaccinationTable,
             onClick = {
-                navigationActions.navigateToMedicalRecords()
+                navigationActions.navigateToVaccineTable()
             },
-            enabled =  uiState.hasAdminAccess
         ),
-        )
+    )
     EmployeeDrawer(
         state = drawerState,
-        title = if(uiState.hasAdminAccess) R.string.admin else R.string.doctor,
+        title = R.string.medicare,
         buttons = drawerButtons,
         selectedIndex = null,
         onItemSelected = {
@@ -145,13 +141,13 @@ internal fun ClinicsSearchScreen(
                                 ClinicsSearchUIAction.ToggleDrawer
                             )
                         },
-                        onClearIconClick = {
+                        onClear = {
                             onAction(
                                 ClinicsSearchUIAction.UpdateQuery("")
                             )
                         },
                         query = uiState.searchQuery,
-                        state = uiState.topBarMode,
+                        state = uiState.topAppBarState,
                         onQueryChanged = {
                             onAction(
                                 ClinicsSearchUIAction.UpdateQuery(it)

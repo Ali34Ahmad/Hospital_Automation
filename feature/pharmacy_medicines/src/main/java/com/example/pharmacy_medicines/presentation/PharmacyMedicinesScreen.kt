@@ -84,6 +84,7 @@ fun PharmacyMedicineScreen(
         containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             SearchTopBar(
+                imageUrl = uiState.imageUrl,
                 onSearchIconClick = {
                     onAction(PharmacyMedicinesUIAction.ToggleTopBarState)
                 },
@@ -91,7 +92,7 @@ fun PharmacyMedicineScreen(
                 onBackToDefault = {
                     onAction(PharmacyMedicinesUIAction.ToggleTopBarState)
                 },
-                onClearIconClick = {
+                onClear = {
                     onAction(PharmacyMedicinesUIAction.UpdateQuery(""))
                 },
                 query = uiState.query,
@@ -107,6 +108,7 @@ fun PharmacyMedicineScreen(
                     )
                 },
                 defaultLeadingIcon = AppIcons.Outlined.arrowBack,
+
             )
         }
     ) {innerPadding->
@@ -197,7 +199,9 @@ fun PharmacyMedicineScreen(
                                                 drug = medicine.pharmaceuticalTiter,
                                                 price = medicine.price?:0,
                                                 numberOfPharmacies = null,
-                                                onClick = {},
+                                                onClick = {
+                                                    navigationActions.navigateToMedicineDetails(medicine.id)
+                                                },
                                                 onPharmaciesClick = {},
                                                 onButtonClick = {},
                                                 hasActions = false,
@@ -206,7 +210,7 @@ fun PharmacyMedicineScreen(
                                     }
 
                                     if(medicines.loadState.append == LoadState.Loading){
-                                        item(GridItemSpan(maxLineSpan)) {
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             SmallCircularProgressIndicator(
                                                 modifier = Modifier.fillMaxWidth()
                                                     .padding(MaterialTheme.spacing.medium16)

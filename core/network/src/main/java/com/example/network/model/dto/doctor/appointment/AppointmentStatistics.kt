@@ -1,14 +1,17 @@
 package com.example.network.model.dto.doctor.appointment
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNames
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class AppointmentStatisticsDto(
-    @SerialName("Upcomming_Appointments")
+    @JsonNames("Upcomming_Appointments","upcomming_apps")
     val upcoming: Int  = 0,
-    @SerialName("Passed_Appointments")
+    @JsonNames("Passed_Appointments","passed_apps")
     val passed: Int = 0,
-    @SerialName("Missed_Appointments")
+    @JsonNames("Missed_Appointments","missed_apps")
     val missed: Int = 0,
 )

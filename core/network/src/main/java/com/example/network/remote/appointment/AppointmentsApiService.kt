@@ -15,7 +15,7 @@ interface AppointmentsApiService {
      * passing its id.
      * @author Ali Mansoura
      */
-    suspend fun showAppointments(
+    suspend fun showDoctorAppointments(
         token: String,
         params: String,
         page: Int,
@@ -26,6 +26,30 @@ interface AppointmentsApiService {
         doctorId: Int?,
         roleDto: RoleDto
     ) : Result<ShowAppointmentsResponse, NetworkError>
+
+    //Just by admin
+    suspend fun showUserAppointments(
+        token: String,
+        page: Int,
+        limit: Int,
+        userId: Int,
+        state: String,
+        sort: String,
+        dateFilter: String?,
+        queryFilter: String?
+    ): Result<ShowAppointmentsResponse, NetworkError>
+
+    // Just by admin
+    suspend fun showChildAppointments(
+        token: String,
+        page: Int,
+        limit: Int,
+        childId: Int,
+        state: String,
+        sort: String,
+        dateFilter: String?,
+        queryFilter: String?
+    ): Result<ShowAppointmentsResponse, NetworkError>
 
     suspend fun getAppointmentDetails(
         token: String,

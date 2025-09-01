@@ -38,8 +38,7 @@ fun DatePickerDialog(
             yearSelection = true,
             monthSelection = true,
             style = CalendarStyle.MONTH,
-            boundary = LocalDate.now().minusYears(100)..LocalDate.now()
-        ),
+            ),
         )
 }
 
