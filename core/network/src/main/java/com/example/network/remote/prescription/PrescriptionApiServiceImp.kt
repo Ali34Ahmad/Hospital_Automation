@@ -121,6 +121,8 @@ class PrescriptionApiServiceImp(
             }
             contentType(ContentType.Application.Json)
             bearerAuth(token)
+            Log.d("PrescriptionsURL",url.toString())
+            Log.d("PrescriptionsChildId",childId.toString())
         }
         when (response.status.value) {
             in 200..299 -> {

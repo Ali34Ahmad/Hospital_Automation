@@ -111,6 +111,7 @@ dependencies {
     implementation(project(":feature:prescription_details"))
     implementation(project(":feature:generic_vaccination_table"))
     implementation(project(":feature:prescriptions"))
+    implementation(project(":feature:medical_records"))
 
     implementation(project(":feature:employment_requests"))
 

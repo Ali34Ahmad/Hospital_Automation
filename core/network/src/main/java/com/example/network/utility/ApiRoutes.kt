@@ -133,6 +133,8 @@ object ApiRoutes {
         const val GET_VACCINE_BY_ID = "$ADMIN/get-vaccine-by-id"
         const val GET_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
         const val CHILDREN_BY_GUARDIAN_ID = "$ADMIN/show-children-for-user"
+        const val ALL_MEDICAL_RECORDS = "$ADMIN/doctor-medical-record"
+        const val DEACTIVATE_ACCOUNT = "$ADMIN/change-anyone-state-resign-suspend"
     }
 
     object Prescription {
@@ -319,11 +321,11 @@ object ApiRoutes {
 
         }
 
-    fun getDeactivateMyAccountEndPointFor(role: RoleDto): String {
+    fun getDeactivateAccountEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> DEACTIVATE_MY_EMPLOYEE_ACCOUNT
             RoleDto.DOCTOR -> Doctor.DEACTIVATE_MY_ACCOUNT
-            RoleDto.ADMIN -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.ADMIN -> Admin.DEACTIVATE_ACCOUNT
             else -> ""
 
         }
@@ -446,6 +448,15 @@ object ApiRoutes {
             RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.GET_GENERIC_VACCINATION_TABLE
             RoleDto.ADMIN -> Admin.GET_GENERIC_VACCINATION_TABLE
+            else -> ""
+        }
+    }
+
+    fun getMedicalRecordsEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.DOCTOR -> Doctor.ALL_MEDICAL_RECORDS
+            RoleDto.ADMIN -> Admin.ALL_MEDICAL_RECORDS
             else -> ""
         }
     }

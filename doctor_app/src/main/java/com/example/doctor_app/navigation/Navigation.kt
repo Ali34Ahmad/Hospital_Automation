@@ -82,7 +82,9 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = MedicalRecordsRoute
+        startDestination = MedicalRecordsRoute(
+            doctorId = null
+        )
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -143,6 +145,7 @@ fun Navigation() {
                     navController.navigateToPrescriptionsScreen(
                         patientId = null,
                         childId = null,
+                        doctorId = null
                     )
 //                    navController.navigateToScheduleScreen()
                 },
@@ -181,7 +184,7 @@ fun Navigation() {
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptionsScreen = {
-                navController.navigateToPrescriptionsScreen(null, null)
+                navController.navigateToPrescriptionsScreen(null, null,null)
             },
             onNavigateToMedicalRecordsScreen = {
                 navController.navigateToMedicalRecordsScreen()
@@ -283,8 +286,8 @@ fun Navigation() {
             onNavigateToAppointmentsScreen = { patientId, childId ->
                 navController.navigateToScheduleScreen()
             },
-            onNavigateToPrescriptionsScreen = { patientId, childId ->
-                navController.navigateToPrescriptionsScreen(patientId, childId)
+            onNavigateToPrescriptionsScreen = { patientId, childId,_ ->
+                navController.navigateToPrescriptionsScreen(patientId, childId, null)
             }
         )
 
@@ -292,14 +295,14 @@ fun Navigation() {
             onNavigateUp = { navController.navigateUp() },
             onNavigateToChildrenScreen = { },
             onNavigateToAddChildScreen = { },
-            onNavigateToAppointments = { patientId,name,imageUrl ->
+            onNavigateToAppointments = { patientId, name, imageUrl ->
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptions = { patientId ->
-                navController.navigateToPrescriptionsScreen(patientId = patientId, null)
+                navController.navigateToPrescriptionsScreen(patientId = patientId, null, null)
             },
             onNavigateToMedicalRecord = { patientId ->
-                navController.navigateToPrescriptionsScreen(patientId = patientId, null)
+                navController.navigateToPrescriptionsScreen(patientId = patientId, null, null)
             },
         )
 
@@ -308,11 +311,11 @@ fun Navigation() {
             navigateToEmployeeProfileScreen = { },
             navigateUp = { navController.navigateUp() },
             onNavigateToVaccinationTable = {},
-            onNavigateToAppointments = {childId,name->
+            onNavigateToAppointments = { childId, name ->
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptions = { childId ->
-                navController.navigateToPrescriptionsScreen(patientId = null, childId = childId)
+                navController.navigateToPrescriptionsScreen(patientId = null, childId = childId,null)
             },
             onNavigateToMedicalRecords = { childId ->
                 navController.navigateToMedicalRecordsScreen()
@@ -358,7 +361,7 @@ fun Navigation() {
                 navController.navigateToMedicalRecordsScreen()
             },
             onNavigateToPrescriptions = {
-                navController.navigateToPrescriptionsScreen(null, null)
+                navController.navigateToPrescriptionsScreen(null, null,null)
             },
             onNavigateToVaccines = {
                 navController.navigateToVaccinesScreen()
@@ -384,7 +387,7 @@ fun Navigation() {
             onNavigateToVaccines = {
                 navController.navigateToVaccinesScreen()
             },
-            onNavigateToAllDoctors = {clinicId,clinicName->
+            onNavigateToAllDoctors = { clinicId, clinicName ->
                 TODO()
             },
             onNavigateToAllAppointments = {},
@@ -408,7 +411,7 @@ fun Navigation() {
 //                )
 //            },
             onNavigateToPrescriptions = {
-                navController.navigateToPrescriptionsScreen(null, null)
+                navController.navigateToPrescriptionsScreen(null, null,null)
             },
             onNavigateToVaccines = {
                 navController.navigateToVaccinesScreen()

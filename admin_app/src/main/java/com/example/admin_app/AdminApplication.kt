@@ -34,6 +34,7 @@ import com.example.signup.signUpModule
 import com.example.upload_profile_image.uploadProfileImageModule
 import com.example.vaccine_details_screen.vaccineDetailsModule
 import com.example.guardians.di.guardiansModule
+import com.example.medical_records.medicalRecordsModule
 import com.example.vaccines.vaccinesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -79,6 +80,7 @@ class AdminApplication : Application() {
                 prescriptionDetailsModule,
                 genericVaccinationTableModule,
                 prescriptionsModule,
+                medicalRecordsModule,
             )
         }
     }

@@ -20,8 +20,8 @@ data class PrescriptionsRoute(
     val doctorId: Int?=null,
 )
 
-fun NavController.navigateToPrescriptionsScreen(patientId: Int?, childId: Int?) {
-    navigateToScreen(PrescriptionsRoute(patientId, childId))
+fun NavController.navigateToPrescriptionsScreen(patientId: Int?, childId: Int?,doctorId: Int?) {
+    navigateToScreen(PrescriptionsRoute(patientId, childId,doctorId))
 }
 
 fun NavGraphBuilder.prescriptionsScreen(

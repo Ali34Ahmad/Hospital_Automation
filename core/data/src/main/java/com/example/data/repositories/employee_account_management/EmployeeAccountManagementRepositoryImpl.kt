@@ -8,8 +8,8 @@ import com.example.data.mapper.enums.toRoleDto
 import com.example.domain.repositories.account_management.EmployeeAccountManagementRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.account_management.CheckEmployeePermissionResponse
-import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
-import com.example.model.account_management.DeactivateMyEmployeeAccountResponse
+import com.example.model.account_management.DeactivateUserAccountRequest
+import com.example.model.account_management.DeactivateUserAccountResponse
 import com.example.model.account_management.ReactivateMyEmployeeAccountResponse
 import com.example.model.enums.Role
 import com.example.network.remote.account_management.EmployeeAccountManagementApiService
@@ -21,13 +21,14 @@ class EmployeeAccountManagementRepositoryImpl(
     private val employeeAccountManagementApiService: EmployeeAccountManagementApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : EmployeeAccountManagementRepository {
-    override suspend fun deactivateMyEmployeeAccount(deactivateMyEmployeeAccountRequest: DeactivateMyEmployeeAccountRequest):
-            Result<DeactivateMyEmployeeAccountResponse, rootError> =
+    override suspend fun deactivateUserAccount(deactivateUserAccountRequest: DeactivateUserAccountRequest):
+            Result<DeactivateUserAccountResponse, rootError> =
         userPreferencesRepository.executeWithValidToken { token ->
-            employeeAccountManagementApiService.deactivateMyEmployeeAccount(
-                deactivateMyEmployeeAccountRequest.toDeactivateMyEmployeeAccountRequestDto(),
+            employeeAccountManagementApiService.deactivateUserAccount(
+                deactivateUserAccountRequest.toDeactivateMyEmployeeAccountRequestDto(),
                 token = token,
-                role = deactivateMyEmployeeAccountRequest.role.toRoleDto(),
+                role = deactivateUserAccountRequest.role.toRoleDto(),
+                userId = deactivateUserAccountRequest.userId
             ).map { deactivateMyEmployeeAccountResponseDto ->
                 deactivateMyEmployeeAccountResponseDto.toDeactivateMyEmployeeAccountResponse()
             }

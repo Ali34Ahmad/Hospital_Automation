@@ -14,21 +14,23 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Serializable
-data object MedicalRecordsRoute
+data class MedicalRecordsRoute(
+    val doctorId: Int? = null,
+)
 
 fun NavController.navigateToMedicalRecordsScreen() {
     navigateToScreen(MedicalRecordsRoute)
 }
 
 fun NavGraphBuilder.medicalRecordsScreen(
-    onNavigateUp:()->Unit,
-    onNavigateToAppointmentsScreen:(patientId:Int, childId:Int)->Unit,
-    onNavigateToPrescriptionsScreen:(patientId:Int, childId:Int)->Unit,
+    onNavigateUp: () -> Unit,
+    onNavigateToAppointmentsScreen: (patientId: Int?, childId: Int?) -> Unit,
+    onNavigateToPrescriptionsScreen: (patientId: Int?, childId: Int?,doctorId:Int?) -> Unit,
 ) {
     composable<MedicalRecordsRoute> {
         val viewModel = koinViewModel<MedicalRecordsViewModel>()
         val uiState = viewModel.uiState.collectAsState()
-        val vaccines=viewModel.medicalRecordsFlow.collectAsLazyPagingItems()
+        val vaccines = viewModel.medicalRecordsFlow.collectAsLazyPagingItems()
 
         val navActions = object : MedicalRecordsNavigationUiActions {
             override fun navigateUp() {
@@ -39,14 +41,15 @@ fun NavGraphBuilder.medicalRecordsScreen(
                 patientId: Int?,
                 childId: Int?
             ) {
-                onNavigateToAppointmentsScreen(patientId?:-1,childId?:-1)
+                onNavigateToAppointmentsScreen(patientId, childId)
             }
 
             override fun navigateToPrescriptionsScreen(
                 patientId: Int?,
-                childId: Int?
+                childId: Int?,
+                doctorId: Int?,
             ) {
-                onNavigateToPrescriptionsScreen(patientId?:-1,childId?:-1)
+                onNavigateToPrescriptionsScreen(patientId, childId,doctorId)
             }
 
         }

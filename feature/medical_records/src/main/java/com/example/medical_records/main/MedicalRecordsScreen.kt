@@ -200,11 +200,11 @@ fun MedicalRecordsScreen(
                                     null -> Unit
                                     else -> MedicalRecordCard(
                                         onClick = {
-                                            uiActions.navigateToAppointmentsScreen(
-                                                patientId = medicalRecord.patientId,
-                                                childId = medicalRecord.childId,
-
-                                                )
+//                                            uiActions.navigateToAppointmentsScreen(
+//                                                patientId = medicalRecord.patientId,
+//                                                childId = medicalRecord.childId,
+//
+//                                                )
                                         },
                                         modifier = Modifier
                                             .fillMaxSize(),
@@ -215,7 +215,8 @@ fun MedicalRecordsScreen(
                                         onPrescriptionsClick = {
                                             uiActions.navigateToPrescriptionsScreen(
                                                 medicalRecord.patientId,
-                                                medicalRecord.childId
+                                                medicalRecord.childId,
+                                                uiState.doctorId
                                             )
                                         },
                                         onAppointmentsClick = {

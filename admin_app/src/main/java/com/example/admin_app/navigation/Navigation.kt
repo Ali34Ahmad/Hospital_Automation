@@ -9,6 +9,7 @@ import com.example.add_residential_address.navigation.navigateToAddResidentialAd
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
+import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
@@ -24,10 +25,13 @@ import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScr
 import com.example.login.navigation.LoginRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
+import com.example.medical_records.navigation.MedicalRecordsRoute
+import com.example.medical_records.navigation.medicalRecordsScreen
 import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
 import com.example.prescription_details.navigation.navigateToPrescriptionDetailsScreen
 import com.example.prescription_details.navigation.prescriptionDetailsScreen
 import com.example.prescriptions.navigation.PrescriptionsRoute
+import com.example.prescriptions.navigation.navigateToPrescriptionsScreen
 import com.example.prescriptions.navigation.prescriptionsScreen
 import com.example.reset_password.navigation.navigateToResetPasswordScreen
 import com.example.reset_password.navigation.resetPasswordScreen
@@ -48,7 +52,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = PrescriptionsRoute(
+        startDestination = MedicalRecordsRoute(
             doctorId = 143
         ),
     ) {
@@ -174,6 +178,7 @@ fun Navigation() {
 
             }
         )
+
         pharmacyDetailsScreen(
             onNavigateUp = { },
             onNavigateToEmailApp = { email, subject ->
@@ -194,6 +199,18 @@ fun Navigation() {
             }
         )
 
+        medicalRecordsScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToAppointmentsScreen = { patientId, childId ->
+                navController.navigateToScheduleScreen()
+            },
+            onNavigateToPrescriptionsScreen = { patientId, childId,doctorId ->
+                navController.navigateToPrescriptionsScreen(patientId, childId,doctorId)
+            }
+        )
+
         prescriptionsScreen(
             onNavigateUp = {
                 navController.navigateUp()
@@ -204,11 +221,11 @@ fun Navigation() {
         )
 
         prescriptionDetailsScreen(
-            onNavigateUp = {  },
-            onNavigateToPatientProfile = {  },
-            onNavigateToChildProfile = {  },
-            onNavigateToFulfillingPharmacy = {  },
-            onNavigateToMedicineDetails = {  }
+            onNavigateUp = { },
+            onNavigateToPatientProfile = { },
+            onNavigateToChildProfile = { },
+            onNavigateToFulfillingPharmacy = { },
+            onNavigateToMedicineDetails = { }
         )
 
         genericVaccineDetailsScreen(

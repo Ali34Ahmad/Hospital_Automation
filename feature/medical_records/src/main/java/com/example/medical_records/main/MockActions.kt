@@ -17,7 +17,7 @@ fun mockAllVaccinesNavigationUiActions() = object :
 
     }
 
-    override fun navigateToPrescriptionsScreen(patientId: Int?, childId: Int?) {
+    override fun navigateToPrescriptionsScreen(patientId: Int?, childId: Int?,doctorId:Int?) {
 
     }
 

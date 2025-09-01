@@ -7,6 +7,7 @@ import com.example.data.mapper.medical_record.toMedicalRecord
 import com.example.data.mapper.user.toUserMainInfo
 import com.example.model.medical_record.MedicalRecord
 import com.example.model.user.UserMainInfo
+import com.example.network.model.enums.RoleDto
 import com.example.network.remote.medical_record.MedicalRecordsApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
@@ -18,6 +19,8 @@ class MedicalRecordPagingSource(
     private val medicalRecordsApiService: MedicalRecordsApiService,
     private val onMainUserInfoChanged: (UserMainInfo) -> Unit,
     private val name:String?,
+    private val roleDto: RoleDto,
+    private val doctorId:Int?,
 ): PagingSource<Int, MedicalRecord>(){
     override fun getRefreshKey(state: PagingState<Int, MedicalRecord>): Int? {
         return  state.anchorPosition?.let { anchorPosition->
@@ -37,6 +40,8 @@ class MedicalRecordPagingSource(
                 page = nextPageNumber,
                 limit = params.loadSize,
                 name=name,
+                role = roleDto,
+                doctorId = doctorId,
             ).onSuccess { response ->
                 list = response.data.map { item ->
                     item.toMedicalRecord()

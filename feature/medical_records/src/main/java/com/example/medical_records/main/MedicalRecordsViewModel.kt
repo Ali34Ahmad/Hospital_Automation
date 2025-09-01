@@ -1,10 +1,13 @@
 package com.example.medical_records.main
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.domain.use_cases.medical_record.GetAllMedicalRecordsUseCase
+import com.example.medical_records.navigation.MedicalRecordsRoute
 import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
 import com.example.model.medical_record.MedicalRecord
@@ -28,8 +31,13 @@ import kotlinx.coroutines.launch
 
 class MedicalRecordsViewModel(
     private val getAllMedicalRecordsUseCase: GetAllMedicalRecordsUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(MedicalRecordsUiState())
+    private val _uiState = MutableStateFlow(
+        MedicalRecordsUiState(
+            doctorId = savedStateHandle.toRoute<MedicalRecordsRoute>().doctorId
+        )
+    )
     val uiState: StateFlow<MedicalRecordsUiState> = _uiState.asStateFlow()
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
@@ -43,13 +51,13 @@ class MedicalRecordsViewModel(
         query
     }
         .debounce(500)
-        .flatMapLatest {queryText->
+        .flatMapLatest { queryText ->
             updateIsRefreshing(false)
             loadData(
                 onMainUserInfoChanged = { userMainInfo ->
                     updateUserMainInfo(userMainInfo)
                 },
-                searchText =queryText
+                searchText = queryText
             )
         }
         .cachedIn(viewModelScope)
@@ -66,6 +74,7 @@ class MedicalRecordsViewModel(
         return getAllMedicalRecordsUseCase(
             onMainUserInfoChanged = onMainUserInfoChanged,
             name = name,
+            doctorId = uiState.value.doctorId
         )
     }
 

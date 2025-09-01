@@ -9,9 +9,9 @@ import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.domain.use_cases.auth.LogoutUseCase
 import com.example.domain.use_cases.doctor.profile.GetCurrentDoctorProfileUseCase
-import com.example.domain.use_cases.employee_account_management.DeactivateMyAccountUseCase
+import com.example.domain.use_cases.employee_account_management.DeactivateUserAccountUseCase
 import com.example.domain.use_cases.employee_account_management.ReactivateMyAccountUseCase
-import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
+import com.example.model.account_management.DeactivateUserAccountRequest
 import com.example.model.auth.logout.LogoutRequest
 import com.example.model.doctor.doctor_profile.DoctorProfileResponse
 import com.example.model.enums.ScreenState
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 class DoctorProfileViewModel(
     private val logoutUseCase: LogoutUseCase,
-    private val deactivateMyAccountUseCase: DeactivateMyAccountUseCase,
+    private val deactivateUserAccountUseCase: DeactivateUserAccountUseCase,
     private val reactivateMyAccountUseCase: ReactivateMyAccountUseCase,
     private val getCurrentDoctorProfileUseCase: GetCurrentDoctorProfileUseCase,
     private val savedStateHandle: SavedStateHandle,
@@ -54,7 +54,7 @@ class DoctorProfileViewModel(
     private fun getBusinessUiActions(): DoctorProfileBusinessUiActions =
         object : DoctorProfileBusinessUiActions {
             override fun onDeactivateAccount() {
-                deactivateMyAccount()
+                deactivateDoctorAccount()
             }
 
             override fun onReactivateAccount() {
@@ -179,14 +179,15 @@ class DoctorProfileViewModel(
         _uiState.update { it.copy(accountDeactivationError = error) }
     }
 
-    private fun deactivateMyAccount() {
+    private fun deactivateDoctorAccount() {
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.deactivating))
             Log.v("Deactivating Account", "ProfileViewModel")
-            deactivateMyAccountUseCase(
-                deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest(
+            deactivateUserAccountUseCase(
+                deactivateUserAccountRequest = DeactivateUserAccountRequest(
                     deactivationReason = "Feeling Sick",
                     role = roleAppConfig.role,
+                    userId = uiState.value.doctorId,
                 )
             ).onSuccess {
                 Log.v("Account Deactivated Successfully", "DoctorProfileViewModel")

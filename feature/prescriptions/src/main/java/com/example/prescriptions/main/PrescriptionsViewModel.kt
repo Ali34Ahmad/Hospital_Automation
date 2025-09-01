@@ -1,5 +1,6 @@
 package com.example.prescriptions.main
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -60,6 +61,7 @@ class PrescriptionsViewModel(
             val currentChildId = uiState.value.childId
             val doctorId = uiState.value.doctorId
             updateIsRefreshing(false)
+            Log.d("ChildId",currentChildId.toString())
             loadData(
                 onMainUserInfoChanged = { userMainInfo ->
                     updateUserMainInfo(userMainInfo)
