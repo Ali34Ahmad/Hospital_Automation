@@ -96,6 +96,7 @@ object ApiRoutes {
 
 
     object Admin{
+        const val GUARDIANS_BY_CHILD_ID = "$ADMIN/show-guardian_for_child"
         const val LOGIN = "$ADMIN/login"
         const val SIGNUP = "$ADMIN/sign-up"
         const val SEND_OTP = "$ADMIN/send-otp"
@@ -141,6 +142,12 @@ object ApiRoutes {
     object Pharmacy {
         const val PHARMACIES_BY_MEDICINE_ID = "$DOCTOR/show-pharmacies-have-medicine"
     }
+    fun getGuardiansByChildIdEndPointFor(role: RoleDto)=
+        when(role){
+            RoleDto.EMPLOYEE -> GUARDIANS_BY_CHILD_ID
+            RoleDto.ADMIN -> Admin.GUARDIANS_BY_CHILD_ID
+            else -> ""
+        }
 
     //doctor : /doctor/show-appointments?params=Upcomming&limit=2&page=2&dateOrder
     //admin -> doctor : doctor-appointment-screen/143?limit=10&page=1&&params=Upcomming

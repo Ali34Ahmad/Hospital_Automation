@@ -85,13 +85,12 @@ fun NavController.navigateToScheduleScreenReplacingCurrent(
 
 fun NavGraphBuilder.scheduleScreen(
     onNavigateToAppointmentDetails: (doctorId: Int)-> Unit,
-    onNavigateToDoctorProfile: ()-> Unit,
+    onNavigateToProfile: (Int)-> Unit,
     onNavigateToMedicalRecords: () -> Unit,
     onNavigateToPrescriptions: () -> Unit,
     onNavigateToVaccines: () -> Unit,
     onNavigateToNotifications: () -> Unit,
     onNavigateToVaccineTable: () -> Unit,
-    onNavigateToDoctorProfileById: (Int) -> Unit,
     onNavigateToUserProfile: (Int) -> Unit,
     onNavigateToChildProfile: (Int) -> Unit,
     onNavigateUp: ()-> Unit,
@@ -100,8 +99,7 @@ fun NavGraphBuilder.scheduleScreen(
         val viewModel = koinViewModel<ScheduleViewModel>()
         val navigationActions = object : ScheduleNavigationActions{
             override fun navigateToAppointmentDetails(doctorId: Int)= onNavigateToAppointmentDetails(doctorId)
-            override fun navigateToDoctorProfile() = onNavigateToDoctorProfile()
-            override fun navigateToDoctorProfile(id: Int) = onNavigateToDoctorProfileById(id)
+            override fun navigateToProfile() = onNavigateToProfile(id)
 
             override fun navigateToChildProfile(id: Int) = onNavigateToChildProfile(id)
 

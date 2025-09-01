@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.doctor_schedule.navigation.AppointmentSearchType
+import com.example.doctor_schedule.navigation.ScheduleRoute
 import com.example.doctor_schedule.presentation.model.AppointmentsFilter
 import com.example.doctor_schedule.presentation.model.upcomingMapper
 import com.example.domain.use_cases.appointment.GetChildAppointmentsUseCase
@@ -54,25 +56,16 @@ class ScheduleViewModel(
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
 
-    private val doctorId = 143
-    private val childId = 1
-    private val userId = 128
-
-    private val id = userId
-    private val hasAdminAccess = true
-    private val targetRole = AppointmentSearchType.USER
-    private val name = "Ali Mansoura"
-    private val speciality: String? = null
-    private val imageUrl : String? = "https://randomuser.me/api/portraits/men/32.jpg"
+    private val route = savedStateHandle.toRoute<ScheduleRoute>()
 
     private val _uiState = MutableStateFlow(
         ScheduleUIState(
-            id = id,
-            hasAdminAccess = hasAdminAccess,
-            searchType = targetRole,
-            name = name,
-            speciality = speciality,
-            imageUrl = imageUrl
+            id = route.id,
+            hasAdminAccess = route.hasAdminAccess,
+            searchType = route.searchType,
+            name = route.name,
+            speciality = route.speciality,
+            imageUrl = route.imageUrl
         )
     )
 

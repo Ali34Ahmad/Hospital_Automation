@@ -9,6 +9,7 @@ import com.example.add_new_vaccine.navigation.addNewVaccineScreen
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
+import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -16,11 +17,12 @@ import com.example.clinic_details.navigation.clinicDetailsScreen
 import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.vaccines.navigation.vaccinesScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
-import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
-import com.example.doctor_schedule.navigation.doctorScheduleScreen
+import com.example.doctor_schedule.navigation.ScheduleRoute
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
+import com.example.doctor_schedule.navigation.scheduleScreen
+import com.example.doctor_schedule.presentation.ScheduleScreen
 import com.example.doctor_signup.navigation.doctorSignUpScreen
 import com.example.doctor_signup.navigation.navigateToSignUpScreen
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
@@ -292,7 +294,7 @@ fun Navigation() {
             onNavigateUp = { navController.navigateUp() },
             onNavigateToChildrenScreen = { },
             onNavigateToAddChildScreen = { },
-            onNavigateToAppointments = {  },
+            onNavigateToAppointments = {id,name,imageUrl->  },
             onNavigateToPrescriptions = {  },
             onNavigateToMedicalRecord = {  },
         )
@@ -300,10 +302,10 @@ fun Navigation() {
         childProfileScreen(
             navigateToAddGuardianScreen = {},
             navigateToEmployeeProfileScreen = { },
-            navigateToGuardianScreen = { },
+            navigateToGuardiansScreen = { },
             navigateUp = { navController.navigateUp() },
             onNavigateToVaccinationTable = {  },
-            onNavigateToAppointments = {  },
+            onNavigateToAppointments = {id,name->  },
             onNavigateToPrescriptions = {  },
             onNavigateToMedicalRecords = {  },
             onNavigateToAppointmentDetails = {  },
@@ -315,14 +317,35 @@ fun Navigation() {
             },
         )
 
-        doctorScheduleScreen(
-            onNavigateToAppointmentDetails = {},
-            onNavigateToDoctorProfile = {},
+        scheduleScreen(
+            onNavigateToAppointmentDetails = {appointmentId->
+                navController.navigateToAppointmentDetails(
+                    appointmentId = appointmentId,
+                    canEdit = true
+                )
+            },
             onNavigateToMedicalRecords = {},
             onNavigateToPrescriptions = {},
             onNavigateToVaccines = {},
             onNavigateToNotifications = {},
             onNavigateToVaccineTable = {},
+            onNavigateToProfile = {
+                TODO("Not yet implemented")
+            },
+            onNavigateToUserProfile = { userId->
+                navController.navigateToGuardianProfile(
+                    guardianId = userId,
+                    userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
+                    childId = null
+                )
+            },
+            onNavigateToChildProfile = {childId->
+                navController.navigateToChildProfile(
+                    childId = childId ,
+                    hasAdminAccess = false
+                )
+            },
+            onNavigateUp = navController::navigateUp,
         )
 
         clinicDetailsScreen(
@@ -330,7 +353,7 @@ fun Navigation() {
             onNavigateToDoctorProfile = {},
             onNavigateToScheduleScreen = {},
             onNavigateToVaccines = {},
-            onNavigateToAllDoctors = {},
+            onNavigateToAllDoctors = {clinicId,clinicName->},
             onNavigateToAllAppointments = {},
             onNavigateToMedicalRecords = {},
             onNavigateToContractHistory = {},

@@ -40,15 +40,15 @@ class AppointmentsRepositoryImp(
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)
             SortType.ASC else SortType.DESC
 
-        return dataStore.executeFlowWithValidToken { token->
-           Pager(
+        // dataStore.executeFlowWithValidToken { token->
+           return  Pager(
                 config = PagingConfig(
                     pageSize = PagingConstants.PAGE_SIZE
                 ),
                 pagingSourceFactory = {
                     AppointmentPagingSource(
                         appointmentState = appointmentState,
-                        token = token,
+                        token = FAKE_TOKEN,
                         appointmentsApi = appointmentsApi,
                         sort = sortType,
                         onStatisticsChanged = onStatisticsChanged,
@@ -60,8 +60,7 @@ class AppointmentsRepositoryImp(
                     )
                 }
             ).flow
-        }
-
+//        }
     }
 
     override suspend fun getUserAppointment(

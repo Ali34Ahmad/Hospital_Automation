@@ -15,5 +15,10 @@ data class DoctorsSearchUIState(
     val isDrawerOpened: Boolean = false,
     val isDarkTheme: Boolean = false,
     val statistics: EmploymentStatistics = EmploymentStatistics(),
-    val topBarState: TopBarState = TopBarState.DEFAULT
-)
+    private val topBarMode: TopBarState = TopBarState.DEFAULT
+){
+    val topBarState
+        get() = if(clinicId == null) TopBarState.SEARCH else topBarMode
+    val canNavigateUp
+        get() = clinicId != null
+}

@@ -110,7 +110,7 @@ internal fun ClinicsSearchScreen(
     )
     EmployeeDrawer(
         state = drawerState,
-        title = if(uiState.hasAdminAccess) R.string.admin else R.string.doctor,
+        title = R.string.medicare,
         buttons = drawerButtons,
         selectedIndex = null,
         onItemSelected = {
@@ -141,7 +141,7 @@ internal fun ClinicsSearchScreen(
                                 ClinicsSearchUIAction.ToggleDrawer
                             )
                         },
-                        onClearIconClick = {
+                        onClear = {
                             onAction(
                                 ClinicsSearchUIAction.UpdateQuery("")
                             )

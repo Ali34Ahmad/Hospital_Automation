@@ -25,7 +25,11 @@ private val mockActions = object : GuardianProfileNavigationAction{
     override fun navigateToAddChild(guardianId: Int){}
 
     override fun navigateToChildren(guardianId: Int) {}
-    override fun navigateToAppointments(guardianId: Int) {
+    override fun navigateToAppointments(
+        guardianId: Int,
+        name: String,
+        imageUrl: String?,
+    ) {
 
     }
 

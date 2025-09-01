@@ -55,11 +55,10 @@ fun NavGraphBuilder.guardianProfileScreen(
     onNavigateUp: () -> Unit,
     onNavigateToChildrenScreen: (guardianId: Int)-> Unit,
     onNavigateToAddChildScreen: (guardianId: Int)-> Unit,
-    onNavigateToAppointments: (guardianId: Int)-> Unit,
+    onNavigateToAppointments: (guardianId: Int,name:String,imageUrl: String?)-> Unit,
     onNavigateToPrescriptions: (guardianId: Int)-> Unit,
     onNavigateToMedicalRecord: (guardianId: Int)-> Unit,
-
-){
+    ){
     composable<GuardianProfileRoute> {
         val viewModel = koinViewModel<GuardianProfileViewModel>()
         val context = LocalContext.current
@@ -73,7 +72,15 @@ fun NavGraphBuilder.guardianProfileScreen(
             override fun navigateToAddChild(guardianId: Int) = onNavigateToAddChildScreen(guardianId)
 
             override fun navigateToChildren(guardianId: Int) = onNavigateToChildrenScreen(guardianId)
-            override fun navigateToAppointments(guardianId: Int) = onNavigateToAppointments(guardianId)
+            override fun navigateToAppointments(
+                guardianId: Int,
+                name: String,
+                imageUrl: String?
+            ) = onNavigateToAppointments(
+                guardianId,
+                name,
+                imageUrl
+            )
 
             override fun navigateToPrescriptions(guardianId: Int) = onNavigateToPrescriptions(guardianId)
 

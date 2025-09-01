@@ -203,7 +203,9 @@ fun FakeNavigation() {
             onNavigateToVaccines = {
                 TODO("Need Navigation Route")
             },
-            onNavigateToAllDoctors = {},
+            onNavigateToAllDoctors = {clinicId,clinicName->
+                TODO("Feature not found")
+            },
             onNavigateToAllAppointments = {},
             onNavigateToMedicalRecords = {},
             onNavigateToContractHistory = {},
@@ -218,7 +220,7 @@ fun FakeNavigation() {
                     canEdit = true
                 )
             },
-            onNavigateToDoctorProfile = {
+            onNavigateToProfile = {
                 navController.navigateToDoctorProfileScreen(
                     doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
                     doctorId = null
@@ -239,7 +241,6 @@ fun FakeNavigation() {
             onNavigateToVaccineTable = {
                 TODO("Need Navigation Route")
             },
-            onNavigateToDoctorProfileById = {},
             onNavigateToUserProfile = {},
             onNavigateToChildProfile = {},
             onNavigateUp = {},
@@ -263,18 +264,14 @@ fun FakeNavigation() {
                     childId = childId,
                     canSkip = canSkip
                 )
-            },
-            onNavigateToGuardianProfile = {guardianId->
-                navController.navigateToGuardianProfile(
-                    guardianId = guardianId,
-                    userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
-                    childId = null
-                )
-            },
-            onNavigateToDoctorSchedule = {
-                navController.navigateToScheduleScreen()
             }
-        )
+        ) { guardianId ->
+            navController.navigateToGuardianProfile(
+                guardianId = guardianId,
+                userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
+                childId = null
+            )
+        }
         diagnosisScreen(
             onNavigateToAppointmentDetails = {appointmentId ->
                 navController.navigateToAppointmentDetailsReplacementCurrent(

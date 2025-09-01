@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.icons.AppIcons
 import com.example.ext.shimmerEffect
@@ -90,7 +89,6 @@ fun PrescribedMedicineViewerCard(
                 },
                 errorCompose = {
                     FailedImage(
-                        size = MaterialTheme.sizing.medium48,
                         shape = RoundedCornerShape(MaterialTheme.sizing.small6)
                     )
                 },

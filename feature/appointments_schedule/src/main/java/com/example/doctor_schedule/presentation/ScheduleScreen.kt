@@ -118,7 +118,7 @@ internal fun ScheduleScreen(
             text = R.string.profile,
             image = AppIcons.Outlined.accountCircle,
             onClick = {
-                navigationActions.navigateToDoctorProfile()
+                navigationActions.navigateToProfile()
             }
         ),
         DrawerButton(
@@ -165,7 +165,7 @@ internal fun ScheduleScreen(
     )
     EmployeeDrawer(
         state = drawerState,
-        title = R.string.doctor,
+        title = R.string.medicare,
         buttons = drawerButtons,
         selectedIndex = null,
         onItemSelected = {
@@ -225,7 +225,7 @@ internal fun ScheduleScreen(
                     onTitleClick = {
                         uiState.id?.let { id->
                             when(uiState.searchType){
-                                AppointmentSearchType.DOCTOR -> navigationActions.navigateToDoctorProfile(id = id)
+                                AppointmentSearchType.DOCTOR -> navigationActions.navigateToProfile()
                                 AppointmentSearchType.CHILD -> navigationActions.navigateToChildProfile(id = id)
                                 AppointmentSearchType.USER -> navigationActions.navigateToUserProfileProfile(id = id)
                             }

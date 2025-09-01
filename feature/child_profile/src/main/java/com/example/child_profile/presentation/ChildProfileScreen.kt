@@ -92,7 +92,7 @@ fun ChildProfileScreen(
             )
         },
         bottomBar = {
-            if(uiState.state == ScreenState.SUCCESS){
+            if(uiState.state == ScreenState.SUCCESS&&!uiState.hasAdminAccess){
                 AddGuardianButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -162,8 +162,8 @@ fun ChildProfileScreen(
                                         }
                                     },
                                     onGuardianTagItemClick = {
-                                        childId?.let {
-                                            navigationActions.navigateToGuardiansScreen(it)
+                                        childId?.let{childId->
+                                            navigationActions.navigateToGuardiansScreen(childId)
                                         }
                                     },
                                     modifier = Modifier.fillMaxWidth(),
@@ -173,8 +173,11 @@ fun ChildProfileScreen(
                                         }
                                     },
                                     onAppointmentsClick = {
-                                        childId?.let {
-                                            navigationActions.navigateToAppointments(it)
+                                        childId?.let {childId->
+                                            navigationActions.navigateToAppointments(
+                                                childId = childId,
+                                                name = fullName
+                                            )
                                         }
                                     },
                                     onPrescriptionsClick = {

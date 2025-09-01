@@ -31,13 +31,12 @@ class ChildrenSearchViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    val searchType =  SearchType.EMPLOYEE
-    val employeeId = 45
+    private val route = savedStateHandle.toRoute<ChildrenSearchRoute>()
 
     private val _uiState = MutableStateFlow(
         ChildrenSearchUiState(
-            searchType = searchType,
-            employeeId = employeeId
+            searchType = route.searchType,
+            employeeId = route.employeeId
             //savedStateHandle.toRoute<ChildrenSearchRoute>().searchType
         ))
     val uiState: StateFlow<ChildrenSearchUiState> = _uiState
@@ -96,7 +95,7 @@ class ChildrenSearchViewModel(
             SearchType.EMPLOYEE -> {
                 searchForChildrenAddedByEmployeeByName(
                     query,
-                    employeeId
+                    uiState.value.employeeId
                 )
             }
         }

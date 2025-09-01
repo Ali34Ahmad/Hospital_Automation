@@ -74,14 +74,11 @@ internal class UserRepositoryImp(
     }
 
     override suspend fun getGuardiansByChildId(childId: Int): Result<List<GuardianData>, NetworkError> {
-        val token: String? = userPreferences.userPreferencesDataStoreFlow.first().token
-        if(token == null)
-            return Result.Error<NetworkError>(NetworkError.EMPTY_TOKEN)
-
         return userApiService
             .getGuardiansByChildId(
-                token = token,
-                childId = childId
+                token = FAKE_TOKEN,
+                childId = childId,
+                roleDto = roleAppConfig.role.toRoleDto(),
             ).map { response ->
                 response.data.map { userDto ->
                     userDto.toGuardianData()

@@ -24,10 +24,11 @@ class ChildrenViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getChildrenByGuardianIdUseCase: GetChildrenByGuardianIdUseCase,
 ): ViewModel() {
-    val id : Int = 2
 
     private val _uiState = MutableStateFlow(
-        ChildrenUIState(guardianId = id)
+        ChildrenUIState(
+            guardianId = savedStateHandle.toRoute<ChildrenRoute>().userId
+        )
     )
     val uiState : StateFlow<ChildrenUIState> = _uiState
         .onStart {
@@ -36,9 +37,7 @@ class ChildrenViewModel(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            ChildrenUIState(
-                guardianId = id
-            )
+            _uiState.value
         )
 
 
@@ -72,7 +71,7 @@ class ChildrenViewModel(
     }
     private fun loadUserData() = viewModelScope.launch{
         updateScreenState(ScreenState.LOADING)
-        val response = getChildrenByGuardianIdUseCase(id)
+        val response = getChildrenByGuardianIdUseCase(uiState.value.guardianId)
         response.onSuccess{ data:List<ChildFullData> ->
             _uiState.value = uiState.value.copy(userChildren = data)
             updateScreenState(ScreenState.SUCCESS)
@@ -89,7 +88,7 @@ class ChildrenViewModel(
     private fun refreshData(){
         viewModelScope.launch{
             updateRefreshState(true)
-            getChildrenByGuardianIdUseCase(id)
+            getChildrenByGuardianIdUseCase(uiState.value.guardianId)
                 .onSuccess{ result->
                     updateRefreshState(false)
                     showToast(UiText.StringResource(R.string.data_updated_successfully))

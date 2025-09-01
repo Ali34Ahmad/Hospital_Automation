@@ -85,10 +85,7 @@ internal val mockActions =  object : ScheduleNavigationActions{
 
     }
 
-    override fun navigateToDoctorProfile() {
-    }
-
-    override fun navigateToDoctorProfile(id: Int) {
+    override fun navigateToProfile() {
 
     }
 

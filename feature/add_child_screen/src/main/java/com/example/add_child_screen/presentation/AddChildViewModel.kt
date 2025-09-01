@@ -1,11 +1,14 @@
 package com.example.add_child_screen.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.add_child_screen.navigation.AddChildRoute
 import com.example.domain.use_cases.children.AddChildUseCase
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.child.ChildFullData
 import com.example.model.enums.BottomBarState
 import com.example.model.enums.Gender
@@ -17,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.ui_components.R
+import java.time.LocalDate
 
 class AddChildViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -29,6 +33,7 @@ class AddChildViewModel(
 
     val uiState: StateFlow<AddChildUIState> = _uiState
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun onAction(action: AddChildUIActions){
         when(action){
             is AddChildUIActions.OnFirstNameChanged ->{
@@ -119,7 +124,7 @@ class AddChildViewModel(
         _uiState.value = _uiState.value.copy(motherLastNameErrorMessage = text)
     }
     private fun validateDateOfBirth(){
-        val error = TextValidator.validate(_uiState.value.dateOfBirth)
+        val error = TextValidator.validate(_uiState.value.dateOfBirth?.toAppropriateDateFormat().orEmpty())
         val text = error?.let { UiText.StringResource(resId = R.string.required_field) }
         _uiState.value = _uiState.value.copy(dateOfBirthErrorMessage = text)
     }
@@ -175,7 +180,7 @@ class AddChildViewModel(
         _uiState.value = _uiState.value.copy(motherLastName = value)
         enableBottomBarButtonIfNeeded()
     }
-    private fun updateDateOfBirth(value: String){
+    private fun updateDateOfBirth(value: LocalDate){
         _uiState.value = _uiState.value.copy(dateOfBirth = value)
         enableBottomBarButtonIfNeeded()
     }
