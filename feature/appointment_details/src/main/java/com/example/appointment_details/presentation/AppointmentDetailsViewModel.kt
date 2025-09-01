@@ -3,6 +3,8 @@ package com.example.appointment_details.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.example.appointment_details.navigation.AppointmentDetailsRoute
 import com.example.domain.use_cases.appointment.GetAppointmentDetailsUseCase
 import com.example.domain.use_cases.appointment.UpdateAppointmentStateToMissedUseCase
 import com.example.domain.use_cases.appointment.UpdateAppointmentStateToPassedUseCase
@@ -33,11 +35,11 @@ class AppointmentDetailsViewModel(
     private val getAppointmentDetails: GetAppointmentDetailsUseCase
 ): ViewModel() {
 
+    private val route = savedStateHandle.toRoute<AppointmentDetailsRoute>()
     private val _uiState = MutableStateFlow(
         AppointmentDetailsUIState(
-            appointmentId = 1,
-            canEdit = false
-               // savedStateHandle.toRoute<AppointmentDetailsRoute>().appointmentId,
+            appointmentId = route.appointmentId,
+            canEdit = route.canEdit
         )
     )
     val uiState : StateFlow<AppointmentDetailsUIState> = _uiState

@@ -7,6 +7,10 @@ import com.example.model.guardian.PagedData
 import kotlinx.coroutines.flow.flowOf
 
 val mockActions = object : DoctorsSearchNavigationActions{
+    override fun navigateUp() {
+
+    }
+
     override fun navigateToDoctorProfile(doctorId: Int) {
 
     }

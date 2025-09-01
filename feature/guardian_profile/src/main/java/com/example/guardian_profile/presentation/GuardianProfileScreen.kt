@@ -173,7 +173,9 @@ fun GuardianProfileScreen(
                                         hasAdminAccess = uiState.hasAdminAccess,
                                         onAppointmentsClick = {
                                             navigationActions.navigateToAppointments(
-                                                guardianId = userId
+                                                guardianId = userId,
+                                                name = fullName,
+                                                imageUrl = imgUrl
                                             )
                                         },
                                         onPrescriptionsClick = {
@@ -217,13 +219,6 @@ fun GuardianProfileScreen(
                                                 )
                                             },
                                             onConfirm = {
-                                                if(uiState.deactivationReason.isBlank()){
-                                                    onAction(
-                                                        GuardianProfileActions.UpdateDeactivationReason(
-                                                            defaultReason
-                                                        )
-                                                    )
-                                                }
                                                 onAction(GuardianProfileActions.HideWarningDialog)
                                                 onAction(
                                                     GuardianProfileActions.DeactivateAccount

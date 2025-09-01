@@ -23,8 +23,7 @@ sealed interface ScheduleUIAction {
 
 interface ScheduleNavigationActions{
     fun navigateToAppointmentDetails(doctorId: Int)
-    fun navigateToDoctorProfile()
-    fun navigateToDoctorProfile(id:Int)
+    fun navigateToProfile()
     fun navigateToChildProfile(id: Int)
     fun navigateToUserProfileProfile(id: Int)
     fun navigateToNotifications()

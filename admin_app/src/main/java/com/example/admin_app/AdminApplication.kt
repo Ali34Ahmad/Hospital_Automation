@@ -31,6 +31,7 @@ import com.example.reset_password.resetPasswordModule
 import com.example.signup.signUpModule
 import com.example.upload_profile_image.uploadProfileImageModule
 import com.example.vaccine_details_screen.vaccineDetailsModule
+import com.example.guardians.di.guardiansModule
 import com.example.vaccines.vaccinesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -45,6 +46,7 @@ class AdminApplication : Application() {
                 appModule,
                 adminDataModule,
                 //features
+                guardiansModule,
                 doctorsSearchModule,
                 employeesSearchModule,
                 clinicsSearchModule,

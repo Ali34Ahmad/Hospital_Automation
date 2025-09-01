@@ -36,12 +36,11 @@ class ChildProfileViewModel (
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    val childId = 1
-    val hasAdminAccess = true
+    private val route = savedStateHandle.toRoute<ChildProfileRoute>()
     private val _uiState = MutableStateFlow(
         ChildProfileUIState(
-            childId = childId,
-            hasAdminAccess = hasAdminAccess
+            childId = route.childId,
+            hasAdminAccess = route.hasAdminAccess
         )
     )
     val uiState: StateFlow<ChildProfileUIState> = _uiState

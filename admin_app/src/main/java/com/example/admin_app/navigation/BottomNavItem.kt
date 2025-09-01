@@ -12,12 +12,12 @@ import com.example.ui_components.R
 sealed class BottomNavItem(
     val route: Any,
     @StringRes val label: Int,
-    @DrawableRes val icon: Int
+    @DrawableRes val icon: Int,
     ) {
         object Doctors : BottomNavItem(
             DoctorSearchRoute(),
             R.string.doctors,
-            AppIcons.Outlined.doctors
+            AppIcons.Outlined.doctors,
         )
         object Employees : BottomNavItem(
             EmployeesSearchRoute,
@@ -34,7 +34,6 @@ sealed class BottomNavItem(
             R.string.pharmacies,
             AppIcons.Outlined.pharmacy
         )
-
         companion object {
             val items = listOf(
                 Doctors,

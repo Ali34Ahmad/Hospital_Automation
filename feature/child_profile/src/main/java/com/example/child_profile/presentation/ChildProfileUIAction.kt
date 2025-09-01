@@ -23,7 +23,7 @@ interface ChildProfileNavigationAction{
     fun navigateToEmployeeProfileScreen(employeeId: Int)
     fun navigateToGuardiansScreen(childId: Int)
     fun navigateToVaccinationTableScreen(childId: Int)
-    fun navigateToAppointments(childId: Int)
+    fun navigateToAppointments(childId: Int,name:String)
     fun navigateToMedicalRecords(childId: Int)
     fun navigateToPrescriptions(childId: Int)
     fun navigateToAppointmentDetails(appointmentId: Int)

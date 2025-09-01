@@ -205,11 +205,12 @@ internal fun ClinicDetailsScreen(
                                     modifier = Modifier.padding(
                                         vertical = MaterialTheme.spacing.large24
                                     ),
-                                    onAllDoctorsClick = navigationAction::navigateToAllDoctors,
-                                    onAppointmentsClick = navigationAction::navigateToAllAppointments,
-                                    onPrescriptionsClick = navigationAction::navigateToPrescriptions,
-                                    onMedicalRecordsClick = navigationAction::navigateToMedicalRecords,
-                                    onContractHistoryClick = navigationAction::navigateToContractHistory,
+                                    onAllDoctorsClick = {
+                                        navigationAction.navigateToAllDoctors(
+                                            clinicId = clinicId,
+                                            clinicName = name
+                                        )
+                                    },
                                     onDeactivateClinicClick = {
                                         onAction(
                                             ClinicDetailsUIAction.ShowWarningDialog

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.sizing
+import com.example.ui.theme.spacing
 
 @Composable
 fun OtpInputField(
@@ -49,7 +50,9 @@ fun OtpInputField(
         focusedTextColor = MaterialTheme.colorScheme.onBackground,
         unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
         errorBorderColor = MaterialTheme.colorScheme.error,
-    )
+    ),
+    aspectRatio: Float = 0.8f,
+    width: Dp = MaterialTheme.sizing.medium48
 ) {
     val value = number?.toString().orEmpty()
     val textFieldValue = TextFieldValue(
@@ -61,18 +64,19 @@ fun OtpInputField(
             .onKeyEvent { event ->
                 //if the user press on the del button from the keyboard
                 if(event.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_DEL){
-                    if(number != null){
-                        //delete the number
-                        onNumberChange(null)
-                    }else{
+                    if(textFieldValue.text.isEmpty()){
                         //if no value in the text field we will move back
                         onMoveBack()
+                    }else{
+                        //delete the number
+                        onNumberChange(null)
                     }
+                    return@onKeyEvent true
                 }
                 false
             }
-            .aspectRatio(0.8f)
-            .width(MaterialTheme.sizing.medium48)
+            .aspectRatio(aspectRatio)
+            .width(width)
             .focusRequester(focusRequester)
 //            .onFocusChanged {
 //                if(it.isFocused){
@@ -82,9 +86,14 @@ fun OtpInputField(
             ,
         value = textFieldValue,
         onValueChange = {newValue->
-            val number = newValue.text.toInt()
+            val text = newValue.text.takeLast(1).filter { it.isDigit() }
+            val number = text.toIntOrNull()
+
             onNumberChange(number)
+
+            number?.let { number->
             onNumberEntered(number)
+            }
         },
         textStyle = style,
         keyboardOptions = KeyboardOptions(
@@ -94,7 +103,7 @@ fun OtpInputField(
         shape = shape,
         colors = colors,
         isError = isError,
-        enabled = enabled
+        enabled = enabled,
     )
 }
 
@@ -115,7 +124,7 @@ fun OtpInputFieldPreview() {
         focusRequester = FocusRequester(),
         onMoveBack = {},
         enabled = true,
-        isError=true
+        isError=false
     )
 
 }

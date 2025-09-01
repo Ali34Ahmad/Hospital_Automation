@@ -39,7 +39,7 @@ fun NavGraphBuilder.clinicDetailsScreen(
     onNavigateToDoctorProfile: ()-> Unit,
     onNavigateToScheduleScreen : ()->Unit,
     onNavigateToVaccines: ()-> Unit,
-    onNavigateToAllDoctors: ()-> Unit,
+    onNavigateToAllDoctors: (Int, String)-> Unit,
     onNavigateToAllAppointments: ()-> Unit,
     onNavigateToMedicalRecords: ()-> Unit,
     onNavigateToContractHistory: ()-> Unit,
@@ -53,7 +53,13 @@ fun NavGraphBuilder.clinicDetailsScreen(
             override fun navigateToDoctorProfile() = onNavigateToDoctorProfile()
             override fun navigateToScheduleScreen() =onNavigateToScheduleScreen()
             override fun navigateToVaccines() = onNavigateToVaccines()
-            override fun navigateToAllDoctors()=onNavigateToAllDoctors()
+            override fun navigateToAllDoctors(
+                clinicId:Int,
+                clinicName: String,
+            )=onNavigateToAllDoctors(
+                clinicId,
+                clinicName
+            )
 
             override fun navigateToAllAppointments() = onNavigateToAllAppointments()
             override fun navigateToPrescriptions() = onNavigateToPrescriptions()

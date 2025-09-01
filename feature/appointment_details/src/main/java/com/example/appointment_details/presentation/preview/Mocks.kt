@@ -22,8 +22,6 @@ val mockNavigationActions = object : AppointmentDetailsNavigationActions{
     override fun navigateToVaccineDetails(vaccineId: Int) {
     }
 
-    override fun navigateToDoctorSchedule() {
-    }
 
     override fun navigateToAddMedicalDiagnosis(
         appointmentId: Int,

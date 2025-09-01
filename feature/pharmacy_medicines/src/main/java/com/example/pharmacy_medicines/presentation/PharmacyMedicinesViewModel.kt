@@ -3,10 +3,12 @@ package com.example.pharmacy_medicines.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.cachedIn
 import com.example.domain.use_cases.medicine.GetMedicinesByPharmacyIdUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
+import com.example.pharmacy_medicines.navigation.PharmacyMedicinesRoute
 import com.example.utility.constants.DurationConstants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -25,12 +27,12 @@ class PharmacyMedicinesViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val searchForMedicinesByPharmacyId: GetMedicinesByPharmacyIdUseCase,
 ): ViewModel() {
-
+    private val pharmacyMedicineRoute = savedStateHandle.toRoute<PharmacyMedicinesRoute>()
     private val _uiState = MutableStateFlow(
         PharmacyMedicinesUIState(
-            pharmacyId = 2,
-            title = "Elias Fares",
-            imageUrl = "https://img.freepik.com/premium-photo/smiling-male-pharmacist-with-tablet-his-hand_662214-617447.jpg",
+            pharmacyId = pharmacyMedicineRoute.pharmacyId,
+            title = pharmacyMedicineRoute.name,
+            imageUrl = pharmacyMedicineRoute.imageUrl,
         )
     )
     val uiState = _uiState.asStateFlow()

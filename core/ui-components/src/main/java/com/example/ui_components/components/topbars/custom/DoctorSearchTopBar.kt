@@ -27,11 +27,14 @@ fun DoctorSearchTopBar(
     onQueryChanged: (String)-> Unit,
     onClearQuery: ()-> Unit,
     onMenuIconClick: ()-> Unit,
+    onNavigateUp: ()->Unit,
     modifier: Modifier = Modifier,
     @DrawableRes menuIcon: Int = AppIcons.Outlined.menu,
-    @DrawableRes searchIcon: Int = AppIcons.Outlined.search
+    @DrawableRes searchIcon: Int = AppIcons.Outlined.search,
+    @DrawableRes navigationIcon: Int = AppIcons.Outlined.arrowBack
 ) {
     if(title == null){
+        //doctors global  search
         HospitalAutomationTopBarWithSearchBar(
             modifier = modifier,
             query = searchQuery,
@@ -42,16 +45,16 @@ fun DoctorSearchTopBar(
             navigationIcon = menuIcon,
         )
     }else{
+        // clinic's doctors
         AnimatedContent(
             targetState = state,
         ) {state->
             when(state){
                 TopBarState.DEFAULT -> HospitalAutomationTopBar(
                     title = title,
-                    onNavigationIconClick = onMenuIconClick,
+                    onNavigationIconClick = onNavigateUp,
                     modifier = modifier,
-                    navigationIcon = menuIcon,
-                    imageUrl = null,
+                    navigationIcon = navigationIcon,
                     actionIcons = listOf(
                         ActionIcon(
                             icon = searchIcon,
@@ -65,8 +68,11 @@ fun DoctorSearchTopBar(
                     onQueryChange = onQueryChanged,
                     onTrailingIconClick = onClearQuery,
                     placeholderText = R.string.doctor_name,
-                    onNavigationIconCLick = onMenuIconClick,
-                    navigationIcon = menuIcon,
+                    onNavigationIconCLick = {
+                        onToggleState()
+                        onClearQuery()
+                    },
+                    navigationIcon = navigationIcon,
                 )
             }
         }
@@ -96,6 +102,7 @@ fun DoctorSearchTopBarPreview() {
 
             },
             modifier = Modifier.fillMaxWidth(),
+            onNavigateUp = {}
         )
     }
 }
@@ -104,7 +111,7 @@ fun DoctorSearchTopBarPreview() {
 @Composable
 fun DoctorSearchByClinicTopBarPreview() {
     Hospital_AutomationTheme {
-        var state by remember{ mutableStateOf(TopBarState.DEFAULT) }
+        var state by remember{ mutableStateOf(TopBarState.SEARCH) }
         var query by remember { mutableStateOf("") }
         DoctorSearchTopBar(
             state = state,
@@ -124,6 +131,7 @@ fun DoctorSearchByClinicTopBarPreview() {
 
             },
             modifier = Modifier.fillMaxWidth(),
+            onNavigateUp = {}
         )
     }
 }

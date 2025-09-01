@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import com.example.doctors.presentation.DoctorSearchScreen
 import com.example.doctors.presentation.DoctorsSearchNavigationActions
 import com.example.doctors.presentation.DoctorsSearchViewModel
-import com.example.navigation.extesion.switchToTab
+import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -24,23 +24,26 @@ import org.koin.androidx.compose.koinViewModel
 data class DoctorSearchRoute(
     val clinicId: Int? = null,
     val clinicName: String = "",
+    val isPrimary: Boolean = true
 )
 
-fun NavController.switchToDoctorSearchTab(
-    startDestination: Any,
+
+fun NavController.navigateToDoctorsSearch(
     clinicId: Int? = null,
     clinicName: String,
+    showNavBar: Boolean,
 ){
-    switchToTab(
+    navigateToScreen(
         route = DoctorSearchRoute(
-            clinicId,
-            clinicName,
-        ),
-        startDestination = startDestination
+            clinicId = clinicId,
+            clinicName = clinicName,
+            isPrimary = showNavBar
+        )
     )
 }
 
 fun NavGraphBuilder.doctorsSearch(
+    onNavigateUp: ()-> Unit,
     onNavigateToDoctorProfile:(Int)-> Unit,
     onNavigateToAdminProfile: ()-> Unit,
     onNavigateToVaccines: ()-> Unit,
@@ -52,6 +55,8 @@ fun NavGraphBuilder.doctorsSearch(
     composable<DoctorSearchRoute> {
         val viewModel = koinViewModel<DoctorsSearchViewModel>()
         val navigationActions = object : DoctorsSearchNavigationActions{
+            override fun navigateUp() = onNavigateUp()
+
             override fun navigateToDoctorProfile(doctorId: Int) = onNavigateToDoctorProfile(doctorId)
 
             override fun navigateToAdminProfile() = onNavigateToAdminProfile()
@@ -73,3 +78,4 @@ fun NavGraphBuilder.doctorsSearch(
         )
     }
 }
+

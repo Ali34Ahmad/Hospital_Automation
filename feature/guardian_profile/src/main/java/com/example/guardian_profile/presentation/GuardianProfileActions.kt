@@ -39,7 +39,7 @@ interface GuardianProfileNavigationAction{
     fun openContacts(phone: String)
     fun navigateToAddChild(guardianId: Int)
     fun navigateToChildren(guardianId: Int)
-    fun navigateToAppointments(guardianId: Int)
+    fun navigateToAppointments(guardianId: Int,name:String,imageUrl: String?)
     fun navigateToPrescriptions(guardianId: Int)
     fun navigateToMedicalRecord(guardianId: Int)
 }

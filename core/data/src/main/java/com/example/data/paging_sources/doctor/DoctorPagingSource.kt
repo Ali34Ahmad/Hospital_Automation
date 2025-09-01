@@ -13,7 +13,7 @@ import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
 
 class DoctorPagingSource (
-    private val token: String?,
+    private val token: String,
     private val query: String,
     private val status: EmployeeState,
     private val onStatisticsUpdated:(EmploymentStatistics)-> Unit,
@@ -30,14 +30,13 @@ class DoctorPagingSource (
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DoctorData> {
         try {
-            if (token.isNullOrBlank()) {
-                return LoadResult.Error(NetworkException(NetworkError.EMPTY_TOKEN))
-            }
-            var currentPage = params.key?:1
+
+            val currentPage = params.key?:1
             var data = emptyList<DoctorData>()
             //If the user pass the clinic id we use the admin doctor api service to get the doctors by clinic id
             //else we returns all the doctors in the system.
-            val result = if(clinicId==null)adminDoctorApiService.getDoctors(
+            val result = if(clinicId==null)
+                adminDoctorApiService.getDoctors(
                 token = token,
                 page = currentPage,
                 limit = params.loadSize,

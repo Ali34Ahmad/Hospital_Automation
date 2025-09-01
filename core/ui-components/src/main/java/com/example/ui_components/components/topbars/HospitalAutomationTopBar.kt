@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -35,9 +34,6 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
-import com.example.ui_components.components.network_image.NetworkImageError
-import com.example.ui_components.components.network_image.NetworkImageLoader
-import com.example.ui_components.components.network_image.SmallNetworkImageError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,9 +70,11 @@ fun HospitalAutomationTopBar(
                 //Image and Text
                 Row(
                     modifier = Modifier.fillMaxWidth(1f)
-                        .clickable{
-                            onTitleClick()
-                        },
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = onTitleClick
+                        ),
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -103,15 +101,14 @@ fun HospitalAutomationTopBar(
                                 .clip(CircleShape),
                             contentScale = ContentScale.Crop,
                             loading = {
-                                NetworkImageLoader(
+                                Box(
                                     modifier = Modifier
                                         .clip(CircleShape)
-                                        .padding(MaterialTheme.sizing.small16)
-                                        .size(MaterialTheme.sizing.medium40)
+                                        .shimmerEffect()
                                 )
                             },
                             errorCompose = {
-                                SmallNetworkImageError()
+                                FailedImage()
                             },
                         )
                     }

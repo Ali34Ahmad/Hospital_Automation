@@ -28,6 +28,17 @@ data class AppointmentDetailsRoute(
     val appointmentId : Int,
     val canEdit: Boolean,
 )
+
+/**
+ * Navigates to the appointment details
+ * @param appointmentId : the ID of the appointment
+ * @param canEdit : only a doctor can Edit.
+ *
+ * @see AppointmentDetailsRoute
+ *
+ * @author Ali Mansoura
+ *
+ */
 fun NavController.navigateToAppointmentDetailsReplacementCurrent(
     appointmentId: Int,
     canEdit: Boolean
@@ -64,7 +75,6 @@ fun NavGraphBuilder.appointmentDetailsScreen(
             canSkip: Boolean,
     )-> Unit,
     onNavigateToGuardianProfile: (guardianId: Int)-> Unit,
-    onNavigateToDoctorSchedule: ()-> Unit,
 ){
     composable<AppointmentDetailsRoute>{
         val viewModel = koinViewModel<AppointmentDetailsViewModel>()
@@ -84,7 +94,6 @@ fun NavGraphBuilder.appointmentDetailsScreen(
 
             override fun navigateToDepartmentDetails(deptId: Int) = onNavigateToDepartmentDetails(deptId)
             override fun navigateToVaccineDetails(vaccineId: Int) = onNavigateToVaccineDetails(vaccineId)
-            override fun navigateToDoctorSchedule() = onNavigateToDoctorSchedule()
         }
         AppointmentDetailsScreen(
             viewModel = viewModel,

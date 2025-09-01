@@ -28,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Modifier.Companion.then
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
@@ -94,7 +93,6 @@ fun PrescribedMedicineCard(
                 },
                 errorCompose = {
                     FailedImage(
-                        size = MaterialTheme.sizing.medium48,
                         shape = RoundedCornerShape(MaterialTheme.sizing.small6)
                     )
                 },

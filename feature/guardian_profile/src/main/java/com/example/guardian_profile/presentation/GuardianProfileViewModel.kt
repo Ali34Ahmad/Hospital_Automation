@@ -1,5 +1,6 @@
 package com.example.guardian_profile.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,14 +37,12 @@ class GuardianProfileViewModel(
     private val reactivateUserUseCase: ReactivateUserUseCase,
     private val validateTextUseCase: ValidateTextUseCase
 ): ViewModel() {
-    val childId : Int? = null
-    val guardianId  = 129
-    val mode = UserProfileMode.ADMIN_ACCESS
+    private val route = savedStateHandle.toRoute<GuardianProfileRoute>()
     private val _uiState = MutableStateFlow(
         GuardianProfileUIState(
-            childId = childId,
-            guardianId = guardianId,
-            userProfileMode = mode
+            childId = route.childId,
+            guardianId = route.guardianId,
+            userProfileMode = route.userProfileMode
         )
     )
 
@@ -114,10 +113,14 @@ class GuardianProfileViewModel(
     private fun validateInput(){
         val textError = validateTextUseCase(uiState.value.deactivationReason)
         val hasError = textError != null
-        updateIsValidInput(hasError)
+        updateIsValidInput(!hasError)
     }
     private fun updateIsValidInput(newValue: Boolean?){
         _uiState.value = _uiState.value.copy(isValidInput = newValue)
+    }
+    private fun hideWarningDialog(){
+        _uiState.value = _uiState.value.copy(isWarningDialogShown = false)
+        updateIsValidInput(null)
     }
     private fun deactivateAccount() = viewModelScope.launch{
         showLoadingDialog()
@@ -155,13 +158,14 @@ class GuardianProfileViewModel(
         _uiState.value = _uiState.value.copy(isLoadingDialogShown = true)
     }
     private fun showWarningDialog(){
+        updateDeactivationReason("")
+        updateIsValidInput(null)
         _uiState.value = _uiState.value.copy(isWarningDialogShown = true)
     }
-    private fun hideWarningDialog(){
-        _uiState.value = _uiState.value.copy(isWarningDialogShown = false)
-    }
+
     private fun updateDeactivationReason(newValue: String){
         _uiState.value = _uiState.value.copy(deactivationReason = newValue)
+        validateInput()
     }
     private fun showToast(message: UiText){
         _uiState.value = _uiState.value.copy(toastMessage = message)

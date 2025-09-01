@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.common.android.application.compose)
     alias(libs.plugins.common.android.application)
     alias(libs.plugins.kotlin.serialization)
+
 }
 
 android {
@@ -89,6 +90,8 @@ dependencies {
     implementation(project(":feature:children_search"))
     implementation(project(":feature:children"))
     implementation(project(":feature:pharmacy_medicines"))
+    implementation(project(":feature:guardians"))
+
 
     implementation(project(":feature:vaccines"))
     implementation(project(":feature:vaccine_details"))

@@ -23,13 +23,14 @@ fun SearchTopBar(
     onSearchIconClick: ()-> Unit,
     onNavigationIconClick: ()-> Unit,
     onBackToDefault: () -> Unit,
-    onClearIconClick:()-> Unit,
+    onClear:()-> Unit,
     query: String,
     state: TopBarState,
     onQueryChanged: (String)-> Unit,
     title: String,
     @StringRes placeholder: Int,
     modifier: Modifier = Modifier,
+    imageUrl: String? = null,
     onTitleClick: () -> Unit = {},
     @DrawableRes defaultLeadingIcon: Int = AppIcons.Outlined.menu,
     @DrawableRes searchLeadingIcon: Int = AppIcons.Outlined.arrowBack,
@@ -53,16 +54,20 @@ fun SearchTopBar(
                         )
                     ),
                     navigationIcon = defaultLeadingIcon,
-                    onTitleClick = onTitleClick
+                    onTitleClick = onTitleClick,
+                    imageUrl = imageUrl
                 )
             }
             TopBarState.SEARCH -> {
                 HospitalAutomationTopBarWithSearchBar(
                     query = query,
                     onQueryChange = onQueryChanged,
-                    onTrailingIconClick = onClearIconClick,
+                    onTrailingIconClick = onClear,
                     placeholderText = placeholder,
-                    onNavigationIconCLick = onBackToDefault,
+                    onNavigationIconCLick = {
+                        onBackToDefault()
+                        onClear()
+                    },
                     trailingIcon = searchTrailingIcon,
                     navigationIcon = searchLeadingIcon,
                 )
@@ -80,7 +85,7 @@ fun ClinicsTopBarPreview() {
         SearchTopBar(
             onSearchIconClick = { state = TopBarState.SEARCH },
             onNavigationIconClick = {  },
-            onClearIconClick = { query = "" },
+            onClear = { query = "" },
             query = query,
             state = state,
             onQueryChanged = { query = it },
