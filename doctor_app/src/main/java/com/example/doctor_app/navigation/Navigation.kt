@@ -23,8 +23,8 @@ import com.example.vaccines.navigation.vaccinesScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
-import com.example.doctor_schedule.navigation.doctorScheduleScreen
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
+import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctor_signup.navigation.doctorSignUpScreen
 import com.example.doctor_signup.navigation.navigateToSignUpScreen
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
@@ -292,7 +292,7 @@ fun Navigation() {
             onNavigateUp = { navController.navigateUp() },
             onNavigateToChildrenScreen = { },
             onNavigateToAddChildScreen = { },
-            onNavigateToAppointments = { patientId ->
+            onNavigateToAppointments = { patientId,name,imageUrl ->
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptions = { patientId ->
@@ -306,10 +306,9 @@ fun Navigation() {
         childProfileScreen(
             navigateToAddGuardianScreen = { },
             navigateToEmployeeProfileScreen = { },
-            navigateToGuardianScreen = { },
             navigateUp = { navController.navigateUp() },
             onNavigateToVaccinationTable = {},
-            onNavigateToAppointments = {
+            onNavigateToAppointments = {childId,name->
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptions = { childId ->
@@ -324,6 +323,7 @@ fun Navigation() {
                     canEdit = false
                 )
             },
+            navigateToGuardiansScreen = { TODO() },
         )
 
         genericVaccineDetailsScreen(
@@ -365,7 +365,9 @@ fun Navigation() {
             },
             onNavigateToCreateNewClinic = {
                 //this feature is not applicable for doctor
-            }
+            },
+            onNavigateToAdminProfile = { TODO() },
+            onNavigateToVaccineTable = { TODO() },
         )
 
         clinicDetailsScreen(
@@ -382,7 +384,9 @@ fun Navigation() {
             onNavigateToVaccines = {
                 navController.navigateToVaccinesScreen()
             },
-            onNavigateToAllDoctors = {},
+            onNavigateToAllDoctors = {clinicId,clinicName->
+                TODO()
+            },
             onNavigateToAllAppointments = {},
             onNavigateToMedicalRecords = {},
             onNavigateToContractHistory = {},
@@ -390,19 +394,19 @@ fun Navigation() {
             onNavigateToEditClinic = {},
         )
 
-        doctorScheduleScreen(
+        scheduleScreen(
             onNavigateToAppointmentDetails = { appointmentId ->
                 navController.navigateToAppointmentDetails(
                     appointmentId,
                     canEdit = true
                 )
             },
-            onNavigateToDoctorProfile = {
-                navController.navigateToDoctorProfileScreen(
-                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
-                    doctorId = null
-                )
-            },
+//            onNavigateToDoctorProfile = {
+//                navController.navigateToDoctorProfileScreen(
+//                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+//                    doctorId = null
+//                )
+//            },
             onNavigateToPrescriptions = {
                 navController.navigateToPrescriptionsScreen(null, null)
             },
@@ -418,7 +422,11 @@ fun Navigation() {
                 navController.navigateToGenericVaccinationTableScreen(
                     genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
                 )
-            }
+            },
+            onNavigateToProfile = { TODO() },
+            onNavigateToUserProfile = { TODO() },
+            onNavigateToChildProfile = { TODO() },
+            onNavigateUp = { TODO() },
         )
         appointmentDetailsScreen(
             onNavigateUp = navController::navigateUp,
@@ -450,9 +458,9 @@ fun Navigation() {
                     childId = null
                 )
             },
-            onNavigateToDoctorSchedule = {
-                navController.navigateToScheduleScreen()
-            }
+//            onNavigateToDoctorSchedule = {
+//                navController.navigateToScheduleScreen()
+//            }
         )
         diagnosisScreen(
             onNavigateToAppointmentDetails = { appointmentId ->

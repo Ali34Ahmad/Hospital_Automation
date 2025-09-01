@@ -44,7 +44,7 @@ import com.example.reset_password.navigation.navigateToResetPasswordScreen
 import com.example.reset_password.navigation.resetPasswordScreen
 import com.example.upload_employee_documents.navigation.navigateToUploadEmployeeDocumentsScreen
 import com.example.upload_employee_documents.navigation.uploadEmploymentDocumentsScreen
-import com.example.upload_profile_image.navigation.navigateToUploadEmployeeProfileImageScreen
+import com.example.upload_profile_image.navigation.navigateToUploadProfileImageScreen
 import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 
 @Composable
@@ -102,7 +102,7 @@ fun FakeNavigation() {
 
             addResidentialAddressScreen(
                 onNavigateToUploadProfileImageScreen = {
-                    navController.navigateToUploadEmployeeProfileImageScreen()
+                    navController.navigateToUploadProfileImageScreen()
                 }
             )
 

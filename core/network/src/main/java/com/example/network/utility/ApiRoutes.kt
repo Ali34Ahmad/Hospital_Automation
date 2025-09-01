@@ -167,6 +167,7 @@ object ApiRoutes {
             RoleDto.EMPLOYEE -> EMPLOYEE_LOGIN
             RoleDto.DOCTOR -> Doctor.LOGIN
             RoleDto.ADMIN -> Admin.LOGIN
+            else -> ""
         }
     }
 
@@ -258,6 +259,7 @@ object ApiRoutes {
             RoleDto.EMPLOYEE -> throw Exception("")
             RoleDto.DOCTOR -> Doctor.SHOW_APPOINTMENTS
             RoleDto.ADMIN -> Admin.SHOW_APPOINTMENTS
+            else -> ""
         }
     }
 
@@ -383,6 +385,7 @@ object ApiRoutes {
             RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.GET_PRESCRIPTIONS
             RoleDto.ADMIN -> Admin.GET_PRESCRIPTIONS
+            else -> ""
         }
     }
 

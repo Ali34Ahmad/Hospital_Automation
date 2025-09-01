@@ -52,7 +52,6 @@ fun Navigation() {
             doctorId = 143
         ),
     ) {
-
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
         ) {
