@@ -21,7 +21,11 @@ interface PrescriptionApiService {
         token: String,
         page: Int,
         limit: Int,
-        role: RoleDto
+        role: RoleDto,
+        patientId: Int?,
+        childId: Int?,
+        name:String?,
+        doctorId: Int?,
     ) : Result<GetAllPrescriptionsResponseDto, NetworkError>
 
     suspend fun getPrescriptionDetailsById(

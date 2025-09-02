@@ -17,7 +17,7 @@ fun mockAllVaccinesNavigationUiActions() = object :
 
     }
 
-    override fun navigateToPrescriptionsScreen(patientId: Int?, childId: Int?) {
+    override fun navigateToPrescriptionsScreen(patientId: Int?, childId: Int?,doctorId:Int?) {
 
     }
 
@@ -27,6 +27,10 @@ fun mockAllVaccinesNavigationUiActions() = object :
 fun mockAllVaccinesBusinessUiActions() = object :
     MedicalRecordsBusinessUiActions {
     override fun onUpdateSearchText(searchText: String) {
+
+    }
+
+    override fun onDeleteQuery() {
 
     }
 
@@ -43,6 +47,14 @@ fun mockAllVaccinesBusinessUiActions() = object :
     }
 
     override fun clearToastMessage() {
+
+    }
+
+    override fun onShowSearchBar() {
+
+    }
+
+    override fun onHideSearchBar() {
 
     }
 

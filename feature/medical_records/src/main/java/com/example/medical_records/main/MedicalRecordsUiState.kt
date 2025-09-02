@@ -7,8 +7,11 @@ import com.example.util.UiText
 
 data class MedicalRecordsUiState(
     val userMainInfo: UserMainInfo?=null,
+    val doctorId:Int?=null,
+
     val searchText: String = "",
     val topBarMode: TopBarState = TopBarState.DEFAULT,
+
 
     val screenState: ScreenState = ScreenState.IDLE,
     val isRefreshing: Boolean = false,

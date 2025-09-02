@@ -187,8 +187,8 @@ fun GenericVaccinationTableScreen(
                                         vaccineIndex
                                     )
                                 },
-                                onVaccineItemClick = {
-                                    uiActions.navigateToVaccineDetailsScreen()
+                                onVaccineItemClick = {vaccineId->
+                                    uiActions.navigateToVaccineDetailsScreen(vaccineId)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()

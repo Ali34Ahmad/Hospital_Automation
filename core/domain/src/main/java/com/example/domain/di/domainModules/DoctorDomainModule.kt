@@ -19,7 +19,7 @@ import org.koin.dsl.module
 
 val doctorDomainModule = module {
     includes(
-        sharedDomainModule,
+        domainModule,
         pharmacyUseCasesModule,
         prescriptionUseCasesModule,
         authUseCasesModule,

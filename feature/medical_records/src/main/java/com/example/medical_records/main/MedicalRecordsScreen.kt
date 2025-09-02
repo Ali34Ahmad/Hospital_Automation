@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,7 +32,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateNameFormat
+import com.example.model.ActionIcon
 import com.example.model.enums.ScreenState
+import com.example.model.enums.TopBarState
 import com.example.model.medical_record.MedicalRecord
 import com.example.model.user.FullName
 import com.example.ui.helper.DarkAndLightModePreview
@@ -41,9 +44,13 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.card.MedicalRecordCard
+import com.example.ui_components.components.card.custom.ErrorComponent
+import com.example.ui_components.components.items.custom.FetchingDataItem
 import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
+import com.example.ui_components.components.pull_to_refresh.PullToRefreshColumn
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
+import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -92,14 +99,43 @@ fun MedicalRecordsScreen(
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {
-            HospitalAutomationTopBar(
-                title = uiState.userMainInfo?.fullName?.toAppropriateNameFormat()?:"",
-                onNavigationIconClick = { uiActions.navigateUp() },
-                modifier = Modifier.fillMaxWidth(),
-                navigationIcon = AppIcons.Outlined.arrowBack,
-                imageUrl = uiState.userMainInfo?.imageUrl,
-                subTitle = uiState.userMainInfo?.subInfo,
-            )
+            when (uiState.topBarMode) {
+                TopBarState.DEFAULT ->
+                    HospitalAutomationTopBar(
+                        title = uiState.userMainInfo?.fullName?.toAppropriateNameFormat() ?: "",
+                        onNavigationIconClick = { uiActions.navigateUp() },
+                        modifier = Modifier.fillMaxWidth(),
+                        navigationIcon = AppIcons.Outlined.arrowBack,
+                        imageUrl = uiState.userMainInfo?.imageUrl,
+                        subTitle = uiState.userMainInfo?.subInfo,
+                        actionIcons = if (uiState.screenState == ScreenState.SUCCESS)
+                            listOf(
+                                ActionIcon(
+                                    icon = AppIcons.Outlined.search,
+                                    onCLick = { uiActions.onShowSearchBar() }
+                                )
+                            ) else emptyList()
+                    )
+
+                TopBarState.SEARCH ->
+                    HospitalAutomationTopBarWithSearchBar(
+                        query = uiState.searchText,
+                        onQueryChange = { uiActions.onUpdateSearchText(it) },
+                        onTrailingIconClick = { uiActions.onDeleteQuery() },
+                        placeholderText = R.string.patient_name,
+                        onNavigationIconCLick = {
+                            when (uiState.topBarMode) {
+                                TopBarState.SEARCH -> {
+                                    uiActions.onDeleteQuery()
+                                    uiActions.onHideSearchBar()
+                                }
+
+                                TopBarState.DEFAULT -> uiActions.navigateUp()
+                            }
+                        },
+                        modifier = modifier,
+                    )
+            }
         }
     ) { contentPadding ->
         Surface(
@@ -108,17 +144,15 @@ fun MedicalRecordsScreen(
                 .padding(contentPadding),
         ) {
 
-            if (uiState.screenState == ScreenState.LOADING) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize)
+            when (uiState.screenState) {
+                ScreenState.IDLE -> null
+                ScreenState.LOADING ->
+                    FetchingDataItem(
+                        Modifier
+                            .fillMaxSize()
                     )
-                }
-            } else if (uiState.screenState == ScreenState.ERROR) {
-                PullToRefreshBox(
+
+                ScreenState.ERROR -> PullToRefreshBox(
                     refreshing = uiState.isRefreshing,
                     onRefresh = { uiActions.onRefresh() }
                 ) {
@@ -145,57 +179,84 @@ fun MedicalRecordsScreen(
                         )
                     }
                 }
-            }
-            if (uiState.screenState == ScreenState.SUCCESS) {
-                PullToRefreshBox(
-                    refreshing = uiState.isRefreshing,
-                    onRefresh = { uiActions.onRefresh() }
-                ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
-                        contentPadding = PaddingValues(
-                            vertical = MaterialTheme.spacing.medium16,
-                            horizontal = MaterialTheme.spacing.medium16,
-                        )
-                    ) {
-                        items(medicalRecords.itemCount) { index ->
-                            val medicalRecord = medicalRecords[index]
-                            when (medicalRecord) {
-                                null -> Unit
-                                else -> MedicalRecordCard(
-                                    onClick = {
-                                        uiActions.navigateToAppointmentsScreen(
-                                            patientId = medicalRecord.patientId,
-                                            childId = medicalRecord.childId,
 
+                ScreenState.SUCCESS -> if (medicalRecords.itemCount > 0) {
+                    PullToRefreshBox(
+                        refreshing = uiState.isRefreshing,
+                        onRefresh = { uiActions.onRefresh() }
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                            contentPadding = PaddingValues(
+                                vertical = MaterialTheme.spacing.medium16,
+                                horizontal = MaterialTheme.spacing.medium16,
+                            )
+                        ) {
+                            items(medicalRecords.itemCount) { index ->
+                                val medicalRecord = medicalRecords[index]
+                                when (medicalRecord) {
+                                    null -> Unit
+                                    else -> MedicalRecordCard(
+                                        onClick = {
+//                                            uiActions.navigateToAppointmentsScreen(
+//                                                patientId = medicalRecord.patientId,
+//                                                childId = medicalRecord.childId,
+//
+//                                                )
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        imgUrl = medicalRecord.patientImageUrl,
+                                        name = medicalRecord.fullName.toAppropriateNameFormat(),
+                                        numberOfAppointments = medicalRecord.numberOfAppointments,
+                                        numberOfPrescriptions = medicalRecord.numberOfPrescriptions,
+                                        onPrescriptionsClick = {
+                                            uiActions.navigateToPrescriptionsScreen(
+                                                medicalRecord.patientId,
+                                                medicalRecord.childId,
+                                                uiState.doctorId
                                             )
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    imgUrl = medicalRecord.patientImageUrl,
-                                    name = medicalRecord.fullName.toAppropriateNameFormat(),
-                                    numberOfAppointments = medicalRecord.numberOfAppointments,
-                                    numberOfPrescriptions = medicalRecord.numberOfPrescriptions,
-                                    onPrescriptionsClick = { },
-                                    onAppointmentsClick = { },
-                                    patientId = medicalRecord.patientId,
-                                    childId = medicalRecord.childId,
-                                )
+                                        },
+                                        onAppointmentsClick = {
+                                            uiActions.navigateToAppointmentsScreen(
+                                                medicalRecord.patientId,
+                                                medicalRecord.childId
+                                            )
+                                        },
+                                        patientId = medicalRecord.patientId,
+                                        childId = medicalRecord.childId,
+                                    )
+                                }
                             }
-                        }
-                        if (medicalRecords.loadState.append == LoadState.Loading) {
-                            item {
-                                SmallCircularProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(MaterialTheme.spacing.medium16)
-                                )
+                            if (medicalRecords.loadState.append == LoadState.Loading) {
+                                item {
+                                    SmallCircularProgressIndicator(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(MaterialTheme.spacing.medium16)
+                                    )
+                                }
                             }
                         }
                     }
+                } else PullToRefreshColumn(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxHeight(),
+                    refreshing = uiState.isRefreshing,
+                    onRefresh = {
+                        uiActions.onRefresh()
+                    },
+                ) {
+                    ErrorComponent(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        title = stringResource(R.string.no_matching_result),
+                        description = stringResource(R.string.no_appointment_subtitle)
+                    )
                 }
+
             }
         }
     }

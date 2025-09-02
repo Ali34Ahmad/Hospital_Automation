@@ -9,6 +9,9 @@
       <module name="Hospital_Automation.core.util.test" target="11" />
       <module name="Hospital_Automation.feature.medical_prescriptions" target="23" />
       <module name="Hospital_Automation.feature.upload_employee_profile_image" target="23" />
+      <module name="Hospital_Automation.feature.doctor-schedule" target="23" />
+      <module name="Hospital_Automation.feature.medical_prescriptions" target="23" />
+      <module name="Hospital_Automation.feature.upload_employee_profile_image" target="23" />
     </bytecodeTargetLevel>
   </component>
 </project>

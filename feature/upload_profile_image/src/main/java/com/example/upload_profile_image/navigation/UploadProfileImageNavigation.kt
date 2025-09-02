@@ -15,7 +15,7 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data object UploadProfileImageRoute
 
-fun NavController.navigateToUploadEmployeeProfileImageScreen() {
+fun NavController.navigateToUploadProfileImageScreen() {
     navigateToScreen(UploadProfileImageRoute)
 }
 

@@ -22,6 +22,7 @@ import com.example.medicine_details.di.medicineDetailsModule
 import com.example.employment_requests.employmentRequestsModule
 import com.example.enter_email.enterEmailModule
 import com.example.generic_vaccination_table.genericVaccinationTableModule
+import com.example.guardians.di.guardiansModule
 import com.example.login.loginModule
 import com.example.pharmacies_search.di.pharmaciesSearch
 import com.example.pharmacy_details.pharmacyDetailsModule
@@ -44,7 +45,6 @@ class AdminApplication : Application() {
             androidContext(this@AdminApplication)
             modules(
                 appModule,
-                adminDataModule,
                 //features
                 guardiansModule,
                 doctorsSearchModule,

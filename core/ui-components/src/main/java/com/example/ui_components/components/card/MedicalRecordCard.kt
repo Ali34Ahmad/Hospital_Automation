@@ -126,7 +126,7 @@ fun MedicalRecordCard(
                     modifier = Modifier.weight(1f),
                     title = stringResource(R.string.prescriptions),
                     description = numberOfPrescriptions.toString(),
-                    onClick = onAppointmentsClick,
+                    onClick = onPrescriptionsClick,
                 )
             }
         }

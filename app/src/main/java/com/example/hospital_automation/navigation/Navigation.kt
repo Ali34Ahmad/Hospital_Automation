@@ -49,7 +49,7 @@ import com.example.upload_child_documents.navigation.navigateToUploadChildDocume
 import com.example.upload_child_documents.navigation.uploadChildDocumentsScreen
 import com.example.upload_employee_documents.navigation.navigateToUploadEmployeeDocumentsScreen
 import com.example.upload_employee_documents.navigation.uploadEmploymentDocumentsScreen
-import com.example.upload_profile_image.navigation.navigateToUploadEmployeeProfileImageScreen
+import com.example.upload_profile_image.navigation.navigateToUploadProfileImageScreen
 import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 
 @Composable
@@ -100,7 +100,7 @@ fun Navigation() {
 
             addResidentialAddressScreen(
                 onNavigateToUploadProfileImageScreen = {
-                    navController.navigateToUploadEmployeeProfileImageScreen()
+                    navController.navigateToUploadProfileImageScreen()
                 }
             )
 

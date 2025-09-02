@@ -9,10 +9,11 @@ import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface EmployeeAccountManagementApiService {
-    suspend fun deactivateMyEmployeeAccount(
+    suspend fun deactivateUserAccount(
         deactivateMyEmployeeAccountRequestDto: DeactivateMyEmployeeAccountRequestDto,
         token: String,
-        role: RoleDto
+        role: RoleDto,
+        userId:Int?,
     ): Result<DeactivateMyEmployeeAccountResponseDto, rootError>
 
     suspend fun reactivateMyEmployeeAccount(

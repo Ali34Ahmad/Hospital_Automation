@@ -14,10 +14,12 @@ class PrescriptionsUiActions(
 
 interface PrescriptionsBusinessUiActions {
     fun onUpdateSearchText(searchText: String)
-    fun onChangeToolBarMode(topBarMode:TopBarState)
+    fun onDeleteQuery()
     fun onRefresh()
     fun onUpdateScreenState(screenState: ScreenState)
     fun clearToastMessage()
+    fun onShowSearchBar()
+    fun onHideSearchBar()
 }
 
 interface PrescriptionsNavigationUiActions : AppNavigationUiAction {

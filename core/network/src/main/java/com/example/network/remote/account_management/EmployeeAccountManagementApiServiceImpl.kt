@@ -25,15 +25,16 @@ class EmployeeAccountManagementApiServiceImpl(
     private val client: HttpClient,
 ) : EmployeeAccountManagementApiService {
 
-    override suspend fun deactivateMyEmployeeAccount(
+    override suspend fun deactivateUserAccount(
         deactivateMyEmployeeAccountRequestDto: DeactivateMyEmployeeAccountRequestDto,
         token: String,
-        role: RoleDto
-    ):
-            Result<DeactivateMyEmployeeAccountResponseDto, rootError> =
+        role: RoleDto,
+        userId:Int?,
+    ): Result<DeactivateMyEmployeeAccountResponseDto, rootError> =
         try {
+            val routeSuffix=if (userId!=null) "/$userId" else ""
             val response: HttpResponse =
-                client.post(ApiRoutes.getDeactivateMyAccountEndPointFor(role)) {
+                client.post("${ApiRoutes.getDeactivateAccountEndPointFor(role)}$routeSuffix") {
                     contentType(ContentType.Application.Json)
                     bearerAuth(token)
                     setBody(deactivateMyEmployeeAccountRequestDto)

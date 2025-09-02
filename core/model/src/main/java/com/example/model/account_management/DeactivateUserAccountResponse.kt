@@ -1,5 +1,5 @@
 package com.example.model.account_management
 
-data class DeactivateMyEmployeeAccountResponse(
+data class DeactivateUserAccountResponse(
     val updatedData:List<Int>
 )

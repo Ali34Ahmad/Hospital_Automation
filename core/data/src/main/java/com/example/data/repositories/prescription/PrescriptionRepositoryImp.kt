@@ -38,8 +38,12 @@ class PrescriptionRepositoryImp(
         ).map { it.prescription.id }
     }
 
-    override suspend fun getAllMedicalPrescriptionsForCurrentDoctor(
+    override suspend fun getPrescriptionsForDoctor(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
+        patientId:Int?,
+        childId:Int?,
+        doctorId:Int?,
+        name:String?,
     ): Flow<PagingData<PrescriptionWithUser>> =
         userPreferencesRepository.executeFlowWithValidToken { token ->
             Pager(
@@ -52,6 +56,10 @@ class PrescriptionRepositoryImp(
                         medicalPrescriptionsApiService = apiService,
                         role = roleAppConfig.role.toRoleDto(),
                         onMainUserInfoChanged = onMainUserInfoChanged,
+                        patientId = patientId,
+                        childId = childId,
+                        doctorId = doctorId,
+                        name = name,
                     )
                 }
             ).flow

@@ -18,8 +18,12 @@ interface PrescriptionRepository {
         medicines: List<PrescriptionMedicineData>
     ) : Result<Int, NetworkError>
 
-    suspend fun getAllMedicalPrescriptionsForCurrentDoctor(
+    suspend fun getPrescriptionsForDoctor(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
+        patientId:Int?,
+        childId:Int?,
+        doctorId:Int?,
+        name:String?,
     ): Flow<PagingData<PrescriptionWithUser>>
 
     suspend fun getPrescriptionDetailsById(id:Int): Result<PrescriptionDetails,rootError>

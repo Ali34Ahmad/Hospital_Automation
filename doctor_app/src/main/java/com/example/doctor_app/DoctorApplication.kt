@@ -7,7 +7,7 @@ import com.example.appointment_details.di.appointmentDetailsModule
 import com.example.child_profile.di.childProfileModule
 import com.example.clinic_details.di.clinicDetailsModule
 import com.example.clinics_search.di.clinicsSearchModule
-import com.example.data.di.doctorDataModule
+import com.example.data.di.dataModule
 import com.example.doctor_app.main.appModule
 import com.example.doctor_profile.doctorProfileModule
 import com.example.doctor_schedule.di.doctorScheduleModule
@@ -20,7 +20,7 @@ import com.example.guardian_profile.di.guardianProfileModule
 import com.example.login.loginModule
 import com.example.medical_diagnosis.di.diagnosisModule
 import com.example.prescription_details.prescriptionDetailsModule
-import com.example.prescriptions.medicalPrescriptionsModule
+import com.example.prescriptions.prescriptionsModule
 import com.example.medical_records.medicalRecordsModule
 import com.example.medicine_details.di.medicineDetailsModule
 import com.example.medicines_search.di.medicinesSearchModule
@@ -40,7 +40,7 @@ class DoctorApplication: Application() {
         startKoin {
             androidContext(this@DoctorApplication)
             modules(
-                doctorDataModule,
+                dataModule,
                 addResidentialAddressModule,
                 doctorProfileModule,
                 addNewVaccineModule,
@@ -65,7 +65,7 @@ class DoctorApplication: Application() {
                 medicineDetailsModule,
                 medicinesSearchModule,
                 pharmaciesModule,
-                medicalPrescriptionsModule,
+                prescriptionsModule,
                 vaccinesModule,
                 pharmacyDetailsModule,
                 prescriptionDetailsModule,

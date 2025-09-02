@@ -29,7 +29,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val employeeAppDataModule = module {
-    includes(employeeNetworkModule, employeeDomainModule,commonDataModule)
+
+    includes(employeeNetworkModule, employeeDomainModule,dataModule)
 
 
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }

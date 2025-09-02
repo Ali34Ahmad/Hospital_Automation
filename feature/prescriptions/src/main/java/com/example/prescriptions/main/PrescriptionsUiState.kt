@@ -10,6 +10,10 @@ data class PrescriptionsUiState(
     val searchText: String = "",
     val topBarMode: TopBarState = TopBarState.DEFAULT,
 
+    val patientId:Int?=null,
+    val childId:Int?=null,
+    val doctorId:Int?=null,
+
     val screenState: ScreenState = ScreenState.IDLE,
     val isRefreshing: Boolean = false,
     val toastMessage: UiText?=null,

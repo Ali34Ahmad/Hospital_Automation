@@ -2,7 +2,7 @@ package com.example.generic_vaccination_table.main
 
 
 fun mockEmployeeProfileNavigationUiActions()=object : GenericVaccinationTableNavigationUiActions {
-    override fun navigateToVaccineDetailsScreen() {
+    override fun navigateToVaccineDetailsScreen(vaccineId: Int) {
 
     }
 

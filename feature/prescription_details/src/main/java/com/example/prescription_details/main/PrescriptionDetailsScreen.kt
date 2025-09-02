@@ -84,7 +84,7 @@ fun PrescriptionDetailsScreen(
             true
         }
     )
-    val scope= rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     val scrollState = rememberScrollState()
     Scaffold(
@@ -165,14 +165,14 @@ fun PrescriptionDetailsScreen(
 
                         }
                     }
-                    if (uiState.isBottomSheetVisible&&uiState.selectedMedicineIndex==null){
+                    if (uiState.isBottomSheetVisible && uiState.selectedMedicineIndex == null) {
                         ModalBottomSheet(
                             onDismissRequest = {
                                 uiActions.hideBottomSheet()
                             },
                             sheetState = modalSheetState,
                             windowInsets = WindowInsets.navigationBars
-                        ){
+                        ) {
                             PrescriptionMedicineViewerBottomSheet(
                                 openNoteDialog = { medicineIndex ->
                                     uiActions.onUpdateSelectedMedicineIndex(medicineIndex)
@@ -180,17 +180,24 @@ fun PrescriptionDetailsScreen(
                                 prescriptionMedicines = uiState.prescription.medicines,
                                 navigateToFulfillingPharmacy = { pharmacyId ->
                                     scope.launch {
-                                        modalSheetState.hide() // Hide the sheet first
+                                        modalSheetState.hide()
                                     }.invokeOnCompletion {
-                                        if (!modalSheetState.isVisible) { // Ensure it's hidden before navigating
-                                            uiActions.hideBottomSheet() // Update your ViewModel state
+                                        if (!modalSheetState.isVisible) {
+                                            uiActions.hideBottomSheet()
                                             uiActions.navigateToFulfillingPharmacy(pharmacyId)
                                         }
                                     }
                                 },
                                 title = stringResource(R.string.prescribed_medicines),
-                                navigateToMedicineDetailsScreen = {medicineId->
-                                    uiActions.navigateToMedicineDetails(medicineId)
+                                navigateToMedicineDetailsScreen = { medicineId ->
+                                    scope.launch {
+                                        modalSheetState.hide() // Hide the sheet first
+                                    }.invokeOnCompletion {
+                                        if (!modalSheetState.isVisible) {
+                                            uiActions.hideBottomSheet()
+                                            uiActions.navigateToMedicineDetails(medicineId)
+                                        }
+                                    }
                                 }
                             )
                         }

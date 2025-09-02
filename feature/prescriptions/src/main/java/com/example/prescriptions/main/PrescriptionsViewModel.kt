@@ -1,52 +1,99 @@
 package com.example.prescriptions.main
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.domain.use_cases.prescription.GetAllPrescriptionsUseCase
+import com.example.domain.use_cases.prescription.GetPrescriptionsUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.enums.TopBarState
 import com.example.model.prescription.PrescriptionWithUser
 import com.example.model.user.UserMainInfo
+import com.example.prescriptions.navigation.PrescriptionsRoute
 import com.example.util.UiText
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PrescriptionsViewModel(
-    private val getMedicalPrescriptionUseCase: GetAllPrescriptionsUseCase,
+    private val getPrescriptionUseCase: GetPrescriptionsUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(PrescriptionsUiState())
+
+    private val _uiState = MutableStateFlow(
+        PrescriptionsUiState(
+            patientId = savedStateHandle.toRoute<PrescriptionsRoute>().patientId,
+            childId = savedStateHandle.toRoute<PrescriptionsRoute>().childId,
+            doctorId = savedStateHandle.toRoute<PrescriptionsRoute>().doctorId,
+        )
+    )
     val uiState: StateFlow<PrescriptionsUiState> = _uiState.asStateFlow()
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
+    private val queryFlow = uiState.map { it.searchText }.distinctUntilChanged()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val prescriptionsFlow: Flow<PagingData<PrescriptionWithUser>> =
-        refreshTrigger.onStart { emit(Unit) }
-            .flatMapLatest {
-                updateIsRefreshing(false)
-                loadData(
-                    onMainUserInfoChanged = { userMainInfo ->
-                        updateUserMainInfo(userMainInfo)
-                    }
-                )
-            }
-            .cachedIn(viewModelScope)
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+    val prescriptionsFlow: Flow<PagingData<PrescriptionWithUser>> = combine(
+        queryFlow, refreshTrigger.onStart { emit(Unit) }
+    ) { query, _ ->
+        PrescriptionsFilter(
+            query = query,
+        )
+    }
+        .debounce(500)
+        .flatMapLatest { filter ->
+            val currentPatientId = uiState.value.patientId
+            val currentChildId = uiState.value.childId
+            val doctorId = uiState.value.doctorId
+            updateIsRefreshing(false)
+            Log.d("ChildId",currentChildId.toString())
+            loadData(
+                onMainUserInfoChanged = { userMainInfo ->
+                    updateUserMainInfo(userMainInfo)
+                },
+                patientId = currentPatientId,
+                childId = currentChildId,
+                doctorId = doctorId,
+                searchText = filter.query
+            )
+        }
+        .cachedIn(viewModelScope)
 
     suspend fun loadData(
         onMainUserInfoChanged: (UserMainInfo) -> Unit,
-    ) = getMedicalPrescriptionUseCase(
-        onMainUserInfoChanged
-    )
+        patientId: Int?,
+        childId: Int?,
+        doctorId: Int?,
+        searchText: String?,
+    ): Flow<PagingData<PrescriptionWithUser>> {
+        val name = if (
+            searchText?.isNotBlank() == true &&
+            searchText.isNotEmpty() == true
+        ) searchText
+        else null
+        return getPrescriptionUseCase(
+            onMainUserInfoChanged = onMainUserInfoChanged,
+            patientId = patientId,
+            childId = childId,
+            doctorId = doctorId,
+            name = name,
+        )
+    }
 
     private fun updateUserMainInfo(userMainInfo: UserMainInfo) {
         _uiState.update { it.copy(userMainInfo = userMainInfo) }
@@ -65,8 +112,8 @@ class PrescriptionsViewModel(
                 updateSearchText(searchText)
             }
 
-            override fun onChangeToolBarMode(topBarMode: TopBarState) {
-                changeToolBarMode(topBarMode)
+            override fun onDeleteQuery() {
+                updateSearchText("")
             }
 
             override fun onRefresh() {
@@ -83,14 +130,26 @@ class PrescriptionsViewModel(
             override fun clearToastMessage() {
                 updateToastMessage(null)
             }
+
+            override fun onShowSearchBar() {
+                showSearchBar()
+            }
+
+            override fun onHideSearchBar() {
+                hideSearchBar()
+            }
         }
 
     private fun updateSearchText(searchText: String) {
         _uiState.update { it.copy(searchText = searchText) }
     }
 
-    private fun changeToolBarMode(topBarMode: TopBarState) {
-        _uiState.update { it.copy(topBarMode = topBarMode) }
+    private fun showSearchBar() {
+        _uiState.value = _uiState.value.copy(topBarMode = TopBarState.SEARCH)
+    }
+
+    private fun hideSearchBar() {
+        _uiState.value = _uiState.value.copy(topBarMode = TopBarState.DEFAULT)
     }
 
     private fun updateScreenState(screenState: ScreenState) {
@@ -106,3 +165,7 @@ class PrescriptionsViewModel(
     }
 
 }
+
+data class PrescriptionsFilter(
+    val query: String,
+)

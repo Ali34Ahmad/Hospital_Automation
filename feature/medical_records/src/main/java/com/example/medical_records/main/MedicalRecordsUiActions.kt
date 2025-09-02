@@ -14,14 +14,21 @@ class MedicalRecordsUiActions(
 
 interface MedicalRecordsBusinessUiActions {
     fun onUpdateSearchText(searchText: String)
-    fun onChangeToolBarMode(topBarMode:TopBarState)
+    fun onDeleteQuery()
+    fun onChangeToolBarMode(topBarMode: TopBarState)
     fun onRefresh()
     fun onUpdateScreenState(screenState: ScreenState)
     fun clearToastMessage()
+    fun onShowSearchBar()
+    fun onHideSearchBar()
 }
 
-interface MedicalRecordsNavigationUiActions : AppNavigationUiAction {
+interface MedicalRecordsNavigationUiActions {
     fun navigateUp()
-    fun navigateToAppointmentsScreen(patientId:Int?, childId:Int?)
-    fun navigateToPrescriptionsScreen(patientId:Int?, childId:Int?)
+    fun navigateToAppointmentsScreen(patientId: Int?, childId: Int?)
+    fun navigateToPrescriptionsScreen(
+        patientId: Int?,
+        childId: Int?,
+        doctorId: Int?,
+    )
 }

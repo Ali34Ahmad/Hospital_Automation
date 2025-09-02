@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.domain.use_cases.auth.LogoutUseCase
-import com.example.domain.use_cases.employee_account_management.DeactivateMyAccountUseCase
+import com.example.domain.use_cases.employee_account_management.DeactivateUserAccountUseCase
 import com.example.domain.use_cases.employee_account_management.ReactivateMyAccountUseCase
 import com.example.domain.use_cases.employee_profile.GetCurrentEmployeeProfileUseCase
 import com.example.domain.use_cases.employee_profile.GetEmployeeProfileByIdUseCase
 import com.example.employee_profile.navigation.EmployeeProfileRoute
 import com.example.employee_profile.navigation.EmployeeProfileAccessType
-import com.example.model.account_management.DeactivateMyEmployeeAccountRequest
+import com.example.model.account_management.DeactivateUserAccountRequest
 import com.example.model.auth.logout.LogoutRequest
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.model.enums.ScreenState
@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 class EmployeeProfileViewModel(
     private val logoutUseCase: LogoutUseCase,
-    private val deactivateMyAccountUseCase: DeactivateMyAccountUseCase,
+    private val deactivateUserAccountUseCase: DeactivateUserAccountUseCase,
     private val reactivateMyAccountUseCase: ReactivateMyAccountUseCase,
     private val getCurrentEmployeeProfileUseCase: GetCurrentEmployeeProfileUseCase,
     private val getEmployeeProfileByIdUseCase: GetEmployeeProfileByIdUseCase,
@@ -203,10 +203,11 @@ class EmployeeProfileViewModel(
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.deactivating))
             Log.v("Deactivating Account", "ProfileViewModel")
-            deactivateMyAccountUseCase(
-                deactivateMyEmployeeAccountRequest = DeactivateMyEmployeeAccountRequest(
+            deactivateUserAccountUseCase(
+                deactivateUserAccountRequest = DeactivateUserAccountRequest(
                     deactivationReason = "Feeling Sick",
                     role =roleAppConfig.role,
+                    userId = uiState.value.employeeId
                 )
             ).onSuccess {
                 Log.v("Account Deactivated Successfully", "EmployeeProfileViewModel")

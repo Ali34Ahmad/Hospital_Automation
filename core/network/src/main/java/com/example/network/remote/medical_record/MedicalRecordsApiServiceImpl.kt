@@ -1,6 +1,7 @@
 package com.example.network.remote.medical_record
 
 import android.util.Log
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.medical_record.GetAllMedicalRecordsResponseDto
 import com.example.network.utility.ApiRoutes
 import com.example.utility.network.NetworkError
@@ -20,12 +21,22 @@ class MedicalRecordsApiServiceImpl(
     override suspend fun getAllMedicalRecordsForCurrentDoctor(
         token: String,
         page: Int,
-        limit: Int
+        limit: Int,
+        role: RoleDto,
+        name:String?,
+        doctorId:Int?,
     ): Result<GetAllMedicalRecordsResponseDto, NetworkError> = try {
-        val response = client.get(ApiRoutes.Doctor.ALL_MEDICAL_RECORDS) {
+        val routeSuffix=if (doctorId!=null) "/$doctorId" else ""
+        val response = client.get("${ApiRoutes.getMedicalRecordsEndPoint(role)}$routeSuffix") {
             url{
                 parameter("page",page)
                 parameter("limit",limit)
+                if (name==null){
+                    parameter("filter","NONE")
+                }else{
+                    parameter("filter","NAME")
+                    parameter("name",name)
+                }
             }
             contentType(ContentType.Application.Json)
             bearerAuth(token)

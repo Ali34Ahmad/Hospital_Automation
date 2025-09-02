@@ -23,7 +23,7 @@ fun NavController.navigateToGenericVaccinationTableScreen(genericVaccinationTabl
 }
 
 fun NavGraphBuilder.genericVaccineDetailsScreen(
-    onNavigateToVaccineDetailsScreen:()->Unit,
+    onNavigateToVaccineDetailsScreen:(vaccineId: Int)->Unit,
     onNavigateUp:()->Unit,
 ) {
     composable<GenericVaccinationTableRoute> {
@@ -31,8 +31,8 @@ fun NavGraphBuilder.genericVaccineDetailsScreen(
         val uiState = viewModel.uiState.collectAsState()
 
         val navActions = object : GenericVaccinationTableNavigationUiActions {
-            override fun navigateToVaccineDetailsScreen() {
-                onNavigateToVaccineDetailsScreen()
+            override fun navigateToVaccineDetailsScreen(vaccineId: Int) {
+                onNavigateToVaccineDetailsScreen(vaccineId)
             }
 
             override fun navigateUp() {

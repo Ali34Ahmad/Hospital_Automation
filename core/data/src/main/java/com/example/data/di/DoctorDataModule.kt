@@ -21,10 +21,8 @@ import com.example.domain.repositories.AddResidentialAddressRepository
 import com.example.domain.repositories.ChildRepository
 import com.example.domain.repositories.MedicineRepository
 import com.example.domain.repositories.UserRepository
-import com.example.domain.repositories.account_management.EmployeeAccountManagementRepository
 import com.example.domain.repositories.auth.AuthRepository
 import com.example.domain.repositories.auth.singup.DoctorSignUpRepository
-import com.example.domain.repositories.file.DownloadFileRepository
 import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
 import com.example.domain.repositories.file.UploadEmploymentDocumentsRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
@@ -41,11 +39,10 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val doctorDataModule = module {
-    includes(doctorNetworkModule, doctorDomainModule, commonDataModule)
+    includes(doctorNetworkModule, doctorDomainModule, dataModule)
     singleOf(::PrescriptionRepositoryImp) { bind<PrescriptionRepository>() }
     singleOf(::PharmacyRepositoryImp) { bind<PharmacyRepository>() }
     singleOf(::MedicineRepositoryImp) { bind<MedicineRepository>() }
-    includes(doctorNetworkModule, doctorDomainModule,commonDataModule)
     singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
     singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
 

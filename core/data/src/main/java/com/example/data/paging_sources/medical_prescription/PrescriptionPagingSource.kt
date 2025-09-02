@@ -17,18 +17,22 @@ import com.example.utility.network.onSuccess
 class PrescriptionPagingSource(
     private val token: String,
     private val medicalPrescriptionsApiService: PrescriptionApiService,
-    private val role: RoleDto,
     private val onMainUserInfoChanged: (UserMainInfo) -> Unit,
-    ): PagingSource<Int, PrescriptionWithUser>(){
+    private val role: RoleDto,
+    private val patientId:Int?,
+    private val childId:Int?,
+    private val doctorId:Int?,
+    private val name:String?,
+) : PagingSource<Int, PrescriptionWithUser>() {
     override fun getRefreshKey(state: PagingState<Int, PrescriptionWithUser>): Int? {
-        return  state.anchorPosition?.let { anchorPosition->
-            val anchorPage=state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1)?:anchorPage?.nextKey?.minus(1)
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PrescriptionWithUser> {
-        val nextPageNumber=params.key?:1
+        val nextPageNumber = params.key ?: 1
         try {
             var nextKey: Int? = null
             var list = emptyList<PrescriptionWithUser>()
@@ -37,7 +41,11 @@ class PrescriptionPagingSource(
                 token = token,
                 page = nextPageNumber,
                 limit = params.loadSize,
-                role
+                role = role,
+                patientId = patientId,
+                childId = childId,
+                name = name,
+                doctorId = doctorId,
             ).onSuccess { response ->
                 list = response.data.map { item ->
                     item.toPrescriptionWithUser()
@@ -53,7 +61,7 @@ class PrescriptionPagingSource(
                 prevKey = null,
                 nextKey = nextKey
             )
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("VaccinePagingSource", "Error loading data", e)
             return LoadResult.Error(e)
         }
