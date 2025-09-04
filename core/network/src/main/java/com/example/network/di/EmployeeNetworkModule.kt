@@ -32,9 +32,6 @@ import org.koin.dsl.module
 
 
 val employeeNetworkModule = module {
-
-
-
     singleOf(::UploadEmploymentDocumentsApiImpl) { bind<UploadEmploymentDocumentsApi>() }
 
     singleOf(::UploadEmployeeProfileImageApiImpl) { bind<UploadEmployeeProfileImageApi>() }

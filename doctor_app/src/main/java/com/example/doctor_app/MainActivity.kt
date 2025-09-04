@@ -39,7 +39,7 @@ MainActivity : ComponentActivity() {
             Hospital_AutomationTheme(
                 darkTheme = appUiState.value.isDarkTheme
             ) {
-                Navigation()
+                FakeNavigation()
             }
         }
     }

@@ -23,6 +23,7 @@ fun NavController.navigateToVaccinesScreen() {
 fun NavGraphBuilder.vaccinesScreen(
     onNavigateUp:()->Unit,
     onNavigateToVaccineDetailsScreen:(vaccineId:Int)->Unit,
+    onNavigateToAddNewVaccineScreen:()->Unit,
 ) {
     composable<VaccinesRoute> {
         val viewModel = koinViewModel<VaccinesViewModel>()
@@ -36,6 +37,10 @@ fun NavGraphBuilder.vaccinesScreen(
 
             override fun navigateToVaccineDetailsScreen(vaccineId: Int) {
                 onNavigateToVaccineDetailsScreen(vaccineId)
+            }
+
+            override fun navigateToAddNewVaccineScreen() {
+                onNavigateToAddNewVaccineScreen()
             }
         }
 

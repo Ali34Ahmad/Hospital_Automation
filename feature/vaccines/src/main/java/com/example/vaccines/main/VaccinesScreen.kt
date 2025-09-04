@@ -15,6 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -90,6 +92,18 @@ fun VaccinesScreen(
                 navigationIcon = AppIcons.Outlined.arrowBack,
                 imageUrl = null,
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    uiActions.navigateToAddNewVaccineScreen()
+                }
+            ) {
+                Icon(
+                    painter=painterResource(AppIcons.Outlined.add),
+                    contentDescription = null,
+                )
+            }
         }
     ) { contentPadding ->
         Surface(

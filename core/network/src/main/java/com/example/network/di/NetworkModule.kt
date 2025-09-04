@@ -135,46 +135,4 @@ val networkModule = module {
     singleOf(::WorkRequestApiServiceImp) { bind<WorkRequestApiService>() }
     singleOf(::MedicineApiServiceImp) { bind<MedicineApiService>() }
 
-//    single<HttpClient> {
-//        HttpClient(Android) {
-//            install(ContentNegotiation) {
-//                json(
-//                    Json {
-//                        prettyPrint = true
-//                        isLenient = true
-//                        ignoreUnknownKeys = true
-//                    }
-//                )
-//            }
-//            install(Logging) {
-//                logger = Logger.DEFAULT
-//                level = LogLevel.ALL
-//            }
-//        }
-//    }
-//    //child api service
-//    singleOf(::ChildApiServiceImpl) { bind<ChildApiService>() }
-//    singleOf(::EmployeeAccountManagementApiServiceImpl) {
-//        bind<EmployeeAccountManagementApiService>()
-//    }
-//    //shared between doctor and admin
-//    singleOf(::ClinicApiServiceImp){bind<ClinicApiService>()}
-//    //appointment API service
-//    singleOf(::AppointmentsApiServiceImp){bind<AppointmentsApiService>()}
-//    //Work request
-//    singleOf(::WorkRequestApiServiceImp){bind<WorkRequestApiService>()}
-//    //shared between employee and admin
-//    singleOf(::UserApiServiceImpl) { bind<UserApiService>() }
-//    singleOf(::FileDownloaderServiceImpl) { bind<FileDownloaderService>() }
-//    single<DownloadManager> {
-//        androidContext().getSystemService(DownloadManager::class.java)
-//    }
-//
-//    singleOf(::DownloadCompletedReceiver)
-//
-//    singleOf(::VaccineApiServiceImpl) { bind<VaccineApiService>() }
-//
-//    //Medicine API service
-//    singleOf(::MedicineApiServiceImp){bind<MedicineApiService>()}
-
 }

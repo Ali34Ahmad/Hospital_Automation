@@ -14,7 +14,7 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data object DoctorSignUpRoute
 
-fun NavController.navigateToSignUpScreen() {
+fun NavController.navigateToDoctorSignUpScreen() {
     navigateToScreen(DoctorSignUpRoute)
 }
 

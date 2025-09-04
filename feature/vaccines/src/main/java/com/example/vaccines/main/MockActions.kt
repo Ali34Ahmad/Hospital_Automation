@@ -12,6 +12,10 @@ fun mockAllVaccinesNavigationUiActions() = object : VaccinesNavigationUiActions 
 
     }
 
+    override fun navigateToAddNewVaccineScreen() {
+
+    }
+
 }
 
 fun mockAllVaccinesBusinessUiActions() = object : VaccinesBusinessUiActions {

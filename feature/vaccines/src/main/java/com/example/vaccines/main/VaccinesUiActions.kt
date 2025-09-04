@@ -18,4 +18,5 @@ interface VaccinesBusinessUiActions {
 interface VaccinesNavigationUiActions {
     fun navigateUp()
     fun navigateToVaccineDetailsScreen(vaccineId:Int)
+    fun navigateToAddNewVaccineScreen()
 }
