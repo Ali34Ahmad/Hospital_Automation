@@ -1,7 +1,9 @@
 package com.example.add_child_screen.presentation
 
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +33,7 @@ import com.example.ui_components.components.topbars.custom.AddChildTopBar
 
 import com.example.ui_components.R
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddChildScreen(
     viewModel: AddChildViewModel,

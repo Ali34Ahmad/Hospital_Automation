@@ -38,6 +38,7 @@ import com.example.ui_components.components.text_field.HospitalAutomationTextFil
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateDateFormat
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import java.time.LocalDate
 
 @Composable
 fun ChildInfoSlot(
@@ -45,8 +46,8 @@ fun ChildInfoSlot(
     onFirstNameChanged: (String)-> Unit,
     lastName: String,
     onLastNameChanged: (String)-> Unit,
-    dateOfBirth: String,
-    onDateOfBirthChanged: (String)-> Unit,
+    dateOfBirth: LocalDate?,
+    onDateOfBirthChanged: (LocalDate)-> Unit,
     modifier: Modifier = Modifier,
     firstNameError: String? = null,
     lastNameError: String? = null,
@@ -96,7 +97,7 @@ fun ChildInfoSlot(
                     onDatePickerVisibilityChanged(it.hasFocus)
                 }
                 .focusable(),
-            value = dateOfBirth,
+            value = dateOfBirth?.toAppropriateDateFormat().orEmpty(),
             onValueChange = {},
             onTrailingIconClick = {
                 onDatePickerVisibilityChanged(true)
@@ -115,7 +116,7 @@ fun ChildInfoSlot(
         Surface {
             DatePickerDialog(
                 onConfirm = {
-                    onDateOfBirthChanged(it.toAppropriateDateFormat())
+                    onDateOfBirthChanged(it)
                     onDatePickerVisibilityChanged(false)
                 },
                 datePickerState = rememberUseCaseState(
@@ -133,7 +134,7 @@ fun ChildInfoSlot(
 @Composable
 fun ChildInfoSlotPreview() {
     Hospital_AutomationTheme {
-        var date by remember { mutableStateOf("") }
+        var date by remember { mutableStateOf(LocalDate.now()) }
         var isDatePickerShown by remember { mutableStateOf(false) }
         Surface(modifier = Modifier.fillMaxSize()) {
             ChildInfoSlot(

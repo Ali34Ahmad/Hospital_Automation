@@ -1,16 +1,20 @@
 package com.example.add_child_screen.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.example.ext.toAppropriateDateFormat
 import com.example.model.child.ChildFullData
 import com.example.model.enums.BottomBarState
 import com.example.model.enums.Gender
 import com.example.util.UiText
+import java.time.LocalDate
 
 data class AddChildUIState(
     val guardianId: Int = -1,
 
     val firstName: String = "",
     val lastName: String= "",
-    val dateOfBirth: String= "",
+    val dateOfBirth: LocalDate? = null,
     val gender: Gender = Gender.MALE,
     val fatherFirstName: String = "",
     val fatherLastName: String = "",
@@ -34,9 +38,11 @@ data class AddChildUIState(
 
     val toastMessage: UiText? = null
 ){
+    val dateOfBirthAsString
+        get() = dateOfBirth?.toAppropriateDateFormat().orEmpty()
     val textFieldsStringInputs
         get() = listOf(
-            firstName,lastName,dateOfBirth,gender.toString(),
+            firstName,lastName,dateOfBirthAsString,gender.toString(),
             fatherFirstName,fatherLastName,
             motherFirstName,motherLastName
         )
@@ -49,6 +55,7 @@ data class AddChildUIState(
         )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 internal fun AddChildUIState.toChildFullData(): ChildFullData =
     ChildFullData(
         firstName = firstName.trim(),
@@ -57,7 +64,7 @@ internal fun AddChildUIState.toChildFullData(): ChildFullData =
         fatherLastName = fatherLastName.trim(),
         motherFirstName = motherFirstName.trim(),
         motherLastName = motherLastName.trim(),
-        dateOfBirth = dateOfBirth.trim(),
+        dateOfBirth = dateOfBirth?: LocalDate.now(),
         gender = gender.toString().trim(),
     )
 

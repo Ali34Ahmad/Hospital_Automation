@@ -30,27 +30,28 @@ class DoctorPagingSource (
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DoctorData> {
         try {
-
             val currentPage = params.key?:1
             var data = emptyList<DoctorData>()
             //If the user pass the clinic id we use the admin doctor api service to get the doctors by clinic id
             //else we returns all the doctors in the system.
-            val result = if(clinicId==null)
+            val result = if(clinicId==null){
                 adminDoctorApiService.getDoctors(
-                token = token,
-                page = currentPage,
-                limit = params.loadSize,
-                query = query,
-                status = status.toString()
-            )
-            else adminDoctorApiService.getDoctorsByClinic(
-                token = token,
-                page = currentPage,
-                limit = params.loadSize,
-                query = query,
-                status = status.toString(),
-                clinicId = clinicId
-            )
+                    token = token,
+                    page = currentPage,
+                    limit = params.loadSize,
+                    query = query,
+                    status = status.toString()
+                )
+            } else{
+                adminDoctorApiService.getDoctorsByClinic(
+                    token = token,
+                    page = currentPage,
+                    limit = params.loadSize,
+                    query = query,
+                    status = status.toString(),
+                    clinicId = clinicId
+                )
+            }
 
                 result.onSuccess { result->
                 onStatisticsUpdated(
