@@ -29,7 +29,7 @@
     <string name="mother">Mother</string>
     <string name="added_children">Added children</string>
     <string name="employment_history">Employment history</string>
-    <string name="deactivate_my_account">Deactivate my account</string>
+    <string name="deactivate_account">Deactivate account</string>
     <string name="children">Children</string>
     <string name="verified">Verified</string>
     <string name="email_verified_description">Your email has been successfully verified</string>
@@ -176,10 +176,10 @@
     <string name="cancelled">Cancelled</string>
     <string name="replace_image">Replace image</string>
     <string name="finish">Finish</string>
-    <string name="reactivate_my_account">Reactivate my account</string>
-    <string name="not_accepted_warning">You\'re not yet approved as an employee. You will be notified about your request state soon.</string>
-    <string name="resigned_warning">You account is marked as resigned by admin. To see details click.</string>
-    <string name="suspended_warning">You account is marked as suspended by admin. To see details click.</string>
+    <string name="reactivate_account">Reactivate account</string>
+    <string name="not_accepted_warning">This account not yet approved as an employee. You will be notified about your request state soon.</string>
+    <string name="resigned_warning">This account is marked as resigned by admin. To see details click.</string>
+    <string name="suspended_warning">This account is marked as suspended by admin. To see details click.</string>
 
     <string name="child_info">Child Info</string>
     <string name="parents_info">Parents Info</string>
@@ -224,8 +224,8 @@
     <string name="search_by_name_subtitle"> Type a name to see the results.</string>
     <string name="close">Close</string>
     <string name="failed_to_log_out">Failed to logout. Please try again later</string>
-    <string name="failed_to_deactivate_account">Failed to deactivate your account. Please try again later</string>
-    <string name="failed_to_reactivate_account">Failed to reactivate your account. Please try again later.</string>
+    <string name="failed_to_deactivate_account">Failed to deactivate account. Please try again later</string>
+    <string name="failed_to_reactivate_account">Failed to reactivate account. Please try again later.</string>
     <string name="logging_out">Logging out…</string>
     <string name="deactivating">Deactivating…</string>
     <string name="reactivating">Reactivating…</string>
@@ -362,4 +362,6 @@
     <string name="employees">Employees</string>
     <string name="clinics">Clinics</string>
     <string name="patient_name">Patient name</string>
+    <string name="failed_to_resign_user">Failed to resign user. Please try again later.</string>
+    <string name="resignation_date">Resignation date</string>
 </resources>

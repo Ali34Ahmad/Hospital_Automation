@@ -8,7 +8,7 @@ import com.example.model.enums.ScreenState
 import com.example.util.UiText
 
 data class EmploymentHistoryUiState(
-    val id: Int?=null,
+    val userId: Int?=null,
     val employmentHistory: EmploymentHistoryResponse?=null,
     val screenState: ScreenState= ScreenState.IDLE,
 
@@ -20,4 +20,4 @@ data class EmploymentHistoryUiState(
     val isRefreshing: Boolean=false,
     val toastMessage: UiText?=null,
 
-)
+    )

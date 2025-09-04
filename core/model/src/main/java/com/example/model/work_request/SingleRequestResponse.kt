@@ -9,7 +9,8 @@ data class SingleRequestResponse(
     val requestType: RequestType,
     val state: RequestState,
     val clinicMainInfo:ClinicMainInfo?,
-    val requestingDateTime: LocalDateTime
+    val requestingDateTime: LocalDateTime,
+    val pharmacyId:Int?,
 )
 
 data class ClinicMainInfo(

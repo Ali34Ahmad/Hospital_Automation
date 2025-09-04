@@ -21,7 +21,7 @@ fun mockEmployeeProfileNavigationUiActions()=object : EmployeeProfileNavigationU
 }
 
 fun mockEmployeeProfileBusinessUiActions()=object : EmployeeProfileBusinessUiActions {
-    override fun onDeactivateMyAccount() {
+    override fun onDeactivateAccount() {
 
     }
 
@@ -46,6 +46,18 @@ fun mockEmployeeProfileBusinessUiActions()=object : EmployeeProfileBusinessUiAct
     }
 
     override fun clearToastMessage() {
+
+    }
+
+    override fun onUpdateDeactivationReason(value: String) {
+
+    }
+
+    override fun onHideDeactivationReasonDialog() {
+
+    }
+
+    override fun onShowDeactivationReasonDialog() {
 
     }
 

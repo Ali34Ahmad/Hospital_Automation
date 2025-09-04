@@ -8,7 +8,7 @@ import com.example.utility.network.rootError
 
 interface PharmacyRepository {
     suspend fun getPharmacyDetailsById(
-        id:Int
+        pharmacyId:Int
     ) : Result<PharmacyDetailsResponse, rootError>
 
     suspend fun getPharmaciesByMedicineId(

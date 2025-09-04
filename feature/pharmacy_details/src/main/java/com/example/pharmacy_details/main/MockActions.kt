@@ -38,7 +38,7 @@ fun mockPharmacyDetailsBusinessUiActions()=object : PharmacyDetailsBusinessUiAct
 
     }
 
-    override fun onStopPharmacy() {
+    override fun onHideErrorDialog() {
 
     }
 

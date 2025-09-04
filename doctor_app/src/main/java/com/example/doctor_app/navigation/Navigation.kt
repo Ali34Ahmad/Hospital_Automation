@@ -178,7 +178,7 @@ fun Navigation() {
                 navController.navigateToLoginScreen()
             },
             onNavigateToEmploymentHistoryScreen = {
-                navController.navigateToEmploymentHistoryScreen()
+                navController.navigateToEmploymentHistoryScreen(null)
             },
             onNavigateToAppointmentsScreen = {
                 navController.navigateToScheduleScreen()
@@ -187,7 +187,7 @@ fun Navigation() {
                 navController.navigateToPrescriptionsScreen(null, null,null)
             },
             onNavigateToMedicalRecordsScreen = {
-                navController.navigateToMedicalRecordsScreen()
+                navController.navigateToMedicalRecordsScreen(null)
             },
             onNavigateToDepartmentScreen = { clinicId ->
                 navController.navigateToClinicDetailsScreen(
@@ -315,10 +315,8 @@ fun Navigation() {
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptions = { childId ->
-                navController.navigateToPrescriptionsScreen(patientId = null, childId = childId,null)
             },
             onNavigateToMedicalRecords = { childId ->
-                navController.navigateToMedicalRecordsScreen()
             },
             onNavigateToAppointmentDetails = { appointmentId ->
                 navController.navigateToAppointmentDetails(
@@ -358,7 +356,6 @@ fun Navigation() {
 
             },
             onNavigateToMedicalRecords = {
-                navController.navigateToMedicalRecordsScreen()
             },
             onNavigateToPrescriptions = {
                 navController.navigateToPrescriptionsScreen(null, null,null)
@@ -419,7 +416,7 @@ fun Navigation() {
             onNavigateToNotifications = {
             },
             onNavigateToMedicalRecords = {
-                navController.navigateToMedicalRecordsScreen()
+                navController.navigateToMedicalRecordsScreen(null)
             },
             onNavigateToVaccineTable = {
                 navController.navigateToGenericVaccinationTableScreen(

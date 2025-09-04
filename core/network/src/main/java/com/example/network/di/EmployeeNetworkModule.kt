@@ -1,9 +1,7 @@
 package com.example.network.di
 
-import android.app.DownloadManager
-import com.example.network.downloader.DownloadCompletedReceiver
-import com.example.network.remote.account_management.EmployeeAccountManagementApiService
-import com.example.network.remote.account_management.EmployeeAccountManagementApiServiceImpl
+import com.example.network.remote.account_management.AccountManagementApiService
+import com.example.network.remote.account_management.AccountManagementApiServiceImpl
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiService
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiServiceImpl
 import com.example.network.remote.admin_profile.AdminProfileApiService
@@ -28,7 +26,6 @@ import com.example.network.remote.upload_profile_image.UploadEmployeeProfileImag
 import com.example.network.remote.upload_profile_image.UploadEmployeeProfileImageApiImpl
 import com.example.network.utility.file.FileReader
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -44,8 +41,8 @@ val employeeNetworkModule = module {
 
     single<FileReader> { FileReader(androidApplication()) }
 
-    singleOf(::EmployeeAccountManagementApiServiceImpl) {
-        bind<EmployeeAccountManagementApiService>()
+    singleOf(::AccountManagementApiServiceImpl) {
+        bind<AccountManagementApiService>()
     }
 
     singleOf(::AddResidentialAddressApiServiceImpl) { bind<AddResidentialAddressApiService>() }

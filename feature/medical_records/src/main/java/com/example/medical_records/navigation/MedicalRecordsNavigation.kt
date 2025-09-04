@@ -18,8 +18,8 @@ data class MedicalRecordsRoute(
     val doctorId: Int? = null,
 )
 
-fun NavController.navigateToMedicalRecordsScreen() {
-    navigateToScreen(MedicalRecordsRoute)
+fun NavController.navigateToMedicalRecordsScreen(doctorId: Int?) {
+    navigateToScreen(MedicalRecordsRoute(doctorId))
 }
 
 fun NavGraphBuilder.medicalRecordsScreen(

@@ -38,6 +38,8 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.card.PharmacyDetailsCard
+import com.example.ui_components.components.dialog.LoadingDialog
+import com.example.ui_components.components.dialog.MessageDialog
 import com.example.ui_components.components.list.PharmacyProfileAdminActionsCard
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
@@ -61,11 +63,26 @@ fun PharmacyDetailsScreen(
         }
     }
 
+
+    MessageDialog(
+        showDialog = uiState.showErrorDialog,
+        title = stringResource(R.string.network_error),
+        description = uiState.errorDialogText?.asString() ?: "",
+        onConfirm = { uiActions.onHideErrorDialog() },
+        confirmButtonText = stringResource(R.string.ok),
+        showCancelButton = false,
+    )
+
+    LoadingDialog(
+        showDialog = uiState.showLoadingDialog,
+        subtitle = uiState.loadingDialogText?.asString()
+    )
+
     val isActionsItemsEnabled = uiState.pharmacyInfo?.userWithAddress?.acceptedBy != null
 
     val isResigned = uiState.pharmacyInfo?.userWithAddress?.isResigned == true
     val isAccepted = uiState.pharmacyInfo?.userWithAddress?.acceptedBy != null
-    val isSuspended = uiState.pharmacyInfo?.userWithAddress?.isSuspended != null
+    val isSuspended = uiState.pharmacyInfo?.isDeactivated == true
     val showDeactivationItemInAdminRole = !isResigned && isAccepted
 
 
@@ -174,7 +191,7 @@ fun PharmacyDetailsScreen(
 //                                gender = uiState.pharmacyInfo.userWithAddress.gender ?: Gender.MALE,
                                 email = "uiState.pharmacyInfo.email",
                                 isResigned = uiState.pharmacyInfo.userWithAddress.isResigned,
-                                isSuspended = uiState.pharmacyInfo.userWithAddress.isSuspended,
+                                isSuspended = isSuspended,
                                 isAccepted = uiState.pharmacyInfo.userWithAddress.acceptedBy != null,
                                 showNavigateUp = true,
                                 pharmacyName = uiState.pharmacyInfo.phName,
@@ -187,7 +204,7 @@ fun PharmacyDetailsScreen(
                             when (uiState.pharmacyAccessType) {
                                 PharmacyAccessType.ADMIN_ACCESS ->
                                     PharmacyProfileAdminActionsCard(
-                                        onFulfilledPrescriptionsHistoryClick = {
+                                        onFulfilledPrescriptionsClick = {
                                             uiActions.navigateToFulfilledPrescriptionsScreen(
                                                 uiState.pharmacyInfo.pharmacyId
                                             )
@@ -214,7 +231,6 @@ fun PharmacyDetailsScreen(
                                         isAccountDeactivated = isSuspended,
                                         showDeactivationItem = showDeactivationItemInAdminRole,
                                         onStopPharmacyClick = {
-                                            uiActions.onStopPharmacy()
                                         },
                                     )
 

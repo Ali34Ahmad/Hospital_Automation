@@ -11,6 +11,7 @@ import com.example.domain.use_cases.auth.LogoutUseCase
 import com.example.domain.use_cases.doctor.profile.GetCurrentDoctorProfileUseCase
 import com.example.domain.use_cases.employee_account_management.DeactivateUserAccountUseCase
 import com.example.domain.use_cases.employee_account_management.ReactivateMyAccountUseCase
+import com.example.domain.use_cases.employee_account_management.ResignUserAccountUseCase
 import com.example.model.account_management.DeactivateUserAccountRequest
 import com.example.model.auth.logout.LogoutRequest
 import com.example.model.doctor.doctor_profile.DoctorProfileResponse
@@ -31,7 +32,8 @@ class DoctorProfileViewModel(
     private val logoutUseCase: LogoutUseCase,
     private val deactivateUserAccountUseCase: DeactivateUserAccountUseCase,
     private val reactivateMyAccountUseCase: ReactivateMyAccountUseCase,
-    private val getCurrentDoctorProfileUseCase: GetCurrentDoctorProfileUseCase,
+    private val getDoctorProfileUseCase: GetCurrentDoctorProfileUseCase,
+    private val resignUserAccountUseCase: ResignUserAccountUseCase,
     private val savedStateHandle: SavedStateHandle,
     private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
@@ -58,7 +60,7 @@ class DoctorProfileViewModel(
             }
 
             override fun onReactivateAccount() {
-                reactivateMyAccount()
+                reactivateDoctorAccount()
             }
 
 
@@ -67,7 +69,7 @@ class DoctorProfileViewModel(
             }
 
             override fun onResignDoctor() {
-                TODO("Not yet implemented")
+                resignUser()
             }
 
             override fun onHideErrorDialog() {
@@ -110,7 +112,7 @@ class DoctorProfileViewModel(
         viewModelScope.launch {
             updateProfileScreenState(ScreenState.LOADING)
             Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
-            getCurrentDoctorProfileUseCase(uiState.value.doctorId)
+            getDoctorProfileUseCase(uiState.value.doctorId)
                 .onSuccess { data ->
                     Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
                     updateProfileScreenState(ScreenState.SUCCESS)
@@ -122,7 +124,6 @@ class DoctorProfileViewModel(
                 }
         }
     }
-
 
 
     private fun updateSelectedAppointmentType(selectedAppointmentTypeIndex: Int?) {
@@ -209,33 +210,54 @@ class DoctorProfileViewModel(
         }
     }
 
-    private fun reactivateMyAccount() {
+    private fun reactivateDoctorAccount() {
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.reactivating))
             Log.v("Reactivating Account", "ProfileViewModel")
-            val result = reactivateMyAccountUseCase(
-                role = roleAppConfig.role
-            )
-            when (result) {
-                is Result.Success -> {
-                    Log.v("Account Reactivated Successfully", "DoctorProfileViewModel")
-                    setLoadingDialogState(false, null)
-                    setErrorDialogState(false, null)
-                    updateAccountDeactivationErrorState(null)
-                    updateIsDeactivatedSuccessfullyState(true)
-                    getDoctorProfile()
-                }
+            reactivateMyAccountUseCase(
+                role = roleAppConfig.role,
+                userId = uiState.value.doctorId
+            ).onSuccess {
+                setLoadingDialogState(false, null)
+                setErrorDialogState(false, null)
+                updateAccountDeactivationErrorState(null)
+                updateIsDeactivatedSuccessfullyState(true)
+                getDoctorProfile()
+            }.onError { result ->
+                Log.v("Failed to Reactivate Account", "DoctorProfileViewModel")
+                setLoadingDialogState(false, null)
+                setErrorDialogState(
+                    true,
+                    UiText.StringResource(R.string.failed_to_reactivate_account)
+                )
+                updateAccountDeactivationErrorState(result)
+                updateIsDeactivatedSuccessfullyState(false)
+            }
+        }
+    }
 
-                is Result.Error -> {
-                    Log.v("Failed to Reactivate Account", "DoctorProfileViewModel")
-                    setLoadingDialogState(false, null)
-                    setErrorDialogState(
-                        true,
-                        UiText.StringResource(R.string.failed_to_reactivate_account)
-                    )
-                    updateAccountDeactivationErrorState(result.error)
-                    updateIsDeactivatedSuccessfullyState(false)
-                }
+    private fun resignUser() {
+        viewModelScope.launch {
+            setLoadingDialogState(true, UiText.StringResource(R.string.reactivating))
+            Log.v("Resign Account", "ProfileViewModel")
+            resignUserAccountUseCase(
+                userId = uiState.value.doctorId,
+            ).onSuccess {
+                Log.v("Account Resigned Successfully", "EmployeeProfileViewModel")
+                setLoadingDialogState(false, null)
+                setErrorDialogState(false, null)
+                updateAccountDeactivationErrorState(null)
+                updateIsDeactivatedSuccessfullyState(true)
+                getDoctorProfile()
+            }.onError { result ->
+                Log.v("Failed to Resign Account", "EmployeeProfileViewModel")
+                setLoadingDialogState(false, null)
+                setErrorDialogState(
+                    true,
+                    UiText.StringResource(R.string.failed_to_resign_user)
+                )
+                updateAccountDeactivationErrorState(result)
+                updateIsDeactivatedSuccessfullyState(false)
             }
         }
     }
@@ -249,7 +271,7 @@ class DoctorProfileViewModel(
         viewModelScope.launch {
             updateIsRefreshing(true)
             Log.v("Fetching Doctor Profile", "DoctorProfileViewModel")
-            getCurrentDoctorProfileUseCase(uiState.value.doctorId)
+            getDoctorProfileUseCase(uiState.value.doctorId)
                 .onSuccess { data ->
                     Log.v("DoctorProfile fetched Successfully", "DoctorProfileViewModel")
                     updateIsRefreshing(false)

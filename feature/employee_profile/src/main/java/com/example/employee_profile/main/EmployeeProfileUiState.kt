@@ -27,4 +27,8 @@ data class EmployeeProfileUiState(
 
     val isRefreshing: Boolean=false,
     val toastMessage: UiText?=null,
-)
+
+    val isWriteDeactivationReasonDialogShown: Boolean=false,
+    val deactivationReasonText:String="",
+
+    )

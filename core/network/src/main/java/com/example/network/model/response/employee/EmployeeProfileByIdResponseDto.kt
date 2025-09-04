@@ -41,4 +41,6 @@ data class GetEmployeeByIdDto(
     val isResigned: Boolean,
     @SerialName("imgurl")
     val imageUrl: String?,
+    @SerialName("accepted_by")
+    val acceptedBy: Int?,
 )

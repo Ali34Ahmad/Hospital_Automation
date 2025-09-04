@@ -8,7 +8,7 @@ import com.example.utility.network.rootError
 class GetPharmacyDetailsUseCase(
     private val pharmacyRepository: PharmacyRepository
 ) {
-    suspend operator fun invoke(id:Int): Result<PharmacyDetailsResponse, rootError> {
-        return pharmacyRepository.getPharmacyDetailsById(id)
+    suspend operator fun invoke(pharmacyId:Int): Result<PharmacyDetailsResponse, rootError> {
+        return pharmacyRepository.getPharmacyDetailsById(pharmacyId)
     }
 }

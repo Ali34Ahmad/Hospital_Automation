@@ -36,14 +36,38 @@ data class SingleRequestResponseDto(
     val employeeId: Int,
 
     @SerialName("user")
-    val user: UserMainInfoDto,
+    val user: RequestUserMainInfoDto,
 
     @SerialName("clinic")
-    val clinic: ClinicMainInfoDto? = null
+    val clinic: ClinicMainInfoDto? = null,
+
+)
+
+@Serializable
+data class RequestUserMainInfoDto(
+    @SerialName("userId")
+    val id:Int,
+    @SerialName("first_name")
+    val firstName: String,
+    @SerialName("middle_name")
+    val middleName: String?,
+    @SerialName("last_name")
+    val lastName: String,
+    @SerialName("imgurl")
+    val imageUrl: String?=null,
+    @SerialName("specialty")
+    val subInfo: String?=null,
+
+    val pharmacies: List<PharmacyIdWrapper>? = null
 )
 
 @Serializable
 data class ClinicMainInfoDto(
     val clinicId:Int,
     val name:String,
+)
+
+@Serializable
+data class PharmacyIdWrapper(
+    val pharmacyId:Int?
 )

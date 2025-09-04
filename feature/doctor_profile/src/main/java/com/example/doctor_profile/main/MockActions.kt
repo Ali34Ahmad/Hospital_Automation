@@ -6,7 +6,7 @@ fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiAct
 
     }
 
-    override fun navigateToEmploymentHistoryScreen() {
+    override fun navigateToEmploymentHistoryScreen(doctorId:Int?) {
 
     }
 
@@ -18,11 +18,11 @@ fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiAct
 
     }
 
-    override fun navigateToPrescriptionsScreen() {
+    override fun navigateToPrescriptionsScreen(doctorId:Int?) {
 
     }
 
-    override fun navigateToMedicalRecordsScreen() {
+    override fun navigateToMedicalRecordsScreen(doctorId: Int?) {
 
     }
 

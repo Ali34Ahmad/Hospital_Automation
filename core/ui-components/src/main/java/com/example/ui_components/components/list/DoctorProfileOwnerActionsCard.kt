@@ -30,13 +30,13 @@ fun DoctorProfileOwnerActionsCard(
 ) {
     val (activationActionText, activationActionIcon,activationActionOnClick) = if (!isAccountDeactivated) {
         Triple(
-            stringResource(R.string.deactivate_my_account),
+            stringResource(R.string.deactivate_account),
             AppIcons.Outlined.deactivateAccount,
             onDeactivateAccountClick
         )
     } else {
         Triple(
-            stringResource(R.string.reactivate_my_account),
+            stringResource(R.string.reactivate_account),
             AppIcons.Outlined.reactivateAccount,
             onReactivateAccountClick
         )

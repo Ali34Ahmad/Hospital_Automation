@@ -24,9 +24,10 @@ fun EmployeeProfileAdminActionsCard(
     isEmploymentEnabled: Boolean,
     onDeactivateAccountItemClick: () -> Unit,
     onReactivateAccountItemClick: () -> Unit,
-    showDeactivateMyAccountItem: Boolean,
+    showActivateAccountItem: Boolean,
     isAccountDeactivated: Boolean,
     onResignItemClick: () -> Unit,
+    showResignButton:Boolean,
     modifier: Modifier = Modifier,
 ) {
     val (activationActionText, activationActionIcon,activationActionOnClick) = if (!isAccountDeactivated) {
@@ -64,7 +65,7 @@ fun EmployeeProfileAdminActionsCard(
             showUnderline = true,
             enabled = isEmploymentEnabled,
         )
-        if (showDeactivateMyAccountItem){
+        if (showActivateAccountItem){
             ProfileActionsItem(
                 onClick = activationActionOnClick,
                 modifier = Modifier.fillMaxWidth(),
@@ -77,16 +78,18 @@ fun EmployeeProfileAdminActionsCard(
             )
         }
 
-        ProfileActionsItem(
-            onClick = onResignItemClick,
-            modifier = Modifier.fillMaxWidth(),
-            iconRes = AppIcons.Outlined.wavingHand,
-            title = stringResource(R.string.resign_employee),
-            showUnderline = false,
-            iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
-            iconColor = MaterialTheme.colorScheme.error,
-            titleColor = MaterialTheme.colorScheme.error
-        )
+        if (showResignButton){
+            ProfileActionsItem(
+                onClick = onResignItemClick,
+                modifier = Modifier.fillMaxWidth(),
+                iconRes = AppIcons.Outlined.wavingHand,
+                title = stringResource(R.string.resign_employee),
+                showUnderline = false,
+                iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
+                iconColor = MaterialTheme.colorScheme.error,
+                titleColor = MaterialTheme.colorScheme.error
+            )
+        }
 
     }
 }
@@ -103,8 +106,9 @@ fun EmployeeProfileAdminActionsCardPreview() {
                     onDeactivateAccountItemClick = {},
                     onEmploymentHistoryItemClick = {},
                     onResignItemClick = {},
+                    showResignButton=true,
                     isAddedChildrenEnabled = true,
-                    showDeactivateMyAccountItem = false,
+                    showActivateAccountItem = false,
                     isAccountDeactivated = false,
                     onReactivateAccountItemClick = {},
                     isEmploymentEnabled=true,
@@ -126,8 +130,9 @@ fun EmployeeProfileAdminActionsCardDeactivatedAccountPreview() {
                     onDeactivateAccountItemClick = {},
                     onEmploymentHistoryItemClick = {},
                     onResignItemClick = {},
+                    showResignButton=false,
                     isAddedChildrenEnabled = true,
-                    showDeactivateMyAccountItem = false,
+                    showActivateAccountItem = false,
                     isAccountDeactivated = true,
                     onReactivateAccountItemClick = {},
                     isEmploymentEnabled=false,

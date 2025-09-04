@@ -178,7 +178,7 @@ fun Navigation() {
 
             employeeProfileScreen(
                 onNavigateToEmploymentHistoryScreen = {
-                    navController.navigateToEmploymentHistoryScreen()
+                    navController.navigateToEmploymentHistoryScreen(null)
                 },
                 onNavigateToLoginScreen = {
                     navController.navigateToLoginScreen()

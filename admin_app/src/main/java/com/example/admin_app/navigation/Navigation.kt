@@ -6,6 +6,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
+import com.example.children_search.navigation.SearchType
+import com.example.children_search.navigation.navigateToChildrenSearch
+import com.example.clinic_details.navigation.ClinicDetailsType
+import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
@@ -14,8 +18,11 @@ import com.example.email_verification.email_verified_successfully.navigation.ema
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
 import com.example.email_verification.otp_verification.naviation.navigateToEmailOtpVerificationScreen
+import com.example.employee_profile.navigation.EmployeeProfileAccessType
 import com.example.employee_profile.navigation.employeeProfileScreen
+import com.example.employee_profile.navigation.navigateToEmployeeProfileScreen
 import com.example.employment_history.navigation.employmentHistoryScreen
+import com.example.employment_history.navigation.navigateToEmploymentHistoryScreen
 import com.example.employment_requests.navigation.EmploymentRequestsRoute
 import com.example.employment_requests.navigation.employmentRequestsScreen
 import com.example.employment_requests.navigation.navigateToEmploymentRequestsScreen
@@ -25,12 +32,14 @@ import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScr
 import com.example.login.navigation.LoginRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
-import com.example.medical_records.navigation.MedicalRecordsRoute
 import com.example.medical_records.navigation.medicalRecordsScreen
+import com.example.medical_records.navigation.navigateToMedicalRecordsScreen
+import com.example.pharmacy_details.navigation.PharmacyAccessType
+import com.example.pharmacy_details.navigation.PharmacyDetailsRoute
+import com.example.pharmacy_details.navigation.navigateToPharmacyDetailsScreen
 import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
 import com.example.prescription_details.navigation.navigateToPrescriptionDetailsScreen
 import com.example.prescription_details.navigation.prescriptionDetailsScreen
-import com.example.prescriptions.navigation.PrescriptionsRoute
 import com.example.prescriptions.navigation.navigateToPrescriptionsScreen
 import com.example.prescriptions.navigation.prescriptionsScreen
 import com.example.reset_password.navigation.navigateToResetPasswordScreen
@@ -52,9 +61,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = MedicalRecordsRoute(
-            doctorId = 143
-        ),
+        startDestination = EmploymentRequestsRoute,
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -150,32 +157,64 @@ fun Navigation() {
         )
 
         employmentRequestsScreen(
-            onNavigateUp = { },
-            onNavigateToVaccineDetailsScreen = { }
+            onNavigateToEmployeeProfileDetailsScreen = { employeeId ->
+                navController.navigateToEmployeeProfileScreen(
+                    employeeId = employeeId,
+                    employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
+                )
+            },
+            onNavigateToPharmacyDetailsScreen = { pharmacyId ->
+                navController.navigateToPharmacyDetailsScreen(
+                    pharmacyId = pharmacyId,
+                    pharmacyAccessType = PharmacyAccessType.ADMIN_ACCESS
+                )
+            },
+            onNavigateToDoctorProfileDetailsScreen = { doctorId ->
+                navController.navigateToDoctorProfileScreen(
+                    doctorId = doctorId,
+                    doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS,
+                )
+            }
         )
 
         doctorProfileScreen(
-            onNavigateToEmploymentHistoryScreen = {},
+            onNavigateToEmploymentHistoryScreen = { doctorId ->
+                navController.navigateToEmploymentHistoryScreen(doctorId)
+            },
             onNavigateToLoginScreen = {},
             onNavigateUp = {},
             onNavigateToAppointmentsScreen = {},
-            onNavigateToPrescriptionsScreen = {},
-            onNavigateToMedicalRecordsScreen = {},
-            onNavigateToDepartmentScreen = {}
+            onNavigateToPrescriptionsScreen = { doctorId ->
+                navController.navigateToPrescriptionsScreen(
+                    patientId = null,
+                    childId = null,
+                    doctorId = doctorId,
+                )
+            },
+            onNavigateToMedicalRecordsScreen = { doctorId ->
+                navController.navigateToMedicalRecordsScreen(doctorId)
+            },
+            onNavigateToDepartmentScreen = { clinicId ->
+                navController.navigateToClinicDetailsScreen(
+                    clinicId = clinicId,
+                    type = ClinicDetailsType.ADMIN_ACCESS
+                )
+            }
         )
 
         employeeProfileScreen(
-            onNavigateToEmploymentHistoryScreen = {
-
+            onNavigateToEmploymentHistoryScreen = { employeeId ->
+                navController.navigateToEmploymentHistoryScreen(employeeId)
             },
-            onNavigateToLoginScreen = {
-
-            },
+            onNavigateToLoginScreen = {},
             onNavigateUp = {
-
+                navController.navigateUp()
             },
             onNavigateToAddedChildrenScreen = {
-
+                navController.navigateToChildrenSearch(
+                    searchType = SearchType.EMPLOYEE,
+                    employeeId = null
+                )
             }
         )
 
@@ -206,8 +245,8 @@ fun Navigation() {
             onNavigateToAppointmentsScreen = { patientId, childId ->
                 navController.navigateToScheduleScreen()
             },
-            onNavigateToPrescriptionsScreen = { patientId, childId,doctorId ->
-                navController.navigateToPrescriptionsScreen(patientId, childId,doctorId)
+            onNavigateToPrescriptionsScreen = { patientId, childId, doctorId ->
+                navController.navigateToPrescriptionsScreen(patientId, childId, doctorId)
             }
         )
 
@@ -236,5 +275,6 @@ fun Navigation() {
 
             }
         )
+
     }
 }

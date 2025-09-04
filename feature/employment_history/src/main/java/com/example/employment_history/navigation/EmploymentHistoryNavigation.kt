@@ -17,8 +17,8 @@ data class EmploymentHistoryRoute(
     val id: Int?,
 )
 
-fun NavController.navigateToEmploymentHistoryScreen(id: Int?=null) {
-    navigateToScreen(EmploymentHistoryRoute(id))
+fun NavController.navigateToEmploymentHistoryScreen(doctorId: Int?) {
+    navigateToScreen(EmploymentHistoryRoute(doctorId))
 }
 
 fun NavGraphBuilder.employmentHistoryScreen(

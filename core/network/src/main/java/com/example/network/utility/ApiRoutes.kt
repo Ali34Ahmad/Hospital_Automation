@@ -134,7 +134,11 @@ object ApiRoutes {
         const val GET_PRESCRIPTIONS = "$ADMIN/doctor_all_prescriptions"
         const val CHILDREN_BY_GUARDIAN_ID = "$ADMIN/show-children-for-user"
         const val ALL_MEDICAL_RECORDS = "$ADMIN/doctor-medical-record"
-        const val DEACTIVATE_ACCOUNT = "$ADMIN/change-anyone-state-resign-suspend"
+        const val DEACTIVATE_ACCOUNT = "$ADMIN/deactivate-user"
+        const val REACTIVATE_ACCOUNT = "$ADMIN/reactivate-user"
+        const val RESIGN_USER = "$ADMIN/resign-user"
+        const val DEACTIVATE_PHARMACY = "$ADMIN/deactivate-pharmacy"
+        const val REACTIVATE_PHARMACY = "$ADMIN/reactivate-pharmacy"
     }
 
     object Prescription {
@@ -331,11 +335,11 @@ object ApiRoutes {
         }
     }
 
-    fun getReactivateMyAccountEndPointFor(role: RoleDto): String {
+    fun getReactivateUserAccountEndPointFor(role: RoleDto): String {
         return when (role) {
             RoleDto.EMPLOYEE -> REACTIVATE_MY_EMPLOYEE_ACCOUNT
             RoleDto.DOCTOR -> Doctor.REACTIVATE_MY_ACCOUNT
-            RoleDto.ADMIN -> throw Exception(getForbiddenFeatureErrorMessage(role))
+            RoleDto.ADMIN -> Admin.REACTIVATE_ACCOUNT
             else -> ""
 
         }

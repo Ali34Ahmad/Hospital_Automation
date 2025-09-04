@@ -23,12 +23,12 @@ fun NavController.navigateToDoctorProfileScreen(doctorProfileAccessType: DoctorP
 }
 
 fun NavGraphBuilder.doctorProfileScreen(
-    onNavigateToEmploymentHistoryScreen: () -> Unit,
+    onNavigateToEmploymentHistoryScreen: (doctorId:Int?) -> Unit,
     onNavigateToLoginScreen: () -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateToAppointmentsScreen: () -> Unit,
-    onNavigateToPrescriptionsScreen: () -> Unit,
-    onNavigateToMedicalRecordsScreen: () -> Unit,
+    onNavigateToPrescriptionsScreen: (doctorId:Int?) -> Unit,
+    onNavigateToMedicalRecordsScreen: (doctorId:Int?) -> Unit,
     onNavigateToDepartmentScreen: (clinicId:Int) -> Unit,
 ) {
     composable<DoctorProfileRoute> {
@@ -40,8 +40,8 @@ fun NavGraphBuilder.doctorProfileScreen(
                 onNavigateToAppointmentsScreen()
             }
 
-            override fun navigateToEmploymentHistoryScreen() {
-                onNavigateToEmploymentHistoryScreen()
+            override fun navigateToEmploymentHistoryScreen(doctorId:Int?) {
+                onNavigateToEmploymentHistoryScreen(doctorId)
             }
 
             override fun navigateUp() {
@@ -52,12 +52,12 @@ fun NavGraphBuilder.doctorProfileScreen(
                 onNavigateToLoginScreen()
             }
 
-            override fun navigateToPrescriptionsScreen() {
-                onNavigateToPrescriptionsScreen()
+            override fun navigateToPrescriptionsScreen(doctorId:Int?) {
+                onNavigateToPrescriptionsScreen(doctorId)
             }
 
-            override fun navigateToMedicalRecordsScreen() {
-                onNavigateToMedicalRecordsScreen()
+            override fun navigateToMedicalRecordsScreen(doctorId: Int?) {
+                onNavigateToMedicalRecordsScreen(doctorId)
             }
 
             override fun navigateToDepartmentDetailsScreen(clinicId: Int) {

@@ -4,8 +4,8 @@ import android.app.DownloadManager
 import com.example.network.downloader.DownloadCompletedReceiver
 import com.example.network.downloader.FileDownloaderService
 import com.example.network.downloader.FileDownloaderServiceImpl
-import com.example.network.remote.account_management.EmployeeAccountManagementApiService
-import com.example.network.remote.account_management.EmployeeAccountManagementApiServiceImpl
+import com.example.network.remote.account_management.AccountManagementApiService
+import com.example.network.remote.account_management.AccountManagementApiServiceImpl
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiService
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiServiceImpl
 import com.example.network.remote.auth.AuthApiService
@@ -64,7 +64,7 @@ val doctorNetworkModule = module {
 
     singleOf(::DoctorProfileApiServiceImpl) { bind<DoctorProfileApiService>() }
 
-    singleOf(::EmployeeAccountManagementApiServiceImpl) { bind<EmployeeAccountManagementApiService>() }
+    singleOf(::AccountManagementApiServiceImpl) { bind<AccountManagementApiService>() }
 
     singleOf(::UploadFileApiServiceImpl) { bind<UploadFileApiService>() }
 
