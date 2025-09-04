@@ -25,7 +25,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground
 
 @Composable
-fun WorkDayCard(
+fun EditableWorkDayCard(
     workDay: DaySchedule,
     onItemDeleteClick: (Int?) -> Unit,
     onItemEditClick: (Int?) -> Unit,
@@ -98,7 +98,7 @@ fun WorkDayCard(
 fun WorkDayCardPreview() {
     Hospital_AutomationTheme {
         Surface {
-            WorkDayCard(
+            EditableWorkDayCard(
                 onItemDeleteClick = {},
                 onItemEditClick = {},
                 workDay = createSampleWorkDayList()[0],

@@ -3,7 +3,6 @@ package com.example.data.repositories.appointment
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.doctor.toAppointmentData
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.paging_sources.appointment.AppointmentPagingSource
@@ -34,21 +33,20 @@ class AppointmentsRepositoryImp(
         queryFilter: String?,
         dateFilter: String?,
         doctorId: Int?,
-    ): Flow<PagingData<AppointmentData>> {
-
+    ): Flow<PagingData<AppointmentData>> =
+        dataStore.executeFlowWithValidToken { token->
         //decide the sort type depending on appointment state.
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)
             SortType.ASC else SortType.DESC
 
-        // dataStore.executeFlowWithValidToken { token->
-           return  Pager(
+            Pager(
                 config = PagingConfig(
                     pageSize = PagingConstants.PAGE_SIZE
                 ),
                 pagingSourceFactory = {
                     AppointmentPagingSource(
                         appointmentState = appointmentState,
-                        token = FAKE_TOKEN,
+                        token = token,
                         appointmentsApi = appointmentsApi,
                         sort = sortType,
                         onStatisticsChanged = onStatisticsChanged,
@@ -60,8 +58,7 @@ class AppointmentsRepositoryImp(
                     )
                 }
             ).flow
-//        }
-    }
+        }
 
     override suspend fun getUserAppointment(
         appointmentState: AppointmentState,
@@ -69,21 +66,20 @@ class AppointmentsRepositoryImp(
         queryFilter: String?,
         dateFilter: String?,
         userId: Int,
-    ): Flow<PagingData<AppointmentData>> {
-
+    ): Flow<PagingData<AppointmentData>> =
+        dataStore.executeFlowWithValidToken { token->
         //decide the sort type depending on appointment state.
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)
             SortType.ASC else SortType.DESC
 
-        //dataStore.executeFlowWithValidToken { token->
-        return   Pager(
+           Pager(
             config = PagingConfig(
                 pageSize = PagingConstants.PAGE_SIZE
             ),
             pagingSourceFactory = {
                 AppointmentPagingSource(
                     appointmentState = appointmentState,
-                    token = FAKE_TOKEN,
+                    token = token,
                     appointmentsApi = appointmentsApi,
                     sort = sortType,
                     onStatisticsChanged = onStatisticsChanged,
@@ -95,7 +91,6 @@ class AppointmentsRepositoryImp(
                 )
             }
         ).flow
-        // }
 
     }
 
@@ -105,21 +100,21 @@ class AppointmentsRepositoryImp(
         queryFilter: String?,
         dateFilter: String?,
         childId: Int,
-    ): Flow<PagingData<AppointmentData>> {
+    ): Flow<PagingData<AppointmentData>> =
 
+        dataStore.executeFlowWithValidToken { token->
         //decide the sort type depending on appointment state.
         val sortType = if(appointmentState == AppointmentState.UPCOMMING)
             SortType.ASC else SortType.DESC
 
-        //dataStore.executeFlowWithValidToken { token->
-        return   Pager(
+          Pager(
             config = PagingConfig(
                 pageSize = PagingConstants.PAGE_SIZE
             ),
             pagingSourceFactory = {
                 AppointmentPagingSource(
                     appointmentState = appointmentState,
-                    token = FAKE_TOKEN,
+                    token = token,
                     appointmentsApi = appointmentsApi,
                     sort = sortType,
                     onStatisticsChanged = onStatisticsChanged,
@@ -131,14 +126,17 @@ class AppointmentsRepositoryImp(
                 )
             }
         ).flow
-        // }
 
     }
 
     override suspend fun getAppointmentDetails(id: Int) =
-
-            appointmentsApi.getAppointmentDetails(id = id , token = FAKE_TOKEN, roleDto = roleAppConfig.role.toRoleDto())
-                .map { it.data.toAppointmentData() }
+        dataStore.executeWithValidTokenNetwork { token ->
+            appointmentsApi.getAppointmentDetails(
+                id = id ,
+                token = token,
+                roleDto = roleAppConfig.role.toRoleDto()
+            ).map { it.data.toAppointmentData() }
+        }
 
 
     override suspend fun updateAppointmentStateToPassed(appointmentId: Int): Result<UpdatedIds, NetworkError> =

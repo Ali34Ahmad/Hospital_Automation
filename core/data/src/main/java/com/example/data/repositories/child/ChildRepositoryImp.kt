@@ -3,7 +3,6 @@ package com.example.data.repositories.child
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.child.toAddChildRequest
 import com.example.data.mapper.child.toChildFullData
 import com.example.data.mapper.enums.toRoleDto
@@ -46,15 +45,15 @@ class ChildRepositoryImp(
 
     override suspend fun getChildById(childId: Int): Result<ChildFullData, NetworkError> =
 
-        childApiService.getChildProfile(
-            id = childId,
-            token = FAKE_TOKEN,
-            role = roleAppConfig.role.toRoleDto()
-        ).map { data->
-            data.toChildFullData()
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
+            childApiService.getChildProfile(
+                id = childId,
+                token = token,
+                role = roleAppConfig.role.toRoleDto()
+            ).map { data->
+                data.toChildFullData()
+            }
         }
-//        userPreferencesRepository.executeWithValidTokenNetwork { token->
-//        }
 
     override suspend fun addChild(
         guardianId: Int,
@@ -74,28 +73,28 @@ class ChildRepositoryImp(
     override suspend fun getChildrenByGuardianId(
         guardianId: Int,
     ): Result<List<ChildFullData>, NetworkError> =
-      //  userPreferencesRepository.executeWithValidTokenNetwork { token->
+        userPreferencesRepository.executeWithValidTokenNetwork { token->
              childApiService.getChildrenByGuardianId(
-                token = FAKE_TOKEN,
+                token = token,
                 guardianId = guardianId,
                  role = roleAppConfig.role.toRoleDto()
             ).map { response->
                 response.data.map { it.child.toChildFullData()  }
             }
-        //}
+        }
 
     override suspend fun searchForChildrenAddedByEmployeeByName(
         name: String,
         employeeId: Int?
     ): Flow<PagingData<ChildData>> =
-        //userPreferencesRepository.executeFlowWithValidToken {token->
+        userPreferencesRepository.executeFlowWithValidToken {token->
             Pager(
                 config = PagingConfig(
                     pageSize = PagingConstants.PAGE_SIZE
                 ),
                 pagingSourceFactory = {
                     ChildrenByEmployeeSearchPagingSource(
-                        token = FAKE_TOKEN,
+                        token = token,
                         query = name,
                         childApiService = childApiService,
                         roleAppConfig = roleAppConfig,
@@ -103,7 +102,6 @@ class ChildRepositoryImp(
                     )
                 }
             ).flow
-        //}
-
+        }
 
 }

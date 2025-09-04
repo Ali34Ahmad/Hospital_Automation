@@ -3,7 +3,6 @@ package com.example.data.repositories.medicine
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.doctor.toMedicineDetailsData
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.paging_sources.medicine.MedicinePagingSource
@@ -44,27 +43,30 @@ class MedicineRepositoryImp(
     override suspend fun getMedicineById(
         medicineId: Int,
     ): Result<MedicineDetailsData, NetworkError> =
-           medicineApi.getMedicineById(
-               token = FAKE_TOKEN,
-               medicineId = medicineId,
-               role = roleAppConfig.role.toRoleDto()
-           ).map {response->
-               response.data.toMedicineDetailsData()
-           }
-
+        userPreferencesRepository.executeWithValidTokenNetwork { token ->
+            medicineApi.getMedicineById(
+                token = token,
+                medicineId = medicineId,
+                role = roleAppConfig.role.toRoleDto()
+            ).map { response ->
+                response.data.toMedicineDetailsData()
+            }
+        }
     override suspend fun searchForMedicinesByPharmacyId(
         name: String,
         pharmacyId: Int,
     ): Flow<PagingData<MedicineSummaryData>> =
-        Pager(
-        config = PagingConfig(pageSize = PagingConstants.PAGE_SIZE),
-        pagingSourceFactory = {
-            MedicineSummaryPagingSource(
-                token = FAKE_TOKEN,
-                medicineApi = medicineApi,
-                name = name,
-                pharmacyId = pharmacyId
-            )
+        userPreferencesRepository.executeFlowWithValidToken { token ->
+            Pager(
+                config = PagingConfig(pageSize = PagingConstants.PAGE_SIZE),
+                pagingSourceFactory = {
+                    MedicineSummaryPagingSource(
+                        token = token,
+                        medicineApi = medicineApi,
+                        name = name,
+                        pharmacyId = pharmacyId
+                    )
+                }
+            ).flow
         }
-    ).flow
 }

@@ -3,7 +3,6 @@ package com.example.data.repositories.user
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.mapper.user.toGuardianData
 import com.example.data.mapper.user.toGuardianFullData
@@ -28,34 +27,41 @@ internal class UserRepositoryImp(
     private val userPreferences: UserPreferencesRepository,
     private val roleAppConfig: RoleAppConfig
 ): UserRepository  {
-    override suspend fun getGuardianById(id: Int): Result<GuardianFullData, NetworkError> {
-        val response = userApiService.getUserProfile(
-            token = FAKE_TOKEN,
-            id = id,
-            roleDto = roleAppConfig.role.toRoleDto()
-        ).map { data->
-            data.user.toGuardianFullData()
-        }
-        return response
+    override suspend fun getGuardianById(
+        id: Int
+    ): Result<GuardianFullData, NetworkError> =
+        userPreferences.executeWithValidTokenNetwork { token ->
+            userApiService.getUserProfile(
+                token = token,
+                id = id,
+                roleDto = roleAppConfig.role.toRoleDto()
+            ).map { data->
+                data.user.toGuardianFullData()
+            }
+
     }
 
     override suspend fun deactivateUser(
         userId: Int,
         deactivationReason: String,
     ): Result<UpdatedIds, NetworkError> =
-        userApiService.deactivateUser(
-            token = FAKE_TOKEN,
-            userId = userId,
-            deactivationReason = deactivationReason
-        ).map { it.updatedData }
+       userPreferences.executeWithValidTokenNetwork { token ->
+           userApiService.deactivateUser(
+               token = token,
+               userId = userId,
+               deactivationReason = deactivationReason
+           ).map { it.updatedData }
+       }
 
     override suspend fun reactivateUser(
         userId: Int
     ): Result<UpdatedIds, NetworkError> =
-        userApiService.reactivateUser(
-            token = FAKE_TOKEN,
-            userId = userId
-        ).map { it.updatedData }
+        userPreferences.executeWithValidTokenNetwork { token ->
+            userApiService.reactivateUser(
+                token = token,
+                userId = userId
+            ).map { it.updatedData }
+        }
 
     override suspend fun addGuardianToChild(
         childId: Int,
@@ -73,18 +79,19 @@ internal class UserRepositoryImp(
         }
     }
 
-    override suspend fun getGuardiansByChildId(childId: Int): Result<List<GuardianData>, NetworkError> {
-        return userApiService
-            .getGuardiansByChildId(
-                token = FAKE_TOKEN,
-                childId = childId,
-                roleDto = roleAppConfig.role.toRoleDto(),
-            ).map { response ->
-                response.data.map { userDto ->
-                    userDto.toGuardianData()
+    override suspend fun getGuardiansByChildId(childId: Int): Result<List<GuardianData>, NetworkError> =
+        userPreferences.executeWithValidTokenNetwork { token ->
+            userApiService
+                .getGuardiansByChildId(
+                    token = token,
+                    childId = childId,
+                    roleDto = roleAppConfig.role.toRoleDto(),
+                ).map { response ->
+                    response.data.map { userDto ->
+                        userDto.toGuardianData()
+                    }
                 }
-            }
-    }
+        }
 
     override suspend fun getGuardiansByNamePagingData(
         query: String

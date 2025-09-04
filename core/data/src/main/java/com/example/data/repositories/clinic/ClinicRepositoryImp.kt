@@ -3,7 +3,6 @@ package com.example.data.repositories.clinic
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.doctor.toClinicFullData
 import com.example.data.mapper.enums.toRoleDto
 import com.example.data.paging_sources.clinic.ClinicPagingSource
@@ -42,11 +41,11 @@ class ClinicRepositoryImp(
     override suspend fun getClinicById(
         clinicId: Int
     ): Result<ClinicFullData, NetworkError> =
-        //userPreferencesRepository.executeWithValidTokenNetwork { token ->
+        userPreferencesRepository.executeWithValidTokenNetwork { token ->
             clinicApiService.getClinicById(
                 roleDto = roleAppConfig.role.toRoleDto(),
-                token = FAKE_TOKEN,
+                token = token,
                 clinicId = clinicId
             ).map { it.data.toClinicFullData() }
-        //}
+        }
 }

@@ -101,21 +101,21 @@ internal fun ClinicDetailsScreen(
                 )
             }
         },
-        floatingActionButton = {
-            if(uiState.type == ClinicDetailsType.ADMIN_ACCESS){
-                FloatingActionButton(
-                    onClick = navigationAction::navigateToEditClinic,
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.secondary
-                ) {
-                    Icon(
-                        painter = painterResource(AppIcons.Outlined.edit),
-                        contentDescription = null,
-                        modifier = Modifier.size(MaterialTheme.sizing.small24)
-                    )
-                }
-            }
-        }
+//        floatingActionButton = {
+//            if(uiState.type == ClinicDetailsType.ADMIN_ACCESS){
+//                FloatingActionButton(
+//                    onClick = navigationAction::navigateToEditClinic,
+//                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+//                    contentColor = MaterialTheme.colorScheme.secondary
+//                ) {
+//                    Icon(
+//                        painter = painterResource(AppIcons.Outlined.edit),
+//                        contentDescription = null,
+//                        modifier = Modifier.size(MaterialTheme.sizing.small24)
+//                    )
+//                }
+//            }
+//        }
     ) { innerPadding->
         AnimatedContent(
             modifier = Modifier
