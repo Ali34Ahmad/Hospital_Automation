@@ -10,18 +10,21 @@ class EmployeeProfileUiActions(
 
 
 interface EmployeeProfileBusinessUiActions {
-    fun onDeactivateMyAccount()
+    fun onDeactivateAccount()
     fun onReactivateMyAccount()
     fun onLogout()
     fun onResign()
     fun hideErrorDialog()
     fun onRefresh()
     fun clearToastMessage()
+    fun onUpdateDeactivationReason(value:String)
+    fun onHideDeactivationReasonDialog()
+    fun onShowDeactivationReasonDialog()
 }
 
 interface EmployeeProfileNavigationUiActions:AppNavigationUiAction {
     fun navigateToAddedChildrenScreen()
-    fun navigateToEmploymentHistoryScreen()
+    fun navigateToEmploymentHistoryScreen(employeeId:Int?)
     fun navigateUp()
     fun navigateToLoginScreen()
 }

@@ -9,7 +9,7 @@ import com.example.utility.network.Result
 interface PharmacyApiService {
     suspend fun getPharmacyDetailsById(
         token: String,
-        id:Int,
+        pharmacyId:Int,
         role: RoleDto,
     ) : Result<PharmacyDetailsResponseDto, NetworkError>
 

@@ -40,6 +40,7 @@ import com.example.ui_components.components.card.EmployeeProfileOwnerActionsCard
 import com.example.ui_components.components.card.EmployeeProfileCard
 import com.example.ui_components.components.dialog.LoadingDialog
 import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.WarningDialogWithInputField
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 
@@ -82,15 +83,41 @@ fun EmployeeProfileScreen(
         subtitle = uiState.loadingDialogText?.asString()
     )
 
+    if (uiState.isWriteDeactivationReasonDialogShown) {
+        WarningDialogWithInputField(
+            title = stringResource(R.string.deactivation_msg_title),
+            subtitle = stringResource(R.string.deactivation_msg_subtitle),
+            text = uiState.deactivationReasonText,
+            onTextValueChange = {
+                uiActions.onUpdateDeactivationReason(it)
+            },
+            onDismissRequest = {
+                uiActions.onHideDeactivationReasonDialog()
+            },
+            onConfirm = {
+                uiActions.onHideDeactivationReasonDialog()
+                uiActions.onDeactivateAccount()
+            },
+            onDismiss = {
+                uiActions.onHideDeactivationReasonDialog()
+            },
+            enableConfirmButton = uiState.deactivationReasonText.isNotBlank(),
+            hasError = uiState.deactivationReasonText.isBlank(),
+            isRequired = true,
+        )
+    }
+
     val isAddedChildrenEnabled = uiState.userInfo?.profile?.acceptedBy != null
-    val isEmploymentEnabled = uiState.userInfo?.profile?.acceptedBy != null
+    val isEmploymentHistoryEnabled = uiState.userInfo?.profile?.acceptedBy != null
 
     val isResigned = uiState.userInfo?.profile?.isResigned == true
     val isAccepted = uiState.userInfo?.profile?.acceptedBy != null
     val isSuspended = uiState.userInfo?.profile?.isSuspended == true
     val isSuspendedByHimself = (isSuspended &&
             uiState.userInfo.profile.suspendedBy == uiState.userInfo.profile.userId)
-    val showDeactivationItem = !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
+    val showDeactivationItemInEmployeeRole = !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
+
+    val showDeactivationItemInAdminRole = !isResigned && isAccepted
 
 
     val scrollState = rememberScrollState()
@@ -212,16 +239,16 @@ fun EmployeeProfileScreen(
                                             },
                                             isAddedChildrenEnabled = isAddedChildrenEnabled,
                                             onEmploymentHistoryItemClick = {
-                                                uiActions.navigateToEmploymentHistoryScreen()
+                                                uiActions.navigateToEmploymentHistoryScreen(null)
                                             },
-                                            isEmploymentEnabled = isEmploymentEnabled,
+                                            isEmploymentHistoryEnabled = isEmploymentHistoryEnabled,
                                             onDeactivateAccountItemClick = {
-                                                uiActions.onDeactivateMyAccount()
+                                                uiActions.onShowDeactivationReasonDialog()
                                             },
                                             onReactivateAccountItemClick = {
                                                 uiActions.onReactivateMyAccount()
                                             },
-                                            showDeactivateMyAccountItem = showDeactivationItem,
+                                            showDeactivateMyAccountItem = showDeactivationItemInEmployeeRole,
                                             isAccountDeactivated = isSuspended,
                                             onLogoutItemClick = {
                                                 uiActions.onLogout()
@@ -233,22 +260,23 @@ fun EmployeeProfileScreen(
                                     onAddedChildrenItemClick = {
                                         uiActions.navigateToAddedChildrenScreen()
                                     },
-                                    isAddedChildrenEnabled = isAddedChildrenEnabled,
+                                    isAddedChildrenEnabled = isAccepted,
                                     onEmploymentHistoryItemClick = {
-                                        uiActions.navigateToEmploymentHistoryScreen()
+                                        uiActions.navigateToEmploymentHistoryScreen(uiState.employeeId)
                                     },
-                                    isEmploymentEnabled = isEmploymentEnabled,
+                                    isEmploymentEnabled = true,
                                     onDeactivateAccountItemClick = {
-                                        uiActions.onDeactivateMyAccount()
+                                        uiActions.onShowDeactivationReasonDialog()
                                     },
                                     onReactivateAccountItemClick = {
                                         uiActions.onReactivateMyAccount()
                                     },
-                                    showDeactivateMyAccountItem = showDeactivationItem,
+                                    showActivateAccountItem = showDeactivationItemInAdminRole,
                                     isAccountDeactivated = isSuspended,
                                     onResignItemClick = {
                                         uiActions.onResign()
                                     },
+                                    showResignButton=!isResigned,
                                 )
 
                                 null -> null

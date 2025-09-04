@@ -8,6 +8,7 @@ import androidx.navigation.toRoute
 import com.example.domain.use_cases.auth.LogoutUseCase
 import com.example.domain.use_cases.employee_account_management.DeactivateUserAccountUseCase
 import com.example.domain.use_cases.employee_account_management.ReactivateMyAccountUseCase
+import com.example.domain.use_cases.employee_account_management.ResignUserAccountUseCase
 import com.example.domain.use_cases.employee_profile.GetCurrentEmployeeProfileUseCase
 import com.example.domain.use_cases.employee_profile.GetEmployeeProfileByIdUseCase
 import com.example.employee_profile.navigation.EmployeeProfileRoute
@@ -34,6 +35,7 @@ class EmployeeProfileViewModel(
     private val reactivateMyAccountUseCase: ReactivateMyAccountUseCase,
     private val getCurrentEmployeeProfileUseCase: GetCurrentEmployeeProfileUseCase,
     private val getEmployeeProfileByIdUseCase: GetEmployeeProfileByIdUseCase,
+    private val resignUserAccountUseCase: ResignUserAccountUseCase,
     private val savedStateHandle: SavedStateHandle,
     private val roleAppConfig: RoleAppConfig,
 ) : ViewModel() {
@@ -55,8 +57,8 @@ class EmployeeProfileViewModel(
 
     private fun getBusinessUiActions(): EmployeeProfileBusinessUiActions =
         object : EmployeeProfileBusinessUiActions {
-            override fun onDeactivateMyAccount() {
-                deactivateMyAccount()
+            override fun onDeactivateAccount() {
+                deactivateAccount()
             }
 
             override fun onReactivateMyAccount() {
@@ -69,7 +71,7 @@ class EmployeeProfileViewModel(
             }
 
             override fun onResign() {
-                TODO("Not yet implemented")
+                resignUser()
             }
 
             override fun hideErrorDialog() {
@@ -84,7 +86,24 @@ class EmployeeProfileViewModel(
                 updateToastMessage(null)
             }
 
+            override fun onUpdateDeactivationReason(value:String) {
+                updateDeactivationReasonText(value)
+            }
+
+            override fun onHideDeactivationReasonDialog() {
+                updateDeactivationReasonDialogVisibility(false)
+            }
+
+            override fun onShowDeactivationReasonDialog() {
+                updateDeactivationReasonDialogVisibility(true)
+            }
+
+
         }
+
+    private fun updateDeactivationReasonDialogVisibility(isVisible: Boolean){
+        _uiState.update { it.copy(isWriteDeactivationReasonDialogShown = isVisible) }
+    }
 
     private fun updateNavArgs(employeeProfileAccessType: EmployeeProfileAccessType, employeeId: Int?) {
         _uiState.update {
@@ -93,6 +112,10 @@ class EmployeeProfileViewModel(
                 employeeId = employeeId
             )
         }
+    }
+
+    private fun updateDeactivationReasonText(value:String){
+        _uiState.update { it.copy(deactivationReasonText = value) }
     }
 
     private fun updateProfileInfoState(profileInfo: EmployeeProfileResponse?) {
@@ -199,13 +222,13 @@ class EmployeeProfileViewModel(
         _uiState.update { it.copy(accountDeactivationError = error) }
     }
 
-    private fun deactivateMyAccount() {
+    private fun deactivateAccount() {
         viewModelScope.launch {
             setLoadingDialogState(true, UiText.StringResource(R.string.deactivating))
             Log.v("Deactivating Account", "ProfileViewModel")
             deactivateUserAccountUseCase(
                 deactivateUserAccountRequest = DeactivateUserAccountRequest(
-                    deactivationReason = "Feeling Sick",
+                    deactivationReason = uiState.value.deactivationReasonText,
                     role =roleAppConfig.role,
                     userId = uiState.value.employeeId
                 )
@@ -215,6 +238,7 @@ class EmployeeProfileViewModel(
                 setErrorDialogState(false, null)
                 updateAccountDeactivationErrorState(null)
                 updateIsDeactivatedSuccessfullyState(true)
+                updateDeactivationReasonText("")
                 getEmployeeProfile()
             }.onError { error ->
                 Log.v("Failed to Deactivate Account", "EmployeeProfileViewModel")
@@ -234,7 +258,8 @@ class EmployeeProfileViewModel(
             setLoadingDialogState(true, UiText.StringResource(R.string.reactivating))
             Log.v("Reactivating Account", "ProfileViewModel")
             val result = reactivateMyAccountUseCase(
-                role = roleAppConfig.role
+                role = roleAppConfig.role,
+                userId = uiState.value.employeeId,
             )
             when (result) {
                 is Result.Success -> {
@@ -252,6 +277,37 @@ class EmployeeProfileViewModel(
                     setErrorDialogState(
                         true,
                         UiText.StringResource(R.string.failed_to_reactivate_account)
+                    )
+                    updateAccountDeactivationErrorState(result.error)
+                    updateIsDeactivatedSuccessfullyState(false)
+                }
+            }
+        }
+    }
+
+    private fun resignUser() {
+        viewModelScope.launch {
+            setLoadingDialogState(true, UiText.StringResource(R.string.reactivating))
+            Log.v("Resign Account", "ProfileViewModel")
+            val result = resignUserAccountUseCase(
+                userId = uiState.value.employeeId,
+            )
+            when (result) {
+                is Result.Success -> {
+                    Log.v("Account Resigned Successfully", "EmployeeProfileViewModel")
+                    setLoadingDialogState(false, null)
+                    setErrorDialogState(false, null)
+                    updateAccountDeactivationErrorState(null)
+                    updateIsDeactivatedSuccessfullyState(true)
+                    getEmployeeProfile()
+                }
+
+                is Result.Error -> {
+                    Log.v("Failed to Resign Account", "EmployeeProfileViewModel")
+                    setLoadingDialogState(false, null)
+                    setErrorDialogState(
+                        true,
+                        UiText.StringResource(R.string.failed_to_resign_user)
                     )
                     updateAccountDeactivationErrorState(result.error)
                     updateIsDeactivatedSuccessfullyState(false)

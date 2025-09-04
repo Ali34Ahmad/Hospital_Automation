@@ -2,15 +2,15 @@ package com.example.data.mapper.employee_management
 
 import com.example.model.account_management.DeactivateUserAccountRequest
 import com.example.model.account_management.DeactivateUserAccountResponse
-import com.example.network.model.request.DeactivateMyEmployeeAccountRequestDto
-import com.example.network.model.response.profile.DeactivateMyEmployeeAccountResponseDto
+import com.example.network.model.request.DeactivateAccountRequestDto
+import com.example.network.model.response.profile.DeactivateUserAccountResponseDto
 
-fun DeactivateUserAccountRequest.toDeactivateMyEmployeeAccountRequestDto() =
-    DeactivateMyEmployeeAccountRequestDto(
+fun DeactivateUserAccountRequest.toDeactivateUserAccountRequestDto() =
+    DeactivateAccountRequestDto(
         deactivationReason = this.deactivationReason
     )
 
-fun DeactivateMyEmployeeAccountResponseDto.toDeactivateMyEmployeeAccountResponse() =
+fun DeactivateUserAccountResponseDto.toDeactivateUserAccountResponse() =
     DeactivateUserAccountResponse(
         updatedData = this.updatedData
     )

@@ -13,7 +13,7 @@ import com.example.constants.icons.AppIcons
 
 @Composable
 fun PharmacyProfileAdminActionsCard(
-    onFulfilledPrescriptionsHistoryClick: () -> Unit,
+    onFulfilledPrescriptionsClick: () -> Unit,
     isFulfilledPrescriptionsItemEnabled: Boolean,
     onMedicinesClick: () -> Unit,
     isMedicinesItemEnabled: Boolean,
@@ -44,14 +44,14 @@ fun PharmacyProfileAdminActionsCard(
     ProfileActionsList(
         modifier = modifier
     ) {
-        ProfileActionsItem(
-            onClick = onFulfilledPrescriptionsHistoryClick,
-            modifier = Modifier.fillMaxWidth(),
-            iconRes = AppIcons.Outlined.fulfilledPrescription,
-            title = stringResource(R.string.fulfilled_prescriptions),
-            showUnderline = true,
-            enabled = isFulfilledPrescriptionsItemEnabled,
-        )
+//        ProfileActionsItem(
+//            onClick = onFulfilledPrescriptionsClick,
+//            modifier = Modifier.fillMaxWidth(),
+//            iconRes = AppIcons.Outlined.fulfilledPrescription,
+//            title = stringResource(R.string.fulfilled_prescriptions),
+//            showUnderline = true,
+//            enabled = isFulfilledPrescriptionsItemEnabled,
+//        )
         ProfileActionsItem(
             onClick = onMedicinesClick,
             modifier = Modifier.fillMaxWidth(),
@@ -80,16 +80,16 @@ fun PharmacyProfileAdminActionsCard(
                 iconColor = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
-        ProfileActionsItem(
-            onClick = onStopPharmacyClick,
-            modifier = Modifier.fillMaxWidth(),
-            iconRes = AppIcons.Outlined.wavingHand,
-            title = stringResource(R.string.stop_pharmacy),
-            showUnderline = false,
-            titleColor = MaterialTheme.colorScheme.error,
-            iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
-            iconColor = MaterialTheme.colorScheme.onErrorContainer,
-        )
+//        ProfileActionsItem(
+//            onClick = onStopPharmacyClick,
+//            modifier = Modifier.fillMaxWidth(),
+//            iconRes = AppIcons.Outlined.wavingHand,
+//            title = stringResource(R.string.stop_pharmacy),
+//            showUnderline = false,
+//            titleColor = MaterialTheme.colorScheme.error,
+//            iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
+//            iconColor = MaterialTheme.colorScheme.onErrorContainer,
+//        )
 
     }
 }
@@ -99,7 +99,7 @@ fun PharmacyProfileAdminActionsCard(
 fun PharmacyProfileAdminActionsPreview() {
     Hospital_AutomationTheme {
         PharmacyProfileAdminActionsCard(
-            onFulfilledPrescriptionsHistoryClick = {},
+            onFulfilledPrescriptionsClick = {},
             onMedicinesClick = {},
             onContractHistoryClick = {},
             onDeactivateAccountClick = {},

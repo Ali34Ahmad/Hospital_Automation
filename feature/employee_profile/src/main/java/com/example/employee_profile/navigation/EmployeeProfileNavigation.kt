@@ -23,7 +23,7 @@ fun NavController.navigateToEmployeeProfileScreen(employeeProfileAccessType: Emp
 }
 
 fun NavGraphBuilder.employeeProfileScreen(
-    onNavigateToEmploymentHistoryScreen: () -> Unit,
+    onNavigateToEmploymentHistoryScreen: (employeeId:Int?) -> Unit,
     onNavigateToLoginScreen: () -> Unit,
     onNavigateUp: () -> Unit,
     onNavigateToAddedChildrenScreen: () -> Unit,
@@ -37,8 +37,8 @@ fun NavGraphBuilder.employeeProfileScreen(
                 onNavigateToAddedChildrenScreen()
             }
 
-            override fun navigateToEmploymentHistoryScreen() {
-                onNavigateToEmploymentHistoryScreen()
+            override fun navigateToEmploymentHistoryScreen(employeeId:Int?) {
+                onNavigateToEmploymentHistoryScreen(employeeId)
             }
 
             override fun navigateUp() {

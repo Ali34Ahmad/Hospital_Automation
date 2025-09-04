@@ -8,7 +8,6 @@ import com.example.domain.repositories.pharmacy.PharmacyRepository
 import com.example.model.pharmacy.PharmacyData
 import com.example.model.pharmacy.PharmacyDetailsResponse
 import com.example.model.role_config.RoleAppConfig
-import com.example.network.model.enums.RoleDto
 import com.example.network.remote.pharmacy.PharmacyApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
@@ -21,12 +20,12 @@ class PharmacyRepositoryImp(
     private val roleAppConfig: RoleAppConfig,
 ): PharmacyRepository {
     override suspend fun getPharmacyDetailsById(
-        id: Int
+        pharmacyId: Int
     ): Result<PharmacyDetailsResponse, rootError> =
         userPreferencesRepository.executeWithValidToken { token ->
             pharmacyService.getPharmacyDetailsById(
                 token = token,
-                id = id,
+                pharmacyId = pharmacyId,
                 roleAppConfig.role.toRoleDto()
             )
                 .map { pharmacyDetailsResponse ->

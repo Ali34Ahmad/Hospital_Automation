@@ -21,7 +21,7 @@ fun EmployeeProfileOwnerActionsCard(
     onAddedChildrenItemClick: () -> Unit,
     isAddedChildrenEnabled: Boolean,
     onEmploymentHistoryItemClick: () -> Unit,
-    isEmploymentEnabled: Boolean,
+    isEmploymentHistoryEnabled: Boolean,
     onDeactivateAccountItemClick: () -> Unit,
     onReactivateAccountItemClick: () -> Unit,
     showDeactivateMyAccountItem: Boolean,
@@ -31,13 +31,13 @@ fun EmployeeProfileOwnerActionsCard(
 ) {
     val (activationActionText, activationActionIcon,activationActionOnClick) = if (!isAccountDeactivated) {
         Triple(
-            stringResource(R.string.deactivate_my_account),
+            stringResource(R.string.deactivate_account),
             AppIcons.Outlined.deactivateAccount,
             onDeactivateAccountItemClick
         )
     } else {
         Triple(
-            stringResource(R.string.reactivate_my_account),
+            stringResource(R.string.reactivate_account),
             AppIcons.Outlined.reactivateAccount,
             onReactivateAccountItemClick
         )
@@ -62,7 +62,7 @@ fun EmployeeProfileOwnerActionsCard(
             iconRes = AppIcons.Outlined.employmentHistory,
             title = stringResource(R.string.employment_history),
             showUnderline = true,
-            enabled = isEmploymentEnabled,
+            enabled = isEmploymentHistoryEnabled,
         )
         if (showDeactivateMyAccountItem){
             ProfileActionsItem(
@@ -107,7 +107,7 @@ fun EmployeeProfileOwnerActionsCardPreview() {
                     showDeactivateMyAccountItem = false,
                     isAccountDeactivated = false,
                     onReactivateAccountItemClick = {},
-                    isEmploymentEnabled=true,
+                    isEmploymentHistoryEnabled=true,
                 )
             }
         }
@@ -130,7 +130,7 @@ fun EmployeeProfileOwnerActionsCardDeactivatedAccountPreview() {
                     showDeactivateMyAccountItem = false,
                     isAccountDeactivated = true,
                     onReactivateAccountItemClick = {},
-                    isEmploymentEnabled=false,
+                    isEmploymentHistoryEnabled=false,
                 )
             }
         }

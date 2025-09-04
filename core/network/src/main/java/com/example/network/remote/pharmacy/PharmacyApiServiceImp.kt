@@ -22,10 +22,10 @@ class PharmacyApiServiceImp(
 ): PharmacyApiService {
     override suspend fun getPharmacyDetailsById(
         token: String,
-        id:Int,
+        pharmacyId:Int,
         role: RoleDto,
     ) : Result<PharmacyDetailsResponseDto, NetworkError> =try {
-        val response = client.get("${ApiRoutes.getPharmacyDetailsByIdEndPoint(role)}/$id") {
+        val response = client.get("${ApiRoutes.getPharmacyDetailsByIdEndPoint(role)}/$pharmacyId") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
         }

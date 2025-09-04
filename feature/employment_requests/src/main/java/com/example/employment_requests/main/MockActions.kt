@@ -5,11 +5,15 @@ import com.example.model.work_request.RequestState
 
 
 fun mockRequestsNavigationUiActions() = object : RequestsNavigationUiActions {
-    override fun navigateUp() {
+    override fun navigateToEmployeeProfileDetailsScreen(employeeId: Int?) {
 
     }
 
-    override fun navigateToRequestDetailsScreen(vaccineId: Int) {
+    override fun navigateToDoctorProfileDetailsScreen(doctorId: Int?) {
+
+    }
+
+    override fun navigateToPharmacyDetailsScreen(pharmacyId: Int?) {
 
     }
 

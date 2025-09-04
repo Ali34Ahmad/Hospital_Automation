@@ -29,17 +29,15 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateNameFormat
-import com.example.model.enums.FileDownloadingState
 import com.example.model.enums.ScreenState
 import com.example.model.work_request.RequestState
+import com.example.model.work_request.RequestType
 import com.example.model.work_request.SingleRequestResponse
-import com.example.model.work_request.WorkRequestData
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.card.RequestCard
-import com.example.ui_components.components.dialog.FileDownloaderDialog
 import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
@@ -90,7 +88,7 @@ fun RequestsScreen(
         topBar = {
             HospitalAutomationTopBar(
                 title = stringResource(R.string.requests),
-                onNavigationIconClick = { uiActions.navigateUp() },
+                onNavigationIconClick = { TODO() },
                 modifier = Modifier.fillMaxWidth(),
                 navigationIcon = AppIcons.Outlined.openDrawer,
             )
@@ -160,7 +158,11 @@ fun RequestsScreen(
                                 null -> Unit
                                 else -> RequestCard(
                                     onClick = { requestType ->
-//                                        uiActions.navigateToRequestDetailsScreen(request.requestId)
+                                        when(requestType){
+                                            RequestType.EMPLOYEE->uiActions.navigateToEmployeeProfileDetailsScreen(request.userMainInfo.id)
+                                            RequestType.DOCTOR->uiActions.navigateToDoctorProfileDetailsScreen(request.userMainInfo.id)
+                                            RequestType.PHARMACIST->uiActions.navigateToPharmacyDetailsScreen(request.pharmacyId)
+                                        }
                                     },
                                     modifier = Modifier
                                         .fillMaxSize(),

@@ -2,7 +2,6 @@ package com.example.employment_requests.main
 
 import com.example.model.enums.ScreenState
 import com.example.model.work_request.RequestState
-import com.example.utility.ui.AppNavigationUiAction
 
 class RequestsUiActions(
     navigationActions: RequestsNavigationUiActions,
@@ -19,6 +18,7 @@ interface RequestsBusinessUiActions {
 }
 
 interface RequestsNavigationUiActions {
-    fun navigateUp()
-    fun navigateToRequestDetailsScreen(vaccineId:Int)
+    fun navigateToEmployeeProfileDetailsScreen(employeeId:Int?)
+    fun navigateToDoctorProfileDetailsScreen(doctorId:Int?)
+    fun navigateToPharmacyDetailsScreen(pharmacyId: Int?)
 }

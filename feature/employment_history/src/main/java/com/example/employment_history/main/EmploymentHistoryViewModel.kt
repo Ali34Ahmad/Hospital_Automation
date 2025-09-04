@@ -15,7 +15,6 @@ import com.example.model.download_file.DownloadProgress
 import com.example.model.employment_history.EmploymentHistoryResponse
 import com.example.model.enums.FileDownloadingState
 import com.example.model.enums.ScreenState
-import com.example.model.role_config.RoleAppConfig
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.network.onError
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 import com.example.utility.url.getFileNameFromUrl
+import kotlinx.coroutines.flow.onStart
 
 class EmploymentHistoryViewModel(
     private val getEmploymentHistoryUseCase: GetEmploymentHistoryUseCase,
@@ -34,16 +34,12 @@ class EmploymentHistoryViewModel(
     private val cancelFileDownloadUseCase: CancelFileDownloadUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(EmploymentHistoryUiState())
+    private val _uiState = MutableStateFlow(EmploymentHistoryUiState(
+        userId = savedStateHandle.toRoute<EmploymentHistoryRoute>().id
+    ))
     val uiState = _uiState.asStateFlow()
 
     init {
-        val employeeHistoryRoute=savedStateHandle.toRoute<EmploymentHistoryRoute>()
-        _uiState.update {
-            it.copy(
-                id = employeeHistoryRoute.id,
-            )
-        }
         getEmploymentHistory()
     }
 
@@ -124,7 +120,7 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             updateScreenState(ScreenState.LOADING)
             Log.v("Getting EmploymentHistory", "EmploymentHistoryViewModel")
-            getEmploymentHistoryUseCase(uiState.value.id)
+            getEmploymentHistoryUseCase(uiState.value.userId)
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateEmploymentHistory(data)
@@ -201,7 +197,7 @@ class EmploymentHistoryViewModel(
         viewModelScope.launch {
             updateIsRefreshing(true)
             Log.v("Getting EmploymentHistory", "EmploymentHistoryViewModel")
-            getEmploymentHistoryUseCase(uiState.value.id)
+            getEmploymentHistoryUseCase(uiState.value.userId)
                 .onSuccess { data ->
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)

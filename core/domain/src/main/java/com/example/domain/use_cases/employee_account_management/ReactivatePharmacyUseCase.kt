@@ -6,13 +6,12 @@ import com.example.model.enums.Role
 import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
-class ReactivateMyAccountUseCase(
+class ReactivatePharmacyUseCase(
     private val userAccountManagementRepository:UserAccountManagementRepository
 ) {
     suspend operator fun invoke(
-        role: Role,
-        userId: Int?,
+        pharmacyId: Int?,
     ): Result<ReactivateUserAccountResponse, rootError> {
-        return userAccountManagementRepository.reactivateUserAccount(role,userId)
+        return userAccountManagementRepository.reactivatePharmacyAccount(pharmacyId)
     }
 }

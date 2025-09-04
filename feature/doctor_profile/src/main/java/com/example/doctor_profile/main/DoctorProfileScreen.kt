@@ -236,15 +236,15 @@ fun DoctorProfileScreen(
                                     },
                                     isAppointmentsItemEnabled = isActionsItemsEnabled,
                                     onPrescriptionsClick = {
-                                        uiActions.navigateToPrescriptionsScreen()
+                                        uiActions.navigateToPrescriptionsScreen(null)
                                     },
                                     isPrescriptionsItemEnabled = isActionsItemsEnabled,
                                     onMedicalRecordsClick = {
-                                        uiActions.navigateToMedicalRecordsScreen()
+                                        uiActions.navigateToMedicalRecordsScreen(null)
                                     },
                                     isMedicalRecordsItemEnabled = isActionsItemsEnabled,
                                     onEmploymentHistoryClick = {
-                                        uiActions.navigateToEmploymentHistoryScreen()
+                                        uiActions.navigateToEmploymentHistoryScreen(null)
                                     },
                                     isEmploymentHistoryItemEnabled = isActionsItemsEnabled,
                                     onDeactivateAccountClick = {
@@ -267,15 +267,15 @@ fun DoctorProfileScreen(
                                     },
                                     isAppointmentsItemEnabled = isActionsItemsEnabled,
                                     onPrescriptionsClick = {
-                                        uiActions.navigateToPrescriptionsScreen()
+                                        uiActions.navigateToPrescriptionsScreen(uiState.doctorId)
                                     },
                                     isPrescriptionsItemEnabled = isActionsItemsEnabled,
                                     onMedicalRecordsClick = {
-                                        uiActions.navigateToMedicalRecordsScreen()
+                                        uiActions.navigateToMedicalRecordsScreen(uiState.doctorId)
                                     },
                                     isMedicalRecordsItemEnabled = isActionsItemsEnabled,
                                     onEmploymentHistoryClick = {
-                                        uiActions.navigateToEmploymentHistoryScreen()
+                                        uiActions.navigateToEmploymentHistoryScreen(uiState.doctorId)
                                     },
                                     isEmploymentHistoryItemEnabled = isActionsItemsEnabled,
                                     onDeactivateAccountClick = {
@@ -285,6 +285,7 @@ fun DoctorProfileScreen(
                                     onResignClick = {
                                         uiActions.onResignDoctor()
                                     },
+                                    showResignItem=!isResigned,
                                     modifier = Modifier.fillMaxWidth(),
                                     onReactivateAccountClick = {
                                         uiActions.onReactivateAccount()

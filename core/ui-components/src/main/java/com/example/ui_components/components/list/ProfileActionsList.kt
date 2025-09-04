@@ -50,7 +50,7 @@ fun ProfileActionsListPreview() {
                     onClick = {},
                     modifier = Modifier.fillMaxWidth(),
                     iconRes = R.drawable.ic_deactivate_account,
-                    title = stringResource(R.string.deactivate_my_account),
+                    title = stringResource(R.string.deactivate_account),
                     showUnderline = false,
                     titleColor = MaterialTheme.colorScheme.error,
                     iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),

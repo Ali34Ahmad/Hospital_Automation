@@ -13,7 +13,7 @@ import com.example.data.repositories.child.ChildRepositoryImp
 import com.example.data.repositories.clinic.ClinicRepositoryImp
 import com.example.data.repositories.doctor.DoctorProfileRepositoryImpl
 import com.example.data.repositories.download_file.DownloadFileRepositoryImpl
-import com.example.data.repositories.employee_account_management.EmployeeAccountManagementRepositoryImpl
+import com.example.data.repositories.employee_account_management.UserAccountManagementRepositoryImpl
 import com.example.data.repositories.employee_profile.EmployeeProfileRepositoryImpl
 import com.example.data.repositories.employment_history.EmploymentHistoryRepositoryImpl
 import com.example.data.repositories.medical_record.MedicalRecordRepositoryImpl
@@ -36,7 +36,7 @@ import com.example.domain.repositories.ChildRepository
 import com.example.domain.repositories.ClinicRepository
 import com.example.domain.repositories.MedicineRepository
 import com.example.domain.repositories.UserRepository
-import com.example.domain.repositories.account_management.EmployeeAccountManagementRepository
+import com.example.domain.repositories.account_management.UserAccountManagementRepository
 import com.example.domain.repositories.admin.clinic.AdminClinicRepository
 import com.example.domain.repositories.admin.doctor.AdminDoctorRepository
 import com.example.domain.repositories.admin.employee.AdminEmployeeRepository
@@ -99,7 +99,7 @@ val dataModule = module{
     singleOf(::ChildRepositoryImp) { bind<ChildRepository>() }
     singleOf(::UserRepositoryImp) { bind<UserRepository>() }
     singleOf(::MedicineRepositoryImp) { bind<MedicineRepository>() }
-    singleOf(::EmployeeAccountManagementRepositoryImpl) { bind<EmployeeAccountManagementRepository>() }
+    singleOf(::UserAccountManagementRepositoryImpl) { bind<UserAccountManagementRepository>() }
     singleOf(::ClinicRepositoryImp) { bind<ClinicRepository>() }
     singleOf(::AppointmentsRepositoryImp) { bind<AppointmentsRepository>() }
     singleOf(::WorkRequestRepositoryImp) { bind<WorkRequestRepository>() }

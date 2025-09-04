@@ -20,10 +20,10 @@ interface DoctorProfileBusinessUiActions {
 
 interface DoctorProfileNavigationUiActions {
     fun navigateToAppointmentsScreen()
-    fun navigateToEmploymentHistoryScreen()
+    fun navigateToEmploymentHistoryScreen(doctorId:Int?)
     fun navigateUp()
     fun navigateToLoginScreen()
-    fun navigateToPrescriptionsScreen()
-    fun navigateToMedicalRecordsScreen()
+    fun navigateToPrescriptionsScreen(doctorId:Int?)
+    fun navigateToMedicalRecordsScreen(doctorId: Int?)
     fun navigateToDepartmentDetailsScreen(clinicId: Int)
 }

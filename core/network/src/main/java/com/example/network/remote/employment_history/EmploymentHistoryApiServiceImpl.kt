@@ -24,7 +24,10 @@ class EmploymentHistoryApiServiceImpl(
         val response = client.get("${ApiRoutes.getEmploymentHistoryEndPointFor(role)}$routeSuffix") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
+            Log.d("EmploymentHistory",url.toString())
         }
+        Log.d("EmploymentHistory",response.bodyAsText())
+
         when (response.status.value) {
             in 200..299 -> {
                 val employmentHistory: EmploymentHistoryResponseDto = response.body()

@@ -10,7 +10,7 @@ class PharmacyDetailsUiActions(
 interface PharmacyDetailsBusinessUiActions {
     fun onDeactivateAccount()
     fun onReactivateAccount()
-    fun onStopPharmacy()
+    fun onHideErrorDialog()
     fun onRefresh()
     fun clearToastMessage()
 }

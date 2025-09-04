@@ -50,14 +50,6 @@ fun EmploymentHistoryCard(
                 bottom = MaterialTheme.spacing.large24,
             )
     ) {
-        employmentDate?.let {
-            DetailsItem(
-                iconRes = AppIcons.Outlined.workBriefcase,
-                title = stringResource(id = R.string.employment_date),
-                description = employmentDate.toAppropriateDateFormat(),
-                modifier = detailsItemModifier,
-            )
-        }
         acceptedBy?.userId?.let{
             DetailsItem(
                 iconRes = AppIcons.Outlined.admin,
@@ -68,6 +60,15 @@ fun EmploymentHistoryCard(
             )
         }
 
+        employmentDate?.let {
+            DetailsItem(
+                iconRes = AppIcons.Outlined.workBriefcase,
+                title = stringResource(id = R.string.employment_date),
+                description = employmentDate.toAppropriateDateFormat(),
+                modifier = detailsItemModifier,
+            )
+        }
+        
         suspendedBy?.userId?.let{
             DetailsItem(
                 iconRes = AppIcons.Outlined.admin,
@@ -75,15 +76,6 @@ fun EmploymentHistoryCard(
                 description = suspendedBy.fullName.toAppropriateNameFormat(),
                 modifier = detailsItemModifier,
                 onClick = onSuspendedByItemClick,
-            )
-        }
-
-        resignationDate?.let {
-            DetailsItem(
-                iconRes = AppIcons.Outlined.finishLineFlag,
-                title = stringResource(id = R.string.date_and_time),
-                description = resignationDate.toAppropriateDateFormat(),
-                modifier = detailsItemModifier,
             )
         }
 
@@ -96,6 +88,16 @@ fun EmploymentHistoryCard(
                 onClick = onResignedByItemClick,
             )
         }
+
+        resignationDate?.let {
+            DetailsItem(
+                iconRes = AppIcons.Outlined.finishLineFlag,
+                title = stringResource(id = R.string.resignation_date),
+                description = resignationDate.toAppropriateDateFormat(),
+                modifier = detailsItemModifier,
+            )
+        }
+
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
         SubDetailsItem(
             title = stringResource(R.string.documents),

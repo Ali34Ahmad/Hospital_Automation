@@ -26,6 +26,7 @@ fun DoctorProfileAdminActionsCard(
     isAccountDeactivated: Boolean,
     showDeactivationItem:Boolean,
     onResignClick: () -> Unit,
+    showResignItem: Boolean,
     modifier: Modifier = Modifier,
 ) {
 
@@ -90,16 +91,18 @@ fun DoctorProfileAdminActionsCard(
                 iconColor = MaterialTheme.colorScheme.onErrorContainer,
             )
         }
-        ProfileActionsItem(
-            onClick = onResignClick,
-            modifier = Modifier.fillMaxWidth(),
-            iconRes = AppIcons.Outlined.wavingHand,
-            title = stringResource(R.string.resign_doctor),
-            showUnderline = false,
-            titleColor = MaterialTheme.colorScheme.error,
-            iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
-            iconColor = MaterialTheme.colorScheme.onErrorContainer,
-        )
+        if(showResignItem){
+            ProfileActionsItem(
+                onClick = onResignClick,
+                modifier = Modifier.fillMaxWidth(),
+                iconRes = AppIcons.Outlined.wavingHand,
+                title = stringResource(R.string.resign_doctor),
+                showUnderline = false,
+                titleColor = MaterialTheme.colorScheme.error,
+                iconBackgroundColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.4f),
+                iconColor = MaterialTheme.colorScheme.onErrorContainer,
+            )
+        }
 
     }
 }
@@ -123,6 +126,7 @@ fun DoctorProfileAdminActionsPreview() {
             modifier = Modifier.fillMaxWidth(),
             onReactivateAccountClick = {  },
             isAccountDeactivated = true,
+            showResignItem=true,
         )
     }
 }

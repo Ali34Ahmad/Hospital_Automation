@@ -47,6 +47,6 @@ fun GetEmployeeByIdDto.toEmployeeProfile(): EmployeeProfile {
         updatedAt = null,
         resignedBy = null,
         suspendedBy = null,
-        acceptedBy = null
+        acceptedBy = acceptedBy
     )
 }

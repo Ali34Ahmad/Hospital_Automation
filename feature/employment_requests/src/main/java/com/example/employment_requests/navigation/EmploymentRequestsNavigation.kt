@@ -21,8 +21,9 @@ fun NavController.navigateToEmploymentRequestsScreen() {
 }
 
 fun NavGraphBuilder.employmentRequestsScreen(
-    onNavigateUp:()->Unit,
-    onNavigateToVaccineDetailsScreen:(vaccineId:Int)->Unit,
+    onNavigateToEmployeeProfileDetailsScreen:(employeeId:Int?)->Unit,
+    onNavigateToDoctorProfileDetailsScreen:(doctorId:Int?)->Unit,
+    onNavigateToPharmacyDetailsScreen:(pharmacyId:Int?)->Unit,
 ) {
     composable<EmploymentRequestsRoute> {
         val viewModel = koinViewModel<RequestsViewModel>()
@@ -30,12 +31,16 @@ fun NavGraphBuilder.employmentRequestsScreen(
         val vaccines=viewModel.requestsFlow.collectAsLazyPagingItems()
 
         val navActions = object : RequestsNavigationUiActions {
-            override fun navigateUp() {
-                TODO("Not yet implemented")
+            override fun navigateToEmployeeProfileDetailsScreen(employeeId:Int?) {
+                onNavigateToEmployeeProfileDetailsScreen(employeeId)
             }
 
-            override fun navigateToRequestDetailsScreen(vaccineId: Int) {
-                TODO("Not yet implemented")
+            override fun navigateToDoctorProfileDetailsScreen(doctorId: Int?) {
+                onNavigateToDoctorProfileDetailsScreen(doctorId)
+            }
+
+            override fun navigateToPharmacyDetailsScreen(pharmacyId: Int?) {
+                onNavigateToPharmacyDetailsScreen(pharmacyId)
             }
 
         }
