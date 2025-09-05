@@ -22,16 +22,15 @@ class AdminProfileViewModel(
     private val getAdminProfileByIdUseCase: GetAdminProfileByIdUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(AdminProfileUiState())
+    private val _uiState = MutableStateFlow(
+        AdminProfileUiState(
+            adminId = savedStateHandle.toRoute<AdminProfileRoute>().adminId
+        )
+    )
     val uiState = _uiState.asStateFlow()
 
     init {
-        val routeArgs = savedStateHandle.toRoute<AdminProfileRoute>()
-        _uiState.update {
-            it.copy(
-                adminId = routeArgs.adminId,
-            )
-        }
+        getAdminProfile()
     }
 
     fun getUiActions(
@@ -72,7 +71,7 @@ class AdminProfileViewModel(
         viewModelScope.launch {
             updateScreenState(ScreenState.LOADING)
             Log.v("Fetching Admin Profile", "AdminProfileViewModel")
-            getAdminProfileByIdUseCase(uiState.value.adminId ?: -1)
+            getAdminProfileByIdUseCase(uiState.value.adminId)
                 .onSuccess { data ->
                     Log.v("AdminProfile fetched Successfully", "AdminProfileViewModel")
                     updateScreenState(ScreenState.SUCCESS)
@@ -101,7 +100,7 @@ class AdminProfileViewModel(
                     Log.v("AdminProfile fetched Successfully", "AdminProfileViewModel")
                     updateIsRefreshing(false)
                     updateProfileInfoState(data)
-                    if (uiState.value.screenState== ScreenState.ERROR) {
+                    if (uiState.value.screenState == ScreenState.ERROR) {
                         updateScreenState(ScreenState.SUCCESS)
                     }
                 }.onError { error ->

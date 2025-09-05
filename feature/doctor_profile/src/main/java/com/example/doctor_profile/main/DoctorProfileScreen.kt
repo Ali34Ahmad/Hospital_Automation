@@ -85,8 +85,9 @@ fun DoctorProfileScreen(
         subtitle = uiState.loadingDialogText?.asString()
     )
 
-    if (uiState.selectedAppointmentTypeIndex!=null) {
-        val appointmentType=uiState.doctorInfo?.profile?.appointmentTypes[uiState.selectedAppointmentTypeIndex]
+    if (uiState.selectedAppointmentTypeIndex != null) {
+        val appointmentType =
+            uiState.doctorInfo?.profile?.appointmentTypes[uiState.selectedAppointmentTypeIndex]
         DialogWithDescription(
             onDismissRequest = {
                 uiActions.onUpdateSelectedAppointmentTypeDialog(null)
@@ -94,19 +95,22 @@ fun DoctorProfileScreen(
             onActionClick = {
                 uiActions.onUpdateSelectedAppointmentTypeDialog(null)
             },
-            title = appointmentType?.name+" "+"(${appointmentType?.standardDurationInMinutes})",
-            subtitle = appointmentType?.description?:"",
+            title = appointmentType?.name + " " + "(${appointmentType?.standardDurationInMinutes})",
+            subtitle = appointmentType?.description ?: "",
         )
     }
 
-    val isActionsItemsEnabled = uiState.doctorInfo?.profile?.acceptedBy != null
+    val isActionsItemsEnabled = uiState.doctorInfo?.profile?.acceptedBy != null &&
+            uiState.doctorInfo.profile.resignedBy == null &&
+            uiState.doctorInfo.profile.suspendedBy == null
 
     val isResigned = uiState.doctorInfo?.profile?.isResigned == true
     val isAccepted = uiState.doctorInfo?.profile?.acceptedBy != null
     val isSuspended = uiState.doctorInfo?.profile?.isSuspended == true
     val isSuspendedByHimself = (isSuspended &&
             uiState.doctorInfo.profile.suspendedBy == uiState.doctorInfo.profile.userId)
-    val showDeactivationItemInDoctorRole = !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
+    val showDeactivationItemInDoctorRole =
+        !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
     val showDeactivationItemInAdminRole = !isResigned && isAccepted
 
 
@@ -219,12 +223,14 @@ fun DoctorProfileScreen(
                                 specialty = uiState.doctorInfo.profile.specialty ?: "",
                                 departmentName = uiState.doctorInfo.profile.department ?: "",
                                 onDepartmentItemClick = {
-                                    uiActions.navigateToDepartmentDetailsScreen(uiState.doctorInfo.profile.clinicId?:-1)
+                                    uiActions.navigateToDepartmentDetailsScreen(
+                                        uiState.doctorInfo.profile.clinicId ?: -1
+                                    )
                                 },
                                 currentStatus = uiState.doctorInfo.profile.currentStatus,
                                 workDays = uiState.doctorInfo.profile.availabilitySchedule,
                                 appointmentTypes = uiState.doctorInfo.profile.appointmentTypes,
-                                onAppointmentTypeItemClick = {index->
+                                onAppointmentTypeItemClick = { index ->
                                     uiActions.onUpdateSelectedAppointmentTypeDialog(index)
                                 },
                                 modifier = Modifier.fillMaxWidth(),
@@ -246,7 +252,7 @@ fun DoctorProfileScreen(
                                     onEmploymentHistoryClick = {
                                         uiActions.navigateToEmploymentHistoryScreen(null)
                                     },
-                                    isEmploymentHistoryItemEnabled = isActionsItemsEnabled,
+                                    isEmploymentHistoryItemEnabled = isAccepted,
                                     onDeactivateAccountClick = {
                                         uiActions.onDeactivateAccount()
                                     },
@@ -285,7 +291,7 @@ fun DoctorProfileScreen(
                                     onResignClick = {
                                         uiActions.onResignDoctor()
                                     },
-                                    showResignItem=!isResigned,
+                                    showResignItem = !isResigned,
                                     modifier = Modifier.fillMaxWidth(),
                                     onReactivateAccountClick = {
                                         uiActions.onReactivateAccount()

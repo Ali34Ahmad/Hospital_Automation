@@ -57,12 +57,6 @@ fun AdminProfileScreen(
         }
     }
 
-    LaunchedEffect(uiState.adminId) {
-        if (uiState.adminId != null) {
-            uiActions.onGetAdminProfile()
-        }
-    }
-
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {

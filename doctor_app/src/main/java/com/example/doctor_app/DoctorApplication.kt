@@ -3,6 +3,7 @@ package com.example.doctor_app
 import android.app.Application
 import com.example.add_new_vaccine.addNewVaccineModule
 import com.example.add_residential_address.addResidentialAddressModule
+import com.example.admin_profile.adminProfileModule
 import com.example.appointment_details.di.appointmentDetailsModule
 import com.example.child_profile.di.childProfileModule
 import com.example.clinic_details.di.clinicDetailsModule
@@ -73,6 +74,7 @@ class DoctorApplication: Application() {
                 childProfileModule,
                 guardianProfileModule,
                 genericVaccinationTableModule,
+                adminProfileModule,
             )
         }
     }

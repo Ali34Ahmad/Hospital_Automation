@@ -178,8 +178,9 @@
     <string name="finish">Finish</string>
     <string name="reactivate_account">Reactivate account</string>
     <string name="not_accepted_warning">This account not yet approved as an employee. You will be notified about your request state soon.</string>
-    <string name="resigned_warning">This account is marked as resigned by admin. To see details click.</string>
-    <string name="suspended_warning">This account is marked as suspended by admin. To see details click.</string>
+    <string name="doctor_not_accepted_warning">This account not yet approved as an doctor. You will be notified about your request state soon.</string>
+    <string name="resigned_warning">This account is marked as resigned by admin. To see details click </string>
+    <string name="suspended_warning">This account is marked as suspended. To see details click </string>
 
     <string name="child_info">Child Info</string>
     <string name="parents_info">Parents Info</string>

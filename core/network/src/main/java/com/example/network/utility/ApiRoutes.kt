@@ -91,6 +91,8 @@ object ApiRoutes {
         const val SHOW_USER_PROFILE = "$DOCTOR/find-user-byId"
         const val CHILD_BY_ID = "$DOCTOR/find-child-byId"
         const val GET_VACCINE_WITH_NO_VISIT_NUMBER = "$DOCTOR/show-vaccines-has-no-visit-number"
+
+        const val ADMIN_PROFILE_BY_ID = "$DOCTOR/find-admin-byId"
     }
 
 
@@ -139,6 +141,7 @@ object ApiRoutes {
         const val RESIGN_USER = "$ADMIN/resign-user"
         const val DEACTIVATE_PHARMACY = "$ADMIN/deactivate-pharmacy"
         const val REACTIVATE_PHARMACY = "$ADMIN/reactivate-pharmacy"
+        const val SHOW_PROFILE = "$ADMIN/show-profile"
     }
 
     object Prescription {
@@ -461,6 +464,15 @@ object ApiRoutes {
             RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> Doctor.ALL_MEDICAL_RECORDS
             RoleDto.ADMIN -> Admin.ALL_MEDICAL_RECORDS
+            else -> ""
+        }
+    }
+
+    fun getAdminProfileEndPoint(role: RoleDto): String {
+        return when (role) {
+            RoleDto.EMPLOYEE -> ADMIN_PROFILE_BY_ID
+            RoleDto.DOCTOR -> Doctor.ADMIN_PROFILE_BY_ID
+            RoleDto.ADMIN -> Admin.SHOW_PROFILE
             else -> ""
         }
     }

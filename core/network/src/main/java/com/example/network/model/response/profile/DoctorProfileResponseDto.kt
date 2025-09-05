@@ -4,6 +4,7 @@ import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.dto.WorkDayDto
 import com.example.network.model.enums.GenderDto
+import com.example.network.model.response.work_request.ClinicMainInfoDto
 import com.example.network.serializer.LocalDateSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -64,8 +65,8 @@ data class DoctorProfileDto(
     val updatedAt: String,
     @SerialName("clinic_id")
     val clinicId: Int?,
-    @SerialName("clinic_name")
-    val clinicName: String? = null,
+    @SerialName("clinic")
+    val clinic: ClinicMainInfoDto,
     @SerialName("resigned_by")
     val resignedBy: Int?,
     @SerialName("suspended_by")

@@ -148,7 +148,7 @@ fun DoctorProfileCard(
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
         if (!isAccepted) {
             WarningCard(
-                text = stringResource(R.string.not_accepted_warning),
+                text = stringResource(R.string.doctor_not_accepted_warning),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.spacing.medium16),
@@ -177,13 +177,16 @@ fun DoctorProfileCard(
             )
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
+
+        val onDepartmentClick=if (isResigned||isSuspended) null
+        else onDepartmentItemClick
         DetailsItem(
             iconRes = AppIcons.Outlined.department,
             title = stringResource(id = R.string.department),
             description = departmentName,
             modifier = detailsItemModifier,
             isMultipleLines = true,
-            onClick = onDepartmentItemClick,
+            onClick = onDepartmentClick,
         )
         DetailsItem(
             iconRes = AppIcons.Outlined.availabilityStatus,

@@ -54,7 +54,7 @@ fun MedicineDetailsScreen(
 @Composable
 fun MedicineDetailsScreen(
     uiState: MedicineDetailsUIState,
-    onAction: (MedicineDetailsUIActions)-> Unit,
+    onAction: (MedicineDetailsUIActions) -> Unit,
     navigationActions: MedicineDetailsNavigationActions,
     modifier: Modifier = Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(),
@@ -87,23 +87,23 @@ fun MedicineDetailsScreen(
                 navigationIcon = AppIcons.Outlined.arrowBack,
             )
         },
-    ){innerPadding->
+    ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(MaterialTheme.spacing.medium16)
         ) {
             AnimatedContent(
-                targetState = uiState.screenState
-            ) {state->
-                when(state){
+                targetState = uiState.screenState,
+            ) { state ->
+                when (state) {
                     ScreenState.IDLE -> Unit
-                    ScreenState.LOADING ->{
+                    ScreenState.LOADING -> {
                         FetchingDataItem(
                             modifier = Modifier.fillMaxSize()
                         )
                     }
-                    ScreenState.ERROR ->{
+
+                    ScreenState.ERROR -> {
                         PullToRefreshColumn(
                             refreshing = uiState.isRefreshing,
                             modifier = Modifier.fillMaxSize(),
@@ -111,28 +111,29 @@ fun MedicineDetailsScreen(
                                 onAction(MedicineDetailsUIActions.Refresh)
                             },
                             verticalArrangement = Arrangement.Center
-                        ){
+                        ) {
                             ErrorComponent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             )
                         }
                     }
+
                     ScreenState.SUCCESS -> {
-                        uiState.data?.let { medicine: MedicineDetailsData->
+                        uiState.data?.let { medicine: MedicineDetailsData ->
                             PullToRefreshColumn(
                                 refreshing = uiState.isRefreshing,
                                 onRefresh = {
                                     onAction(MedicineDetailsUIActions.Refresh)
                                 },
                                 modifier = Modifier.fillMaxWidth(),
-                            ){
+                            ) {
                                 MedicineDetailsCard(
                                     imageUrl = medicine.imageUrl,
                                     name = medicine.name,
                                     price = medicine.price,
                                     titer = medicine.pharmaceuticalTiter,
-                                    companyName =medicine.companyName,
+                                    companyName = medicine.companyName,
                                     isAllowedWithoutPrescription = medicine.isAllowedWithoutPrescription,
                                     composition = medicine.pharmaceuticalComposition,
                                     indications = medicine.pharmaceuticalIndications,
@@ -142,13 +143,19 @@ fun MedicineDetailsScreen(
                                         )
                                     },
                                     numberOfAlternatives = medicine.alternatives.size,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            top = MaterialTheme.spacing.medium16,
+                                            start = MaterialTheme.spacing.medium16,
+                                            end = MaterialTheme.spacing.medium16,
+                                            bottom = MaterialTheme.spacing.large24,
+                                        )
                                 )
-                                Spacer(Modifier.height(MaterialTheme.spacing.large24))
                             }
                         }
                         //bottom sheet
-                        if(uiState.isDialogShown){
+                        if (uiState.isDialogShown) {
                             ModalBottomSheet(
                                 onDismissRequest = {
                                     onAction(
@@ -158,8 +165,8 @@ fun MedicineDetailsScreen(
                                 sheetState = sheetState,
                             ) {
                                 BottomSheetContent(
-                                    selectedMedicines = uiState.data?.alternatives?: emptyList(),
-                                    onMedicineSelected = {medicineId->
+                                    selectedMedicines = uiState.data?.alternatives ?: emptyList(),
+                                    onMedicineSelected = { medicineId ->
                                         onAction(
                                             MedicineDetailsUIActions.SelectNewMedicine(
                                                 medicineId = medicineId

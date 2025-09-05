@@ -8,7 +8,7 @@ import com.example.utility.network.rootError
 class GetAdminProfileByIdUseCase(
     private val adminProfileRepository: AdminProfileRepository
 ) {
-    suspend operator fun invoke(adminId: Int): Result<AdminProfileResponse, rootError> {
+    suspend operator fun invoke(adminId: Int?): Result<AdminProfileResponse, rootError> {
         return adminProfileRepository.getAdminInfoById(adminId)
     }
 }

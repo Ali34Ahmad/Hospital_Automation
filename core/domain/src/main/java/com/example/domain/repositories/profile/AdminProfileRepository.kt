@@ -5,5 +5,5 @@ import com.example.utility.network.Result
 import com.example.utility.network.rootError
 
 interface AdminProfileRepository {
-    suspend fun getAdminInfoById(adminId: Int): Result<AdminProfileResponse, rootError>
+    suspend fun getAdminInfoById(adminId: Int?): Result<AdminProfileResponse, rootError>
 }

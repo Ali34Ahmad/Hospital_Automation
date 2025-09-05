@@ -1,6 +1,7 @@
 package com.example.network.remote.admin_profile
 
 import android.util.Log
+import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.profile.AdminProfileResponseDto
 import com.example.network.model.response.NetworkMessage
 import com.example.network.utility.ApiRoutes
@@ -17,8 +18,13 @@ import io.ktor.http.contentType
 class AdminProfileApiServiceImpl(
     private val client: HttpClient,
 ) : AdminProfileApiService {
-    override suspend fun getAdminInfoById(adminId: Int,token: String): Result<AdminProfileResponseDto, rootError> = try {
-        val response = client.get("${ApiRoutes.ADMIN_PROFILE_BY_ID}/$adminId") {
+    override suspend fun getAdminInfoById(
+        adminId: Int?,
+        token: String,
+        role: RoleDto,
+    ): Result<AdminProfileResponseDto, rootError> = try {
+        val routeSuffix = if (adminId != null) "/$adminId" else ""
+        val response = client.get("${ApiRoutes.getAdminProfileEndPoint(role)}$routeSuffix") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
         }
@@ -32,12 +38,12 @@ class AdminProfileApiServiceImpl(
             else -> {
                 val errorMessage: NetworkMessage = response.body()
                 Log.e("AdminProfileApi:Out of Range 2xx", errorMessage.message)
-                Log.e("AdminId:",adminId.toString())
+                Log.e("AdminId:", adminId.toString())
                 Result.Error(NetworkError.UNKNOWN)
             }
         }
     } catch (e: Exception) {
-        Log.e("AdminProfileApi:Exception", e.message?:"Unknown")
+        Log.e("AdminProfileApi:Exception", e.message ?: "Unknown")
         Result.Error(NetworkError.UNKNOWN)
     }
 }

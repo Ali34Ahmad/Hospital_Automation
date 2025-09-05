@@ -1,6 +1,7 @@
 package com.example.doctor_app.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
@@ -8,6 +9,7 @@ import com.example.add_new_vaccine.navigation.addNewVaccineScreen
 import com.example.add_new_vaccine.navigation.navigateToAddNewVaccineScreen
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
+import com.example.admin_profile.navigation.adminProfileScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
@@ -53,10 +55,13 @@ import com.example.medicine_details.navigation.medicineDetailsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
 import com.example.medicines_search.navigation.medicinesScreen
 import com.example.medicines_search.navigation.navigateToMedicineSearchScreenReplacingCurrent
+import com.example.navigation.extesion.navigateToCallApp
+import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacies.navigation.navigateToPharmacies
 import com.example.pharmacies.navigation.pharmaciesScreen
 import com.example.pharmacy_details.navigation.PharmacyAccessType
 import com.example.pharmacy_details.navigation.navigateToPharmacyDetailsScreen
+import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
 import com.example.prescription_details.navigation.navigateToPrescriptionDetailsScreen
 import com.example.prescription_details.navigation.prescriptionDetailsScreen
 import com.example.prescriptions.navigation.navigateToPrescriptionsScreen
@@ -75,10 +80,18 @@ import com.example.vaccines.navigation.vaccinesScreen
 
 @Composable
 fun FakeNavigation() {
+    val context = LocalContext.current
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoute
+        startDestination = ScheduleRoute(
+            id = null,
+            hasAdminAccess = false,
+            searchType = AppointmentSearchType.DOCTOR,
+            name = null,
+            speciality = null,
+            imageUrl = null
+        )
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -264,6 +277,19 @@ fun FakeNavigation() {
             },
         )
 
+        pharmacyDetailsScreen(
+            onNavigateUp = { navController.navigateUp() },
+            onNavigateToEmailApp = { email, subject ->
+                context.navigateToEmailApp(email, subject)
+            },
+            onNavigateToCallApp = { phoneNumber ->
+                context.navigateToCallApp(phoneNumber)
+            },
+            onNavigateToFulfilledPrescriptionsScreen = { },
+            onNavigateToMedicinesScreen = {},
+            onNavigateToEmploymentHistoryScreen = {}
+        )
+
         employmentHistoryScreen(
             onNavigateToAcceptedByAdminProfileScreen = { adminId ->
                 navController.navigateToAdminProfileScreen(adminId)
@@ -280,6 +306,12 @@ fun FakeNavigation() {
                 } else {
                     navController.navigateUp()
                 }
+            }
+        )
+
+        adminProfileScreen(
+            onNavigateUp = {
+                navController.navigateUp()
             }
         )
 
@@ -323,7 +355,7 @@ fun FakeNavigation() {
             },
             onNavigateToPrescriptions = { childId ->
                 navController.navigateToPrescriptionsScreen(
-                    patientId =null,
+                    patientId = null,
                     childId = childId,
                     doctorId = null
                 )
@@ -430,13 +462,13 @@ fun FakeNavigation() {
                     genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
                 )
             },
-            onNavigateToUserProfile = {userId->
+            onNavigateToUserProfile = { userId ->
                 navController.navigateToGuardianProfile(
                     guardianId = userId,
                     userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
                 )
             },
-            onNavigateToChildProfile = {childId->
+            onNavigateToChildProfile = { childId ->
                 navController.navigateToChildProfile(
                     childId = childId,
                     hasAdminAccess = false,

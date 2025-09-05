@@ -14,10 +14,10 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class AdminProfileRoute(
-    val adminId:Int
+    val adminId:Int?,
 )
 
-fun NavController.navigateToAdminProfileScreen(adminId: Int) {
+fun NavController.navigateToAdminProfileScreen(adminId: Int?) {
     navigateToScreen(AdminProfileRoute(adminId))
 }
 
