@@ -3,8 +3,10 @@ package com.example.guardian_profile.presentation
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -200,6 +202,7 @@ fun GuardianProfileScreen(
                                         },
                                         onlyCommunicationInfo = uiState.userProfileMode == UserProfileMode.ONLY_COMMUNICATION_INFO,
                                     )
+                                    Spacer(Modifier.height(MaterialTheme.spacing.large24))
 
                                     //Show warning dialog when clicking on deactivation button
                                     if (uiState.isWarningDialogShown) {

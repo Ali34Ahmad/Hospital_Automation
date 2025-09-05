@@ -261,7 +261,7 @@ fun FakeNavigation() {
         prescriptionDetailsScreen(
             onNavigateUp = { navController.navigateUp() },
             onNavigateToPatientProfile = { userId ->
-                navController.navigateToGuardianProfile(userId, UserProfileMode.VIEW_ONLY, null)
+                navController.navigateToGuardianProfile(userId, UserProfileMode.ONLY_COMMUNICATION_INFO, null)
             },
             onNavigateToChildProfile = { childId ->
                 navController.navigateToChildProfile(childId, hasAdminAccess = false)

@@ -13,10 +13,6 @@ fun mockEmployeeProfileNavigationUiActions()=object : GenericVaccinationTableNav
 }
 
 fun mockEmployeeProfileBusinessUiActions()=object : GenericVaccinationTableBusinessUiActions {
-    override fun onSaveTableChanges() {
-
-    }
-
     override fun onAddVaccineToVisitClick(visitNumber: Int) {
 
     }

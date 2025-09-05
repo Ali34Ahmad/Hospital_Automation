@@ -71,7 +71,7 @@ fun VaccineDetailsScreen(
             if (uiState.vaccinePreviousScreen== VaccinePreviousScreen.ADD_NEW_VACCINE){
                 SendingDataBottomBar(
                     onSuccess = {},
-                    text = stringResource(R.string.submit),
+                    text = stringResource(R.string.add_to_vaccination_table),
                     onButtonClick = {
                         uiActions.navigateToVaccinationTableScreen()
                     },

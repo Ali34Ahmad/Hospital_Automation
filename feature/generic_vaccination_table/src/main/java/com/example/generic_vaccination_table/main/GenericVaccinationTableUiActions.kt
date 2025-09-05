@@ -11,7 +11,6 @@ class GenericVaccinationTableUiActions(
 
 
 interface GenericVaccinationTableBusinessUiActions {
-    fun onSaveTableChanges()
     fun onAddVaccineToVisitClick(visitNumber: Int)
     fun onHideVaccinesDialog()
     fun onShowVaccinesDialog()

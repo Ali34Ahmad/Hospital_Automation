@@ -44,17 +44,6 @@ import com.example.ui_components.components.text_field.InputWithDropdownSelector
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.util.UiText
 
-private val tabs = listOf(
-    TabItemWithIcon(
-        title = UiText.StringResource(R.string.show_all),
-        iconRes = AppIcons.Outlined.list
-    ),
-    TabItemWithIcon(
-        title = UiText.StringResource(R.string.new_),
-        iconRes = AppIcons.Outlined.add
-    ),
-)
-
 @Composable
 fun AddNewVaccineScreen(
     uiState: AddNewVaccineUiState,
@@ -114,6 +103,17 @@ fun AddNewVaccineScreen(
 
     val isLoading = uiState.screenState == ScreenState.LOADING
 
+    val tabs = listOf(
+        TabItemWithIcon(
+            title = UiText.StringResource(R.string.show_all),
+            iconRes = AppIcons.Outlined.list
+        ),
+        TabItemWithIcon(
+            title = UiText.StringResource(R.string.new_),
+            iconRes = AppIcons.Outlined.add
+        ),
+    )
+    
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {

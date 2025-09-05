@@ -154,7 +154,7 @@ internal fun ScheduleScreen(
         ),
         DrawerButton(
             text = R.string.vaccine_table,
-            image = AppIcons.Outlined.medicalRecords,
+            image = AppIcons.Outlined.vaccinationTable,
             onClick = {
                 navigationActions.navigateToVaccineTable()
             },

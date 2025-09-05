@@ -58,7 +58,7 @@ fun VaccineCard(
                     )
                 }
                 Text(
-                    text = vaccine.name,
+                    text = vaccine.name.trim(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
@@ -68,7 +68,7 @@ fun VaccineCard(
             }
             Spacer(modifier = Modifier.size(MaterialTheme.spacing.extraSmall4))
             Text(
-                text = vaccine.description,
+                text = vaccine.description.trim(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onBackground,
             )

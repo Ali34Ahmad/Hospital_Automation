@@ -51,10 +51,6 @@ class GenericVaccinationTableViewModel(
 
     private fun getBusinessUiActions(): GenericVaccinationTableBusinessUiActions =
         object : GenericVaccinationTableBusinessUiActions {
-            override fun onSaveTableChanges() {
-                TODO("Not yet implemented")
-            }
-
             override fun onAddVaccineToVisitClick(visitNumber: Int) {
                 updateVisitNumberToUse(visitNumber)
                 updateVaccinesSelectionDialogVisibility(true)
@@ -63,6 +59,7 @@ class GenericVaccinationTableViewModel(
 
             override fun onHideVaccinesDialog() {
                 updateVaccinesSelectionDialogVisibility(true)
+                updateVaccinesWithNotVisitNumber(null)
             }
 
             override fun onShowVaccinesDialog() {

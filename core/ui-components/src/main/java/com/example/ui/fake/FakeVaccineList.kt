@@ -18,7 +18,7 @@ fun createSampleVaccineList(): List<VaccineData> {
         VaccineData(
             id = 1,
             name = "Influenza Vaccine",
-            description = "Protects against seasonal influenza viruses.",
+            description = "Protects against seasonal influenza viruses.Protects against seasonal influenza viruses.Protects against seasonal influenza viruses.Protects against seasonal influenza viruses.Protects against seasonal influenza viruses.Protects against seasonal influenza viruses.\n\n",
             minAge = Age(6, AgeUnit.MONTH),
             maxAge = Age(100, AgeUnit.YEAR),
             quantity = 10,

@@ -1,6 +1,7 @@
 package com.example.ui_components.components.bottomBars.custom
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -24,11 +25,12 @@ fun SendingDataBottomBar(
     onButtonClick: () -> Unit,
     state: BottomBarState,
     onSuccess: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier ,
 ) {
     //add animations here
     AnimatedContent(
         targetState = state,
+        modifier = Modifier.background(MaterialTheme.colorScheme.surface)
     ) { state ->
         when (state) {
             BottomBarState.IDLE -> {

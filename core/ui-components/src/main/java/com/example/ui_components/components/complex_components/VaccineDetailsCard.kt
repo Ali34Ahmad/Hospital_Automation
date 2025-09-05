@@ -66,30 +66,33 @@ fun VaccineDetailsCard(
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.quantity),
-                description = "${vaccine.quantity} Syringes",
+                description = if (vaccine.quantity>1)"${vaccine.quantity} Syringes"
+                else "${vaccine.quantity} Syringe",
             )
             Spacer(Modifier.height(MaterialTheme.spacing.large24))
             TitleWithSubtitle(
                 title = R.string.description,
-                subtitle = vaccine.description,
+                subtitle = vaccine.description.trim(),
                 modifier = Modifier
                     .fillMaxWidth(1f)
                     .padding(
                         horizontal = MaterialTheme.spacing.medium16
                     )
             )
-            Spacer(Modifier.height(MaterialTheme.spacing.large24))
-            Text(
-                text = stringResource(R.string.interactions),
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .padding(
-                        horizontal = MaterialTheme.spacing.medium16
-                    )
-            )
-            Spacer(Modifier.height(MaterialTheme.spacing.small8))
             val interactions = vaccine.interactions
+            if (!interactions.isNullOrEmpty()){
+                Spacer(Modifier.height(MaterialTheme.spacing.large24))
+                Text(
+                    text = stringResource(R.string.interactions),
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .padding(
+                            horizontal = MaterialTheme.spacing.medium16
+                        )
+                )
+                Spacer(Modifier.height(MaterialTheme.spacing.small8))
+            }
             interactions?.forEachIndexed { index, interaction ->
                 IndexedText(
                     index = index + 1,
