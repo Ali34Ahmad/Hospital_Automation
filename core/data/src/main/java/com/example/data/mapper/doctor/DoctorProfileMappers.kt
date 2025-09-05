@@ -15,7 +15,8 @@ import com.example.network.model.response.profile.DoctorProfileResponseDto
 
 fun DoctorProfileResponseDto.toDoctorProfileResponse(): DoctorProfileResponse {
     return DoctorProfileResponse(
-        profile = this.profile.toDoctorProfile()
+        profile = this.profile.toDoctorProfile(),
+        isAccessedByOwner=isAccessedByOwner,
     )
 }
 

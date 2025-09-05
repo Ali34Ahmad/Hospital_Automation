@@ -12,6 +12,7 @@ import java.time.LocalDate
 
 data class DoctorProfileResponse(
     val profile: DoctorProfile,
+    val isAccessedByOwner: Boolean?=null,
 )
 
 data class DoctorProfile(

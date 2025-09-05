@@ -13,6 +13,8 @@ import java.time.LocalDate
 @Serializable
 data class DoctorProfileResponseDto(
     val profile: DoctorProfileDto,
+    @SerialName("is_The_Same_Employee")
+    val isAccessedByOwner: Boolean?=null,
 )
 
 @Serializable

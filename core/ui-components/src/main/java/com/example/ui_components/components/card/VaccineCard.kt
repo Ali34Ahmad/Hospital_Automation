@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateAgeFormat
 import com.example.model.vaccine.VaccineData
 import com.example.ui.fake.createSampleVaccineList

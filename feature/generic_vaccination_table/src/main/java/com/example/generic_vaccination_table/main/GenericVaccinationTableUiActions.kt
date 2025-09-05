@@ -1,7 +1,5 @@
 package com.example.generic_vaccination_table.main
 
-import com.example.utility.ui.AppNavigationUiAction
-
 
 class GenericVaccinationTableUiActions(
     navigationActions: GenericVaccinationTableNavigationUiActions,

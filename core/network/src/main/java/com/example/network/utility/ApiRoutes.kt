@@ -49,6 +49,7 @@ object ApiRoutes {
         private const val DOCTOR = "$BASE_URL/doctor"
         const val ADD_MEDICAL_DIAGNOSIS = "$DOCTOR/add-medical-diagnosis"
         const val PROFILE = "$DOCTOR/show-profile"
+        const val PROFILE_BY_ID = "$DOCTOR/show-another-doctor-profile"
         const val ADD_NEW_VACCINE = "$DOCTOR/add-new-vaccine"
         const val GET_VACCINE_BY_ID = "$DOCTOR/view-single-vaccine-details"
         const val GET_GENERIC_VACCINATION_TABLE = "$DOCTOR/generic-vaccination-table"
@@ -123,7 +124,6 @@ object ApiRoutes {
         const val GET_ALL_DOCTORS = "$ADMIN/get-employees-states"
         const val SHOW_DOCTOR_APPOINTMENTS = "$ADMIN/doctor-appointment-screen"
         const val GET_DOCTORS_IN_SPECIFIC_CLINIC = "$ADMIN/doctors-in-specific-clinic_states"
-        const val SHOW_APPOINTMENTS = "$ADMIN/doctor-appointment-screen"
         const val DEACTIVATE_CLINIC = "$ADMIN/deactivate-clinic"
         const val REACTIVATE_CLINIC = "$ADMIN/reactivate-clinic"
         const val GET_ADMIN_DETAILS_FOR = "$ADMIN/admin-get-details-by-id-for"
@@ -386,10 +386,10 @@ object ApiRoutes {
         }
     }
 
-    fun getDoctorProfileByIdEndPoint(role: RoleDto): String {
+    fun getDoctorProfileEndPoint(role: RoleDto,isCurrentDoctor: Boolean): String {
         return when (role) {
             RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
-            RoleDto.DOCTOR -> Doctor.PROFILE
+            RoleDto.DOCTOR -> if (isCurrentDoctor) Doctor.PROFILE else Doctor.PROFILE_BY_ID
             RoleDto.ADMIN -> Admin.PROFILE
             else -> ""
         }

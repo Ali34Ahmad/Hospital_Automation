@@ -22,6 +22,7 @@ import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.clinics_search.navigation.clinicsSearchScreen
 import com.example.clinics_search.navigation.navigateToClinicsSearch
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
+import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
@@ -91,7 +92,7 @@ fun FakeNavigation() {
             name = null,
             speciality = null,
             imageUrl = null
-        )
+        ),
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -261,7 +262,11 @@ fun FakeNavigation() {
         prescriptionDetailsScreen(
             onNavigateUp = { navController.navigateUp() },
             onNavigateToPatientProfile = { userId ->
-                navController.navigateToGuardianProfile(userId, UserProfileMode.ONLY_COMMUNICATION_INFO, null)
+                navController.navigateToGuardianProfile(
+                    userId,
+                    UserProfileMode.ONLY_COMMUNICATION_INFO,
+                    null
+                )
             },
             onNavigateToChildProfile = { childId ->
                 navController.navigateToChildProfile(childId, hasAdminAccess = false)
@@ -285,7 +290,7 @@ fun FakeNavigation() {
             onNavigateToCallApp = { phoneNumber ->
                 context.navigateToCallApp(phoneNumber)
             },
-            onNavigateToFulfilledPrescriptionsScreen = { },
+            onNavigateToFulfilledPrescriptionsScreen = {},
             onNavigateToMedicinesScreen = {},
             onNavigateToEmploymentHistoryScreen = {}
         )
@@ -416,8 +421,9 @@ fun FakeNavigation() {
         clinicDetailsScreen(
             onNavigateUp = navController::navigateUp,
             onNavigateToDoctorProfile = {
+                TODO()
                 navController.navigateToDoctorProfileScreen(
-                    doctorProfileAccessType = DoctorProfileAccessType.TOKEN_ACCESS,
+                    doctorProfileAccessType = DoctorProfileAccessType.OTHER_DOCTOR_ACCESS,
                     doctorId = null
                 )
             },

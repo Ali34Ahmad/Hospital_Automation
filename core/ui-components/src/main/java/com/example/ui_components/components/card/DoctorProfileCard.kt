@@ -211,29 +211,33 @@ fun DoctorProfileCard(
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small12))
 
-        SectionWithTitle(
-            title = stringResource(R.string.availability_schedule),
-            modifier = Modifier.fillMaxWidth(),
-            titleAreaPadding = sectionTitlePadding,
-        ) {
-            AvailabilityScheduleLazyRow(
-                workDays = workDays,
-            )
+        if (workDays.isNotEmpty()){
+            SectionWithTitle(
+                title = stringResource(R.string.availability_schedule),
+                modifier = Modifier.fillMaxWidth(),
+                titleAreaPadding = sectionTitlePadding,
+            ) {
+                AvailabilityScheduleLazyRow(
+                    workDays = workDays,
+                )
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
         }
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large24))
-        SectionWithTitle(
-            title = stringResource(R.string.appointment_types),
-            modifier = Modifier.fillMaxWidth(),
-            titleAreaPadding = sectionTitlePadding,
-        ) {
-            TagsFlowRow(
-                tagsList = appointmentTypes.map { it.name },
-                onTagClick = onAppointmentTypeItemClick,
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16),
-            )
+        if (appointmentTypes.isNotEmpty()){
+            SectionWithTitle(
+                title = stringResource(R.string.appointment_types),
+                modifier = Modifier.fillMaxWidth(),
+                titleAreaPadding = sectionTitlePadding,
+            ) {
+                TagsFlowRow(
+                    tagsList = appointmentTypes.map { it.name },
+                    onTagClick = onAppointmentTypeItemClick,
+                    modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16),
+                )
+            }
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large32))
         }
 
-        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large32))
 
         Row(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium16)) {
             HospitalAutomationButton(

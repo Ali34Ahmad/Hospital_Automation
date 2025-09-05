@@ -111,6 +111,14 @@ fun DoctorProfileScreen(
             uiState.doctorInfo.profile.suspendedBy == uiState.doctorInfo.profile.userId)
     val showDeactivationItemInDoctorRole =
         !isResigned && isAccepted && (isSuspendedByHimself || !isSuspended)
+
+    val isAccessedByOwner = uiState.doctorInfo?.isAccessedByOwner
+    val showActionsCardInDoctorRole = if (isAccessedByOwner == null)
+        uiState.doctorProfileAccessType == DoctorProfileAccessType.TOKEN_ACCESS
+    else
+        isAccessedByOwner
+                && (uiState.doctorProfileAccessType == DoctorProfileAccessType.OTHER_DOCTOR_ACCESS)
+
     val showDeactivationItemInAdminRole = !isResigned && isAccepted
 
 
@@ -235,69 +243,71 @@ fun DoctorProfileScreen(
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                             )
-                            when (uiState.doctorProfileAccessType) {
-                                DoctorProfileAccessType.TOKEN_ACCESS -> DoctorProfileOwnerActionsCard(
-                                    onAppointmentsHistoryClick = {
-                                        uiActions.navigateToAppointmentsScreen()
-                                    },
-                                    isAppointmentsItemEnabled = isActionsItemsEnabled,
-                                    onPrescriptionsClick = {
-                                        uiActions.navigateToPrescriptionsScreen(null)
-                                    },
-                                    isPrescriptionsItemEnabled = isActionsItemsEnabled,
-                                    onMedicalRecordsClick = {
-                                        uiActions.navigateToMedicalRecordsScreen(null)
-                                    },
-                                    isMedicalRecordsItemEnabled = isActionsItemsEnabled,
-                                    onEmploymentHistoryClick = {
-                                        uiActions.navigateToEmploymentHistoryScreen(null)
-                                    },
-                                    isEmploymentHistoryItemEnabled = isAccepted,
-                                    onDeactivateAccountClick = {
-                                        uiActions.onDeactivateAccount()
-                                    },
-                                    showDeactivationItem = showDeactivationItemInDoctorRole,
-                                    onLogoutClick = {
-                                        uiActions.onLogout()
-                                    },
-                                    isAccountDeactivated = isSuspended,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onReactivateAccountClick = {
-                                        uiActions.onReactivateAccount()
-                                    },
-                                )
+                            when {
+                                showActionsCardInDoctorRole ->
+                                    DoctorProfileOwnerActionsCard(
+                                        onAppointmentsHistoryClick = {
+                                            uiActions.navigateToAppointmentsScreen()
+                                        },
+                                        isAppointmentsItemEnabled = isActionsItemsEnabled,
+                                        onPrescriptionsClick = {
+                                            uiActions.navigateToPrescriptionsScreen(null)
+                                        },
+                                        isPrescriptionsItemEnabled = isActionsItemsEnabled,
+                                        onMedicalRecordsClick = {
+                                            uiActions.navigateToMedicalRecordsScreen(null)
+                                        },
+                                        isMedicalRecordsItemEnabled = isActionsItemsEnabled,
+                                        onEmploymentHistoryClick = {
+                                            uiActions.navigateToEmploymentHistoryScreen(null)
+                                        },
+                                        isEmploymentHistoryItemEnabled = isAccepted,
+                                        onDeactivateAccountClick = {
+                                            uiActions.onDeactivateAccount()
+                                        },
+                                        showDeactivationItem = showDeactivationItemInDoctorRole,
+                                        onLogoutClick = {
+                                            uiActions.onLogout()
+                                        },
+                                        isAccountDeactivated = isSuspended,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onReactivateAccountClick = {
+                                            uiActions.onReactivateAccount()
+                                        },
+                                    )
 
-                                DoctorProfileAccessType.ADMIN_ACCESS -> DoctorProfileAdminActionsCard(
-                                    onAppointmentsHistoryClick = {
-                                        uiActions.navigateToAppointmentsScreen()
-                                    },
-                                    isAppointmentsItemEnabled = isActionsItemsEnabled,
-                                    onPrescriptionsClick = {
-                                        uiActions.navigateToPrescriptionsScreen(uiState.doctorId)
-                                    },
-                                    isPrescriptionsItemEnabled = isActionsItemsEnabled,
-                                    onMedicalRecordsClick = {
-                                        uiActions.navigateToMedicalRecordsScreen(uiState.doctorId)
-                                    },
-                                    isMedicalRecordsItemEnabled = isActionsItemsEnabled,
-                                    onEmploymentHistoryClick = {
-                                        uiActions.navigateToEmploymentHistoryScreen(uiState.doctorId)
-                                    },
-                                    isEmploymentHistoryItemEnabled = isActionsItemsEnabled,
-                                    onDeactivateAccountClick = {
-                                        uiActions.onDeactivateAccount()
-                                    },
-                                    showDeactivationItem = showDeactivationItemInAdminRole,
-                                    onResignClick = {
-                                        uiActions.onResignDoctor()
-                                    },
-                                    showResignItem = !isResigned,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onReactivateAccountClick = {
-                                        uiActions.onReactivateAccount()
-                                    },
-                                    isAccountDeactivated = isSuspended,
-                                )
+                                uiState.doctorProfileAccessType == DoctorProfileAccessType.ADMIN_ACCESS ->
+                                    DoctorProfileAdminActionsCard(
+                                        onAppointmentsHistoryClick = {
+                                            uiActions.navigateToAppointmentsScreen()
+                                        },
+                                        isAppointmentsItemEnabled = isActionsItemsEnabled,
+                                        onPrescriptionsClick = {
+                                            uiActions.navigateToPrescriptionsScreen(uiState.doctorId)
+                                        },
+                                        isPrescriptionsItemEnabled = isActionsItemsEnabled,
+                                        onMedicalRecordsClick = {
+                                            uiActions.navigateToMedicalRecordsScreen(uiState.doctorId)
+                                        },
+                                        isMedicalRecordsItemEnabled = isActionsItemsEnabled,
+                                        onEmploymentHistoryClick = {
+                                            uiActions.navigateToEmploymentHistoryScreen(uiState.doctorId)
+                                        },
+                                        isEmploymentHistoryItemEnabled = isActionsItemsEnabled,
+                                        onDeactivateAccountClick = {
+                                            uiActions.onDeactivateAccount()
+                                        },
+                                        showDeactivationItem = showDeactivationItemInAdminRole,
+                                        onResignClick = {
+                                            uiActions.onResignDoctor()
+                                        },
+                                        showResignItem = !isResigned,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onReactivateAccountClick = {
+                                            uiActions.onReactivateAccount()
+                                        },
+                                        isAccountDeactivated = isSuspended,
+                                    )
 
                                 else -> null
                             }
