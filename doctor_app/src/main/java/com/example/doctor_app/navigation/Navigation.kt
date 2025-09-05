@@ -79,7 +79,6 @@ import com.example.vaccines.navigation.navigateToVaccinesScreen
 
 @Composable
 fun Navigation() {
-    val context = LocalContext.current
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -435,14 +434,20 @@ fun Navigation() {
                     genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
                 )
             },
-            onNavigateToUserProfile = {
-                TODO()
+            onNavigateToUserProfile = {userId->
+                navController.navigateToGuardianProfile(
+                    guardianId = userId,
+                    userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
+                )
             },
-            onNavigateToChildProfile = {
-                TODO()
+            onNavigateToChildProfile = {childId->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    hasAdminAccess = false,
+                )
             },
             onNavigateUp = {
-                TODO()
+                navController.navigateUp()
             },
         )
 

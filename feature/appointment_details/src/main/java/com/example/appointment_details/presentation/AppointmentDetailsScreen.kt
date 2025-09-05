@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -48,6 +49,7 @@ fun AppointmentDetailsScreen(
         modifier = modifier,
     )
 }
+
 @Composable
 internal fun AppointmentDetailsScreen(
     uiState: AppointmentDetailsUIState,
@@ -82,15 +84,16 @@ internal fun AppointmentDetailsScreen(
         topBar = {
             Crossfade(
                 uiState.appointment != null,
-            ) {state->
-                when(state){
+            ) { state ->
+                when (state) {
                     true -> HospitalAutomationTopBar(
                         showImagePlaceHolder = uiState.appointment?.child != null,
                         imageUrl = uiState.appointment?.user?.img,
-                        navigationIcon = AppIcons.Outlined.arrowBack ,
+                        navigationIcon = AppIcons.Outlined.arrowBack,
                         title = uiState.appointment?.fullName.toString(),
                         onNavigationIconClick = navigationActions::navigateUp,
                     )
+
                     false -> HospitalAutomationTopBar(
                         navigationIcon = AppIcons.Outlined.arrowBack,
                         title = stringResource(R.string.appointment_details),
@@ -100,11 +103,11 @@ internal fun AppointmentDetailsScreen(
             }
         },
         bottomBar = {
-            uiState.appointment?.let{
+            uiState.appointment?.let {
                 AnimatedVisibility(
                     it.state == AppointmentState.UPCOMMING &&
-                            uiState.screenState == ScreenState.SUCCESS&&
-                    uiState.canEdit
+                            uiState.screenState == ScreenState.SUCCESS &&
+                            uiState.canEdit
                 ) {
                     AppointmentBottomBar(
                         markAsMissedButtonState = uiState.markAsMissedButtonState,
@@ -138,7 +141,7 @@ internal fun AppointmentDetailsScreen(
                 }
             }
         }
-    ) {innerPadding->
+    ) { innerPadding ->
         Surface(
             modifier = Modifier
                 .padding(innerPadding)
@@ -147,12 +150,12 @@ internal fun AppointmentDetailsScreen(
             val context = LocalContext.current
             val toastMessage = uiState.toastMessage?.asString()
             LaunchedEffect(toastMessage) {
-                if (toastMessage!=null){
+                if (toastMessage != null) {
                     Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
                     onAction(AppointmentDetailsAction.ClearToastMessage)
                 }
             }
-            when(uiState.screenState){
+            when (uiState.screenState) {
                 ScreenState.IDLE -> Unit
                 ScreenState.LOADING -> FetchingDataItem(Modifier.fillMaxSize())
                 ScreenState.ERROR -> {
@@ -170,7 +173,8 @@ internal fun AppointmentDetailsScreen(
                         )
                     }
                 }
-                ScreenState.SUCCESS ->{
+
+                ScreenState.SUCCESS -> {
                     PullToRefreshColumn(
                         refreshing = uiState.isRefreshing,
                         onRefresh = {
@@ -181,7 +185,7 @@ internal fun AppointmentDetailsScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         uiState.appointment?.let {
-                            if(uiState.isDialogShown){
+                            if (uiState.isDialogShown) {
                                 DialogWithDescription(
                                     onDismissRequest = {
                                         onAction(AppointmentDetailsAction.CloseDialog)
@@ -211,6 +215,11 @@ internal fun AppointmentDetailsScreen(
                                         )
                                     )
                                 },
+                                onGuardianItemClick = {
+                                    it.user?.id?.let { id ->
+                                        navigationActions.navigateToGuardianProfile(id)
+                                    }
+                                }
                             )
                         }
                     }

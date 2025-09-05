@@ -39,7 +39,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val doctorDataModule = module {
-    includes(doctorNetworkModule, doctorDomainModule, dataModule)
+//    includes(doctorNetworkModule, doctorDomainModule, dataModule)
     singleOf(::PrescriptionRepositoryImp) { bind<PrescriptionRepository>() }
     singleOf(::PharmacyRepositoryImp) { bind<PharmacyRepository>() }
     singleOf(::MedicineRepositoryImp) { bind<MedicineRepository>() }

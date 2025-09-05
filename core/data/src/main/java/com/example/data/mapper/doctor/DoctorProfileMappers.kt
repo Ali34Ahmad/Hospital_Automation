@@ -45,7 +45,8 @@ fun DoctorProfileDto.toDoctorProfile(): DoctorProfile {
         phoneNumber = this.phoneNumber,
         address = address,
         specialty = this.specialty,
-        department = "this.clinicId",
+        department = clinicName,
+        clinicId = this.clinicId,
         currentStatus = doctorStatus,
         availabilitySchedule = this.workDays.map { it.toDaySchedule() },
         appointmentTypes = this.appointmentTypes.map { it.toAppointmentTypeData() },
@@ -58,7 +59,6 @@ fun DoctorProfileDto.toDoctorProfile(): DoctorProfile {
         workEndDate = this.workEndDate,
         createdAt = this.createdAt,
         updatedAt = this.updatedAt,
-        clinicId = this.clinicId,
         resignedBy = this.resignedBy,
         suspendedBy = this.suspendedBy,
         acceptedBy = this.acceptedBy

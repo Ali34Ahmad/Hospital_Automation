@@ -41,7 +41,7 @@ fun DepartmentActions(
             ProfileActionsItem(
                 iconRes = AppIcons.Outlined.stethoscope,
                 title = stringResource(R.string.all_doctors),
-                showUnderline = true,
+                showUnderline = false,
                 onClick = onAllDoctorsClick,
             )
 //            ProfileActionsItem(

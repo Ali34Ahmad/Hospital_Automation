@@ -64,6 +64,8 @@ data class DoctorProfileDto(
     val updatedAt: String,
     @SerialName("clinic_id")
     val clinicId: Int?,
+    @SerialName("clinic_name")
+    val clinicName: String? = null,
     @SerialName("resigned_by")
     val resignedBy: Int?,
     @SerialName("suspended_by")

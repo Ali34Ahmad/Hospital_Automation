@@ -31,6 +31,7 @@ fun AppointmentDetailsCard(
     appointment: AppointmentData,
     onDepartmentItemClick: () -> Unit,
     onAppointmentTypeTagClick: () -> Unit,
+    onGuardianItemClick: () -> Unit,
     modifier: Modifier = Modifier,
     onVaccineItemClick: (() -> Unit)? = null,
 ) {
@@ -101,13 +102,13 @@ fun AppointmentDetailsCard(
             description = appointment.dateTime.toAppropriateDateTimeFormat(),
             modifier = detailsItemModifier,
         )
-        appointment.vaccine?.let {
+        appointment.user?.let {
             DetailsItem(
                 iconRes = AppIcons.Outlined.guardian,
                 title = stringResource(id = R.string.booked_by),
                 description = appointment.fullName,
                 modifier = detailsItemModifier,
-                onClick = onVaccineItemClick,
+                onClick = onGuardianItemClick,
             )
         }
 
@@ -157,6 +158,7 @@ fun UpcomingOrPendingAppointmentDetailsCardPreview() {
                 appointment = createSampleAppointments()[0],
                 onDepartmentItemClick = {},
                 onAppointmentTypeTagClick = {},
+                onGuardianItemClick={},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
             )
         }
@@ -173,6 +175,7 @@ fun PassedAppointmentDetailsCardPreview() {
                 onDepartmentItemClick = {},
                 onAppointmentTypeTagClick = {},
                 onVaccineItemClick = {},
+                onGuardianItemClick={},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
             )
         }
@@ -188,6 +191,7 @@ fun MissedAppointmentDetailsCardPreview() {
                 appointment = createSampleAppointments()[2],
                 onDepartmentItemClick = {},
                 onAppointmentTypeTagClick = {},
+                onGuardianItemClick={},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16)
             )
         }

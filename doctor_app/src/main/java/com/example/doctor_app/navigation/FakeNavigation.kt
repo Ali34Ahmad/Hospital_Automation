@@ -78,7 +78,7 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = LoginRoute
+        startDestination = AuthGraphRoute
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
