@@ -105,6 +105,7 @@ class RequestsViewModel(
 //                setErrorDialogState(false, null)
 //                updateAccountDeactivationErrorState(null)
 //                updateIsDeactivatedSuccessfullyState(true)
+                refreshTrigger.emit(Unit)
                 val toastMessage = when (state) {
                     RequestState.ACCEPTED ->
                         UiText.StringResource(R.string.request_accepted_successfully)

@@ -10,6 +10,7 @@ import com.example.children_search.di.childrenSearchModule
 import com.example.clinic_details.di.clinicDetailsModule
 import com.example.clinics_search.di.clinicsSearchModule
 import com.example.data.di.adminDataModule
+import com.example.data.di.dataModule
 import com.example.doctor_profile.doctorProfileModule
 import com.example.doctor_schedule.di.doctorScheduleModule
 import com.example.doctors.di.doctorsSearchModule
@@ -45,6 +46,7 @@ class AdminApplication : Application() {
             androidContext(this@AdminApplication)
             modules(
                 appModule,
+                dataModule,
                 //features
                 guardiansModule,
                 doctorsSearchModule,

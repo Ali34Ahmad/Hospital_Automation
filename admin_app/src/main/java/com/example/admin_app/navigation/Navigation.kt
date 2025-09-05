@@ -140,13 +140,16 @@ fun Navigation() {
         }
 
         vaccinesScreen(
-            onNavigateUp = {},
+            onNavigateUp = {
+                navController.navigateUp()
+            },
             onNavigateToVaccineDetailsScreen = { vaccineId ->
                 navController.navigateToVaccineDetailsScreen(
                     vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
                     vaccineId = vaccineId
                 )
-            }
+            },
+            onNavigateToAddNewVaccineScreen = {},
         )
 
         vaccineDetailsScreen(
