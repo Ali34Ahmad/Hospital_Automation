@@ -15,10 +15,15 @@ interface RequestsBusinessUiActions {
     fun onRefresh()
     fun onUpdateScreenState(screenState: ScreenState)
     fun clearToastMessage()
+    fun onToggleTheme()
+    fun onToggleDrawer()
 }
 
 interface RequestsNavigationUiActions {
     fun navigateToEmployeeProfileDetailsScreen(employeeId:Int?)
     fun navigateToDoctorProfileDetailsScreen(doctorId:Int?)
     fun navigateToPharmacyDetailsScreen(pharmacyId: Int?)
+    fun navigateToAdminProfile()
+    fun navigateToVaccines()
+    fun navigateToVaccineTable()
 }

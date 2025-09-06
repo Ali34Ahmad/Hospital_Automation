@@ -22,8 +22,8 @@ interface EmployeeProfileBusinessUiActions {
     fun onShowDeactivationReasonDialog()
 }
 
-interface EmployeeProfileNavigationUiActions:AppNavigationUiAction {
-    fun navigateToAddedChildrenScreen()
+interface EmployeeProfileNavigationUiActions {
+    fun navigateToAddedChildrenScreen(employeeId:Int?)
     fun navigateToEmploymentHistoryScreen(employeeId:Int?)
     fun navigateUp()
     fun navigateToLoginScreen()

@@ -3,6 +3,7 @@ package com.example.admin_app
 import android.app.Application
 import com.example.add_residential_address.addResidentialAddressModule
 import com.example.admin_app.main.appModule
+import com.example.admin_profile.adminProfileModule
 import com.example.appointment_details.di.appointmentDetailsModule
 import com.example.child_profile.di.childProfileModule
 import com.example.children.di.childrenModule
@@ -78,6 +79,7 @@ class AdminApplication : Application() {
                 employmentHistoryModule,
                 prescriptionDetailsModule,
                 genericVaccinationTableModule,
+                adminProfileModule,
             )
         }
     }

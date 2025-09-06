@@ -15,9 +15,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -25,10 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateNameFormat
+import com.example.model.DrawerButton
 import com.example.model.enums.ScreenState
 import com.example.model.work_request.RequestState
 import com.example.model.work_request.RequestType
@@ -38,6 +42,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.card.RequestCard
+import com.example.ui_components.components.drawers.EmployeeDrawer
 import com.example.ui_components.components.progress_indicator.SmallCircularProgressIndicator
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
@@ -83,118 +88,181 @@ fun RequestsScreen(
         }
     }
 
-    val scrollState = rememberScrollState()
-    Scaffold(
-        topBar = {
-            HospitalAutomationTopBar(
-                title = stringResource(R.string.requests),
-                onNavigationIconClick = { TODO() },
-                modifier = Modifier.fillMaxWidth(),
-                navigationIcon = AppIcons.Outlined.openDrawer,
-            )
-        }
-    ) { contentPadding ->
-        Surface(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(contentPadding),
-        ) {
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    LaunchedEffect(uiState.isDrawerOpened) {
+        if(uiState.isDrawerOpened)drawerState.open()
+        else drawerState.close()
+    }
 
-            if (uiState.screenState == ScreenState.LOADING) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize)
-                    )
-                }
-            } else if (uiState.screenState == ScreenState.ERROR) {
-                PullToRefreshBox(
-                    refreshing = uiState.isRefreshing,
-                    onRefresh = { uiActions.onRefresh() }
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(scrollState),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
+    val drawerButtons = listOf(
+        DrawerButton(
+            text = R.string.profile,
+            image = AppIcons.Outlined.accountCircle,
+            onClick = {
+                uiActions.navigateToAdminProfile()
+            }
+        ),
+        DrawerButton(
+            text = R.string.notifications,
+            image = AppIcons.Outlined.notification,
+            onClick = {
+            }
+        ),
+        DrawerButton(
+            text = R.string.vaccines,
+            image = AppIcons.Outlined.vaccines,
+            onClick = {
+                uiActions.navigateToVaccines()
+            },
+        ),
+
+        DrawerButton(
+            text = R.string.vaccination_table,
+            image = AppIcons.Outlined.vaccinationTable,
+            onClick = {
+                uiActions.navigateToVaccineTable()
+            },
+        ),
+    )
+
+    val scrollState = rememberScrollState()
+    EmployeeDrawer(
+        state = drawerState,
+        title = R.string.medicare,
+        modifier = Modifier,
+        buttons = drawerButtons,
+        selectedIndex = null,
+        onItemSelected = {
+            drawerButtons[it].onClick()
+            uiActions.onToggleDrawer()
+        },
+        onChangeThemeClick = {
+            uiActions.onToggleTheme()
+        },
+        isDarkTheme = uiState.isDarkTheme,
+    ){
+        Scaffold(
+            topBar = {
+                HospitalAutomationTopBar(
+                    title = stringResource(R.string.requests),
+                    onNavigationIconClick = {
+                        uiActions.onToggleDrawer()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationIcon = AppIcons.Outlined.openDrawer,
+                )
+            }
+        ) { contentPadding ->
+            Surface(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(PaddingValues(top = contentPadding.calculateTopPadding())),
+            ) {
+
+                if (uiState.screenState == ScreenState.LOADING) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        IllustrationCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(MaterialTheme.spacing.medium16),
-                            illustration = {
-                                Image(
-                                    painter = painterResource(R.drawable.ill_error),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
-                                )
-                            },
-                            title = stringResource(R.string.network_error),
-                            description = stringResource(R.string.something_went_wrong),
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize)
                         )
                     }
-                }
-            }
-            if (uiState.screenState == ScreenState.SUCCESS) {
-                PullToRefreshBox(
-                    refreshing = uiState.isRefreshing,
-                    onRefresh = { uiActions.onRefresh() }
-                ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
-                        contentPadding = PaddingValues(
-                            vertical = MaterialTheme.spacing.medium16,
-                            horizontal = MaterialTheme.spacing.medium16,
-                        )
+                } else if (uiState.screenState == ScreenState.ERROR) {
+                    PullToRefreshBox(
+                        refreshing = uiState.isRefreshing,
+                        onRefresh = { uiActions.onRefresh() }
                     ) {
-                        items(requests.itemCount) { index ->
-                            val request = requests[index]
-                            when (request) {
-                                null -> Unit
-                                else -> RequestCard(
-                                    onClick = { requestType ->
-                                        when(requestType){
-                                            RequestType.EMPLOYEE->uiActions.navigateToEmployeeProfileDetailsScreen(request.userMainInfo.id)
-                                            RequestType.DOCTOR->uiActions.navigateToDoctorProfileDetailsScreen(request.userMainInfo.id)
-                                            RequestType.PHARMACIST->uiActions.navigateToPharmacyDetailsScreen(request.pharmacyId)
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxSize(),
-                                    requestType = request.requestType,
-                                    requestId = request.id,
-                                    clinicMainInfo = request.clinicMainInfo,
-                                    userProfileImageUrl = request.userMainInfo.imageUrl ?: "",
-                                    username = request.userMainInfo.fullName.toAppropriateNameFormat(),
-                                    onAcceptButton = { requestId ->
-                                        uiActions.onChangeRequestState(
-                                            requestId,
-                                            RequestState.ACCEPTED
-                                        )
-                                    },
-                                    onRejectButton = { requestId ->
-                                        uiActions.onChangeRequestState(
-                                            requestId,
-                                            RequestState.REJECTED
-                                        )
-                                    },
-                                    onProfileItemClick = {},
-                                    requestState = request.state,
-                                )
-                            }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(scrollState),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            IllustrationCard(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(MaterialTheme.spacing.medium16),
+                                illustration = {
+                                    Image(
+                                        painter = painterResource(R.drawable.ill_error),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(MaterialTheme.sizing.illustrationImageSize)
+                                    )
+                                },
+                                title = stringResource(R.string.network_error),
+                                description = stringResource(R.string.something_went_wrong),
+                            )
                         }
-                        if (requests.loadState.append == LoadState.Loading) {
-                            item {
-                                SmallCircularProgressIndicator(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(MaterialTheme.spacing.medium16)
-                                )
+                    }
+                }
+                if (uiState.screenState == ScreenState.SUCCESS) {
+                    PullToRefreshBox(
+                        refreshing = uiState.isRefreshing,
+                        onRefresh = { uiActions.onRefresh() }
+                    ) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small8),
+                            contentPadding = PaddingValues(
+                                vertical = MaterialTheme.spacing.medium16,
+                                horizontal = MaterialTheme.spacing.medium16,
+                            )
+                        ) {
+                            items(requests.itemCount) { index ->
+                                val request = requests[index]
+                                when (request) {
+                                    null -> Unit
+                                    else -> RequestCard(
+                                        onClick = { requestType ->
+                                            when (requestType) {
+                                                RequestType.EMPLOYEE -> uiActions.navigateToEmployeeProfileDetailsScreen(
+                                                    request.userMainInfo.id
+                                                )
+
+                                                RequestType.DOCTOR -> uiActions.navigateToDoctorProfileDetailsScreen(
+                                                    request.userMainInfo.id
+                                                )
+
+                                                RequestType.PHARMACIST -> uiActions.navigateToPharmacyDetailsScreen(
+                                                    request.pharmacyId
+                                                )
+                                            }
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        requestType = request.requestType,
+                                        requestId = request.id,
+                                        clinicMainInfo = request.clinicMainInfo,
+                                        userProfileImageUrl = request.userMainInfo.imageUrl ?: "",
+                                        username = request.userMainInfo.fullName.toAppropriateNameFormat(),
+                                        onAcceptButton = { requestId ->
+                                            uiActions.onChangeRequestState(
+                                                requestId,
+                                                RequestState.ACCEPTED
+                                            )
+                                        },
+                                        onRejectButton = { requestId ->
+                                            uiActions.onChangeRequestState(
+                                                requestId,
+                                                RequestState.REJECTED
+                                            )
+                                        },
+                                        onProfileItemClick = {},
+                                        requestState = request.state,
+                                    )
+                                }
+                            }
+                            if (requests.loadState.append == LoadState.Loading) {
+                                item {
+                                    SmallCircularProgressIndicator(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(MaterialTheme.spacing.medium16)
+                                    )
+                                }
                             }
                         }
                     }

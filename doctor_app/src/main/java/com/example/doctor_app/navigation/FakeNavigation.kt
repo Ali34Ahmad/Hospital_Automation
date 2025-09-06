@@ -22,7 +22,6 @@ import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.clinics_search.navigation.clinicsSearchScreen
 import com.example.clinics_search.navigation.navigateToClinicsSearch
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
-import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
@@ -305,7 +304,7 @@ fun FakeNavigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
                 if (suspendedById != currentEmployeeId) {
                     navController.navigateToAdminProfileScreen(suspendedById)
                 } else {

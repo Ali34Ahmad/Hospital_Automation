@@ -1,6 +1,8 @@
 package com.example.employment_requests.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -24,6 +26,9 @@ fun NavGraphBuilder.employmentRequestsScreen(
     onNavigateToEmployeeProfileDetailsScreen:(employeeId:Int?)->Unit,
     onNavigateToDoctorProfileDetailsScreen:(doctorId:Int?)->Unit,
     onNavigateToPharmacyDetailsScreen:(pharmacyId:Int?)->Unit,
+    onNavigateToAdminProfile:()->Unit,
+    onNavigateToVaccines:()->Unit,
+    onNavigateToVaccineTable:()->Unit,
 ) {
     composable<EmploymentRequestsRoute> {
         val viewModel = koinViewModel<RequestsViewModel>()
@@ -41,6 +46,18 @@ fun NavGraphBuilder.employmentRequestsScreen(
 
             override fun navigateToPharmacyDetailsScreen(pharmacyId: Int?) {
                 onNavigateToPharmacyDetailsScreen(pharmacyId)
+            }
+
+            override fun navigateToAdminProfile() {
+                onNavigateToAdminProfile()
+            }
+
+            override fun navigateToVaccines() {
+                onNavigateToVaccines()
+            }
+
+            override fun navigateToVaccineTable() {
+                onNavigateToVaccineTable()
             }
 
         }

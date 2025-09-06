@@ -26,7 +26,7 @@ fun NavGraphBuilder.doctorProfileScreen(
     onNavigateToEmploymentHistoryScreen: (doctorId:Int?) -> Unit,
     onNavigateToLoginScreen: () -> Unit,
     onNavigateUp: () -> Unit,
-    onNavigateToAppointmentsScreen: () -> Unit,
+    onNavigateToAppointmentsScreen: (doctorId:Int?) -> Unit,
     onNavigateToPrescriptionsScreen: (doctorId:Int?) -> Unit,
     onNavigateToMedicalRecordsScreen: (doctorId:Int?) -> Unit,
     onNavigateToDepartmentScreen: (clinicId:Int) -> Unit,
@@ -36,8 +36,8 @@ fun NavGraphBuilder.doctorProfileScreen(
         val uiState = viewModel.uiState.collectAsState()
 
         val navActions = object : DoctorProfileNavigationUiActions {
-            override fun navigateToAppointmentsScreen() {
-                onNavigateToAppointmentsScreen()
+            override fun navigateToAppointmentsScreen(doctorId: Int?) {
+                onNavigateToAppointmentsScreen(doctorId)
             }
 
             override fun navigateToEmploymentHistoryScreen(doctorId:Int?) {

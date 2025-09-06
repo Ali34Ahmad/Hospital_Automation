@@ -247,7 +247,7 @@ fun DoctorProfileScreen(
                                 showActionsCardInDoctorRole ->
                                     DoctorProfileOwnerActionsCard(
                                         onAppointmentsHistoryClick = {
-                                            uiActions.navigateToAppointmentsScreen()
+                                            uiActions.navigateToAppointmentsScreen(null)
                                         },
                                         isAppointmentsItemEnabled = isActionsItemsEnabled,
                                         onPrescriptionsClick = {
@@ -279,7 +279,7 @@ fun DoctorProfileScreen(
                                 uiState.doctorProfileAccessType == DoctorProfileAccessType.ADMIN_ACCESS ->
                                     DoctorProfileAdminActionsCard(
                                         onAppointmentsHistoryClick = {
-                                            uiActions.navigateToAppointmentsScreen()
+                                            uiActions.navigateToAppointmentsScreen(uiState.doctorId)
                                         },
                                         isAppointmentsItemEnabled = isActionsItemsEnabled,
                                         onPrescriptionsClick = {

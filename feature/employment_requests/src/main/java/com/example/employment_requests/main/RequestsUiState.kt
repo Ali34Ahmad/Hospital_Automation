@@ -9,4 +9,7 @@ data class RequestsUiState(
     val screenState: ScreenState = ScreenState.IDLE,
     val isRefreshing: Boolean = false,
     val toastMessage : UiText? = null,
+
+    val isDarkTheme: Boolean=false,
+    val isDrawerOpened: Boolean = false,
 )

@@ -205,7 +205,7 @@ fun Navigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
                 if (suspendedById != currentEmployeeId) {
                     navController.navigateToAdminProfileScreen(suspendedById)
                 } else {

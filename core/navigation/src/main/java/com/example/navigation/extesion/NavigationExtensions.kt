@@ -1,5 +1,6 @@
 package com.example.navigation.extesion
 
+import android.util.Log
 import androidx.navigation.NavController
 
 
@@ -15,15 +16,15 @@ import androidx.navigation.NavController
  *  @author Ali Mansoura
  */
 fun NavController.navigateToScreen(
-    route :  Any,
-
-){
+    route: Any,
+) {
     navigate(
         route = route
-    ){
+    ) {
         launchSingleTop = true
     }
 }
+
 /**
  * Performs navigation within persistent UI components like bottom navigation,
  * drawers, or tabs, ensuring that the back stack is optimized for reuse and state restoration.
@@ -43,11 +44,11 @@ fun NavController.navigateToScreen(
 fun NavController.switchToTab(
     route: Any,
     startDestination: Any
-){
+) {
     navigate(
         route = route
-    ){
-        popUpTo(startDestination){
+    ) {
+        popUpTo(startDestination) {
             inclusive = false
             saveState = true
         }

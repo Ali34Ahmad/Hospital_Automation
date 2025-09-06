@@ -2,7 +2,7 @@ package com.example.doctor_profile.main
 
 
 fun mockDoctorProfileNavigationUiActions()=object : DoctorProfileNavigationUiActions {
-    override fun navigateToAppointmentsScreen() {
+    override fun navigateToAppointmentsScreen(doctorId: Int?) {
 
     }
 

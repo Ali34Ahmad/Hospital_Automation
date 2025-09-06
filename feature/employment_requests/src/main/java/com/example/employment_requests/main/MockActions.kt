@@ -17,6 +17,18 @@ fun mockRequestsNavigationUiActions() = object : RequestsNavigationUiActions {
 
     }
 
+    override fun navigateToAdminProfile() {
+
+    }
+
+    override fun navigateToVaccines() {
+
+    }
+
+    override fun navigateToVaccineTable() {
+
+    }
+
 }
 
 fun mockRequestsBusinessUiActions() = object : RequestsBusinessUiActions {
@@ -36,6 +48,14 @@ fun mockRequestsBusinessUiActions() = object : RequestsBusinessUiActions {
     }
 
     override fun clearToastMessage() {
+
+    }
+
+    override fun onToggleTheme() {
+
+    }
+
+    override fun onToggleDrawer() {
 
     }
 

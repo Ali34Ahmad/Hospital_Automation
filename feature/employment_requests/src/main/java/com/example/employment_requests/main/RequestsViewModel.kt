@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.domain.use_cases.user_preferences.GetUserPreferencesUseCase
+import com.example.domain.use_cases.user_preferences.UpdateIsDarkThemeUseCase
 import com.example.domain.use_cases.work_request.ChangeRequestStateUseCase
 import com.example.domain.use_cases.work_request.GetRequestsUseCase
 import com.example.model.enums.ScreenState
@@ -18,22 +20,31 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RequestsViewModel(
     private val getRequestsUseCase: GetRequestsUseCase,
     private val changeRequestStateUseCase: ChangeRequestStateUseCase,
+    private val updateIsDarkThemeUseCase: UpdateIsDarkThemeUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RequestsUiState())
     val uiState: StateFlow<RequestsUiState> = _uiState.asStateFlow()
 
+    init {
+        getAppTheme()
+    }
+
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
+
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val requestsFlow: Flow<PagingData<SingleRequestResponse>> = combine(
@@ -60,7 +71,7 @@ class RequestsViewModel(
                 id: Int,
                 state: RequestState
             ) {
-                changeRequestState(id,state)
+                changeRequestState(id, state)
             }
 
             override fun onRefresh() {
@@ -77,7 +88,33 @@ class RequestsViewModel(
             override fun clearToastMessage() {
                 updateToastMessage(null)
             }
+
+            override fun onToggleTheme() {
+                toggleTheme()
+            }
+
+            override fun onToggleDrawer() {
+                toggleDrawer()
+            }
         }
+
+    private fun toggleDrawer() {
+        _uiState.update { it.copy(isDrawerOpened = !uiState.value.isDrawerOpened) }
+    }
+
+    private fun toggleTheme() {
+        viewModelScope.launch {
+            updateIsDarkThemeUseCase(!uiState.value.isDarkTheme)
+        }
+    }
+
+    private fun getAppTheme() {
+        viewModelScope.launch{
+            getUserPreferencesUseCase().collect { userPreference ->
+                _uiState.update { it.copy(isDarkTheme = userPreference.isDarkTheme) }
+            }
+        }
+    }
 
 
     private fun updateScreenState(screenState: ScreenState) {

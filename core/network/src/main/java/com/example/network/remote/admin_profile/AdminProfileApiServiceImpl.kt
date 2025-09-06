@@ -24,7 +24,7 @@ class AdminProfileApiServiceImpl(
         role: RoleDto,
     ): Result<AdminProfileResponseDto, rootError> = try {
         val routeSuffix = if (adminId != null) "/$adminId" else ""
-        val response = client.get("${ApiRoutes.getAdminProfileEndPoint(role)}$routeSuffix") {
+        val response = client.get("${ApiRoutes.getAdminProfileEndPoint(role,adminId==null)}$routeSuffix") {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
         }

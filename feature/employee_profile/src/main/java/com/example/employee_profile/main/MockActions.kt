@@ -2,11 +2,11 @@ package com.example.employee_profile.main
 
 
 fun mockEmployeeProfileNavigationUiActions()=object : EmployeeProfileNavigationUiActions {
-    override fun navigateToAddedChildrenScreen() {
+    override fun navigateToAddedChildrenScreen(employeeId:Int?) {
 
     }
 
-    override fun navigateToEmploymentHistoryScreen() {
+    override fun navigateToEmploymentHistoryScreen(employeeId:Int?) {
 
     }
 

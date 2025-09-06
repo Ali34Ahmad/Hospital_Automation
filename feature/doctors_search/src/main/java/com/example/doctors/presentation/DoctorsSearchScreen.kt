@@ -97,20 +97,20 @@ fun DoctorSearchScreen(
                 navigationActions.navigateToNotifications()
             }
         ),
-        DrawerButton(
-            text = R.string.medical_records,
-            image = AppIcons.Outlined.medicalRecords,
-            onClick = {
-                navigationActions.navigateToMedicalRecords()
-            },
-        ),
-        DrawerButton(
-            text = R.string.prescriptions,
-            image = AppIcons.Outlined.prescription,
-            onClick = {
-                navigationActions.navigateToPrescriptions()
-            },
-        ),
+//        DrawerButton(
+//            text = R.string.medical_records,
+//            image = AppIcons.Outlined.medicalRecords,
+//            onClick = {
+////                navigationActions.navigateToMedicalRecords()
+//            },
+//        ),
+//        DrawerButton(
+//            text = R.string.prescriptions,
+//            image = AppIcons.Outlined.prescription,
+//            onClick = {
+////                navigationActions.navigateToPrescriptions()
+//            },
+//        ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,

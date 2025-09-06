@@ -114,6 +114,7 @@ dependencies {
     implementation(project(":feature:medical_records"))
 
     implementation(project(":feature:employment_requests"))
+    implementation(project(":feature:admin_profile"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

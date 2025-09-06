@@ -26,15 +26,15 @@ fun NavGraphBuilder.employeeProfileScreen(
     onNavigateToEmploymentHistoryScreen: (employeeId:Int?) -> Unit,
     onNavigateToLoginScreen: () -> Unit,
     onNavigateUp: () -> Unit,
-    onNavigateToAddedChildrenScreen: () -> Unit,
+    onNavigateToAddedChildrenScreen: (employeeId:Int?) -> Unit,
 ) {
     composable<EmployeeProfileRoute> {
         val viewModel = koinViewModel<EmployeeProfileViewModel>()
         val uiState = viewModel.uiState.collectAsState()
 
         val navActions = object : EmployeeProfileNavigationUiActions {
-            override fun navigateToAddedChildrenScreen() {
-                onNavigateToAddedChildrenScreen()
+            override fun navigateToAddedChildrenScreen(employeeId:Int?) {
+                onNavigateToAddedChildrenScreen(employeeId)
             }
 
             override fun navigateToEmploymentHistoryScreen(employeeId:Int?) {

@@ -1,11 +1,13 @@
 package com.example.admin_app.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
+import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.children_search.navigation.SearchType
 import com.example.children_search.navigation.navigateToChildrenSearch
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -13,6 +15,7 @@ import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
+import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
@@ -28,14 +31,20 @@ import com.example.employment_requests.navigation.employmentRequestsScreen
 import com.example.employment_requests.navigation.navigateToEmploymentRequestsScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
+import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
 import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
+import com.example.generic_vaccination_table.navigation.navigateToGenericVaccinationTableScreen
+import com.example.guardian_profile.navigation.UserProfileMode
+import com.example.guardian_profile.navigation.navigateToGuardianProfile
 import com.example.login.navigation.LoginRoute
 import com.example.login.navigation.loginScreen
 import com.example.login.navigation.navigateToLoginScreen
 import com.example.medical_records.navigation.medicalRecordsScreen
 import com.example.medical_records.navigation.navigateToMedicalRecordsScreen
+import com.example.medicine_details.navigation.navigateToMedicineDetails
+import com.example.navigation.extesion.navigateToCallApp
+import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacy_details.navigation.PharmacyAccessType
-import com.example.pharmacy_details.navigation.PharmacyDetailsRoute
 import com.example.pharmacy_details.navigation.navigateToPharmacyDetailsScreen
 import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
 import com.example.prescription_details.navigation.navigateToPrescriptionDetailsScreen
@@ -57,7 +66,7 @@ import com.example.vaccines.navigation.vaccinesScreen
 
 @Composable
 fun Navigation() {
-
+    val context = LocalContext.current
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -104,10 +113,7 @@ fun Navigation() {
 
             uploadProfileImageScreen(
                 onNavigateToHomeScreenScreen = {
-                    navController.navigateToDoctorProfileScreen(
-                        doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS,
-                        doctorId = 143,
-                    )
+                    navController.navigateToEmploymentRequestsScreen()
                 }
             )
 
@@ -134,30 +140,10 @@ fun Navigation() {
 
             resetPasswordScreen(
                 onNavigateToHomeScreen = {
-                    navController.navigateToVaccinesScreen()
+                    navController.navigateToEmploymentRequestsScreen()
                 }
             )
         }
-
-        vaccinesScreen(
-            onNavigateUp = {
-                navController.navigateUp()
-            },
-            onNavigateToVaccineDetailsScreen = { vaccineId ->
-                navController.navigateToVaccineDetailsScreen(
-                    vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
-                    vaccineId = vaccineId
-                )
-            },
-            onNavigateToAddNewVaccineScreen = {},
-        )
-
-        vaccineDetailsScreen(
-            onNavigateToVaccinationTableScreen = { },
-            onNavigateUp = {
-                navController.navigateUp()
-            }
-        )
 
         employmentRequestsScreen(
             onNavigateToEmployeeProfileDetailsScreen = { employeeId ->
@@ -177,7 +163,20 @@ fun Navigation() {
                     doctorId = doctorId,
                     doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS,
                 )
-            }
+            },
+            onNavigateToAdminProfile = {
+                navController.navigateToAdminProfileScreen(
+                    adminId = null,
+                )
+            },
+            onNavigateToVaccines = {
+                navController.navigateToVaccinesScreen()
+            },
+            onNavigateToVaccineTable = {
+                navController.navigateToGenericVaccinationTableScreen(
+                    genericVaccinationTableAccessType = GenericVaccinationTableAccessType.VIEWER_ACCESS
+                )
+            },
         )
 
         doctorProfileScreen(
@@ -185,8 +184,16 @@ fun Navigation() {
                 navController.navigateToEmploymentHistoryScreen(doctorId)
             },
             onNavigateToLoginScreen = {},
-            onNavigateUp = {},
-            onNavigateToAppointmentsScreen = {},
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToAppointmentsScreen = { doctorId ->
+                navController.navigateToScheduleScreen(
+                    id = doctorId,
+                    hasAdminAccess = true,
+                    searchType = AppointmentSearchType.DOCTOR,
+                )
+            },
             onNavigateToPrescriptionsScreen = { doctorId ->
                 navController.navigateToPrescriptionsScreen(
                     patientId = null,
@@ -213,31 +220,54 @@ fun Navigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToAddedChildrenScreen = {
+            onNavigateToAddedChildrenScreen = { employeeId ->
                 navController.navigateToChildrenSearch(
                     searchType = SearchType.EMPLOYEE,
-                    employeeId = null
+                    employeeId = employeeId,
                 )
             }
         )
 
         pharmacyDetailsScreen(
-            onNavigateUp = { },
-            onNavigateToEmailApp = { email, subject ->
-
+            onNavigateUp = {
+                navController.navigateUp()
             },
-            onNavigateToCallApp = { },
+            onNavigateToEmailApp = { email, subject ->
+                context.navigateToEmailApp(email, subject)
+            },
+            onNavigateToCallApp = { phoneNumber ->
+                context.navigateToCallApp(phoneNumber)
+            },
             onNavigateToFulfilledPrescriptionsScreen = { },
-            onNavigateToMedicinesScreen = { },
-            onNavigateToEmploymentHistoryScreen = { }
+            onNavigateToMedicinesScreen = {
+                TODO()
+            },
+            onNavigateToEmploymentHistoryScreen = { employeeId ->
+                navController.navigateToEmploymentHistoryScreen(employeeId)
+            }
         )
 
         employmentHistoryScreen(
-            onNavigateToAcceptedByAdminProfileScreen = { },
-            onNavigateToToResignedByAdminProfileScreen = { },
-            onNavigateUp = { },
-            onNavigateToToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int ->
-
+            onNavigateToAcceptedByAdminProfileScreen = { adminId ->
+                navController.navigateToAdminProfileScreen(adminId)
+            },
+            onNavigateToToResignedByAdminProfileScreen = { adminId ->
+                navController.navigateToAdminProfileScreen(adminId)
+            },
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int ->
+                if (suspendedById == currentEmployeeId) {
+                    navController.navigateToEmployeeProfileScreen(
+                        employeeId = currentEmployeeId,
+                        employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
+                    )
+                } else {
+                    navController.navigateToAdminProfileScreen(
+                        adminId = currentEmployeeId,
+                    )
+                }
             }
         )
 
@@ -246,7 +276,11 @@ fun Navigation() {
                 navController.navigateUp()
             },
             onNavigateToAppointmentsScreen = { patientId, childId ->
-                navController.navigateToScheduleScreen()
+                navController.navigateToScheduleScreen(
+                    id = patientId ?: childId,
+                    searchType = if (patientId != null) AppointmentSearchType.USER
+                    else AppointmentSearchType.CHILD
+                )
             },
             onNavigateToPrescriptionsScreen = { patientId, childId, doctorId ->
                 navController.navigateToPrescriptionsScreen(patientId, childId, doctorId)
@@ -263,19 +297,63 @@ fun Navigation() {
         )
 
         prescriptionDetailsScreen(
-            onNavigateUp = { },
-            onNavigateToPatientProfile = { },
-            onNavigateToChildProfile = { },
-            onNavigateToFulfillingPharmacy = { },
-            onNavigateToMedicineDetails = { }
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToPatientProfile = { userId ->
+                navController.navigateToGuardianProfile(
+                    guardianId = userId,
+                    userProfileMode = UserProfileMode.ADMIN_ACCESS
+                )
+            },
+            onNavigateToChildProfile = { childId ->
+                navController.navigateToGuardianProfile(
+                    guardianId = childId,
+                    userProfileMode = UserProfileMode.ADMIN_ACCESS
+                )
+            },
+            onNavigateToFulfillingPharmacy = { pharmacyId ->
+                navController.navigateToPharmacyDetailsScreen(
+                    pharmacyId = pharmacyId,
+                    pharmacyAccessType = PharmacyAccessType.ADMIN_ACCESS
+                )
+            },
+            onNavigateToMedicineDetails = {medicineId->
+                navController.navigateToMedicineDetails(
+                    medicineId=medicineId,
+                )
+            }
+        )
+
+        vaccinesScreen(
+            onNavigateUp = {
+                navController.navigateUp()
+            },
+            onNavigateToVaccineDetailsScreen = { vaccineId ->
+                navController.navigateToVaccineDetailsScreen(
+                    vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
+                    vaccineId = vaccineId
+                )
+            },
+            onNavigateToAddNewVaccineScreen = {},
+        )
+
+        vaccineDetailsScreen(
+            onNavigateToVaccinationTableScreen = { },
+            onNavigateUp = {
+                navController.navigateUp()
+            }
         )
 
         genericVaccineDetailsScreen(
-            onNavigateToVaccineDetailsScreen = {
-
+            onNavigateToVaccineDetailsScreen = {vaccineId->
+                navController.navigateToVaccineDetailsScreen(
+                    vaccineId=vaccineId,
+                    vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS
+                )
             },
             onNavigateUp = {
-
+                navController.navigateUp()
             }
         )
 

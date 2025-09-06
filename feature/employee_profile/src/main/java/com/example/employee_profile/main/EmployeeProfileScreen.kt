@@ -30,6 +30,8 @@ import com.example.fake.createSampleEmployeeProfileResponse
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.model.enums.Gender
 import com.example.model.enums.ScreenState
+import com.example.navigation.extesion.navigateToCallApp
+import com.example.navigation.extesion.navigateToEmailApp
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -207,15 +209,13 @@ fun EmployeeProfileScreen(
                                     uiActions.navigateUp()
                                 },
                                 onEmailButtonClick = {
-                                    uiActions.navigateToEmail(
-                                        context = context,
+                                    context.navigateToEmailApp(
                                         email = uiState.userInfo.profile.email,
                                         subject = subject
                                     )
                                 },
                                 onPhoneNumberButtonClick = {
-                                    uiActions.navigateToCallApp(
-                                        context = context,
+                                    context.navigateToCallApp(
                                         phoneNumber = uiState.userInfo.profile.phoneNumber
                                     )
                                 },
@@ -235,7 +235,7 @@ fun EmployeeProfileScreen(
                                     if (uiState.userInfo.isAccessedByOwner) {
                                         EmployeeProfileOwnerActionsCard(
                                             onAddedChildrenItemClick = {
-                                                uiActions.navigateToAddedChildrenScreen()
+                                                uiActions.navigateToAddedChildrenScreen(null)
                                             },
                                             isAddedChildrenEnabled = isAddedChildrenEnabled,
                                             onEmploymentHistoryItemClick = {
@@ -258,7 +258,7 @@ fun EmployeeProfileScreen(
 
                                 EmployeeProfileAccessType.ADMIN_ACCESS -> EmployeeProfileAdminActionsCard(
                                     onAddedChildrenItemClick = {
-                                        uiActions.navigateToAddedChildrenScreen()
+                                        uiActions.navigateToAddedChildrenScreen(uiState.employeeId)
                                     },
                                     isAddedChildrenEnabled = isAccepted,
                                     onEmploymentHistoryItemClick = {

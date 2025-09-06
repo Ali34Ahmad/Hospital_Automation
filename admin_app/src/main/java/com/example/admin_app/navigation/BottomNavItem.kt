@@ -6,6 +6,7 @@ import com.example.clinics_search.navigation.ClinicsSearchRoute
 import com.example.constants.icons.AppIcons
 import com.example.doctors.navigation.DoctorSearchRoute
 import com.example.employees_search.navigation.EmployeesSearchRoute
+import com.example.employment_requests.navigation.EmploymentRequestsRoute
 import com.example.pharmacies_search.navigation.PharmaciesSearchSearchRoute
 import com.example.ui_components.R
 
@@ -14,6 +15,11 @@ sealed class BottomNavItem(
     @StringRes val label: Int,
     @DrawableRes val icon: Int,
     ) {
+        object Requests : BottomNavItem(
+            EmploymentRequestsRoute,
+            R.string.requests,
+            AppIcons.Outlined.send,
+        )
         object Doctors : BottomNavItem(
             DoctorSearchRoute(),
             R.string.doctors,
@@ -36,6 +42,7 @@ sealed class BottomNavItem(
         )
         companion object {
             val items = listOf(
+                Requests,
                 Doctors,
                 Employees,
                 Clinics,

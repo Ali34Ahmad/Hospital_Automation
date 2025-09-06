@@ -103,7 +103,7 @@ object ApiRoutes {
         const val RESET_PASSWORD = "$ADMIN/reset-password"
         const val LOGOUT = "$ADMIN/logout"
         const val UPLOAD_PROFILE_IMAGE = "$ADMIN/add-image"
-        const val PROFILE = "$ADMIN/get-doctor-profile-by-id"
+        const val DOCTOR_PROFILE = "$ADMIN/get-doctor-profile-by-id"
         const val ADD_RESIDENTIAL_ADDRESS = "$ADMIN/add-address"
         const val FIND_EMPLOYEE_BY_ID = "$ADMIN/get-employee-profile-by-id"
         const val FIND_PHARMACY_BY_ID = "$ADMIN/get-pharmacy-details-by-id"
@@ -137,7 +137,8 @@ object ApiRoutes {
         const val RESIGN_USER = "$ADMIN/resign-user"
         const val DEACTIVATE_PHARMACY = "$ADMIN/deactivate-pharmacy"
         const val REACTIVATE_PHARMACY = "$ADMIN/reactivate-pharmacy"
-        const val SHOW_PROFILE = "$ADMIN/show-profile"
+        const val SHOW_CURRENT_ADMIN_PROFILE = "$ADMIN/show-profile"
+        const val GET_ADMIN_PROFILE_BY_ID = "$ADMIN/find-admin-by-id"
     }
 
     object Prescription {
@@ -390,7 +391,7 @@ object ApiRoutes {
         return when (role) {
             RoleDto.EMPLOYEE -> throw Exception(getForbiddenFeatureErrorMessage(role))
             RoleDto.DOCTOR -> if (isCurrentDoctor) Doctor.PROFILE else Doctor.PROFILE_BY_ID
-            RoleDto.ADMIN -> Admin.PROFILE
+            RoleDto.ADMIN -> Admin.DOCTOR_PROFILE
             else -> ""
         }
     }
@@ -440,11 +441,15 @@ object ApiRoutes {
         }
     }
 
-    fun getAdminProfileEndPoint(role: RoleDto): String {
+    fun getAdminProfileEndPoint(role: RoleDto,isCurrentAdmin: Boolean): String {
         return when (role) {
             RoleDto.EMPLOYEE -> ADMIN_PROFILE_BY_ID
             RoleDto.DOCTOR -> Doctor.ADMIN_PROFILE_BY_ID
-            RoleDto.ADMIN -> Admin.SHOW_PROFILE
+            RoleDto.ADMIN -> if (isCurrentAdmin){
+                Admin.SHOW_CURRENT_ADMIN_PROFILE
+            }else{
+                Admin.GET_ADMIN_PROFILE_BY_ID
+            }
             else -> ""
         }
     }
