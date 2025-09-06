@@ -1,6 +1,6 @@
 package com.example.network.model.response.pharmacy
 
-import com.example.network.model.dto.WorkDayDto
+import com.example.network.model.dto.workday.WorkDayDto
 import com.example.network.serializer.LocalDateSerializer
 import com.example.network.serializer.LocalDateTimeSerializer
 import kotlinx.serialization.SerialName

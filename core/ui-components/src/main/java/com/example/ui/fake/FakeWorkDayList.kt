@@ -16,7 +16,7 @@ fun createSampleWorkDayList(): List<DaySchedule> {
             endTime = LocalTime.of(15, 0)
         ),
         DaySchedule(
-            id = 1,
+            id = 2,
             doctorId = 101,
             clinicId = null,
             pharmacyId = null,
@@ -25,7 +25,7 @@ fun createSampleWorkDayList(): List<DaySchedule> {
             endTime = LocalTime.of(15, 0)
         ),
         DaySchedule(
-            id = 1,
+            id = 3,
             doctorId = 101,
             clinicId = null,
             pharmacyId = null,
@@ -34,7 +34,7 @@ fun createSampleWorkDayList(): List<DaySchedule> {
             endTime = LocalTime.of(15, 0)
         ),
         DaySchedule(
-            id = 1,
+            id = 4,
             doctorId = 101,
             clinicId = null,
             pharmacyId = null,
@@ -43,7 +43,7 @@ fun createSampleWorkDayList(): List<DaySchedule> {
             endTime = LocalTime.of(15, 0)
         ),
         DaySchedule(
-            id = 1,
+            id = 5,
             doctorId = 101,
             clinicId = null,
             pharmacyId = null,
@@ -52,7 +52,7 @@ fun createSampleWorkDayList(): List<DaySchedule> {
             endTime = LocalTime.of(15, 0)
         ),
         DaySchedule(
-            id = 1,
+            id = 6,
             doctorId = 101,
             clinicId = null,
             pharmacyId = null,

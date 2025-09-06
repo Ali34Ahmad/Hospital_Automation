@@ -10,6 +10,7 @@ import com.example.model.doctor.appointment.AppointmentTypeData
 import com.example.model.doctor.appointment.AppointmentsStatisticsData
 import com.example.model.doctor.clinic.ClinicData
 import com.example.model.age.Age
+import com.example.model.doctor.appointment.AppointmentTypeSummaryData
 import com.example.model.doctor.appointment.VaccineSummaryData
 import com.example.model.vaccine.VaccineData
 import com.example.network.model.dto.doctor.appointment.AppointmentDto
@@ -17,6 +18,7 @@ import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
 import com.example.network.model.dto.doctor.clinic.ClinicDto
 import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.dto.doctor.appointment.AppointmentStatisticsDto
+import com.example.network.model.dto.doctor.appointment.AppointmentTypeSummaryDto
 import com.example.network.model.dto.vaccine.VaccineSummaryDto
 
 internal fun AppointmentDto.toAppointmentData() =
@@ -75,4 +77,18 @@ internal fun AppointmentStatisticsDto.toAppointmentsStatisticsData() =
         upcoming = upcoming,
         passed = passed,
         missed = missed
+    )
+
+internal fun AppointmentTypeSummaryDto.toAppointmentTypeSummaryData() =
+    AppointmentTypeSummaryData(
+        name = name,
+        duration = duration,
+        description = description
+    )
+
+internal fun AppointmentTypeSummaryData.toAppointmentTypeSummaryDto() =
+    AppointmentTypeSummaryDto(
+        name = name,
+        duration = duration,
+        description = description
     )

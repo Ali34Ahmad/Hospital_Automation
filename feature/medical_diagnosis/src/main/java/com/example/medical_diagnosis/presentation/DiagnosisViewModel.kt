@@ -22,6 +22,7 @@ class DiagnosisViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val addDiagnosisUseCase: AddDiagnosisUseCase
 ): ViewModel() {
+    private val route = savedStateHandle.toRoute<DiagnosisRoute>()
     fun onAction(action: DiagnosisUIAction){
         when(action){
             DiagnosisUIAction.AddDiagnosis -> addDiagnosis()
@@ -32,11 +33,11 @@ class DiagnosisViewModel(
         }
     }
     private val _uiState = MutableStateFlow(DiagnosisUIState(
-        appointmentId = savedStateHandle.toRoute<DiagnosisRoute>().appointmentId,
-        fullName = savedStateHandle.toRoute<DiagnosisRoute>().fullName,
-        patientId = savedStateHandle.toRoute<DiagnosisRoute>().patientId,
-        childId = savedStateHandle.toRoute<DiagnosisRoute>().childId,
-        canSkip = savedStateHandle.toRoute<DiagnosisRoute>().canSkip
+        appointmentId = route.appointmentId,
+        fullName = route.fullName,
+        patientId = route.patientId,
+        childId = route.childId,
+        canSkip = route.canSkip
     ))
 
     val uiState: StateFlow<DiagnosisUIState> = _uiState

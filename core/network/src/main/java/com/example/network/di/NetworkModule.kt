@@ -20,6 +20,8 @@ import com.example.network.remote.admin_profile.AdminProfileApiService
 import com.example.network.remote.admin_profile.AdminProfileApiServiceImpl
 import com.example.network.remote.appointment.AppointmentsApiService
 import com.example.network.remote.appointment.AppointmentsApiServiceImp
+import com.example.network.remote.appointment_type.AppointmentTypeApiService
+import com.example.network.remote.appointment_type.AppointmentTypeApiServiceImp
 import com.example.network.remote.auth.AuthApiService
 import com.example.network.remote.auth.AuthApiServiceImpl
 import com.example.network.remote.auth.singup.doctor.DoctorSignUpApiService
@@ -60,6 +62,8 @@ import com.example.network.remote.vaccine.VaccineApiService
 import com.example.network.remote.vaccine.VaccineApiServiceImpl
 import com.example.network.remote.work_request.WorkRequestApiService
 import com.example.network.remote.work_request.WorkRequestApiServiceImp
+import com.example.network.remote.workday.WorkDayApiService
+import com.example.network.remote.workday.WorkDayApiServiceImp
 import com.example.network.utility.file.FileReader
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -105,6 +109,8 @@ val networkModule = module {
     // Doctor
     singleOf(::DoctorSignUpApiServiceImpl) { bind<DoctorSignUpApiService>() }
     singleOf(::MedicalRecordsApiServiceImpl) { bind<MedicalRecordsApiService>() }
+    singleOf(::AppointmentTypeApiServiceImp) {bind<AppointmentTypeApiService>()}
+    singleOf(::WorkDayApiServiceImp) {bind<WorkDayApiService>()}
 
     // Employee
     singleOf(::UploadChildDocumentsApiImpl) { bind<UploadChildDocumentsApi>() }

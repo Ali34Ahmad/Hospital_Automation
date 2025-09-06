@@ -10,6 +10,7 @@ import com.example.add_residential_address.navigation.addResidentialAddressScree
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.admin_profile.navigation.adminProfileScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.children.navigation.childrenScreen
@@ -253,7 +254,7 @@ fun Navigation() {
             navigateToChildProfile = {childId ->
                 navController.navigateToChildProfile(
                     childId = childId,
-                    hasAdminAccess = false
+                    childProfileMode = ChildProfileMode.EMPLOYEE_ACCESS,
                 )
             },
             navigateUp = navController::navigateUp
@@ -311,8 +312,9 @@ fun Navigation() {
             onNavigateUp = navController::navigateUp,
             onNavigateToChildDetail = {childId ->
                 navController.navigateToChildProfile(
+                    childProfileMode = ChildProfileMode.EMPLOYEE_ACCESS,
                     childId = childId,
-                    hasAdminAccess = false
+
                 )
             }
         )

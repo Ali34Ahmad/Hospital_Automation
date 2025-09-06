@@ -14,6 +14,7 @@ import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.appointment_details.navigation.navigateToAppointmentDetailsReplacementCurrent
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -268,7 +269,10 @@ fun FakeNavigation() {
                 )
             },
             onNavigateToChildProfile = { childId ->
-                navController.navigateToChildProfile(childId, hasAdminAccess = false)
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS,
+                    )
             },
             onNavigateToFulfillingPharmacy = { pharmacyId ->
                 navController.navigateToPharmacyDetailsScreen(
@@ -420,7 +424,6 @@ fun FakeNavigation() {
         clinicDetailsScreen(
             onNavigateUp = navController::navigateUp,
             onNavigateToDoctorProfile = {
-                TODO()
                 navController.navigateToDoctorProfileScreen(
                     doctorProfileAccessType = DoctorProfileAccessType.OTHER_DOCTOR_ACCESS,
                     doctorId = null
@@ -476,7 +479,7 @@ fun FakeNavigation() {
             onNavigateToChildProfile = { childId ->
                 navController.navigateToChildProfile(
                     childId = childId,
-                    hasAdminAccess = false,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS,
                 )
             },
             onNavigateUp = {

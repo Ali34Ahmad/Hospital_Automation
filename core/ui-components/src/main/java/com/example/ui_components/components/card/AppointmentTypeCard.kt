@@ -2,7 +2,6 @@ package com.example.ui_components.components.card
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,13 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.constants.icons.AppIcons
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
@@ -40,23 +39,20 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 
 @Composable
-fun EditableAppointmentTypeCard(
+fun AppointmentTypeCard(
     index: Int,
     title: String,
-    onTitleChanged: (String) -> Unit,
     subtitle: String?,
-    onSubtitleClick: () -> Unit,
     onDelete: () -> Unit,
     description: String?,
-    onDescriptionChanged: (String) -> Unit,
+    onEdit: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes deleteIcon: Int = AppIcons.Outlined.delete,
+    @DrawableRes editIcon: Int = AppIcons.Outlined.edit,
     warningMessage: String = stringResource(R.string.description_not_added),
     @DrawableRes noteLeadingIcon: Int = AppIcons.Outlined.errorMessage,
     @DrawableRes noteTrailingIcon : Int = AppIcons.Outlined.add,
-    readOnly: Boolean = false
 ) {
-    var showWarningMessage by remember{mutableStateOf(description.isNullOrBlank())}
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -93,24 +89,19 @@ fun EditableAppointmentTypeCard(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        BasicTextField(
-                            readOnly = readOnly,
-                            modifier = Modifier.wrapContentWidth()
+                        Text(
+                            modifier = Modifier
                                 .padding(end = MaterialTheme.spacing.extraSmall4),
-                            value = title,
-                            onValueChange = onTitleChanged,
-                            textStyle = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onBackground
-                                ),
-                            singleLine = true
+                            text = title,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color =  MaterialTheme.colorScheme.onBackground,
+                            fontWeight = FontWeight.Bold
                         )
                         subtitle?.let {
                             Text(
-                                text = "( $subtitle )",
+                                text = "($subtitle)",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.clickable(enabled = !readOnly){onSubtitleClick()}
                             )
                         }
 
@@ -118,10 +109,25 @@ fun EditableAppointmentTypeCard(
                 }
                 Spacer(Modifier.weight(1f))
                 IconButton(
+                    modifier = Modifier.size(MaterialTheme.sizing.small24),
+                    onClick = {
+                        onEdit()
+                    },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Icon(
+                        painter = painterResource(editIcon),
+                        contentDescription = null,
+                    )
+                }
+                Spacer(Modifier.width(MaterialTheme.spacing.medium16))
+                IconButton(
+                    modifier = Modifier.size(MaterialTheme.sizing.small24),
                     onClick = onDelete
                 ) {
                     Icon(
-                        modifier = Modifier.size(MaterialTheme.sizing.small24),
                         painter = painterResource(deleteIcon),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.error
@@ -132,39 +138,31 @@ fun EditableAppointmentTypeCard(
             Spacer(Modifier.height(MaterialTheme.spacing.small8))
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.surface,
-                thickness = 2.dp
+                thickness = MaterialTheme.sizing.extraSmall2
             )
             Spacer(Modifier.height(MaterialTheme.spacing.small8))
             //Second section of column which is the description section
-            AnimatedContent(
-                targetState = showWarningMessage
-            ) { target ->
-                when(target){
-                    true -> {
-                        WarningCard(
-                            text = warningMessage,
-                            leadingIcon = noteLeadingIcon,
-                            trailingIcon = noteTrailingIcon,
-                            onTrailingIconClick = {
-                                showWarningMessage = false
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                    false -> {
-                        BasicTextField(
-                            readOnly = readOnly,
-                            modifier = Modifier.fillMaxWidth(),
-                            value = description?.toString().orEmpty(),
-                            onValueChange = onDescriptionChanged,
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
-                }
+            if(description.isNullOrBlank()){
+                WarningCard(
+                    text = warningMessage,
+                    leadingIcon = noteLeadingIcon,
+                    trailingIcon = noteTrailingIcon,
+                    onTrailingIconClick = {
+                        onEdit()
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }else{
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
 
         }
-
     }
 }
 
@@ -172,21 +170,16 @@ fun EditableAppointmentTypeCard(
 @Composable
 fun CardWithNoteAndActionsPreview() {
     Hospital_AutomationTheme {
-        var description by remember { mutableStateOf<String?>(null) }
         var title by remember { mutableStateOf("Check up") }
-        EditableAppointmentTypeCard(
+        AppointmentTypeCard(
             index = 1,
             title = title,
-            onTitleChanged = {
-                title = it
-            },
-            subtitle = "1000",
+            subtitle = "15 min",
             onDelete = {},
-            description = description,
-            onDescriptionChanged = {
-                description = it
-            },
-            onSubtitleClick = {}
+            description = """
+                A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside. A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside.
+            """.trimIndent(),
+            onEdit = {}
         )
     }
 }

@@ -210,8 +210,6 @@ class ScheduleViewModel(
                 }?:emptyFlow()
         }
 
-
-
     private fun updateRefreshState(isRefreshing: Boolean) {
         _uiState.value = _uiState.value.copy(isRefreshing = isRefreshing)
     }
@@ -234,12 +232,14 @@ class ScheduleViewModel(
         val result= checkEmployeePermissionUseCase(roleAppConfig.role)
         result.map { it.permissionGranted }
             .onError {
-                Log.e("DoctorViewModel"," Error : $it")
+                Log.e("ScheduleViewModel"," Error : $it")
                 updatePermissionState(ScreenState.ERROR)
-            }.onSuccess {reponse: Boolean->
-                Log.d("DoctorViewModel"," Success : $reponse")
-                updatePermission(reponse)
-                updatePermissionState(ScreenState.SUCCESS)
+            }.onSuccess {response->
+                Log.d("ScheduleViewModel"," Success : $response")
+                updatePermission(response)
+                if(response){
+                    updatePermissionState(ScreenState.SUCCESS)
+                }
             }
     }
 

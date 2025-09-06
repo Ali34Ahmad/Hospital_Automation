@@ -2,7 +2,7 @@ package com.example.network.model.response.profile
 
 import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
 import com.example.network.model.enums.RoleDto
-import com.example.network.model.dto.WorkDayDto
+import com.example.network.model.dto.workday.WorkDayDto
 import com.example.network.model.enums.GenderDto
 import com.example.network.model.response.work_request.ClinicMainInfoDto
 import com.example.network.serializer.LocalDateSerializer

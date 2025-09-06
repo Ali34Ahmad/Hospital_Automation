@@ -370,4 +370,6 @@
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="add_to_vaccination_table">Add to vaccination table</string>
+    <string name="work_days">Work Days</string>
+    <string name="there_are_no_items">There are no items</string>
 </resources>

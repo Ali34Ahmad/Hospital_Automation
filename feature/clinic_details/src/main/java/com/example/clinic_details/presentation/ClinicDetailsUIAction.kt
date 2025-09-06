@@ -22,7 +22,9 @@ interface ClinicDetailsUIAction {
 
 interface ClinicNavigationAction{
     fun navigateUp()
-    fun navigateToDoctorProfile()
+    fun navigateToDoctorProfile(
+        id: Int
+    )
     fun navigateToScheduleScreen()
     fun navigateToVaccines()
     fun navigateToAllDoctors(

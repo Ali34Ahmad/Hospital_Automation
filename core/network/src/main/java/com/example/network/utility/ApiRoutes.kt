@@ -47,6 +47,8 @@ object ApiRoutes {
 
     object Doctor {
         private const val DOCTOR = "$BASE_URL/doctor"
+        const val WORK_DAY_CRUD = "$DOCTOR/add-update-delete-work-day"
+        const val APPOINTMENT_TYPE_CRUD = "$DOCTOR/add-update-delete-appointment-type"
         const val ADD_MEDICAL_DIAGNOSIS = "$DOCTOR/add-medical-diagnosis"
         const val PROFILE = "$DOCTOR/show-profile"
         const val PROFILE_BY_ID = "$DOCTOR/show-another-doctor-profile"

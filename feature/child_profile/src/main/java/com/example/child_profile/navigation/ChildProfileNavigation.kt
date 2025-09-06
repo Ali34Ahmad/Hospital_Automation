@@ -1,5 +1,6 @@
 package com.example.child_profile.navigation
 
+import androidx.annotation.Keep
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -13,17 +14,24 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data class ChildProfileRoute(
     val childId: Int,
-    val hasAdminAccess : Boolean
+    val childProfileMode: ChildProfileMode
 )
+@Keep
+@Serializable
+enum class ChildProfileMode{
+    DOCTOR_ACCESS,
+    ADMIN_ACCESS,
+    EMPLOYEE_ACCESS
+}
 
 fun NavController.navigateToChildProfile(
     childId: Int,
-    hasAdminAccess: Boolean
+    childProfileMode: ChildProfileMode
 ) {
     navigateToScreen(
         route = ChildProfileRoute(
             childId = childId,
-            hasAdminAccess = hasAdminAccess
+            childProfileMode = childProfileMode
         ),
     )
 }

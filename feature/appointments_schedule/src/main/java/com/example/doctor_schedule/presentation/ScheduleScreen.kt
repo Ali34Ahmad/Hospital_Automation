@@ -82,7 +82,6 @@ internal fun ScheduleScreen(
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                Log.d("Doctor Screen Observer","is first launch :${uiState.isFirstLaunch}")
                 if (uiState.isFirstLaunch) {
                     onAction(
                         ScheduleUIAction.UpdateIsFirstLaunchToFalse
@@ -126,7 +125,8 @@ internal fun ScheduleScreen(
             image = AppIcons.Outlined.notification,
             onClick = {
                 navigationActions.navigateToNotifications()
-            }
+            },
+            enabled = false
         ),
         DrawerButton(
             text = R.string.medical_records,

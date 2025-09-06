@@ -6,6 +6,7 @@ import com.example.data.repositories.admin.employee.AdminEmployeeRepositoryImp
 import com.example.data.repositories.admin.pharmacy.AdminPharmacyRepositoryImp
 import com.example.data.repositories.admin_profile.AdminProfileRepositoryImpl
 import com.example.data.repositories.appointment.AppointmentsRepositoryImp
+import com.example.data.repositories.appointment_type.AppointmentTypeRepositoryImp
 import com.example.data.repositories.auth.AuthRepositoryImpl
 import com.example.data.repositories.auth.signup.BaseSignUpRepositoryImpl
 import com.example.data.repositories.auth.signup.DoctorSignUpRepositoryImpl
@@ -27,15 +28,18 @@ import com.example.data.repositories.upload_employee_image.UploadEmployeeProfile
 import com.example.data.repositories.user.UserRepositoryImp
 import com.example.data.repositories.user_preferences.UserPreferencesRepositoryImpl
 import com.example.data.repositories.vaccine.VaccineRepositoryImpl
+import com.example.data.repositories.work_day.WorkDayRepositoryImp
 import com.example.data.repositories.work_request.WorkRequestRepositoryImp
 import com.example.datastore.di.dataStoreModule
 import com.example.domain.di.domainModules.domainModule
 import com.example.domain.repositories.AddResidentialAddressRepository
+import com.example.domain.repositories.AppointmentTypeRepository
 import com.example.domain.repositories.AppointmentsRepository
 import com.example.domain.repositories.ChildRepository
 import com.example.domain.repositories.ClinicRepository
 import com.example.domain.repositories.MedicineRepository
 import com.example.domain.repositories.UserRepository
+import com.example.domain.repositories.WorkDayRepository
 import com.example.domain.repositories.account_management.UserAccountManagementRepository
 import com.example.domain.repositories.admin.clinic.AdminClinicRepository
 import com.example.domain.repositories.admin.doctor.AdminDoctorRepository
@@ -105,6 +109,8 @@ val dataModule = module{
     singleOf(::WorkRequestRepositoryImp) { bind<WorkRequestRepository>() }
     singleOf(::DownloadFileRepositoryImpl) { bind<DownloadFileRepository>() }
     singleOf(::UploadEmploymentDocumentsRepositoryImpl) { bind<UploadEmploymentDocumentsRepository>() }
+    singleOf(::AppointmentTypeRepositoryImp){ bind<AppointmentTypeRepository>()}
+    singleOf(::WorkDayRepositoryImp){ bind<WorkDayRepository>()}
 
 //    includes(
 //        dataStoreModule,
