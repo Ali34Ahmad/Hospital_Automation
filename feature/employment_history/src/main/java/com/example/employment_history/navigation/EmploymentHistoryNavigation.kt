@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.employment_history.main.EmploymentHistoryNavigationUiActions
 import com.example.employment_history.main.EmploymentHistoryScreen
 import com.example.employment_history.main.EmploymentHistoryViewModel
+import com.example.model.enums.Role
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -15,17 +16,21 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data class EmploymentHistoryRoute(
     val id: Int?,
+    val roleOfRequestedUserHistory: Role? = null,
 )
 
-fun NavController.navigateToEmploymentHistoryScreen(doctorId: Int?) {
-    navigateToScreen(EmploymentHistoryRoute(doctorId))
+fun NavController.navigateToEmploymentHistoryScreen(
+    doctorId: Int?,
+    roleOfRequestedUserHistory: Role? = null,
+) {
+    navigateToScreen(EmploymentHistoryRoute(doctorId,roleOfRequestedUserHistory))
 }
 
 fun NavGraphBuilder.employmentHistoryScreen(
     onNavigateToAcceptedByAdminProfileScreen: (adminId: Int) -> Unit,
     onNavigateToToResignedByAdminProfileScreen: (resignedById: Int) -> Unit,
-    onNavigateUp:()->Unit,
-    onNavigateToSuspendedByAdminProfileScreen: (suspendedById: Int, currentEmployeeId: Int) -> Unit,
+    onNavigateUp: () -> Unit,
+    onNavigateToSuspendedByAdminProfileScreen: (suspendedById: Int, currentEmployeeId: Int, role: Role?) -> Unit,
 ) {
     composable<EmploymentHistoryRoute> {
         val viewModel = koinViewModel<EmploymentHistoryViewModel>()
@@ -39,19 +44,20 @@ fun NavGraphBuilder.employmentHistoryScreen(
                 )
             }
 
-            override fun navigateToToResignedByAdminProfileScreen() {
+            override fun navigateToResignedByAdminProfileScreen() {
                 onNavigateToToResignedByAdminProfileScreen(
                     uiState.value.employmentHistory?.resignedBy?.userId
                         ?: -1,
                 )
             }
 
-            override fun navigateToToSuspendedByAdminProfileScreen() {
+            override fun navigateToSuspendedByAdminProfileScreen(role: Role?) {
                 onNavigateToSuspendedByAdminProfileScreen(
                     uiState.value.employmentHistory?.suspendedBy?.userId
                         ?: -1,
                     uiState.value.employmentHistory?.currentUser?.userId
                         ?: -1,
+                    uiState.value.roleOfRequestedUserHistory
                 )
             }
 

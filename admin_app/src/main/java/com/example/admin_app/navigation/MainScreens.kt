@@ -63,104 +63,101 @@ fun NavGraphBuilder.mainScreens(
 
     doctorsSearch(
         onNavigateUp = navController::navigateUp,
-        onNavigateToDoctorProfile = {
-            TODO("not yet implemented")
+        onNavigateToDoctorProfile = { doctorId ->
+            navController.navigateToDoctorProfileScreen(
+                doctorId = doctorId,
+                doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS,
+            )
         },
         onNavigateToAdminProfile = {
-            TODO("not yet implemented")
+            navController.navigateToAdminProfileScreen(
+                adminId = null,
+            )
         },
         onNavigateToVaccines = {
-            TODO("not yet implemented")
+            navController.navigateToVaccinesScreen()
         },
-        onNavigateToNotifications = {
-            TODO("not yet implemented")
-        },
-        onNavigateToToPrescriptions = {
-            TODO("not yet implemented")
-        },
-        onNavigateToToMedicalRecords = {
-            TODO("not yet implemented")
-        } ,
+        onNavigateToNotifications = { },
+        onNavigateToToPrescriptions = { },
+        onNavigateToToMedicalRecords = { },
         onNavigateToToVaccineTable = {
-            TODO("not yet implemented")
+            navController.navigateToGenericVaccinationTableScreen(
+                genericVaccinationTableAccessType = GenericVaccinationTableAccessType.VIEWER_ACCESS
+            )
         }
     )
     employeeSearch(
-        onNavigateToEmployeeProfile = {
-            TODO("not yet implemented")
+        onNavigateToEmployeeProfile = { employeeId ->
+            navController.navigateToEmployeeProfileScreen(
+                employeeId = employeeId,
+                employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
+            )
         },
         onNavigateToAdminProfile = {
-            TODO("not yet implemented")
+            navController.navigateToAdminProfileScreen(
+                adminId = null,
+            )
         },
         onNavigateToVaccines = {
-            TODO("not yet implemented")
+            navController.navigateToVaccinesScreen()
         },
-        onNavigateToNotifications = {
-            TODO("not yet implemented")
-        },
-        onNavigateToToPrescriptions = {
-            TODO("not yet implemented")
-        },
-        onNavigateToToMedicalRecords = {
-            TODO("not yet implemented")
-        },
+        onNavigateToNotifications = { },
+        onNavigateToToPrescriptions = { },
+        onNavigateToToMedicalRecords = { },
         onNavigateToToVaccineTable = {
-            TODO("not yet implemented")
+            navController.navigateToGenericVaccinationTableScreen(
+                genericVaccinationTableAccessType = GenericVaccinationTableAccessType.VIEWER_ACCESS
+            )
         },
     )
     clinicsSearchScreen(
-        onNavigateToDepartmentDetails = {clinicId->
+        onNavigateToDepartmentDetails = { clinicId ->
             navController.navigateToClinicDetailsScreen(
                 clinicId = clinicId,
                 type = ClinicDetailsType.ADMIN_ACCESS
             )
         },
-        onNavigateToDoctorProfile = {
-            TODO("not yet implemented")
-        },
-        onNavigateToNotifications = {
-            TODO("not yet implemented")
-        },
-        onNavigateToMedicalRecords = {
-            TODO("not yet implemented")
-        },
-        onNavigateToPrescriptions = {
-            TODO("not yet implemented")
-        },
+        onNavigateToDoctorProfile = { },
+        onNavigateToNotifications = { },
+        onNavigateToMedicalRecords = { },
+        onNavigateToPrescriptions = { },
         onNavigateToVaccines = {
-            TODO("not yet implemented")
+            navController.navigateToVaccinesScreen()
         },
-        onNavigateToCreateNewClinic = {
-            TODO("feature not found")
-        },
+        onNavigateToCreateNewClinic = {},
         onNavigateToAdminProfile = {
-            TODO("not yet implemented")
+            navController.navigateToAdminProfileScreen(
+                adminId = null,
+            )
         },
         onNavigateToVaccineTable = {
-            TODO("not yet implemented")
+            navController.navigateToGenericVaccinationTableScreen(
+                genericVaccinationTableAccessType = GenericVaccinationTableAccessType.VIEWER_ACCESS
+            )
         },
     )
     pharmaciesSearch(
-        onNavigateToPharmacyDetails = {
-            TODO("not yet implemented")
+        onNavigateToPharmacyDetails = { pharmacyId ->
+            navController.navigateToPharmacyDetailsScreen(
+                pharmacyId = pharmacyId,
+                pharmacyAccessType = PharmacyAccessType.ADMIN_ACCESS
+            )
         },
         onNavigateToAdminProfile = {
-            TODO("not yet implemented")
+            navController.navigateToAdminProfileScreen(
+                adminId = null,
+            )
         },
         onNavigateToVaccines = {
-            TODO("not yet implemented")
+            navController.navigateToVaccinesScreen()
         },
-        onNavigateToNotifications = {
-            TODO("not yet implemented")
-        },
-        onNavigateToPrescriptions = {
-            TODO("not yet implemented")
-        },
-        onNavigateToMedicalRecords = {
-            TODO("not yet implemented")
-        },
+        onNavigateToNotifications = { },
+        onNavigateToPrescriptions = { },
+        onNavigateToMedicalRecords = {},
         onNavigateToVaccineTable = {
-            TODO("not yet implemented")
+            navController.navigateToGenericVaccinationTableScreen(
+                genericVaccinationTableAccessType = GenericVaccinationTableAccessType.VIEWER_ACCESS
+            )
         },
     )
 }

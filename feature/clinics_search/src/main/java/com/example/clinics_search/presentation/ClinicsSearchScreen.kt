@@ -1,6 +1,7 @@
 package com.example.clinics_search.presentation
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -122,7 +123,7 @@ internal fun ClinicsSearchScreen(
                 ClinicsSearchUIAction.ToggleTheme
             )
         },
-        isDarkTheme = uiState.isDarkTheme
+        isDarkTheme = uiState.isDarkTheme,
     ){
         Scaffold(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -187,7 +188,7 @@ internal fun ClinicsSearchScreen(
         ) { innerPadding ->
             AnimatedContent(
                 modifier = modifier
-                    .padding(innerPadding)
+                    .padding(PaddingValues(top = innerPadding.calculateTopPadding()))
                     .padding(MaterialTheme.spacing.medium16),
                 targetState = uiState.screenStep
             ) { state ->

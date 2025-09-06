@@ -19,7 +19,7 @@ import com.example.domain.di.downloaderUseCaseModule
 import com.example.domain.di.employeeProfileUseCasesModule
 import com.example.domain.di.employmentHistoryUseCasesModule
 import com.example.domain.di.getAdminProfileByIdUseCaseModule
-import com.example.domain.di.medical_record.medicalRecordModule
+import com.example.domain.di.medical_record.medicalRecordUseCasesModule
 import com.example.domain.di.medicine.medicinesUseCasesModule
 import com.example.domain.di.pharmacy.pharmacyUseCasesModule
 import com.example.domain.di.prescription.prescriptionUseCasesModule
@@ -53,7 +53,7 @@ val domainModule = module {
         doctorSignUpModule,
         getAdminProfileByIdUseCaseModule,
         uploadEmploymentDocumentsUseCasesModule,
-        medicalRecordModule,
+        medicalRecordUseCasesModule,
         childDomainModule,
         userDomainModule,
         userPreferencesUseCasesModule,
