@@ -1,16 +1,18 @@
 package com.example.employment_history.main
 
+import com.example.model.enums.Role
+
 
 fun mockEmploymentHistoryNavigationUiActions() = object : EmploymentHistoryNavigationUiActions {
     override fun navigateToAcceptedByAdminProfileScreen() {
 
     }
 
-    override fun navigateToToResignedByAdminProfileScreen() {
+    override fun navigateToResignedByAdminProfileScreen() {
 
     }
 
-    override fun navigateToToSuspendedByAdminProfileScreen() {
+    override fun navigateToSuspendedByAdminProfileScreen(role: Role?) {
 
     }
 

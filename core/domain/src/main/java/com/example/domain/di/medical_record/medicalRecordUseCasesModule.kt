@@ -4,6 +4,6 @@ import com.example.domain.use_cases.medical_record.GetAllMedicalRecordsUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val medicalRecordModule= module {
+val medicalRecordUseCasesModule= module {
     singleOf(::GetAllMedicalRecordsUseCase)
 }

@@ -34,9 +34,12 @@ class EmploymentHistoryViewModel(
     private val cancelFileDownloadUseCase: CancelFileDownloadUseCase,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(EmploymentHistoryUiState(
-        userId = savedStateHandle.toRoute<EmploymentHistoryRoute>().id
-    ))
+    private val _uiState = MutableStateFlow(
+        EmploymentHistoryUiState(
+            userId = savedStateHandle.toRoute<EmploymentHistoryRoute>().id,
+            roleOfRequestedUserHistory = savedStateHandle.toRoute<EmploymentHistoryRoute>().roleOfRequestedUserHistory
+        )
+    )
     val uiState = _uiState.asStateFlow()
 
     init {
@@ -98,7 +101,7 @@ class EmploymentHistoryViewModel(
             )
         }
         updateFileInfo(
-            fileInfo =fileInfo
+            fileInfo = fileInfo
         )
     }
 
@@ -202,9 +205,10 @@ class EmploymentHistoryViewModel(
                     Log.v("EmploymentHistory fetched Successfully", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)
                     updateEmploymentHistory(data)
-                    if (uiState.value.screenState== ScreenState.ERROR) {
+                    if (uiState.value.screenState == ScreenState.ERROR) {
                         updateScreenState(ScreenState.SUCCESS)
-                    }                }.onError { error ->
+                    }
+                }.onError { error ->
                     Log.v("Failed to fetch EmploymentHistory", "EmploymentHistoryViewModel")
                     updateIsRefreshing(false)
                     updateToastMessage(UiText.StringResource(R.string.something_went_wrong))

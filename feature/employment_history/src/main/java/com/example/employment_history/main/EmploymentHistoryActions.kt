@@ -1,5 +1,7 @@
 package com.example.employment_history.main
 
+import com.example.model.enums.Role
+
 class EmploymentHistoryUiActions(
     navigationActions:EmploymentHistoryNavigationUiActions,
     businessActions:EmploymentHistoryBusinessUiActions,
@@ -19,7 +21,7 @@ interface EmploymentHistoryBusinessUiActions {
 
 interface EmploymentHistoryNavigationUiActions {
     fun navigateToAcceptedByAdminProfileScreen()
-    fun navigateToToResignedByAdminProfileScreen()
-    fun navigateToToSuspendedByAdminProfileScreen()
+    fun navigateToResignedByAdminProfileScreen()
+    fun navigateToSuspendedByAdminProfileScreen(role: Role?=null)
     fun navigateUp()
 }

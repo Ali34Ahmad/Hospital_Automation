@@ -10,11 +10,11 @@ import com.example.children.di.childrenModule
 import com.example.children_search.di.childrenSearchModule
 import com.example.clinic_details.di.clinicDetailsModule
 import com.example.clinics_search.di.clinicsSearchModule
-import com.example.data.di.adminDataModule
 import com.example.data.di.dataModule
 import com.example.doctor_profile.doctorProfileModule
 import com.example.doctor_schedule.di.doctorScheduleModule
 import com.example.doctors.di.doctorsSearchModule
+import com.example.domain.di.medical_record.medicalRecordUseCasesModule
 import com.example.email_verification.emailVerificationModule
 import com.example.employee_profile.employeeProfileModule
 import com.example.employees_search.di.employeesSearchModule
@@ -26,6 +26,7 @@ import com.example.enter_email.enterEmailModule
 import com.example.generic_vaccination_table.genericVaccinationTableModule
 import com.example.guardians.di.guardiansModule
 import com.example.login.loginModule
+import com.example.medical_records.medicalRecordsModule
 import com.example.pharmacies_search.di.pharmaciesSearch
 import com.example.pharmacy_details.pharmacyDetailsModule
 import com.example.pharmacy_medicines.di.pharmacyMedicinesModule
@@ -34,7 +35,7 @@ import com.example.reset_password.resetPasswordModule
 import com.example.signup.signUpModule
 import com.example.upload_profile_image.uploadProfileImageModule
 import com.example.vaccine_details_screen.vaccineDetailsModule
-import com.example.guardians.di.guardiansModule
+import com.example.prescriptions.prescriptionsModule
 import com.example.vaccines.vaccinesModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -80,6 +81,8 @@ class AdminApplication : Application() {
                 prescriptionDetailsModule,
                 genericVaccinationTableModule,
                 adminProfileModule,
+                prescriptionsModule,
+                medicalRecordsModule
             )
         }
     }

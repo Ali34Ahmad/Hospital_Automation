@@ -30,7 +30,7 @@ fun NavGraphBuilder.pharmacyDetailsScreen(
     onNavigateToEmailApp: (email: String, subject: String?) -> Unit,
     onNavigateToCallApp: (phoneNumber: String) -> Unit,
     onNavigateToFulfilledPrescriptionsScreen: (pharmacyId: Int) -> Unit,
-    onNavigateToMedicinesScreen: (pharmacyId: Int) -> Unit,
+    onNavigateToMedicinesScreen: (pharmacyId: Int, pharmacyName: String, imageUrl: String) -> Unit,
     onNavigateToEmploymentHistoryScreen: (pharmacyId: Int) -> Unit,
 ) {
     composable<PharmacyDetailsRoute> {
@@ -55,7 +55,11 @@ fun NavGraphBuilder.pharmacyDetailsScreen(
             }
 
             override fun navigateToMedicinesScreen(pharmacyId: Int) {
-                onNavigateToMedicinesScreen(pharmacyId)
+                onNavigateToMedicinesScreen(
+                    pharmacyId,
+                    uiState.value.pharmacyInfo?.phName ?: "",
+                    uiState.value.pharmacyInfo?.userWithAddress?.imageUrl ?: ""
+                )
             }
 
             override fun navigateToEmploymentHistoryScreen(pharmacyId: Int) {

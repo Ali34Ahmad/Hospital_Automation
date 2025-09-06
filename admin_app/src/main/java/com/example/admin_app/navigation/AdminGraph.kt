@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -33,6 +34,7 @@ import androidx.navigation.navigation
 import com.example.add_residential_address.navigation.addResidentialAddressScreen
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.admin_app.navigation.helper.getDoctorDestinationOrNull
+import com.example.admin_profile.navigation.adminProfileScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
@@ -47,6 +49,8 @@ import com.example.children_search.navigation.navigateToChildrenSearch
 import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.clinic_details.navigation.clinicDetailsScreen
 import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
+import com.example.doctor_profile.navigation.DoctorProfileAccessType
+import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
@@ -78,6 +82,7 @@ import com.example.medical_records.navigation.medicalRecordsScreen
 import com.example.medical_records.navigation.navigateToMedicalRecordsScreen
 import com.example.medicine_details.navigation.medicineDetailsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
+import com.example.model.enums.Role
 import com.example.navigation.extesion.navigateToCallApp
 import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacy_details.navigation.PharmacyAccessType
@@ -93,6 +98,7 @@ import com.example.reset_password.navigation.navigateToResetPasswordScreen
 import com.example.reset_password.navigation.resetPasswordScreen
 import com.example.signup.navigation.navigateToSignUpScreen
 import com.example.signup.navigation.signUpScreen
+import com.example.ui.theme.spacing
 import com.example.upload_profile_image.navigation.navigateToUploadProfileImageScreen
 import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 import com.example.vaccine_details_screen.navigation.VaccinePreviousScreen
@@ -108,33 +114,34 @@ fun AdminGraph(
 ) {
     val context = LocalContext.current
 
+
+    val items = BottomNavItem.items
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    //get the current doctor destination or null
+    val doctorDestination by remember(navBackStackEntry) {
+        mutableStateOf(getDoctorDestinationOrNull(navBackStackEntry))
+    }
+
+    val isPrimaryDestination by remember(navBackStackEntry) {
+        derivedStateOf {
+            doctorDestination?.isPrimary ?: true
+        }
+    }
+
+    val shouldShowBottomBar = items.any { item ->
+        currentDestination?.hasRoute(item.route::class) == true
+                && isPrimaryDestination
+    }
+
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            val items = BottomNavItem.items
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination
-
-            //get the current doctor destination or null
-            val doctorDestination by remember(navBackStackEntry) {
-                mutableStateOf(getDoctorDestinationOrNull(navBackStackEntry))
-            }
-
-            val isPrimaryDestination by remember(navBackStackEntry) {
-                derivedStateOf {
-                    doctorDestination?.isPrimary ?: true
-                }
-            }
-
-
             var selectedDestination by rememberSaveable {
                 mutableIntStateOf(0)
             }
 
-            val shouldShowBottomBar = items.any { item ->
-                currentDestination?.hasRoute(item.route::class) == true
-                        && isPrimaryDestination
-            }
 
             AnimatedVisibility(
                 shouldShowBottomBar,
@@ -154,7 +161,6 @@ fun AdminGraph(
                                     contentDescription = stringResource(item.label)
                                 )
                             },
-                            label = { Text(stringResource(item.label)) },
                             selected = index == selectedDestination,
                             onClick = {
                                 navController.navigate(item.route) {
@@ -172,8 +178,12 @@ fun AdminGraph(
             }
         }
     ) { innerPadding ->
+        val padding = if (shouldShowBottomBar)
+            PaddingValues(bottom = innerPadding.calculateBottomPadding())
+        else PaddingValues(MaterialTheme.spacing.default)
+
         NavHost(
-            modifier = Modifier.padding(PaddingValues(bottom = innerPadding.calculateBottomPadding())),
+            modifier = Modifier.padding(padding),
             navController = navController,
             startDestination = EmploymentRequestsRoute
         ) {
@@ -253,7 +263,7 @@ fun AdminGraph(
 
             doctorProfileScreen(
                 onNavigateToEmploymentHistoryScreen = { doctorId ->
-                    navController.navigateToEmploymentHistoryScreen(doctorId)
+                    navController.navigateToEmploymentHistoryScreen(doctorId, Role.DOCTOR)
                 },
                 onNavigateToLoginScreen = {},
                 onNavigateUp = {
@@ -286,7 +296,7 @@ fun AdminGraph(
 
             employeeProfileScreen(
                 onNavigateToEmploymentHistoryScreen = { employeeId ->
-                    navController.navigateToEmploymentHistoryScreen(employeeId)
+                    navController.navigateToEmploymentHistoryScreen(employeeId, Role.EMPLOYEE)
                 },
                 onNavigateToLoginScreen = {},
                 onNavigateUp = {
@@ -311,12 +321,11 @@ fun AdminGraph(
                     context.navigateToCallApp(phoneNumber)
                 },
                 onNavigateToFulfilledPrescriptionsScreen = { },
-                onNavigateToMedicinesScreen = { pharmacyId ->
-                    TODO()
+                onNavigateToMedicinesScreen = { pharmacyId,pharmacyName,imageUrl ->
                     navController.navigateToPharmacyMedicines(
                         pharmacyId = pharmacyId,
-                        name = "",
-                        imageUrl = "",
+                        name = pharmacyName,
+                        imageUrl = imageUrl,
                     )
                 },
                 onNavigateToEmploymentHistoryScreen = { employeeId ->
@@ -334,17 +343,31 @@ fun AdminGraph(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int ->
+                onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int,roleOfHistoryOwner: Role? ->
                     if (suspendedById == currentEmployeeId) {
-                        navController.navigateToEmployeeProfileScreen(
-                            employeeId = currentEmployeeId,
-                            employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
-                        )
+                        when(roleOfHistoryOwner){
+                            Role.EMPLOYEE ->  navController.navigateToEmployeeProfileScreen(
+                                employeeId = currentEmployeeId,
+                                employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
+                            )
+
+                            Role.DOCTOR -> navController.navigateToDoctorProfileScreen(
+                                doctorId = currentEmployeeId,
+                                doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS
+                            )
+                            else->null
+                        }
                     } else {
                         navController.navigateToAdminProfileScreen(
-                            adminId = currentEmployeeId,
+                            adminId = suspendedById,
                         )
                     }
+                }
+            )
+
+            adminProfileScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
                 }
             )
 
@@ -384,9 +407,9 @@ fun AdminGraph(
                     )
                 },
                 onNavigateToChildProfile = { childId ->
-                    navController.navigateToGuardianProfile(
-                        guardianId = childId,
-                        userProfileMode = UserProfileMode.ADMIN_ACCESS
+                    navController.navigateToChildProfile(
+                        childId = childId,
+                        hasAdminAccess = true
                     )
                 },
                 onNavigateToFulfillingPharmacy = { pharmacyId ->
@@ -509,12 +532,14 @@ fun AdminGraph(
                     // no need here
                 },
                 navigateToEmployeeProfileScreen = { employeeId ->
-                    TODO("not yet implemented")
+                    navController.navigateToEmployeeProfileScreen(
+                        employeeId=employeeId,
+                        employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
+                    )
                 },
                 navigateToGuardiansScreen = navController::navigateToGuardiansScreen,
                 navigateUp = navController::navigateUp,
                 onNavigateToVaccinationTable = {
-                    TODO("not yet implemented")
                 },
                 onNavigateToAppointments = { childId, name ->
                     navController.navigateToScheduleScreen(

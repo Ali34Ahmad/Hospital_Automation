@@ -100,7 +100,7 @@ fun DoctorProfileScreen(
         )
     }
 
-    val isActionsItemsEnabled = uiState.doctorInfo?.profile?.acceptedBy != null &&
+    val isActionsItemsEnabledInDoctorRole = uiState.doctorInfo?.profile?.acceptedBy != null &&
             uiState.doctorInfo.profile.resignedBy == null &&
             uiState.doctorInfo.profile.suspendedBy == null
 
@@ -249,15 +249,15 @@ fun DoctorProfileScreen(
                                         onAppointmentsHistoryClick = {
                                             uiActions.navigateToAppointmentsScreen(null)
                                         },
-                                        isAppointmentsItemEnabled = isActionsItemsEnabled,
+                                        isAppointmentsItemEnabled = isActionsItemsEnabledInDoctorRole,
                                         onPrescriptionsClick = {
                                             uiActions.navigateToPrescriptionsScreen(null)
                                         },
-                                        isPrescriptionsItemEnabled = isActionsItemsEnabled,
+                                        isPrescriptionsItemEnabled = isActionsItemsEnabledInDoctorRole,
                                         onMedicalRecordsClick = {
                                             uiActions.navigateToMedicalRecordsScreen(null)
                                         },
-                                        isMedicalRecordsItemEnabled = isActionsItemsEnabled,
+                                        isMedicalRecordsItemEnabled = isActionsItemsEnabledInDoctorRole,
                                         onEmploymentHistoryClick = {
                                             uiActions.navigateToEmploymentHistoryScreen(null)
                                         },
@@ -281,19 +281,19 @@ fun DoctorProfileScreen(
                                         onAppointmentsHistoryClick = {
                                             uiActions.navigateToAppointmentsScreen(uiState.doctorId)
                                         },
-                                        isAppointmentsItemEnabled = isActionsItemsEnabled,
+                                        isAppointmentsItemEnabled = isAccepted,
                                         onPrescriptionsClick = {
                                             uiActions.navigateToPrescriptionsScreen(uiState.doctorId)
                                         },
-                                        isPrescriptionsItemEnabled = isActionsItemsEnabled,
+                                        isPrescriptionsItemEnabled = isAccepted,
                                         onMedicalRecordsClick = {
                                             uiActions.navigateToMedicalRecordsScreen(uiState.doctorId)
                                         },
-                                        isMedicalRecordsItemEnabled = isActionsItemsEnabled,
+                                        isMedicalRecordsItemEnabled = isAccepted,
                                         onEmploymentHistoryClick = {
                                             uiActions.navigateToEmploymentHistoryScreen(uiState.doctorId)
                                         },
-                                        isEmploymentHistoryItemEnabled = isActionsItemsEnabled,
+                                        isEmploymentHistoryItemEnabled = isAccepted,
                                         onDeactivateAccountClick = {
                                             uiActions.onDeactivateAccount()
                                         },

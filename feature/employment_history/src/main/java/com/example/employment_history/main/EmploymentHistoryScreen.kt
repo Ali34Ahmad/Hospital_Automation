@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
-import com.example.ext.toAppropriateAddressFormat
 import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleEmploymentHistoryResponse
 import com.example.ui_components.components.card.IllustrationCard
@@ -167,8 +166,8 @@ fun EmploymentHistoryScreen(
                                 resignedBy = uiState.employmentHistory.resignedBy,
                                 onDocumentsItemClick = { uiActions.onShowFileDownloaderDialog() },
                                 onAcceptedByItemClick = { uiActions.navigateToAcceptedByAdminProfileScreen() },
-                                onResignedByItemClick = { uiActions.navigateToToResignedByAdminProfileScreen() },
-                                onSuspendedByItemClick = { uiActions.navigateToToSuspendedByAdminProfileScreen() },
+                                onResignedByItemClick = { uiActions.navigateToResignedByAdminProfileScreen() },
+                                onSuspendedByItemClick = { uiActions.navigateToSuspendedByAdminProfileScreen() },
                                 filesNumber = 1,
                                 modifier = modifier.fillMaxWidth(),
                             )

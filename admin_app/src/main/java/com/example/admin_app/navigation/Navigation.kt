@@ -239,7 +239,7 @@ fun Navigation() {
                 context.navigateToCallApp(phoneNumber)
             },
             onNavigateToFulfilledPrescriptionsScreen = { },
-            onNavigateToMedicinesScreen = {
+            onNavigateToMedicinesScreen = {_,_,_->
                 TODO()
             },
             onNavigateToEmploymentHistoryScreen = { employeeId ->
@@ -257,7 +257,7 @@ fun Navigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int,_ ->
                 if (suspendedById == currentEmployeeId) {
                     navController.navigateToEmployeeProfileScreen(
                         employeeId = currentEmployeeId,
