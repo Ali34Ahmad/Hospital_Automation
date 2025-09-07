@@ -27,7 +27,9 @@ import com.example.ext.toAppropriateNameFormat
 import com.example.fake.createSampleEmploymentHistoryResponse
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.model.FileInfo
+import com.example.model.employment_history.UserReference
 import com.example.model.enums.ScreenState
+import com.example.model.user.FullName
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -37,6 +39,7 @@ import com.example.ui_components.components.card.EmploymentHistoryCard
 import com.example.ui_components.components.dialog.FileDownloaderDialog
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
+import java.time.LocalDate
 
 @Composable
 fun EmploymentHistoryScreen(
@@ -62,7 +65,8 @@ fun EmploymentHistoryScreen(
         onDismiss = {
             uiActions.onHideFileDownloaderDialog()
         },
-        userFullName = uiState.employmentHistory?.currentUser?.fullName?.toAppropriateNameFormat()?:"",
+        userFullName = uiState.employmentHistory?.currentUser?.fullName?.toAppropriateNameFormat()
+            ?: "",
         fileDownloadingState = uiState.fileDownloadingState,
         fileInfo = uiState.fileInfo ?: FileInfo(0, 0, "NULL"),
         profileImageUrl = uiState.employmentHistory?.currentUser?.imageUrl ?: "",
@@ -139,9 +143,36 @@ fun EmploymentHistoryScreen(
                     }
                 }
             }
-            if (uiState.employmentHistory != null
+            if ((uiState.employmentHistory != null || uiState.pharmacyContractResponse != null)
                 && uiState.screenState == ScreenState.SUCCESS
             ) {
+                val employmentDate = uiState.employmentHistory?.currentUser?.workStartDate
+                    ?: uiState.pharmacyContractResponse?.pharmacyInHistory?.contractStartDate
+                val acceptedBy = uiState.employmentHistory?.acceptedBy
+                    ?: uiState.pharmacyContractResponse?.acceptedBy?.id ?.let{
+                        UserReference(
+                            userId =
+                                uiState.pharmacyContractResponse.acceptedBy?.id ?: -1,
+                            fullName =
+                                uiState.pharmacyContractResponse.acceptedBy?.fullName ?: FullName(
+                                    "",
+                                    "",
+                                    ""
+                                )
+                        )
+                    }
+                val suspendedBy = uiState.employmentHistory?.suspendedBy
+                    ?: uiState.pharmacyContractResponse?.deactivatedBy?.id?.let {
+                        UserReference(
+                            userId =
+                                uiState.pharmacyContractResponse.deactivatedBy?.id ?: -1,
+                            fullName =
+                                uiState.pharmacyContractResponse.deactivatedBy?.fullName
+                                    ?: FullName("", "", "")
+                        )
+                    }
+
+
                 PullToRefreshBox(
                     refreshing = uiState.isRefreshing,
                     onRefresh = { uiActions.onRefresh() }
@@ -159,11 +190,11 @@ fun EmploymentHistoryScreen(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large24),
                         ) {
                             EmploymentHistoryCard(
-                                employmentDate = uiState.employmentHistory.currentUser.workStartDate,
-                                acceptedBy = uiState.employmentHistory.acceptedBy,
-                                suspendedBy = uiState.employmentHistory.suspendedBy,
-                                resignationDate = uiState.employmentHistory.currentUser.workEndDate,
-                                resignedBy = uiState.employmentHistory.resignedBy,
+                                employmentDate = employmentDate,
+                                acceptedBy = acceptedBy,
+                                suspendedBy = suspendedBy,
+                                resignationDate = uiState.employmentHistory?.currentUser?.workEndDate,
+                                resignedBy = uiState.employmentHistory?.resignedBy,
                                 onDocumentsItemClick = { uiActions.onShowFileDownloaderDialog() },
                                 onAcceptedByItemClick = { uiActions.navigateToAcceptedByAdminProfileScreen() },
                                 onResignedByItemClick = { uiActions.navigateToResignedByAdminProfileScreen() },

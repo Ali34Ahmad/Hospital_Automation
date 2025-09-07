@@ -332,15 +332,19 @@ fun AdminGraph(
                     context.navigateToCallApp(phoneNumber)
                 },
                 onNavigateToFulfilledPrescriptionsScreen = { },
-                onNavigateToMedicinesScreen = { pharmacyId,pharmacyName,imageUrl ->
+                onNavigateToMedicinesScreen = { pharmacyId, pharmacyName, imageUrl ->
                     navController.navigateToPharmacyMedicines(
                         pharmacyId = pharmacyId,
                         name = pharmacyName,
                         imageUrl = imageUrl,
                     )
                 },
-                onNavigateToEmploymentHistoryScreen = { employeeId ->
-                    navController.navigateToEmploymentHistoryScreen(employeeId)
+                onNavigateToEmploymentHistoryScreen = { pharmacyId ->
+                    navController.navigateToEmploymentHistoryScreen(
+                        userId = null,
+                        roleOfRequestedUserHistory = Role.PHARMACIST,
+                        pharmacyId = pharmacyId,
+                    )
                 }
             )
 
@@ -354,10 +358,10 @@ fun AdminGraph(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int,roleOfHistoryOwner: Role? ->
+                onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int, roleOfHistoryOwner: Role?, pharmacyId: Int? ->
                     if (suspendedById == currentEmployeeId) {
-                        when(roleOfHistoryOwner){
-                            Role.EMPLOYEE ->  navController.navigateToEmployeeProfileScreen(
+                        when (roleOfHistoryOwner) {
+                            Role.EMPLOYEE -> navController.navigateToEmployeeProfileScreen(
                                 employeeId = currentEmployeeId,
                                 employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
                             )
@@ -366,7 +370,13 @@ fun AdminGraph(
                                 doctorId = currentEmployeeId,
                                 doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS
                             )
-                            else->null
+
+                            Role.PHARMACIST -> navController.navigateToPharmacyDetailsScreen(
+                                pharmacyId = pharmacyId,
+                                pharmacyAccessType = PharmacyAccessType.ADMIN_ACCESS
+                            )
+
+                            else -> null
                         }
                     } else {
                         navController.navigateToAdminProfileScreen(
@@ -544,7 +554,7 @@ fun AdminGraph(
                 },
                 navigateToEmployeeProfileScreen = { employeeId ->
                     navController.navigateToEmployeeProfileScreen(
-                        employeeId=employeeId,
+                        employeeId = employeeId,
                         employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
                     )
                 },

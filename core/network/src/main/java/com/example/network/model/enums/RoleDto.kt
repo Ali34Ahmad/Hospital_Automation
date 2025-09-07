@@ -5,5 +5,6 @@ enum class RoleDto {
     DOCTOR,
     ADMIN,
     CHILD,
-    USER
+    USER,
+    PHARMACIST,
 }

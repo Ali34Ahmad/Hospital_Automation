@@ -10,6 +10,7 @@ fun RoleDto.toRole(): Role {
         RoleDto.ADMIN -> Role.ADMIN
         RoleDto.USER -> Role.USER
         RoleDto.CHILD -> Role.CHILD
+        RoleDto.PHARMACIST -> Role.PHARMACIST
     }
 }
 
@@ -20,5 +21,6 @@ fun Role.toRoleDto(): RoleDto {
         Role.ADMIN -> RoleDto.ADMIN
         Role.USER -> RoleDto.USER
         Role.CHILD -> RoleDto.CHILD
+        Role.PHARMACIST -> RoleDto.PHARMACIST
     }
 }

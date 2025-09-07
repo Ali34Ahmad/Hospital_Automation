@@ -6,4 +6,5 @@ enum class Role {
     ADMIN,
     CHILD,
     USER,
+    PHARMACIST,
 }
