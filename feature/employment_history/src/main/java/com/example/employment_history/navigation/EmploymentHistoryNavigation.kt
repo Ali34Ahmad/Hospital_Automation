@@ -60,7 +60,8 @@ fun NavGraphBuilder.employmentHistoryScreen(
                         ?: uiState.value.pharmacyContractResponse?.deactivatedBy?.id ?: -1,
                     uiState.value.employmentHistory?.currentUser?.userId
                         ?: uiState.value.pharmacyContractResponse?.pharmacyInHistory?.pharmacist?.userId ?: -1,
-                    uiState.value.roleOfRequestedUserHistory
+                    uiState.value.roleOfRequestedUserHistory,
+                    uiState.value.pharmacyContractResponse?.pharmacyInHistory?.id
                 )
             }
 
