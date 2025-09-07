@@ -52,6 +52,7 @@ import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
 import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
+import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.doctor_schedule.navigation.scheduleScreen
@@ -409,7 +410,7 @@ fun AdminGraph(
                 onNavigateToChildProfile = { childId ->
                     navController.navigateToChildProfile(
                         childId = childId,
-                        hasAdminAccess = true
+                        childProfileMode = ChildProfileMode.ADMIN_ACCESS
                     )
                 },
                 onNavigateToFulfillingPharmacy = { pharmacyId ->
@@ -635,7 +636,13 @@ fun AdminGraph(
                         userProfileMode = UserProfileMode.ADMIN_ACCESS,
                         childId = null
                     )
-                }
+                },
+                onNavigateToChildProfile = {childId->
+                    navController.navigateToChildProfile(
+                        childId = childId,
+                        childProfileMode = ChildProfileMode.ADMIN_ACCESS
+                    )
+                },
             )
         }
     }

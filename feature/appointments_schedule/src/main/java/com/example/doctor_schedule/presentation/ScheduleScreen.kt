@@ -261,36 +261,36 @@ internal fun ScheduleScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-                AnimatedContent(
-                    uiState.isPermissionGranted || uiState.hasAdminAccess
-                ) { state ->
-                    when (state) {
-                        true -> SuccessScreen(
-                            uiState = uiState,
-                            onAction = onAction,
-                            appointments = appointments,
-                            onNavigateToAppointmentDetails = navigationActions::navigateToAppointmentDetails,
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = MaterialTheme.sizing.small16,
-                                    vertical = MaterialTheme.sizing.small8,
-                                )
-                        )
-
-                        false ->
-                            PermissionRequiredScreen(
-                                state = uiState.permissionsState,
-                                isRefreshing = uiState.isRefreshing,
-                                onRefresh = {
-                                    onAction(ScheduleUIAction.RefreshPermission)
-                                },
+                    AnimatedContent(
+                        uiState.isPermissionGranted || uiState.hasAdminAccess
+                    ) { state ->
+                        when (state) {
+                            true -> SuccessScreen(
+                                uiState = uiState,
+                                onAction = onAction,
+                                appointments = appointments,
+                                onNavigateToAppointmentDetails = navigationActions::navigateToAppointmentDetails,
                                 modifier = modifier
-                                    .padding(MaterialTheme.spacing.medium16)
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = MaterialTheme.sizing.small16,
+                                        vertical = MaterialTheme.sizing.small8,
+                                    )
                             )
 
+                            false ->
+                                PermissionRequiredScreen(
+                                    state = uiState.permissionsState,
+                                    isRefreshing = uiState.isRefreshing,
+                                    onRefresh = {
+                                        onAction(ScheduleUIAction.RefreshPermission)
+                                    },
+                                    modifier = modifier
+                                        .padding(MaterialTheme.spacing.medium16)
+                                )
+
+                        }
                     }
-                }
             }
         }
     }

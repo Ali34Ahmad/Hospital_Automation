@@ -85,14 +85,7 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = ScheduleRoute(
-            id = null,
-            hasAdminAccess = false,
-            searchType = AppointmentSearchType.DOCTOR,
-            name = null,
-            speciality = null,
-            imageUrl = null
-        ),
+        startDestination = AuthGraphRoute,
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -150,7 +143,9 @@ fun FakeNavigation() {
                     navController.navigateToEnterEmailScreen()
                 },
                 onNavigateToHomeScreen = {
-                    navController.navigateToScheduleScreen()
+                    navController.navigateToScheduleScreen(
+                        askForPermissions = true
+                    )
                 },
                 onNavigateToToSignUpScreen = {
                     navController.navigateToDoctorSignUpScreen()
@@ -168,7 +163,9 @@ fun FakeNavigation() {
 
             resetPasswordScreen(
                 onNavigateToHomeScreen = {
-                    navController.navigateToScheduleScreen()
+                    navController.navigateToScheduleScreen(
+                        askForPermissions = true
+                    )
                 }
             )
         }
@@ -294,7 +291,7 @@ fun FakeNavigation() {
                 context.navigateToCallApp(phoneNumber)
             },
             onNavigateToFulfilledPrescriptionsScreen = {},
-            onNavigateToMedicinesScreen = {},
+            onNavigateToMedicinesScreen = {id,name,image->},
             onNavigateToEmploymentHistoryScreen = {}
         )
 
@@ -308,7 +305,7 @@ fun FakeNavigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId,_ ->
                 if (suspendedById != currentEmployeeId) {
                     navController.navigateToAdminProfileScreen(suspendedById)
                 } else {
@@ -423,10 +420,10 @@ fun FakeNavigation() {
 
         clinicDetailsScreen(
             onNavigateUp = navController::navigateUp,
-            onNavigateToDoctorProfile = {
+            onNavigateToDoctorProfile = {doctorId->
                 navController.navigateToDoctorProfileScreen(
                     doctorProfileAccessType = DoctorProfileAccessType.OTHER_DOCTOR_ACCESS,
-                    doctorId = null
+                    doctorId = doctorId
                 )
             },
             onNavigateToScheduleScreen = { },
@@ -515,6 +512,12 @@ fun FakeNavigation() {
                     guardianId = guardianId,
                     userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
                     childId = null
+                )
+            },
+            onNavigateToChildProfile = {childId->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS
                 )
             },
         )

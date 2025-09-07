@@ -22,7 +22,9 @@ import org.koin.androidx.compose.koinViewModel
  *                     [Role.DOCTOR], [Role.USER], or [Role.CHILD].
  * @param name The name of the (doctor,user, or child).
  * @param speciality The doctor speciality.
- *
+ * @param imageUrl The url of the user image
+ * @param askForPermissions decide if you want to ask for permissions or not
+ * it must be true only after successfully login in doctor's app.
  *
  * @see Role
  * @author Ali Mansoura
@@ -34,7 +36,8 @@ data class ScheduleRoute(
     val searchType: AppointmentSearchType,
     val name: String?,
     val speciality: String?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val askForPermissions: Boolean
 )
 
 @Keep
@@ -50,7 +53,8 @@ fun NavController.navigateToScheduleScreen(
     searchType: AppointmentSearchType = AppointmentSearchType.DOCTOR,
     name: String? = null,
     speciality: String? = null,
-    imageUrl: String? = null
+    imageUrl: String? = null,
+    askForPermissions: Boolean = false,
 ){
     navigateToScreen(
         route = ScheduleRoute(
@@ -59,7 +63,8 @@ fun NavController.navigateToScheduleScreen(
             searchType = searchType,
             name = name,
             speciality = speciality,
-            imageUrl = imageUrl
+            imageUrl = imageUrl,
+            askForPermissions = askForPermissions,
         )
     )
 }
@@ -69,7 +74,8 @@ fun NavController.navigateToScheduleScreenReplacingCurrent(
     searchType: AppointmentSearchType = AppointmentSearchType.DOCTOR,
     name: String? = null,
     speciality: String? = null,
-    imageUrl: String? = null
+    imageUrl: String? = null,
+    askForPermissions: Boolean = false
 ){
     navigateReplacingCurrent(
         route = ScheduleRoute(
@@ -78,7 +84,8 @@ fun NavController.navigateToScheduleScreenReplacingCurrent(
             searchType = searchType,
             name = name,
             speciality = speciality,
-            imageUrl = imageUrl
+            imageUrl = imageUrl,
+            askForPermissions = askForPermissions
         ),
     )
 }

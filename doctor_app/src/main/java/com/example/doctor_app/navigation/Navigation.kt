@@ -281,7 +281,7 @@ fun Navigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId,_ ->
                 if (suspendedById != currentEmployeeId) {
                     navController.navigateToAdminProfileScreen(suspendedById)
                 } else {
@@ -482,6 +482,12 @@ fun Navigation() {
                     guardianId = guardianId,
                     userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
                     childId = null
+                )
+            },
+            onNavigateToChildProfile = {childId->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS
                 )
             },
         )

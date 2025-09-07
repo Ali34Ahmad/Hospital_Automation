@@ -38,12 +38,6 @@ fun DepartmentActions(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            ProfileActionsItem(
-                iconRes = AppIcons.Outlined.stethoscope,
-                title = stringResource(R.string.all_doctors),
-                showUnderline = false,
-                onClick = onAllDoctorsClick,
-            )
 //            ProfileActionsItem(
 //                iconRes = AppIcons.Outlined.upcomingEvent,
 //                title = stringResource(R.string.appointments),
@@ -70,6 +64,12 @@ fun DepartmentActions(
 //            )
             if(hasAdminAccess){
                 if (isActive) {
+                    ProfileActionsItem(
+                        iconRes = AppIcons.Outlined.stethoscope,
+                        title = stringResource(R.string.all_doctors),
+                        showUnderline = false,
+                        onClick = onAllDoctorsClick,
+                    )
                     ProfileActionsItem(
                         iconRes = AppIcons.Outlined.deactivateAccount,
                         title = stringResource(R.string.deactivate_clinic),

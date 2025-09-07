@@ -42,6 +42,7 @@ fun DoctorSchedulePermissionsRequiredPreview(){
                 name = "Ali Mansoura",
                 speciality = "Dentist",
                 imageUrl = "fake",
+                askForPermissions = false
             ),
             appointments = appointments.collectAsLazyPagingItems(),
             navigationActions = mockActions,
@@ -64,6 +65,7 @@ fun DoctorSchedulePreview(){
                 speciality = "Dentist",
                 imageUrl = "fake",
                 searchType = AppointmentSearchType.DOCTOR,
+                askForPermissions = false
             ),
 
             appointments = appointments.collectAsLazyPagingItems(),

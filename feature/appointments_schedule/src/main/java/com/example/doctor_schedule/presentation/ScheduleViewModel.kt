@@ -57,7 +57,6 @@ class ScheduleViewModel(
 ): ViewModel() {
 
     private val route = savedStateHandle.toRoute<ScheduleRoute>()
-
     private val _uiState = MutableStateFlow(
         ScheduleUIState(
             id = route.id,
@@ -65,7 +64,8 @@ class ScheduleViewModel(
             searchType = route.searchType,
             name = route.name,
             speciality = route.speciality,
-            imageUrl = route.imageUrl
+            imageUrl = route.imageUrl,
+            askForPermissions = route.askForPermissions
         )
     )
 

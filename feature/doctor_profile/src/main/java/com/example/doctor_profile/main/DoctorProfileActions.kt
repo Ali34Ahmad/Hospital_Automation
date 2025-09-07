@@ -19,7 +19,7 @@ interface DoctorProfileBusinessUiActions {
 }
 
 interface DoctorProfileNavigationUiActions {
-    fun navigateToAppointmentsScreen(doctorId: Int?)
+    fun navigateToAppointmentsScreen(doctorId: Int?,name:String,specialty: String?)
     fun navigateToEmploymentHistoryScreen(doctorId:Int?)
     fun navigateUp()
     fun navigateToLoginScreen()
