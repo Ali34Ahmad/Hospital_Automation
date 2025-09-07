@@ -42,6 +42,7 @@ import com.example.login.navigation.navigateToLoginScreen
 import com.example.medical_records.navigation.medicalRecordsScreen
 import com.example.medical_records.navigation.navigateToMedicalRecordsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
+import com.example.model.enums.Role
 import com.example.navigation.extesion.navigateToCallApp
 import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacy_details.navigation.PharmacyAccessType
@@ -170,7 +171,7 @@ fun Navigation() {
                 )
             },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToVaccineTable = {
                 navController.navigateToGenericVaccinationTableScreen(
@@ -187,10 +188,13 @@ fun Navigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToAppointmentsScreen = { doctorId ->
+            onNavigateToAppointmentsScreen = { doctorId,name,specialty,imageUrl ->
                 navController.navigateToScheduleScreen(
                     id = doctorId,
                     hasAdminAccess = true,
+                    name = name,
+                    speciality = specialty,
+                    imageUrl = imageUrl,
                     searchType = AppointmentSearchType.DOCTOR,
                 )
             },

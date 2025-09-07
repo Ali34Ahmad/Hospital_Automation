@@ -18,6 +18,7 @@ import com.example.employees_search.navigation.employeeSearch
 import com.example.employment_requests.navigation.employmentRequestsScreen
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
 import com.example.generic_vaccination_table.navigation.navigateToGenericVaccinationTableScreen
+import com.example.model.enums.Role
 import com.example.pharmacies_search.navigation.pharmaciesSearch
 import com.example.pharmacy_details.navigation.PharmacyAccessType
 import com.example.pharmacy_details.navigation.navigateToPharmacyDetailsScreen
@@ -52,7 +53,7 @@ fun NavGraphBuilder.mainScreens(
             )
         },
         onNavigateToVaccines = {
-            navController.navigateToVaccinesScreen()
+            navController.navigateToVaccinesScreen(Role.ADMIN)
         },
         onNavigateToVaccineTable = {
             navController.navigateToGenericVaccinationTableScreen(
@@ -75,7 +76,7 @@ fun NavGraphBuilder.mainScreens(
             )
         },
         onNavigateToVaccines = {
-            navController.navigateToVaccinesScreen()
+            navController.navigateToVaccinesScreen(Role.ADMIN)
         },
         onNavigateToNotifications = { },
         onNavigateToToPrescriptions = { },
@@ -99,7 +100,7 @@ fun NavGraphBuilder.mainScreens(
             )
         },
         onNavigateToVaccines = {
-            navController.navigateToVaccinesScreen()
+            navController.navigateToVaccinesScreen(Role.ADMIN)
         },
         onNavigateToNotifications = { },
         onNavigateToToPrescriptions = { },
@@ -122,7 +123,7 @@ fun NavGraphBuilder.mainScreens(
         onNavigateToMedicalRecords = { },
         onNavigateToPrescriptions = { },
         onNavigateToVaccines = {
-            navController.navigateToVaccinesScreen()
+            navController.navigateToVaccinesScreen(Role.ADMIN)
         },
         onNavigateToCreateNewClinic = {},
         onNavigateToAdminProfile = {
@@ -149,7 +150,7 @@ fun NavGraphBuilder.mainScreens(
             )
         },
         onNavigateToVaccines = {
-            navController.navigateToVaccinesScreen()
+            navController.navigateToVaccinesScreen(Role.ADMIN)
         },
         onNavigateToNotifications = { },
         onNavigateToPrescriptions = { },

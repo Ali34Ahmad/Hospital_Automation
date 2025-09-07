@@ -270,10 +270,13 @@ fun AdminGraph(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToAppointmentsScreen = { doctorId ->
+                onNavigateToAppointmentsScreen = { doctorId,name,specialty,imageUrl, ->
                     navController.navigateToScheduleScreen(
                         id = doctorId,
                         hasAdminAccess = true,
+                        name = name,
+                        speciality = specialty,
+                        imageUrl = imageUrl,
                         searchType = AppointmentSearchType.DOCTOR,
                     )
                 },
@@ -472,14 +475,17 @@ fun AdminGraph(
             mainScreens(navController)
             clinicDetailsScreen(
                 onNavigateUp = navController::navigateUp,
-                onNavigateToDoctorProfile = {
-                    TODO("not yet implemented")
+                onNavigateToDoctorProfile = { doctorId ->
+                    navController.navigateToDoctorProfileScreen(
+                        doctorId = doctorId,
+                        doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS,
+                    )
                 },
                 onNavigateToScheduleScreen = {
                     //no need here because it is used in the doctor bottomBar
                 },
                 onNavigateToVaccines = {
-                    navController.navigateToVaccinesScreen()
+                    navController.navigateToVaccinesScreen(Role.ADMIN)
                 },
                 onNavigateToAllDoctors = { clinicId, clinicName ->
                     navController.navigateToDoctorsSearch(
@@ -647,7 +653,7 @@ fun AdminGraph(
                         childId = null
                     )
                 },
-                onNavigateToChildProfile = {childId->
+                onNavigateToChildProfile = { childId ->
                     navController.navigateToChildProfile(
                         childId = childId,
                         childProfileMode = ChildProfileMode.ADMIN_ACCESS

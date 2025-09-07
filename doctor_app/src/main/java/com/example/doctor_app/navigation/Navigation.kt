@@ -55,6 +55,7 @@ import com.example.medicine_details.navigation.medicineDetailsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
 import com.example.medicines_search.navigation.medicinesScreen
 import com.example.medicines_search.navigation.navigateToMedicineSearchScreenReplacingCurrent
+import com.example.model.enums.Role
 import com.example.navigation.extesion.navigateReplacingCurrent
 import com.example.pharmacies.navigation.navigateToPharmacies
 import com.example.pharmacies.navigation.pharmaciesScreen
@@ -171,7 +172,7 @@ fun Navigation() {
             onNavigateToEmploymentHistoryScreen = {
                 navController.navigateToEmploymentHistoryScreen(null)
             },
-            onNavigateToAppointmentsScreen = {
+            onNavigateToAppointmentsScreen = {_,_,_,_->
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptionsScreen = {
@@ -375,7 +376,7 @@ fun Navigation() {
                 )
             },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToCreateNewClinic = {
             },
@@ -398,7 +399,7 @@ fun Navigation() {
             },
             onNavigateToScheduleScreen = { },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToAllDoctors = { clinicId, clinicName -> },
             onNavigateToAllAppointments = {},
@@ -425,7 +426,7 @@ fun Navigation() {
                 navController.navigateToPrescriptionsScreen(null, null, null)
             },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToNotifications = {
             },

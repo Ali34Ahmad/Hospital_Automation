@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.model.enums.Role
 import com.example.vaccines.main.VaccinesNavigationUiActions
 import com.example.vaccines.main.VaccinesScreen
 import com.example.vaccines.main.VaccinesViewModel
@@ -14,10 +15,12 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Serializable
-data object VaccinesRoute
+data class VaccinesRoute(
+    val accessedByRole: Role
+)
 
-fun NavController.navigateToVaccinesScreen() {
-    navigateToScreen(VaccinesRoute)
+fun NavController.navigateToVaccinesScreen(accessedByRole: Role) {
+    navigateToScreen(VaccinesRoute(accessedByRole))
 }
 
 fun NavGraphBuilder.vaccinesScreen(

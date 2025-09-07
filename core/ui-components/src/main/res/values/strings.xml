@@ -372,4 +372,8 @@
     <string name="add_to_vaccination_table">Add to vaccination table</string>
     <string name="work_days">Work Days</string>
     <string name="there_are_no_items">There are no items</string>
+
+    <string name="employee_request_message">A new application for the Data Entry Clerk position is ready for your review. Please evaluate the candidate\'s qualifications and decide whether to accept or refuse the application.</string>
+    <string name="doctor_request_message">A new application for the Doctor position is ready for your review. Please evaluate the candidate\'s qualifications and decide whether to accept or refuse the application.</string>
+    <string name="pharmacy_request_message">A new application for the Pharmacy contract is ready for your review. Please evaluate the candidate\'s qualifications and decide whether to accept or refuse the application.</string>
 </resources>

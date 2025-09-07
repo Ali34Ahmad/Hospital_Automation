@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.constants.icons.AppIcons
+import com.example.model.enums.Role
 import com.example.model.enums.ScreenState
 import com.example.model.vaccine.VaccineData
 import com.example.ui.theme.sizing
@@ -94,15 +95,17 @@ fun VaccinesScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    uiActions.navigateToAddNewVaccineScreen()
+            if (uiState.accessedByRole== Role.DOCTOR){
+                FloatingActionButton(
+                    onClick = {
+                        uiActions.navigateToAddNewVaccineScreen()
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(AppIcons.Outlined.add),
+                        contentDescription = null,
+                    )
                 }
-            ) {
-                Icon(
-                    painter=painterResource(AppIcons.Outlined.add),
-                    contentDescription = null,
-                )
             }
         }
     ) { contentPadding ->
