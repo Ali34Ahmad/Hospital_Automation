@@ -10,7 +10,6 @@ import com.example.domain.use_cases.download_file.CancelFileDownloadUseCase
 import com.example.domain.use_cases.download_file.DownloadFileUseCase
 import com.example.domain.use_cases.download_file.ObserveFileDownloadProgressUseCase
 import com.example.model.FileInfo
-import com.example.model.child.ChildData
 import com.example.model.child.ChildFullData
 import com.example.model.download_file.DownloadProgress
 import com.example.model.enums.FileDownloadingState
@@ -40,7 +39,7 @@ class ChildProfileViewModel (
     private val _uiState = MutableStateFlow(
         ChildProfileUIState(
             childId = route.childId,
-            hasAdminAccess = route.hasAdminAccess
+            childProfileMode = route.childProfileMode
         )
     )
     val uiState: StateFlow<ChildProfileUIState> = _uiState
@@ -117,7 +116,7 @@ class ChildProfileViewModel (
     }
 
     private fun updateChild(child: ChildFullData) {
-        _uiState.value = _uiState.value.copy(child = child)
+        _uiState.value = _uiState.value.copy( child = child)
 
         val url = uiState.value.child?.birthCertificateImgUrl
         val fileInfo = uiState.value.child?.let {
@@ -177,11 +176,11 @@ class ChildProfileViewModel (
     private fun updateDownloadProgress(downloadProgress: DownloadProgress) {
         _uiState.update {
             it.copy(
-                downloadProgress = downloadProgress,
+                fileDownloadingState = downloadProgress.fileDownloadingState,
                 fileInfo = uiState.value.fileInfo?.copy(
                     uploadingProgress = downloadProgress.progressPercent,
                 ),
-                fileDownloadingState = downloadProgress.fileDownloadingState,
+                downloadProgress = downloadProgress,
             )
         }
     }

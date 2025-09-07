@@ -12,6 +12,7 @@ import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.appointment_details.navigation.navigateToAppointmentDetailsReplacementCurrent
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -79,7 +80,7 @@ fun Navigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = LoginRoute
+        startDestination = AuthGraphRoute
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -254,7 +255,10 @@ fun Navigation() {
                 navController.navigateToGuardianProfile(userId, UserProfileMode.VIEW_ONLY, null)
             },
             onNavigateToChildProfile = { childId ->
-                navController.navigateToChildProfile(childId, hasAdminAccess = false)
+                navController.navigateToChildProfile(
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS,
+                    childId = childId
+                )
             },
             onNavigateToFulfillingPharmacy = { pharmacyId ->
                 navController.navigateToPharmacyDetailsScreen(
@@ -441,8 +445,8 @@ fun Navigation() {
             },
             onNavigateToChildProfile = { childId ->
                 navController.navigateToChildProfile(
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS,
                     childId = childId,
-                    hasAdminAccess = false,
                 )
             },
             onNavigateUp = {
@@ -478,6 +482,12 @@ fun Navigation() {
                     guardianId = guardianId,
                     userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
                     childId = null
+                )
+            },
+            onNavigateToChildProfile = {childId->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS
                 )
             },
         )

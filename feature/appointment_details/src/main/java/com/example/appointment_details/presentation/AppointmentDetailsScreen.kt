@@ -92,6 +92,17 @@ internal fun AppointmentDetailsScreen(
                         navigationIcon = AppIcons.Outlined.arrowBack,
                         title = uiState.appointment?.fullName.toString(),
                         onNavigationIconClick = navigationActions::navigateUp,
+                        onTitleClick = {
+                            val guardianId = uiState.appointment?.patientId
+                            val childId = uiState.appointment?.childId
+                            if( guardianId!= null){
+                                Log.d("AppointmentDetails","guardian id : $guardianId")
+                                navigationActions.navigateToGuardianProfile(guardianId)
+                            }else if(childId != null){
+                                Log.d("AppointmentDetails","child id : $childId")
+                                navigationActions.navigateToChildProfile(childId)
+                            }
+                        }
                     )
 
                     false -> HospitalAutomationTopBar(

@@ -14,6 +14,7 @@ import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.appointment_details.navigation.navigateToAppointmentDetailsReplacementCurrent
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -84,14 +85,7 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = ScheduleRoute(
-            id = null,
-            hasAdminAccess = false,
-            searchType = AppointmentSearchType.DOCTOR,
-            name = null,
-            speciality = null,
-            imageUrl = null
-        ),
+        startDestination = AuthGraphRoute,
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -149,7 +143,9 @@ fun FakeNavigation() {
                     navController.navigateToEnterEmailScreen()
                 },
                 onNavigateToHomeScreen = {
-                    navController.navigateToScheduleScreen()
+                    navController.navigateToScheduleScreen(
+                        askForPermissions = true
+                    )
                 },
                 onNavigateToToSignUpScreen = {
                     navController.navigateToDoctorSignUpScreen()
@@ -167,7 +163,9 @@ fun FakeNavigation() {
 
             resetPasswordScreen(
                 onNavigateToHomeScreen = {
-                    navController.navigateToScheduleScreen()
+                    navController.navigateToScheduleScreen(
+                        askForPermissions = true
+                    )
                 }
             )
         }
@@ -268,7 +266,10 @@ fun FakeNavigation() {
                 )
             },
             onNavigateToChildProfile = { childId ->
-                navController.navigateToChildProfile(childId, hasAdminAccess = false)
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS,
+                    )
             },
             onNavigateToFulfillingPharmacy = { pharmacyId ->
                 navController.navigateToPharmacyDetailsScreen(
@@ -290,7 +291,7 @@ fun FakeNavigation() {
                 context.navigateToCallApp(phoneNumber)
             },
             onNavigateToFulfilledPrescriptionsScreen = {},
-            onNavigateToMedicinesScreen = {_,_,_->},
+            onNavigateToMedicinesScreen = {id,name,image->},
             onNavigateToEmploymentHistoryScreen = {}
         )
 
@@ -419,11 +420,10 @@ fun FakeNavigation() {
 
         clinicDetailsScreen(
             onNavigateUp = navController::navigateUp,
-            onNavigateToDoctorProfile = {
-                TODO()
+            onNavigateToDoctorProfile = {doctorId->
                 navController.navigateToDoctorProfileScreen(
                     doctorProfileAccessType = DoctorProfileAccessType.OTHER_DOCTOR_ACCESS,
-                    doctorId = null
+                    doctorId = doctorId
                 )
             },
             onNavigateToScheduleScreen = { },
@@ -476,7 +476,7 @@ fun FakeNavigation() {
             onNavigateToChildProfile = { childId ->
                 navController.navigateToChildProfile(
                     childId = childId,
-                    hasAdminAccess = false,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS,
                 )
             },
             onNavigateUp = {
@@ -512,6 +512,12 @@ fun FakeNavigation() {
                     guardianId = guardianId,
                     userProfileMode = UserProfileMode.ONLY_COMMUNICATION_INFO,
                     childId = null
+                )
+            },
+            onNavigateToChildProfile = {childId->
+                navController.navigateToChildProfile(
+                    childId = childId,
+                    childProfileMode = ChildProfileMode.DOCTOR_ACCESS
                 )
             },
         )

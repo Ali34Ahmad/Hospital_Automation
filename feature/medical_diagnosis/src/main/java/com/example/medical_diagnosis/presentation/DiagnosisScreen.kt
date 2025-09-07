@@ -89,7 +89,8 @@ fun DiagnosisScreen(
                         DiagnosisUIAction.AddDiagnosis
                     )
                 },
-                onFinish = { navigationActions.navigateToAppointmentDetails(uiState.appointmentId) },
+                onFinish = {
+                    navigationActions.navigateToAppointmentDetails(uiState.appointmentId) },
                 onAddPrescription = {
                     navigationActions.navigateToMedicinesSearch(
                         childId = uiState.childId,

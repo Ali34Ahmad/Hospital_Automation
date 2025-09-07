@@ -4,7 +4,8 @@ import com.example.ui_components.R
 
 sealed interface AppIcons {
 
-    data object Outlined : AppIcons {
+    data object Outlined : AppIcons{
+        val save = R.drawable.save
         val arrowForward = R.drawable.arrow_forward
         val add = R.drawable.ic_add
         val man = R.drawable.ic_male

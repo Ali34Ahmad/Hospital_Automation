@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.model.FileInfo
 import com.example.model.enums.ScreenState
 import com.example.model.helper.ext.toGenderFromString
@@ -92,7 +93,10 @@ fun ChildProfileScreen(
             )
         },
         bottomBar = {
-            if(uiState.state == ScreenState.SUCCESS&&!uiState.hasAdminAccess){
+            //only the employee has privileges.
+            if(uiState.state == ScreenState.SUCCESS&&
+                uiState.childProfileMode == ChildProfileMode.EMPLOYEE_ACCESS
+                ){
                 AddGuardianButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -190,7 +194,7 @@ fun ChildProfileScreen(
                                             navigationActions.navigateToMedicalRecords(it)
                                         }
                                     },
-                                    hasAdminAccess = uiState.hasAdminAccess,
+                                    hasAdminAccess = uiState.childProfileMode == ChildProfileMode.ADMIN_ACCESS,
                                     lastVaccination = lastVaccination,
                                     nextVaccination = nextVaccination,
                                     lastAppointment = lastAppointment,

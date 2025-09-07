@@ -1,6 +1,5 @@
 package com.example.admin_app.navigation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -39,17 +38,14 @@ import com.example.admin_profile.navigation.adminProfileScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
-import com.example.child_profile.navigation.ChildProfileRoute
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
-import com.example.children.navigation.ChildrenRoute
 import com.example.children.navigation.childrenScreen
 import com.example.children.navigation.navigateToChildrenScreen
-import com.example.children_search.navigation.ChildrenSearchRoute
 import com.example.children_search.navigation.SearchType
 import com.example.children_search.navigation.childrenSearchScreen
 import com.example.children_search.navigation.navigateToChildrenSearch
-import com.example.clinic_details.navigation.ClinicDetailsRoute
 import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.clinic_details.navigation.clinicDetailsScreen
 import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
@@ -58,7 +54,6 @@ import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
-import com.example.doctor_schedule.navigation.ScheduleRoute
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctors.navigation.navigateToDoctorsSearch
@@ -72,14 +67,10 @@ import com.example.employee_profile.navigation.navigateToEmployeeProfileScreen
 import com.example.employment_history.navigation.employmentHistoryScreen
 import com.example.employment_history.navigation.navigateToEmploymentHistoryScreen
 import com.example.employment_requests.navigation.EmploymentRequestsRoute
-import com.example.employment_requests.navigation.employmentRequestsScreen
 import com.example.employment_requests.navigation.navigateToEmploymentRequestsScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
-import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
 import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
-import com.example.generic_vaccination_table.navigation.navigateToGenericVaccinationTableScreen
-import com.example.guardian_profile.navigation.GuardianProfileRoute
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.guardianProfileScreen
 import com.example.guardian_profile.navigation.navigateToGuardianProfile
@@ -98,7 +89,6 @@ import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacy_details.navigation.PharmacyAccessType
 import com.example.pharmacy_details.navigation.navigateToPharmacyDetailsScreen
 import com.example.pharmacy_details.navigation.pharmacyDetailsScreen
-import com.example.pharmacy_medicines.navigation.PharmacyMedicinesRoute
 import com.example.pharmacy_medicines.navigation.navigateToPharmacyMedicines
 import com.example.pharmacy_medicines.navigation.pharmacyMedicines
 import com.example.prescription_details.navigation.navigateToPrescriptionDetailsScreen
@@ -430,7 +420,7 @@ fun AdminGraph(
                 onNavigateToChildProfile = { childId ->
                     navController.navigateToChildProfile(
                         childId = childId,
-                        hasAdminAccess = true
+                        childProfileMode = ChildProfileMode.ADMIN_ACCESS
                     )
                 },
                 onNavigateToFulfillingPharmacy = { pharmacyId ->
@@ -531,7 +521,7 @@ fun AdminGraph(
                 navigateToChildProfile = { childId ->
                     navController.navigateToChildProfile(
                         childId = childId,
-                        hasAdminAccess = true
+                        childProfileMode = ChildProfileMode.ADMIN_ACCESS,
                     )
                 },
                 navigateUp = navController::navigateUp
@@ -604,7 +594,7 @@ fun AdminGraph(
                 onNavigateToChildDetail = { childId ->
                     navController.navigateToChildProfile(
                         childId = childId,
-                        hasAdminAccess = true
+                        childProfileMode = ChildProfileMode.ADMIN_ACCESS,
                     )
                 }
             )
@@ -656,7 +646,13 @@ fun AdminGraph(
                         userProfileMode = UserProfileMode.ADMIN_ACCESS,
                         childId = null
                     )
-                }
+                },
+                onNavigateToChildProfile = {childId->
+                    navController.navigateToChildProfile(
+                        childId = childId,
+                        childProfileMode = ChildProfileMode.ADMIN_ACCESS
+                    )
+                },
             )
         }
     }

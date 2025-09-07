@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.presentation.ChildProfileNavigationAction
 import com.example.child_profile.presentation.ChildProfileScreen
 import com.example.child_profile.presentation.ChildProfileUIState
@@ -75,9 +76,9 @@ fun ChildProfileScreenLoadingPreview() {
     Hospital_AutomationTheme {
         ChildProfileScreen(
             uiState = ChildProfileUIState(
+                childId = 1,
                 state = ScreenState.LOADING,
-                hasAdminAccess = true,
-                childId = 1
+                childProfileMode = ChildProfileMode.DOCTOR_ACCESS
             ),
             navigationActions = mockActions,
             onAction = {}
@@ -90,9 +91,9 @@ fun ChildProfileScreenErrorPreview() {
     Hospital_AutomationTheme {
         ChildProfileScreen(
             uiState = ChildProfileUIState(
+                childId = 1,
                 state = ScreenState.ERROR,
-                hasAdminAccess = true,
-                childId = 1
+                childProfileMode = ChildProfileMode.DOCTOR_ACCESS
             ),
             navigationActions = mockActions,
             onAction = {}
@@ -105,10 +106,10 @@ fun ChildProfileScreenSuccessPreview() {
 
     Hospital_AutomationTheme {
         var uiState by remember{ mutableStateOf( ChildProfileUIState(
-            state = ScreenState.SUCCESS,
+            childId = 1,
             child = fakeChild,
-            hasAdminAccess = true,
-            childId = 1
+            state = ScreenState.SUCCESS,
+            childProfileMode = ChildProfileMode.DOCTOR_ACCESS
 
         )) }
         ChildProfileScreen(

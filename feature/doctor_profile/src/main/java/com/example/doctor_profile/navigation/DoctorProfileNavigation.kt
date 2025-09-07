@@ -36,8 +36,14 @@ fun NavGraphBuilder.doctorProfileScreen(
         val uiState = viewModel.uiState.collectAsState()
 
         val navActions = object : DoctorProfileNavigationUiActions {
-            override fun navigateToAppointmentsScreen(doctorId: Int?) {
-                onNavigateToAppointmentsScreen(doctorId)
+            override fun navigateToAppointmentsScreen(
+                doctorId: Int?,
+                name: String,
+                specialty: String?
+            ) {
+                onNavigateToAppointmentsScreen(
+                    doctorId,
+                )
             }
 
             override fun navigateToEmploymentHistoryScreen(doctorId:Int?) {

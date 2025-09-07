@@ -36,7 +36,7 @@ fun NavController.navigateToClinicDetailsScreen(
 
 fun NavGraphBuilder.clinicDetailsScreen(
     onNavigateUp: () -> Unit,
-    onNavigateToDoctorProfile: ()-> Unit,
+    onNavigateToDoctorProfile: (id: Int)-> Unit,
     onNavigateToScheduleScreen : ()->Unit,
     onNavigateToVaccines: ()-> Unit,
     onNavigateToAllDoctors: (Int, String)-> Unit,
@@ -50,7 +50,7 @@ fun NavGraphBuilder.clinicDetailsScreen(
         val viewModel = koinViewModel<ClinicDetailsViewModel>()
         val navigationActions = object : ClinicNavigationAction{
             override fun navigateUp() = onNavigateUp()
-            override fun navigateToDoctorProfile() = onNavigateToDoctorProfile()
+            override fun navigateToDoctorProfile(id: Int) = onNavigateToDoctorProfile(id)
             override fun navigateToScheduleScreen() =onNavigateToScheduleScreen()
             override fun navigateToVaccines() = onNavigateToVaccines()
             override fun navigateToAllDoctors(

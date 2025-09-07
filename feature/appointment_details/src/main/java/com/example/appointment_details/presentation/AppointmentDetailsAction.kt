@@ -26,4 +26,5 @@ interface AppointmentDetailsNavigationActions{
         canSkip: Boolean,
     )
     fun navigateToGuardianProfile(guardianId: Int)
+    fun navigateToChildProfile(childId: Int)
 }

@@ -82,7 +82,6 @@ internal fun ScheduleScreen(
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                Log.d("Doctor Screen Observer","is first launch :${uiState.isFirstLaunch}")
                 if (uiState.isFirstLaunch) {
                     onAction(
                         ScheduleUIAction.UpdateIsFirstLaunchToFalse
@@ -126,7 +125,8 @@ internal fun ScheduleScreen(
             image = AppIcons.Outlined.notification,
             onClick = {
                 navigationActions.navigateToNotifications()
-            }
+            },
+            enabled = false
         ),
         DrawerButton(
             text = R.string.medical_records,
@@ -261,36 +261,36 @@ internal fun ScheduleScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-                AnimatedContent(
-                    uiState.isPermissionGranted || uiState.hasAdminAccess
-                ) { state ->
-                    when (state) {
-                        true -> SuccessScreen(
-                            uiState = uiState,
-                            onAction = onAction,
-                            appointments = appointments,
-                            onNavigateToAppointmentDetails = navigationActions::navigateToAppointmentDetails,
-                            modifier = modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = MaterialTheme.sizing.small16,
-                                    vertical = MaterialTheme.sizing.small8,
-                                )
-                        )
-
-                        false ->
-                            PermissionRequiredScreen(
-                                state = uiState.permissionsState,
-                                isRefreshing = uiState.isRefreshing,
-                                onRefresh = {
-                                    onAction(ScheduleUIAction.RefreshPermission)
-                                },
+                    AnimatedContent(
+                        uiState.isPermissionGranted || uiState.hasAdminAccess
+                    ) { state ->
+                        when (state) {
+                            true -> SuccessScreen(
+                                uiState = uiState,
+                                onAction = onAction,
+                                appointments = appointments,
+                                onNavigateToAppointmentDetails = navigationActions::navigateToAppointmentDetails,
                                 modifier = modifier
-                                    .padding(MaterialTheme.spacing.medium16)
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = MaterialTheme.sizing.small16,
+                                        vertical = MaterialTheme.sizing.small8,
+                                    )
                             )
 
+                            false ->
+                                PermissionRequiredScreen(
+                                    state = uiState.permissionsState,
+                                    isRefreshing = uiState.isRefreshing,
+                                    onRefresh = {
+                                        onAction(ScheduleUIAction.RefreshPermission)
+                                    },
+                                    modifier = modifier
+                                        .padding(MaterialTheme.spacing.medium16)
+                                )
+
+                        }
                     }
-                }
             }
         }
     }

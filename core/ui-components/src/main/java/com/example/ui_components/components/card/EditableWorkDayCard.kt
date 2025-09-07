@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateAddressFormat
@@ -30,15 +32,18 @@ fun EditableWorkDayCard(
     onItemDeleteClick: (Int?) -> Unit,
     onItemEditClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
+    shape: Shape = MaterialTheme.shapes.small,
+    backgroundColor: Color = MaterialTheme.colorScheme.background
 ) {
     Row(
         modifier = modifier
-            .clip(MaterialTheme.shapes.small)
-            .background(color = MaterialTheme.colorScheme.background)
+            .clip(shape)
+            .background(
+                color = backgroundColor,
+                shape = shape
+            )
             .clickable { onItemEditClick(workDay.id) }
-            .padding(
-                end = MaterialTheme.spacing.extraSmall4,
-            ),
+        ,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(

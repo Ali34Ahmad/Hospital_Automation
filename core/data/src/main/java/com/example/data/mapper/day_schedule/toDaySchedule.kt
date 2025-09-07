@@ -1,7 +1,9 @@
 package com.example.data.mapper.day_schedule
 
 import com.example.model.doctor.day_scedule.DaySchedule
-import com.example.network.model.dto.WorkDayDto
+import com.example.model.doctor.workday.WorkDaySummaryData
+import com.example.network.model.dto.workday.WorkDayDto
+import com.example.network.model.dto.workday.WorkDaySummaryDto
 import java.time.DayOfWeek
 
 fun WorkDayDto.toDaySchedule(): DaySchedule {
@@ -15,3 +17,16 @@ fun WorkDayDto.toDaySchedule(): DaySchedule {
         endTime = this.workEndTime
     )
 }
+
+internal fun WorkDaySummaryDto.toWorkDaySummaryData() =
+    WorkDaySummaryData(
+        day = day,
+        startTime = startTime,
+        endTime = endTime
+    )
+internal fun WorkDaySummaryData.toWorkDaySummaryDto() =
+    WorkDaySummaryDto(
+        day = day,
+        startTime = startTime,
+        endTime = endTime
+    )

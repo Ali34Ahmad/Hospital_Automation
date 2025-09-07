@@ -1,6 +1,6 @@
 package com.example.network.model.dto.doctor.clinic
 
-import com.example.network.model.dto.WorkDayDto
+import com.example.network.model.dto.workday.WorkDayDto
 import com.example.network.model.dto.user.UserDto
 import com.example.network.serializer.LocalDateSerializer
 import com.example.network.serializer.LocalTimeSerializer

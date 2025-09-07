@@ -1,4 +1,4 @@
-package com.example.network.model.dto
+package com.example.network.model.dto.workday
 
 import com.example.network.serializer.LocalTimeSerializer
 import kotlinx.serialization.SerialName
@@ -10,7 +10,7 @@ import java.time.LocalTime
 data class WorkDayDto(
     @SerialName("work_DaysId")
     val id: Int,
-    val day: DayOfWeek ? = null,
+    val day: DayOfWeek? = null,
     @Serializable(with = LocalTimeSerializer::class)
     @SerialName("work_start_time")
     val workStartTime: LocalTime,

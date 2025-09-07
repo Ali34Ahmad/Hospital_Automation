@@ -118,7 +118,7 @@ val mockAction = object : ClinicNavigationAction{
     override fun navigateUp() {
     }
 
-    override fun navigateToDoctorProfile() {
+    override fun navigateToDoctorProfile(id: Int) {
 
     }
 

@@ -75,11 +75,13 @@ fun NavGraphBuilder.appointmentDetailsScreen(
             canSkip: Boolean,
     )-> Unit,
     onNavigateToGuardianProfile: (guardianId: Int)-> Unit,
+    onNavigateToChildProfile: (childId: Int)-> Unit,
 ){
     composable<AppointmentDetailsRoute>{
         val viewModel = koinViewModel<AppointmentDetailsViewModel>()
         val navigationActions = object : AppointmentDetailsNavigationActions{
             override fun navigateToGuardianProfile(guardianId: Int) = onNavigateToGuardianProfile(guardianId)
+            override fun navigateToChildProfile(childId: Int) = onNavigateToChildProfile(childId)
 
             override fun navigateUp() = onNavigateUp()
             override fun navigateToAddMedicalDiagnosis(

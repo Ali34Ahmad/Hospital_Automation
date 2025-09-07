@@ -6,16 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.clinic_details.navigation.ClinicDetailsType
@@ -27,7 +23,6 @@ import com.example.model.User
 import com.example.model.doctor.day_scedule.DoctorStatusChecker
 import com.example.model.enums.DoctorStatus
 import com.example.model.enums.ScreenState
-import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.ui_components.R
@@ -184,8 +179,8 @@ internal fun ClinicDetailsScreen(
                                 onVaccinesItemClick = {
                                     navigationAction.navigateToVaccines()
                                 },
-                                onDoctorItemClick = {
-                                    navigationAction.navigateToDoctorProfile()
+                                onDoctorItemClick = {id->
+                                    navigationAction.navigateToDoctorProfile(id)
                                 },
                                 onServiceItemClick = { index ->
                                     val service = clinicServices[index]
