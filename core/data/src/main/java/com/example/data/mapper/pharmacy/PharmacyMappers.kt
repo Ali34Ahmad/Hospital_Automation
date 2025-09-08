@@ -1,6 +1,7 @@
 package com.example.data.mapper.pharmacy
 
 import com.example.data.mapper.day_schedule.toDaySchedule
+import com.example.data.mapper.enums.toGender
 import com.example.model.address.Address
 import com.example.model.pharmacy.PharmacistData
 import com.example.model.pharmacy.PharmacyData
@@ -77,5 +78,7 @@ fun UserWithAddressDto.toUserWithAddress() =
         addressNote = addressNote,
         isSuspended = isSuspended,
         isResigned = isResigned,
-        acceptedBy = acceptedBy
+        acceptedBy = acceptedBy,
+        gender = genderDto.toGender(),
+        email = email,
     )

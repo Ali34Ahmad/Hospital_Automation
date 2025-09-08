@@ -33,7 +33,7 @@ fun VaccineInteractionTableItem(
     onClick: () -> Unit,
     interaction: VaccineInteraction,
 ) {
-    val surfaceColor = MaterialTheme.colorScheme.surface
+    val surfaceColor = MaterialTheme.colorScheme.outlineVariant
     val borderWidth = MaterialTheme.sizing.extraSmall1
 
     val innerRowModifier = modifier
@@ -70,7 +70,7 @@ fun VaccineInteractionTableItem(
         Spacer(
             modifier=Modifier.width(1.dp)
                 .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.outlineVariant)
         )
         Text(
             text = interaction.description,

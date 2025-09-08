@@ -2,6 +2,7 @@ package com.example.pharmacy_details.fake
 
 import com.example.model.address.Address
 import com.example.model.doctor.day_scedule.DaySchedule
+import com.example.model.enums.Gender
 import com.example.model.pharmacy.PharmacyDetailsResponse
 import com.example.model.pharmacy.UserWithAddress
 import com.example.model.user.FullName
@@ -47,7 +48,9 @@ fun createSamplePharmacyDetailsResponse(): List<PharmacyDetailsResponse> {
                 addressNote = "Apartment 3B",
                 isSuspended = false,
                 isResigned = false,
-                acceptedBy = 1
+                acceptedBy = 1 ,
+                gender = Gender.MALE,
+                email = "aliahmad@gmail.com"
             ),
             workDays = createSampleWorkDayList(),
         )
@@ -85,7 +88,9 @@ fun createSamplePharmacyDetailsResponse(): List<PharmacyDetailsResponse> {
                 addressNote = "Blue house",
                 isSuspended = true,
                 isResigned = false,
-                acceptedBy = null
+                acceptedBy = null,
+                gender = Gender.FEMALE,
+                email = "mariam@gmail.com"
             ),
             workDays = createSampleWorkDayList(),
         )
@@ -124,6 +129,8 @@ fun createSamplePharmacyDetailsResponse(): List<PharmacyDetailsResponse> {
                 isSuspended = true,
                 isResigned = true,
                 acceptedBy = 1,
+                gender = Gender.MALE,
+                email = "alimansoura@gmail.com",
             ),
             workDays = createSampleWorkDayList(),
         )
