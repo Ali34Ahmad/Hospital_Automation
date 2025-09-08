@@ -16,7 +16,7 @@ data class ScheduleUIState(
     val isRefreshing: Boolean = false,
     val screenState: ScreenState = ScreenState.IDLE,
     val askForPermissions: Boolean,
-    val permissionsState: ScreenState = if(askForPermissions) ScreenState.IDLE else ScreenState.SUCCESS,
+    val permissionsState: ScreenState = if(askForPermissions) ScreenState.LOADING else ScreenState.SUCCESS,
     val selectedTab: AppointmentState = AppointmentState.UPCOMMING,
     val isSearchBarVisible: Boolean = false,
     val isDatePickerVisible: Boolean = false,

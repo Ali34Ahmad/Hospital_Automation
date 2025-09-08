@@ -179,8 +179,11 @@ internal fun ClinicDetailsScreen(
                                 onVaccinesItemClick = {
                                     navigationAction.navigateToVaccines()
                                 },
-                                onDoctorItemClick = {id->
-                                    navigationAction.navigateToDoctorProfile(id)
+                                onDoctorItemClick = {index->
+                                    val id = uiState.clinic.activeDoctors[index].id
+                                    id?.let { id->
+                                        navigationAction.navigateToDoctorProfile(id)
+                                    }
                                 },
                                 onServiceItemClick = { index ->
                                     val service = clinicServices[index]

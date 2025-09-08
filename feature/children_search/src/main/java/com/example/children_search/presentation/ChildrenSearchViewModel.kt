@@ -1,5 +1,6 @@
 package com.example.children_search.presentation
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -37,19 +39,21 @@ class ChildrenSearchViewModel(
         ChildrenSearchUiState(
             searchType = route.searchType,
             employeeId = route.employeeId
-            //savedStateHandle.toRoute<ChildrenSearchRoute>().searchType
         ))
     val uiState: StateFlow<ChildrenSearchUiState> = _uiState
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)
-    private val queryFlow = uiState.map { it.query }.distinctUntilChanged()
+    private val queryFlow = uiState.map { it.query }.filterNot { it.isBlank() }.distinctUntilChanged()
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val childrenFlow = combine(queryFlow,refreshTrigger.onStart{ emit(Unit) }){
+    val childrenFlow = combine(queryFlow,refreshTrigger.onStart{
+        emit(Unit)
+    }){
         query, _ -> query
     }
         .debounce(DurationConstants.SEARCH_DEBOUNCE_DELAY)
         .flatMapLatest{ query ->
+            Log.d("ChildrenSearchViewModel","doing Api call")
             val result = getPagingSourceFactory(query)
             updateRefreshState(false)
             result
@@ -63,13 +67,16 @@ class ChildrenSearchViewModel(
             }
 
             is ChildrenSearchUIActions.OnQueryChanged -> {
-                if(action.newQuery.isBlank())
-                    _uiState.value = _uiState.value.copy(state = ScreenState.IDLE)
                 _uiState.value = _uiState.value.copy(query = action.newQuery)
+                if(action.newQuery.isBlank()){
+                    _uiState.value = _uiState.value.copy(state = ScreenState.IDLE)
+                    Log.d("ChildrenSearchViewModel","state : ${uiState.value.state}")
+                }
             }
 
             is ChildrenSearchUIActions.UpdateState ->{
                 _uiState.value = _uiState.value.copy(state = action.newState)
+                Log.d("ChildrenSearchViewModel","state : ${uiState.value.state}")
             }
 
             ChildrenSearchUIActions.Refresh -> {

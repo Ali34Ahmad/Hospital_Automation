@@ -65,12 +65,15 @@ fun NavController.switchToTab(
  *
  * @author Ali Mansoura
  */
-fun NavController.navigateReplacingCurrent(route: Any) {
-    val currentRoute = currentBackStackEntry?.destination?.route
-    navigate(route) {
-        launchSingleTop = true
+fun NavController.navigateReplacingCurrent(
+    route: Any
+) {
 
-        currentRoute?.let {
+    val currentDestinationId = currentDestination?.id
+
+    navigate(route) {
+
+        currentDestinationId?.let {
             popUpTo(it) {
                 inclusive = true
             }

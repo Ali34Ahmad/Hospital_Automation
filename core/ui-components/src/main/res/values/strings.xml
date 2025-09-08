@@ -50,7 +50,7 @@
     <string name="gender">Gender</string>
     <string name="go_back">Go back</string>
     <string name="child_added_successfully">Child Added Successfully</string>
-    <string name="child_added_successfully_description"><b>“Ali Mansoura”</b> is now eligible for our vaccination programs and appointments under guardian responsibility.</string>
+    <string name="child_added_successfully_description">This child is now eligible for our vaccination programs and appointments under guardian responsibility.</string>
     <string name="pdf">pdf</string>
     <string name="father_name">Father Name</string>
     <string name="mother_name">Mother Name</string>

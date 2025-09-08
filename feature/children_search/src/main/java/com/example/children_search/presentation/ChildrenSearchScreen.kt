@@ -45,7 +45,7 @@ fun ChildrenSearchScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val children = remember(uiState.query) {
-        if(uiState.query.isBlank() && uiState.searchType == SearchType.GLOBAL) null else viewModel.childrenFlow
+        if(uiState.query.isBlank()) null else viewModel.childrenFlow
     }?.collectAsLazyPagingItems()
     ChildrenSearchScreen(
         modifier = modifier,
@@ -147,7 +147,6 @@ fun ChildrenSearchScreen(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.Center,
                         ) {
-
                             ErrorComponent(
                                 modifier = Modifier
                                     .fillMaxWidth(),

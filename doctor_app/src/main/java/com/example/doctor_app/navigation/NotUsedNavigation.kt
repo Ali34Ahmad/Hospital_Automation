@@ -76,7 +76,7 @@ import com.example.vaccine_details_screen.navigation.vaccineDetailsScreen
 import com.example.vaccines.navigation.navigateToVaccinesScreen
 
 @Composable
-fun Navigation() {
+fun NotUsedNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,

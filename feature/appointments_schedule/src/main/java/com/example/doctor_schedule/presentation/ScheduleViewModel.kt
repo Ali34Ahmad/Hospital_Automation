@@ -239,6 +239,8 @@ class ScheduleViewModel(
                 updatePermission(response)
                 if(response){
                     updatePermissionState(ScreenState.SUCCESS)
+                }else{
+                    updatePermissionState(ScreenState.IDLE)
                 }
             }
     }

@@ -42,8 +42,7 @@ fun ChildAddedSuccessfullyCard(
             Row(modifier = Modifier.fillMaxWidth()) {
                 HospitalAutomationOutLinedButton(
                     onClick = onBackToHomeButtonClick,
-                    text = stringResource(R.string.replace_file),
-                    icon = AppIcons.Outlined.file,
+                    text = stringResource(R.string.go_back),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.large24))

@@ -1,5 +1,6 @@
 package com.example.hospital_automation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -206,7 +207,7 @@ fun Navigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId,role ->
                 if (suspendedById != currentEmployeeId) {
                     navController.navigateToAdminProfileScreen(suspendedById)
                 } else {
@@ -272,7 +273,8 @@ fun Navigation() {
                 navController.navigateToGuardiansSearch(childId)
             },
             onNavigateToHomeScreen = {
-                navController.navigate(HomeRoute) {
+                Log.d("onNavigateToHomeScreen","navigating to home")
+                navController.navigate(MainGraphRoute) {
                     popUpTo(navController.graph.startDestinationId) {
                         inclusive = true
                     }

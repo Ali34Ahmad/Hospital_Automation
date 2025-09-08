@@ -11,6 +11,7 @@ import com.example.add_residential_address.navigation.addResidentialAddressScree
 import com.example.add_residential_address.navigation.navigateToAddResidentialAddressScreen
 import com.example.admin_profile.navigation.adminProfileScreen
 import com.example.admin_profile.navigation.navigateToAdminProfileScreen
+import com.example.appointment_details.navigation.AppointmentDetailsRoute
 import com.example.appointment_details.navigation.appointmentDetailsScreen
 import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.appointment_details.navigation.navigateToAppointmentDetailsReplacementCurrent
@@ -27,8 +28,8 @@ import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
 import com.example.doctor_schedule.navigation.ScheduleRoute
-import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
+import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctor_signup.navigation.doctorSignUpScreen
 import com.example.doctor_signup.navigation.navigateToDoctorSignUpScreen
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
@@ -54,8 +55,8 @@ import com.example.medical_records.navigation.medicalRecordsScreen
 import com.example.medical_records.navigation.navigateToMedicalRecordsScreen
 import com.example.medicine_details.navigation.medicineDetailsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
+import com.example.medicines_search.navigation.MedicinesSearchRoute
 import com.example.medicines_search.navigation.medicinesScreen
-import com.example.medicines_search.navigation.navigateToMedicineSearchScreenReplacingCurrent
 import com.example.navigation.extesion.navigateToCallApp
 import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacies.navigation.navigateToPharmacies
@@ -524,17 +525,28 @@ fun FakeNavigation() {
 
         diagnosisScreen(
             onNavigateToAppointmentDetails = { appointmentId ->
-                navController.navigateToAppointmentDetailsReplacementCurrent(
-                    appointmentId = appointmentId,
-                    canEdit = true
-                )
+                val newRoute = AppointmentDetailsRoute(appointmentId,canEdit = true)
+                navController.navigate(route = newRoute) {
+                    popUpTo<ScheduleRoute> {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = false
+                }
             },
             onNavigateToMedicinesSearchScreen = { childId, patientId, appointmentId ->
-                navController.navigateToMedicineSearchScreenReplacingCurrent(
+                val newRoute = MedicinesSearchRoute(
                     childId = childId,
                     patientId = patientId,
                     appointmentId = appointmentId
                 )
+                navController.navigate(route = newRoute) {
+                    popUpTo<ScheduleRoute> {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = false
+                }
             }
         )
 
@@ -552,10 +564,18 @@ fun FakeNavigation() {
                 )
             },
             onNavigateToAppointmentDetails = { appointmentId ->
-                navController.navigateToAppointmentDetailsReplacementCurrent(
-                    appointmentId = appointmentId,
-                    canEdit = true
-                )
+//                navController.navigateToAppointmentDetailsReplacementCurrent(
+//                    appointmentId = appointmentId,
+//                    canEdit = true
+//                )
+                val newRoute = AppointmentDetailsRoute(appointmentId,canEdit = true)
+                navController.navigate(route = newRoute) {
+                    popUpTo<ScheduleRoute> {
+                        inclusive = false
+                        saveState = true
+                    }
+                    restoreState = false
+                }
             }
         )
 

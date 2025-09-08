@@ -70,13 +70,13 @@ fun HomeScreen(
                 uiActions.navigateToEmployeeProfileScreen()
             }
         ),
-        DrawerButton(
-            text = R.string.requests,
-            image = AppIcons.Outlined.send,
-            onClick = {
-                uiActions.navigateToRequestsScreen()
-            }
-        ),
+//        DrawerButton(
+//            text = R.string.requests,
+//            image = AppIcons.Outlined.send,
+//            onClick = {
+//                uiActions.navigateToRequestsScreen()
+//            }
+//        ),
         DrawerButton(
             text = R.string.add_children,
             image = AppIcons.Outlined.child,
