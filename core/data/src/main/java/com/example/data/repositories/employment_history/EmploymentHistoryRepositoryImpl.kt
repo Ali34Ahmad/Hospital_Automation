@@ -1,10 +1,12 @@
 package com.example.data.repositories.employment_history
 
 import com.example.data.mapper.employment_history.toEmploymentHistoryResponse
+import com.example.data.mapper.employment_history.toPharmacyContractResponse
 import com.example.data.mapper.enums.toRoleDto
 import com.example.domain.repositories.profile.EmploymentHistoryRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.employment_history.EmploymentHistoryResponse
+import com.example.model.employment_history.PharmacyContractResponse
 import com.example.model.enums.Role
 import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.employment_history.EmploymentHistoryApiService
@@ -26,6 +28,17 @@ class EmploymentHistoryRepositoryImpl(
             )
                 .map { employmentHistoryResponseDto ->
                     employmentHistoryResponseDto.toEmploymentHistoryResponse()
+                }
+        }
+
+    override suspend fun getPharmacyContract(pharmacyId: Int): Result<PharmacyContractResponse, rootError> =
+        userPreferencesRepository.executeWithValidToken { token ->
+            employmentHistoryApiService.getPharmacyContractHistory(
+                token = token,
+                pharmacyId = pharmacyId,
+            )
+                .map { pharmacyContractResponseDto ->
+                    pharmacyContractResponseDto.toPharmacyContractResponse()
                 }
         }
 }

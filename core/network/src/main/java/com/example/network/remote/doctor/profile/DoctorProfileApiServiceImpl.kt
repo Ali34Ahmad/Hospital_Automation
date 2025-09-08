@@ -29,6 +29,8 @@ class DoctorProfileApiServiceImpl(
             val response = client.get("${ApiRoutes.getDoctorProfileEndPoint(role = roleDto, id == null)}$routeSuffix") {
                 contentType(ContentType.Application.Json)
                 bearerAuth(token)
+                Log.d("DoctorProfileApi", "$id $roleDto")
+                Log.d("DoctorProfileApi", url.toString())
             }
 
             when (response.status.value) {

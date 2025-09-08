@@ -250,7 +250,8 @@ fun DoctorProfileScreen(
                                             uiActions.navigateToAppointmentsScreen(
                                                 null,
                                                 uiState.doctorInfo.profile.fullName.toAppropriateNameFormat(),
-                                                uiState.doctorInfo.profile.specialty
+                                                uiState.doctorInfo.profile.specialty,
+                                                uiState.doctorInfo.profile.imageUrl,
                                                 )
                                         },
                                         isAppointmentsItemEnabled = isActionsItemsEnabledInDoctorRole,
@@ -286,7 +287,8 @@ fun DoctorProfileScreen(
                                             uiActions.navigateToAppointmentsScreen(
                                                 uiState.doctorId,
                                                 uiState.doctorInfo.profile.fullName.toAppropriateNameFormat(),
-                                                uiState.doctorInfo.profile.specialty
+                                                uiState.doctorInfo.profile.specialty,
+                                                uiState.doctorInfo.profile.imageUrl,
                                                 )
                                         },
                                         isAppointmentsItemEnabled = isAccepted,

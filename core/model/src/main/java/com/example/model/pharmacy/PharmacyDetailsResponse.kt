@@ -2,6 +2,7 @@ package com.example.model.pharmacy
 
 import com.example.model.address.Address
 import com.example.model.doctor.day_scedule.DaySchedule
+import com.example.model.enums.Gender
 import com.example.model.user.FullName
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -34,5 +35,7 @@ data class UserWithAddress(
     val addressNote: String?,
     val isSuspended: Boolean,
     val isResigned: Boolean,
-    val acceptedBy: Int?
+    val acceptedBy: Int?,
+    val gender: Gender,
+    val email: String,
 )

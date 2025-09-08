@@ -26,7 +26,7 @@ fun NavGraphBuilder.doctorProfileScreen(
     onNavigateToEmploymentHistoryScreen: (doctorId:Int?) -> Unit,
     onNavigateToLoginScreen: () -> Unit,
     onNavigateUp: () -> Unit,
-    onNavigateToAppointmentsScreen: (doctorId:Int?) -> Unit,
+    onNavigateToAppointmentsScreen: (doctorId:Int?,name:String?,specialty:String?,imageUrl:String?) -> Unit,
     onNavigateToPrescriptionsScreen: (doctorId:Int?) -> Unit,
     onNavigateToMedicalRecordsScreen: (doctorId:Int?) -> Unit,
     onNavigateToDepartmentScreen: (clinicId:Int) -> Unit,
@@ -39,10 +39,14 @@ fun NavGraphBuilder.doctorProfileScreen(
             override fun navigateToAppointmentsScreen(
                 doctorId: Int?,
                 name: String,
-                specialty: String?
+                specialty: String?,
+                imageUrl: String?,
             ) {
                 onNavigateToAppointmentsScreen(
                     doctorId,
+                    name,
+                    specialty,
+                    imageUrl
                 )
             }
 

@@ -57,6 +57,8 @@ import com.example.medicine_details.navigation.medicineDetailsScreen
 import com.example.medicine_details.navigation.navigateToMedicineDetails
 import com.example.medicines_search.navigation.MedicinesSearchRoute
 import com.example.medicines_search.navigation.medicinesScreen
+import com.example.medicines_search.navigation.navigateToMedicineSearchScreenReplacingCurrent
+import com.example.model.enums.Role
 import com.example.navigation.extesion.navigateToCallApp
 import com.example.navigation.extesion.navigateToEmailApp
 import com.example.pharmacies.navigation.navigateToPharmacies
@@ -76,6 +78,7 @@ import com.example.upload_profile_image.navigation.navigateToUploadProfileImageS
 import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 import com.example.vaccine_details_screen.navigation.VaccinePreviousScreen
 import com.example.vaccine_details_screen.navigation.navigateToVaccineDetailsScreen
+import com.example.vaccine_details_screen.navigation.navigateToVaccineDetailsScreenReplacingCurrentScreen
 import com.example.vaccine_details_screen.navigation.vaccineDetailsScreen
 import com.example.vaccines.navigation.navigateToVaccinesScreen
 import com.example.vaccines.navigation.vaccinesScreen
@@ -181,7 +184,7 @@ fun FakeNavigation() {
             onNavigateToEmploymentHistoryScreen = {
                 navController.navigateToEmploymentHistoryScreen(null)
             },
-            onNavigateToAppointmentsScreen = {
+            onNavigateToAppointmentsScreen = {_,_,_,_->
                 navController.navigateToScheduleScreen()
             },
             onNavigateToPrescriptionsScreen = {
@@ -215,7 +218,7 @@ fun FakeNavigation() {
 
         addNewVaccineScreen(
             onNavigateToVaccineDetailsScreenScreen = { vaccineId ->
-                navController.navigateToVaccineDetailsScreen(
+                navController.navigateToVaccineDetailsScreenReplacingCurrentScreen(
                     VaccinePreviousScreen.ADD_NEW_VACCINE,
                     vaccineId
                 )
@@ -306,7 +309,7 @@ fun FakeNavigation() {
             onNavigateUp = {
                 navController.navigateUp()
             },
-            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId,_ ->
+            onNavigateToSuspendedByAdminProfileScreen = { suspendedById, currentEmployeeId,_,_ ->
                 if (suspendedById != currentEmployeeId) {
                     navController.navigateToAdminProfileScreen(suspendedById)
                 } else {
@@ -406,7 +409,7 @@ fun FakeNavigation() {
                 )
             },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToCreateNewClinic = {
             },
@@ -429,7 +432,7 @@ fun FakeNavigation() {
             },
             onNavigateToScheduleScreen = { },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToAllDoctors = { clinicId, clinicName -> },
             onNavigateToAllAppointments = {},
@@ -456,7 +459,7 @@ fun FakeNavigation() {
                 navController.navigateToPrescriptionsScreen(null, null, null)
             },
             onNavigateToVaccines = {
-                navController.navigateToVaccinesScreen()
+                navController.navigateToVaccinesScreen(Role.DOCTOR)
             },
             onNavigateToNotifications = {
             },

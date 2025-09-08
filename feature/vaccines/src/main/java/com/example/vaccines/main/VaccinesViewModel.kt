@@ -1,13 +1,16 @@
 package com.example.vaccines.main
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.domain.use_cases.vaccine.GetAllVaccinesUseCase
 import com.example.model.enums.ScreenState
 import com.example.model.vaccine.VaccineData
 import com.example.util.UiText
+import com.example.vaccines.navigation.VaccinesRoute
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,8 +25,11 @@ import kotlinx.coroutines.launch
 
 class VaccinesViewModel(
     private val getAllVaccinesUseCase: GetAllVaccinesUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(VaccinesUiState())
+    private val _uiState = MutableStateFlow(VaccinesUiState(
+        accessedByRole = savedStateHandle.toRoute<VaccinesRoute>().accessedByRole
+    ))
     val uiState: StateFlow<VaccinesUiState> = _uiState.asStateFlow()
 
     private val refreshTrigger = MutableSharedFlow<Unit>(replay = 0)

@@ -15,22 +15,25 @@ import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class EmploymentHistoryRoute(
-    val id: Int?,
+    val userId: Int?,
     val roleOfRequestedUserHistory: Role? = null,
+    val pharmacyId: Int? = null,
 )
 
 fun NavController.navigateToEmploymentHistoryScreen(
-    doctorId: Int?,
+    userId: Int?,
     roleOfRequestedUserHistory: Role? = null,
+    pharmacyId: Int? = null,
 ) {
-    navigateToScreen(EmploymentHistoryRoute(doctorId,roleOfRequestedUserHistory))
+    navigateToScreen(EmploymentHistoryRoute(userId, roleOfRequestedUserHistory, pharmacyId))
 }
 
 fun NavGraphBuilder.employmentHistoryScreen(
     onNavigateToAcceptedByAdminProfileScreen: (adminId: Int) -> Unit,
     onNavigateToToResignedByAdminProfileScreen: (resignedById: Int) -> Unit,
     onNavigateUp: () -> Unit,
-    onNavigateToSuspendedByAdminProfileScreen: (suspendedById: Int, currentEmployeeId: Int, role: Role?) -> Unit,
+    onNavigateToSuspendedByAdminProfileScreen: (suspendedById: Int, currentEmployeeId: Int, role: Role?,
+            pharmacyId:Int?) -> Unit,
 ) {
     composable<EmploymentHistoryRoute> {
         val viewModel = koinViewModel<EmploymentHistoryViewModel>()
@@ -40,7 +43,7 @@ fun NavGraphBuilder.employmentHistoryScreen(
             override fun navigateToAcceptedByAdminProfileScreen() {
                 onNavigateToAcceptedByAdminProfileScreen(
                     uiState.value.employmentHistory?.acceptedBy?.userId
-                        ?: -1
+                        ?: uiState.value.pharmacyContractResponse?.acceptedBy?.id ?: -1
                 )
             }
 
@@ -54,10 +57,11 @@ fun NavGraphBuilder.employmentHistoryScreen(
             override fun navigateToSuspendedByAdminProfileScreen(role: Role?) {
                 onNavigateToSuspendedByAdminProfileScreen(
                     uiState.value.employmentHistory?.suspendedBy?.userId
-                        ?: -1,
+                        ?: uiState.value.pharmacyContractResponse?.deactivatedBy?.id ?: -1,
                     uiState.value.employmentHistory?.currentUser?.userId
-                        ?: -1,
-                    uiState.value.roleOfRequestedUserHistory
+                        ?: uiState.value.pharmacyContractResponse?.pharmacyInHistory?.pharmacist?.userId ?: -1,
+                    uiState.value.roleOfRequestedUserHistory,
+                    uiState.value.pharmacyContractResponse?.pharmacyInHistory?.id
                 )
             }
 

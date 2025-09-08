@@ -270,10 +270,13 @@ fun AdminGraph(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToAppointmentsScreen = { doctorId ->
+                onNavigateToAppointmentsScreen = { doctorId,name,specialty,imageUrl, ->
                     navController.navigateToScheduleScreen(
                         id = doctorId,
                         hasAdminAccess = true,
+                        name = name,
+                        speciality = specialty,
+                        imageUrl = imageUrl,
                         searchType = AppointmentSearchType.DOCTOR,
                     )
                 },
@@ -322,15 +325,19 @@ fun AdminGraph(
                     context.navigateToCallApp(phoneNumber)
                 },
                 onNavigateToFulfilledPrescriptionsScreen = { },
-                onNavigateToMedicinesScreen = { pharmacyId,pharmacyName,imageUrl ->
+                onNavigateToMedicinesScreen = { pharmacyId, pharmacyName, imageUrl ->
                     navController.navigateToPharmacyMedicines(
                         pharmacyId = pharmacyId,
                         name = pharmacyName,
                         imageUrl = imageUrl,
                     )
                 },
-                onNavigateToEmploymentHistoryScreen = { employeeId ->
-                    navController.navigateToEmploymentHistoryScreen(employeeId)
+                onNavigateToEmploymentHistoryScreen = { pharmacyId ->
+                    navController.navigateToEmploymentHistoryScreen(
+                        userId = null,
+                        roleOfRequestedUserHistory = Role.PHARMACIST,
+                        pharmacyId = pharmacyId,
+                    )
                 }
             )
 
@@ -344,10 +351,10 @@ fun AdminGraph(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int,roleOfHistoryOwner: Role? ->
+                onNavigateToSuspendedByAdminProfileScreen = { suspendedById: Int, currentEmployeeId: Int, roleOfHistoryOwner: Role?, pharmacyId: Int? ->
                     if (suspendedById == currentEmployeeId) {
-                        when(roleOfHistoryOwner){
-                            Role.EMPLOYEE ->  navController.navigateToEmployeeProfileScreen(
+                        when (roleOfHistoryOwner) {
+                            Role.EMPLOYEE -> navController.navigateToEmployeeProfileScreen(
                                 employeeId = currentEmployeeId,
                                 employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
                             )
@@ -356,7 +363,13 @@ fun AdminGraph(
                                 doctorId = currentEmployeeId,
                                 doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS
                             )
-                            else->null
+
+                            Role.PHARMACIST -> navController.navigateToPharmacyDetailsScreen(
+                                pharmacyId = pharmacyId,
+                                pharmacyAccessType = PharmacyAccessType.ADMIN_ACCESS
+                            )
+
+                            else -> null
                         }
                     } else {
                         navController.navigateToAdminProfileScreen(
@@ -462,14 +475,17 @@ fun AdminGraph(
             mainScreens(navController)
             clinicDetailsScreen(
                 onNavigateUp = navController::navigateUp,
-                onNavigateToDoctorProfile = {
-                    TODO("not yet implemented")
+                onNavigateToDoctorProfile = { doctorId ->
+                    navController.navigateToDoctorProfileScreen(
+                        doctorId = doctorId,
+                        doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS,
+                    )
                 },
                 onNavigateToScheduleScreen = {
                     //no need here because it is used in the doctor bottomBar
                 },
                 onNavigateToVaccines = {
-                    navController.navigateToVaccinesScreen()
+                    navController.navigateToVaccinesScreen(Role.ADMIN)
                 },
                 onNavigateToAllDoctors = { clinicId, clinicName ->
                     navController.navigateToDoctorsSearch(
@@ -534,7 +550,7 @@ fun AdminGraph(
                 },
                 navigateToEmployeeProfileScreen = { employeeId ->
                     navController.navigateToEmployeeProfileScreen(
-                        employeeId=employeeId,
+                        employeeId = employeeId,
                         employeeProfileAccessType = EmployeeProfileAccessType.ADMIN_ACCESS
                     )
                 },
@@ -637,7 +653,7 @@ fun AdminGraph(
                         childId = null
                     )
                 },
-                onNavigateToChildProfile = {childId->
+                onNavigateToChildProfile = { childId ->
                     navController.navigateToChildProfile(
                         childId = childId,
                         childProfileMode = ChildProfileMode.ADMIN_ACCESS

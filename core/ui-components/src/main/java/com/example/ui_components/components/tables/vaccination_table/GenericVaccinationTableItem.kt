@@ -32,7 +32,7 @@ fun GenericVaccinationTableItem(
     isEditable: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val surfaceColor = MaterialTheme.colorScheme.surface
+    val surfaceColor = MaterialTheme.colorScheme.outlineVariant
     val borderWidth = MaterialTheme.sizing.extraSmall1
     val innerRowModifier = Modifier
         .drawBehind {

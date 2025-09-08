@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,6 +69,12 @@ fun RequestCard(
         RequestType.PHARMACIST -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
     }
 
+    val description = when (requestType) {
+        RequestType.EMPLOYEE -> stringResource(R.string.employee_request_message)
+        RequestType.DOCTOR -> stringResource(R.string.doctor_request_message)
+        RequestType.PHARMACIST -> stringResource(R.string.pharmacy_request_message)
+    }
+
     Column(
         modifier = modifier
             .clip(shape)
@@ -83,13 +90,22 @@ fun RequestCard(
             backgroundColor = tagBackgroundColor
         )
 
-        Spacer(Modifier.height(MaterialTheme.spacing.medium16))
+        Spacer(Modifier.height(MaterialTheme.spacing.small8))
+
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+
+        Spacer(Modifier.height(MaterialTheme.spacing.small8))
 
         clinicMainInfo?.let {
             DetailsItem(
                 iconRes = AppIcons.Outlined.department,
                 title = stringResource(R.string.department),
                 description = clinicMainInfo.name,
+                contentPadding = PaddingValues(MaterialTheme.spacing.default)
             )
         }
         Spacer(Modifier.height(MaterialTheme.spacing.medium16))

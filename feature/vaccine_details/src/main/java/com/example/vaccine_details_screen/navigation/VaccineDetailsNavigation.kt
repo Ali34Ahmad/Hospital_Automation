@@ -4,6 +4,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.navigation.extesion.navigateReplacingCurrent
 import com.example.navigation.extesion.navigateToScreen
 import com.example.vaccine_details_screen.main.VaccineDetailsNavigationUiActions
 import com.example.vaccine_details_screen.main.VaccineDetailsScreen
@@ -21,6 +22,11 @@ data class VaccineDetailsRoute(
 fun NavController.navigateToVaccineDetailsScreen(vaccinePreviousScreen: VaccinePreviousScreen,vaccineId: Int) {
     navigateToScreen(VaccineDetailsRoute(vaccinePreviousScreen,vaccineId))
 }
+
+fun NavController.navigateToVaccineDetailsScreenReplacingCurrentScreen(vaccinePreviousScreen: VaccinePreviousScreen,vaccineId: Int) {
+    navigateReplacingCurrent(VaccineDetailsRoute(vaccinePreviousScreen,vaccineId))
+}
+
 
 fun NavGraphBuilder.vaccineDetailsScreen(
     onNavigateToVaccinationTableScreen:()->Unit,

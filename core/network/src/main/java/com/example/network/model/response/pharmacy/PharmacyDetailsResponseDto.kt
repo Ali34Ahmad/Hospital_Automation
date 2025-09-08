@@ -1,6 +1,7 @@
 package com.example.network.model.response.pharmacy
 
 import com.example.network.model.dto.workday.WorkDayDto
+import com.example.network.model.enums.GenderDto
 import com.example.network.serializer.LocalDateSerializer
 import com.example.network.serializer.LocalDateTimeSerializer
 import kotlinx.serialization.SerialName
@@ -81,4 +82,7 @@ data class UserWithAddressDto(
     val isResigned: Boolean,
     @SerialName("accepted_by")
     val acceptedBy: Int?,
+    @SerialName("gender")
+    val genderDto: GenderDto,
+    val email: String,
 )

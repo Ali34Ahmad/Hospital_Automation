@@ -23,7 +23,7 @@ import com.example.ui_components.R
 @Composable
 fun VaccineInteractionTableHeader(modifier: Modifier = Modifier) {
 
-    val surfaceColor = MaterialTheme.colorScheme.surface
+    val surfaceColor = MaterialTheme.colorScheme.outlineVariant
     val borderWidth = MaterialTheme.sizing.extraSmall1
 
     val innerRowModifier = modifier
@@ -65,7 +65,7 @@ fun VaccineInteractionTableHeader(modifier: Modifier = Modifier) {
         Spacer(
             modifier=Modifier.width(1.dp)
                 .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.outlineVariant)
         )
         Text(
             text = stringResource(R.string.description),

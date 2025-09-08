@@ -141,6 +141,7 @@ object ApiRoutes {
         const val REACTIVATE_PHARMACY = "$ADMIN/reactivate-pharmacy"
         const val SHOW_CURRENT_ADMIN_PROFILE = "$ADMIN/show-profile"
         const val GET_ADMIN_PROFILE_BY_ID = "$ADMIN/find-admin-by-id"
+        const val GET_PHARMACY_CONTRACT_HISTORY = "$ADMIN/pharmacy-contract-history"
     }
 
     object Prescription {

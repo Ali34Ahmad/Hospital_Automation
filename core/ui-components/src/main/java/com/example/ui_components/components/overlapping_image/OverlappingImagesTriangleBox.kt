@@ -17,6 +17,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @Composable
 fun OverlappingImagesTriangleBox(
@@ -33,11 +34,11 @@ fun OverlappingImagesTriangleBox(
             shape = CircleShape
         )
 
-    val secondImageModifier=if(imagesUrls.size==2) {
+    val secondImageModifier = if (imagesUrls.size == 2) {
         Modifier
             .padding(start = MaterialTheme.spacing.small12)
             .then(imageModifier)
-    }else{
+    } else {
         Modifier
             .padding(start = MaterialTheme.spacing.large24)
             .then(imageModifier)
@@ -46,31 +47,70 @@ fun OverlappingImagesTriangleBox(
         .padding(top = MaterialTheme.spacing.medium16)
         .then(imageModifier)
 
+    val secondImageLoaderModifier = if (imagesUrls.size == 2) {
+        Modifier.padding(start = MaterialTheme.spacing.small12)
+
+    } else {
+        Modifier.padding(start = MaterialTheme.spacing.large24)
+    }
+    val thirdImageLoaderModifier = Modifier
+        .padding(top = MaterialTheme.spacing.medium16)
+
     Box(
         modifier,
         contentAlignment = Alignment.Center,
     ) {
         Box {
-            if(imagesUrls.isNotEmpty()) {
+            if (imagesUrls.isNotEmpty()) {
                 NetworkImage(
                     model = imagesUrls[0],
                     modifier = imageModifier,
                     contentScale = ContentScale.Crop,
+                    loading = {
+                        NetworkImageLoader(
+                            imageModifier
+                        )
+                    },
+                    errorCompose = {
+                        NetworkImageLoader(
+                            imageModifier
+                        )
+                    }
                 )
             }
-            if(imagesUrls.size>=2) {
+            if (imagesUrls.size >= 2) {
                 NetworkImage(
                     model = imagesUrls[1],
                     modifier = secondImageModifier,
                     contentScale = ContentScale.Crop,
+                    loading = {
+                        NetworkImageLoader(
+                            imageModifier
+                        )
+                    },
+                    errorCompose = {
+                        NetworkImageLoader(
+                            imageModifier
+                        )
+                    }
                 )
             }
         }
-        if(imagesUrls.size>=3){
+        if (imagesUrls.size >= 3) {
             NetworkImage(
                 model = imagesUrls[2],
                 modifier = thirdImageModifier,
                 contentScale = ContentScale.Crop,
+                loading = {
+                    NetworkImageLoader(
+                        imageModifier
+                    )
+                },
+                errorCompose = {
+                    NetworkImageLoader(
+                        imageModifier
+                    )
+                }
             )
         }
     }

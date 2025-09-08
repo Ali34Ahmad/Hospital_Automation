@@ -36,6 +36,7 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.items.DetailsItem
+import com.example.ui_components.components.items.FailedImage
 import com.example.ui_components.components.network_image.NetworkImage
 import com.example.ui_components.components.network_image.NetworkImageLoader
 import com.example.ui_components.components.network_image.SmallNetworkImageError
@@ -90,11 +91,7 @@ fun PrescriptionCard(
                             )
                         },
                         errorCompose = {
-                            SmallNetworkImageError(
-                                modifier = Modifier
-                                    .size(MaterialTheme.sizing.medium40)
-                                    .clip(CircleShape),
-                            )
+                            FailedImage()
                         }
                     )
                 } else {

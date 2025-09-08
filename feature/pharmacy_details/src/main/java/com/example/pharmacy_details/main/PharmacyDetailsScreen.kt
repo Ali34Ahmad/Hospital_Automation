@@ -174,7 +174,7 @@ fun PharmacyDetailsScreen(
                                 },
                                 onEmailButtonClick = {
                                     uiActions.navigateToEmailApp(
-                                        email = "uiState.pharmacyInfo.email",
+                                        email = uiState.pharmacyInfo.userWithAddress.email,
                                         subject = subject
                                     )
                                 },
@@ -187,9 +187,8 @@ fun PharmacyDetailsScreen(
                                 profileImageUrl = uiState.pharmacyInfo.userWithAddress.imageUrl
                                     ?: "",
                                 residentialAddress = uiState.pharmacyInfo.pharmacyAddress.toAppropriateAddressFormat(),
-                                gender = Gender.MALE,
-//                                gender = uiState.pharmacyInfo.userWithAddress.gender ?: Gender.MALE,
-                                email = "uiState.pharmacyInfo.email",
+                                gender = uiState.pharmacyInfo.userWithAddress.gender,
+                                email = uiState.pharmacyInfo.userWithAddress.email,
                                 isResigned = uiState.pharmacyInfo.userWithAddress.isResigned,
                                 isSuspended = isSuspended,
                                 isAccepted = uiState.pharmacyInfo.userWithAddress.acceptedBy != null,
