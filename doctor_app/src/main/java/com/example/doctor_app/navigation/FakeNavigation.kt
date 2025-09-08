@@ -76,6 +76,7 @@ import com.example.upload_profile_image.navigation.navigateToUploadProfileImageS
 import com.example.upload_profile_image.navigation.uploadProfileImageScreen
 import com.example.vaccine_details_screen.navigation.VaccinePreviousScreen
 import com.example.vaccine_details_screen.navigation.navigateToVaccineDetailsScreen
+import com.example.vaccine_details_screen.navigation.navigateToVaccineDetailsScreenReplacingCurrentScreen
 import com.example.vaccine_details_screen.navigation.vaccineDetailsScreen
 import com.example.vaccines.navigation.navigateToVaccinesScreen
 import com.example.vaccines.navigation.vaccinesScreen
@@ -86,7 +87,15 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoute,
+        startDestination = ScheduleRoute(
+            id = null,
+            hasAdminAccess = false,
+            searchType = AppointmentSearchType.DOCTOR,
+            name = null,
+            speciality = null,
+            imageUrl = null,
+            askForPermissions = true,
+        ),
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -215,7 +224,7 @@ fun FakeNavigation() {
 
         addNewVaccineScreen(
             onNavigateToVaccineDetailsScreenScreen = { vaccineId ->
-                navController.navigateToVaccineDetailsScreen(
+                navController.navigateToVaccineDetailsScreenReplacingCurrentScreen(
                     VaccinePreviousScreen.ADD_NEW_VACCINE,
                     vaccineId
                 )

@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
+import coil3.ImageLoader
 import com.example.model.Doctor
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -34,6 +35,7 @@ import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.network_image.NetworkImage
+import com.example.ui_components.components.network_image.NetworkImageLoader
 
 @Composable
 fun DepartmentDoctorCard(
@@ -66,7 +68,21 @@ fun DepartmentDoctorCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(MaterialTheme.sizing.medium32)
-                    .clip(CircleShape)
+                    .clip(CircleShape),
+                loading = {
+                    NetworkImageLoader(
+                        modifier = Modifier
+                            .size(MaterialTheme.sizing.medium32)
+                            .clip(CircleShape)
+                    )
+                },
+                errorCompose = {
+                    NetworkImageLoader(
+                        modifier = Modifier
+                            .size(MaterialTheme.sizing.medium32)
+                            .clip(CircleShape)
+                    )
+                }
             )
             Spacer(
                 modifier = Modifier
