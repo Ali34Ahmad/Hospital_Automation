@@ -54,6 +54,7 @@ import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
+import com.example.doctor_schedule.navigation.ScheduleRoute
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctors.navigation.navigateToDoctorsSearch
@@ -186,7 +187,37 @@ fun AdminGraph(
         NavHost(
             modifier = Modifier.padding(padding),
             navController = navController,
-            startDestination = EmploymentRequestsRoute
+            startDestination = AuthGraphRoute
+        //child example
+//                ScheduleRoute(
+//                    id = 10,
+//                    hasAdminAccess = true,
+//                    searchType = AppointmentSearchType.CHILD,
+//                    askForPermissions = false,
+//                    name = null,
+//                    speciality = null,
+//                    imageUrl = null,
+//                )
+        // user example
+//                ScheduleRoute(
+//                    id = 128,
+//                    hasAdminAccess = true,
+//                    searchType = AppointmentSearchType.USER,
+//                    askForPermissions = false,
+//                    name = null,
+//                    speciality = null,
+//                    imageUrl = null,
+//                )
+        //doctor example
+//                ScheduleRoute(
+//                    id = 143,
+//                    hasAdminAccess = true,
+//                    searchType = AppointmentSearchType.DOCTOR,
+//                    askForPermissions = false,
+//                    name = "Ali Ahmad",
+//                    speciality = "Dentist",
+//                    imageUrl = "https://tse1.mm.bing.net/th/id/OIP.2h3mE7mZX7TFI0rzEQBYqAHaIL?rs=1&pid=ImgDetMain&o=7&rm=3",
+//                )
         ) {
             navigation<AuthGraphRoute>(
                 startDestination = LoginRoute,

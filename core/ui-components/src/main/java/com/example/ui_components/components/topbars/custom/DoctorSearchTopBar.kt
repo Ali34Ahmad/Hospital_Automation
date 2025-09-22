@@ -26,7 +26,7 @@ fun DoctorSearchTopBar(
     searchQuery: String,
     onQueryChanged: (String)-> Unit,
     onClearQuery: ()-> Unit,
-    onMenuIconClick: ()-> Unit,
+    onToggleButtonClick: ()-> Unit,
     onNavigateUp: ()->Unit,
     modifier: Modifier = Modifier,
     @DrawableRes menuIcon: Int = AppIcons.Outlined.menu,
@@ -41,11 +41,11 @@ fun DoctorSearchTopBar(
             onQueryChange = onQueryChanged,
             onTrailingIconClick = onClearQuery,
             placeholderText = R.string.doctor_name,
-            onNavigationIconCLick = onMenuIconClick,
+            onNavigationIconCLick = onToggleButtonClick,
             navigationIcon = menuIcon,
         )
     }else{
-        // clinic's doctors
+        // clinic's doctors, you have two states: DEFAULT , SEARCH.
         AnimatedContent(
             targetState = state,
         ) {state->
@@ -98,7 +98,7 @@ fun DoctorSearchTopBarPreview() {
             onClearQuery = {
 
             },
-            onMenuIconClick = {
+            onToggleButtonClick = {
 
             },
             modifier = Modifier.fillMaxWidth(),
@@ -127,7 +127,7 @@ fun DoctorSearchByClinicTopBarPreview() {
             onClearQuery = {
                 query = ""
             },
-            onMenuIconClick = {
+            onToggleButtonClick = {
 
             },
             modifier = Modifier.fillMaxWidth(),

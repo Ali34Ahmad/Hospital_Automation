@@ -135,7 +135,10 @@ fun PharmaciesSearchScreen(
         modifier = Modifier,
         buttons = drawerButtons,
         selectedIndex = null,
-        onItemSelected = {},
+        onItemSelected = {
+            drawerButtons[it].onClick()
+            onAction(PharmaciesSearchUIAction.ToggleDrawer)
+        },
         onChangeThemeClick = {
             onAction(PharmaciesSearchUIAction.ToggleTheme)
         },

@@ -89,7 +89,17 @@ fun FakeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoute,
+        startDestination =
+//            ScheduleRoute(
+//            hasAdminAccess = false,
+//            id = null,
+//            searchType = AppointmentSearchType.DOCTOR,
+//            name = "Ali",
+//            speciality = "Dentist",
+//            imageUrl = "",
+//            askForPermissions = false,
+//        ),
+            AuthGraphRoute
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,

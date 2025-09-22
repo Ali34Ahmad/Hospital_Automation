@@ -29,7 +29,6 @@ import com.example.model.LabeledBadgeData
 import com.example.model.doctor.DoctorData
 import com.example.model.employee.EmployeeState
 import com.example.model.enums.ScreenState
-import com.example.model.enums.TopBarState
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.custom.ErrorComponent
@@ -71,7 +70,7 @@ fun DoctorSearchScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     LaunchedEffect(uiState.isDrawerOpened) {
-        if(uiState.isDrawerOpened)drawerState.open()
+        if(uiState.isDrawerOpened) drawerState.open()
         else drawerState.close()
     }
 
@@ -97,20 +96,6 @@ fun DoctorSearchScreen(
                 navigationActions.navigateToNotifications()
             }
         ),
-//        DrawerButton(
-//            text = R.string.medical_records,
-//            image = AppIcons.Outlined.medicalRecords,
-//            onClick = {
-////                navigationActions.navigateToMedicalRecords()
-//            },
-//        ),
-//        DrawerButton(
-//            text = R.string.prescriptions,
-//            image = AppIcons.Outlined.prescription,
-//            onClick = {
-////                navigationActions.navigateToPrescriptions()
-//            },
-//        ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,
@@ -139,14 +124,17 @@ fun DoctorSearchScreen(
         modifier = Modifier,
         buttons = drawerButtons,
         selectedIndex = null,
-        onItemSelected = {},
+        onItemSelected = {
+            drawerButtons[it].onClick()
+            onAction(DoctorsSearchUIAction.ToggleDrawer)
+        },
         onChangeThemeClick = {
             onAction(DoctorsSearchUIAction.ToggleTheme)
         },
         isDarkTheme = uiState.isDarkTheme,
     ) {
         Scaffold (
-            topBar ={
+            topBar = {
                 DoctorSearchTopBar(
                     state = uiState.topBarState,
                     onToggleState = {
@@ -166,7 +154,7 @@ fun DoctorSearchScreen(
                             DoctorsSearchUIAction.UpdateSearchQuery("")
                         )
                     },
-                    onMenuIconClick = {
+                    onToggleButtonClick = {
                         onAction(
                             DoctorsSearchUIAction.ToggleDrawer
                         )

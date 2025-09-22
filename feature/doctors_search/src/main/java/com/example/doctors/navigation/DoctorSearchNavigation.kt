@@ -23,15 +23,15 @@ import org.koin.androidx.compose.koinViewModel
 @Serializable
 data class DoctorSearchRoute(
     val clinicId: Int? = null,
-    val clinicName: String = "",
+    val clinicName: String? = null,
     val isPrimary: Boolean = true
 )
 
 
 fun NavController.navigateToDoctorsSearch(
     clinicId: Int? = null,
-    clinicName: String,
-    showNavBar: Boolean,
+    clinicName: String? = null,
+    showNavBar: Boolean = true,
 ){
     navigateToScreen(
         route = DoctorSearchRoute(

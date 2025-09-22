@@ -37,6 +37,10 @@ val mockNavigationActions = object : AppointmentDetailsNavigationActions{
 
     }
 
+    override fun navigateToChildProfile(childId: Int) {
+
+    }
+
 }
 
 val mockAppointment = AppointmentData(

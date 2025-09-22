@@ -17,8 +17,7 @@ data class DoctorsSearchUIState(
     val statistics: EmploymentStatistics = EmploymentStatistics(),
     private val topBarMode: TopBarState = TopBarState.DEFAULT
 ){
+    //if you're searching globally then you have two states else you have only search state
     val topBarState
         get() = if(clinicId == null) TopBarState.SEARCH else topBarMode
-    val canNavigateUp
-        get() = clinicId != null
 }

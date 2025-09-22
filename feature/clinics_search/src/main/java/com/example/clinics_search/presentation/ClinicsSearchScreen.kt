@@ -31,6 +31,8 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
+import com.example.ui_components.components.topbars.HospitalAutomationTopBar
+import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
 import com.example.ui_components.components.topbars.SearchTopBar
 
 @Composable
@@ -129,36 +131,22 @@ internal fun ClinicsSearchScreen(
             containerColor = MaterialTheme.colorScheme.surface,
             topBar = {
                 if (uiState.screenStep == ScreenStep.SELECTION) {
-                    SearchTopBar(
-                        placeholder = R.string.search_for_clinics,
-                        title = stringResource(R.string.available_departments),
-                        onSearchIconClick = {
-                            onAction(
-                                ClinicsSearchUIAction.UpdateTopBarMode(TopBarState.SEARCH)
-                            )
-                        },
-                        onNavigationIconClick = {
-                            onAction(
-                                ClinicsSearchUIAction.ToggleDrawer
-                            )
-                        },
-                        onClear = {
-                            onAction(
-                                ClinicsSearchUIAction.UpdateQuery("")
-                            )
-                        },
+                    HospitalAutomationTopBarWithSearchBar(
                         query = uiState.searchQuery,
-                        state = uiState.topAppBarState,
-                        onQueryChanged = {
+                        onQueryChange = {newValue->
                             onAction(
-                                ClinicsSearchUIAction.UpdateQuery(it)
+                                ClinicsSearchUIAction.UpdateQuery(newValue)
                             )
                         },
-                        onBackToDefault = {
-                            onAction(
-                                ClinicsSearchUIAction.UpdateTopBarMode(TopBarState.DEFAULT)
-                            )
-                        }
+                        onTrailingIconClick = {
+                            onAction(ClinicsSearchUIAction.UpdateQuery(""))
+                        },
+                        placeholderText = R.string.search_for_clinics,
+                        onNavigationIconCLick = {
+                            onAction(ClinicsSearchUIAction.ToggleDrawer)
+                        },
+                        trailingIcon = AppIcons.Outlined.search,
+                        navigationIcon = AppIcons.Outlined.menu,
                     )
                 }
             },

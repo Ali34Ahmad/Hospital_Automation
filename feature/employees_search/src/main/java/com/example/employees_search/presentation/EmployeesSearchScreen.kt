@@ -101,20 +101,6 @@ fun EmployeesSearchScreen(
                 navigationActions.navigateToNotifications()
             }
         ),
-//        DrawerButton(
-//            text = R.string.medical_records,
-//            image = AppIcons.Outlined.medicalRecords,
-//            onClick = {
-//                navigationActions.navigateToMedicalRecords()
-//            },
-//        ),
-//        DrawerButton(
-//            text = R.string.prescriptions,
-//            image = AppIcons.Outlined.prescription,
-//            onClick = {
-//                navigationActions.navigateToPrescriptions()
-//            },
-//        ),
         DrawerButton(
             text = R.string.vaccines,
             image = AppIcons.Outlined.vaccines,
@@ -122,7 +108,6 @@ fun EmployeesSearchScreen(
                 navigationActions.navigateToVaccines()
             },
         ),
-
         DrawerButton(
             text = R.string.vaccination_table,
             image = AppIcons.Outlined.vaccinationTable,
@@ -137,7 +122,10 @@ fun EmployeesSearchScreen(
         modifier = Modifier,
         buttons = drawerButtons,
         selectedIndex = null,
-        onItemSelected = {},
+        onItemSelected = {
+            drawerButtons[it].onClick()
+            onAction(EmployeesSearchUIAction.ToggleDrawer)
+        },
         onChangeThemeClick = {
             onAction(EmployeesSearchUIAction.ToggleTheme)
         },
@@ -157,7 +145,7 @@ fun EmployeesSearchScreen(
                     },
                     placeholderText = R.string.emplyee_name,
                     onNavigationIconCLick = {
-                        EmployeesSearchUIAction.ToggleDrawer
+                        onAction(EmployeesSearchUIAction.ToggleDrawer)
                     },
                     navigationIcon = AppIcons.Outlined.menu
                 )
