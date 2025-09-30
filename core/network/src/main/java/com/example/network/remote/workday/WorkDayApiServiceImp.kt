@@ -12,7 +12,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import kotlinx.serialization.json.Json
 
-private const val WORKDAY_TAG = "WORKDAY API SERVICE"
+private const val WORKDAY_TAG = "WorkdayApi"
 class WorkDayApiServiceImp(
     private val client: HttpClient
 ): WorkDayApiService {

@@ -1,7 +1,7 @@
 package com.example.email_verification.otp_verification.validator
 
 import com.example.domain.use_cases.validator.ValidateOtpUseCase
-import com.example.email_verification.otp_verification.main.OtpVerificationUiState
+import com.example.email_verification.otp_verification.presentation.OtpVerificationUiState
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.validation.ValidatorErrorMessage

@@ -1,13 +1,14 @@
 package com.example.medical_records.navigation
 
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.example.medical_records.main.MedicalRecordsNavigationUiActions
-import com.example.medical_records.main.MedicalRecordsScreen
-import com.example.medical_records.main.MedicalRecordsViewModel
+import com.example.medical_records.presentation.MedicalRecordsNavigationUiActions
+import com.example.medical_records.presentation.MedicalRecordsScreen
+import com.example.medical_records.presentation.MedicalRecordsViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -29,7 +30,7 @@ fun NavGraphBuilder.medicalRecordsScreen(
 ) {
     composable<MedicalRecordsRoute> {
         val viewModel = koinViewModel<MedicalRecordsViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
         val vaccines = viewModel.medicalRecordsFlow.collectAsLazyPagingItems()
 
         val navActions = object : MedicalRecordsNavigationUiActions {

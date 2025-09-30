@@ -1,13 +1,14 @@
 package com.example.signup.navigation
 
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.navigation.extesion.navigateToScreen
-import com.example.signup.main.SignUpNavigationUiActions
-import com.example.signup.main.SignUpScreen
-import com.example.signup.main.SignUpViewModel
+import com.example.signup.presentation.SignUpNavigationUiActions
+import com.example.signup.presentation.SignUpScreen
+import com.example.signup.presentation.SignUpViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -24,7 +25,7 @@ fun NavGraphBuilder.signUpScreen(
 ) {
     composable<SignUpRoute> {
         val viewModel = koinViewModel<SignUpViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : SignUpNavigationUiActions {
             override fun navigateToEmailVerificationScreen() {

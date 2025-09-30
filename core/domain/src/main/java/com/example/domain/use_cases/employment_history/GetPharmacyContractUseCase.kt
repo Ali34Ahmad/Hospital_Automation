@@ -3,12 +3,12 @@ package com.example.domain.use_cases.employment_history
 import com.example.domain.repositories.profile.EmploymentHistoryRepository
 import com.example.model.employment_history.PharmacyContractResponse
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class GetPharmacyContractUseCase(
     private val employmentHistoryRepository:EmploymentHistoryRepository
 ) {
-    suspend operator fun invoke(pharmacyId:Int): Result<PharmacyContractResponse, rootError> {
+    suspend operator fun invoke(pharmacyId:Int): Result<PharmacyContractResponse, NetworkError> {
         return employmentHistoryRepository.getPharmacyContract(pharmacyId)
     }
 }

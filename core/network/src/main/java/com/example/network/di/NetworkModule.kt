@@ -8,14 +8,6 @@ import com.example.network.remote.account_management.AccountManagementApiService
 import com.example.network.remote.account_management.AccountManagementApiServiceImpl
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiService
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiServiceImpl
-import com.example.network.remote.admin.clinic.AdminClinicApiService
-import com.example.network.remote.admin.clinic.AdminClinicApiServiceImp
-import com.example.network.remote.admin.doctor.AdminDoctorApiService
-import com.example.network.remote.admin.doctor.AdminDoctorApiServiceImp
-import com.example.network.remote.admin.employee.AdminEmployeeApiService
-import com.example.network.remote.admin.employee.AdminEmployeeApiServiceImp
-import com.example.network.remote.admin.pharmacy.AdminPharmacyApiService
-import com.example.network.remote.admin.pharmacy.AdminPharmacyApiServiceImp
 import com.example.network.remote.admin_profile.AdminProfileApiService
 import com.example.network.remote.admin_profile.AdminProfileApiServiceImpl
 import com.example.network.remote.appointment.AppointmentsApiService
@@ -24,24 +16,28 @@ import com.example.network.remote.appointment_type.AppointmentTypeApiService
 import com.example.network.remote.appointment_type.AppointmentTypeApiServiceImp
 import com.example.network.remote.auth.AuthApiService
 import com.example.network.remote.auth.AuthApiServiceImpl
-import com.example.network.remote.auth.singup.doctor.DoctorSignUpApiService
-import com.example.network.remote.auth.singup.doctor.DoctorSignUpApiServiceImpl
-import com.example.network.remote.auth.singup.generic.BaseSignUpApiService
-import com.example.network.remote.auth.singup.generic.BaseSignUpApiServiceImpl
 import com.example.network.remote.child.ChildApiService
 import com.example.network.remote.child.ChildApiServiceImpl
+import com.example.network.remote.clinic.AdminClinicApiService
+import com.example.network.remote.clinic.AdminClinicApiServiceImp
 import com.example.network.remote.clinic.ClinicApiService
 import com.example.network.remote.clinic.ClinicApiServiceImp
-import com.example.network.remote.doctor.profile.DoctorProfileApiService
-import com.example.network.remote.doctor.profile.DoctorProfileApiServiceImpl
-import com.example.network.remote.employee_profile.EmployeeProfileApiService
-import com.example.network.remote.employee_profile.EmployeeProfileApiServiceImpl
+import com.example.network.remote.doctor.AdminDoctorApiService
+import com.example.network.remote.doctor.AdminDoctorApiServiceImp
+import com.example.network.remote.doctor.profile.DoctorApiService
+import com.example.network.remote.doctor.profile.DoctorApiServiceImpl
+import com.example.network.remote.employee.AdminEmployeeApiService
+import com.example.network.remote.employee.AdminEmployeeApiServiceImp
+import com.example.network.remote.employee.EmployeeApiService
+import com.example.network.remote.employee.EmployeeApiServiceImpl
 import com.example.network.remote.employment_history.EmploymentHistoryApiService
 import com.example.network.remote.employment_history.EmploymentHistoryApiServiceImpl
 import com.example.network.remote.medical_record.MedicalRecordsApiService
 import com.example.network.remote.medical_record.MedicalRecordsApiServiceImpl
 import com.example.network.remote.medicine.MedicineApiService
 import com.example.network.remote.medicine.MedicineApiServiceImp
+import com.example.network.remote.pharmacy.AdminPharmacyApiService
+import com.example.network.remote.pharmacy.AdminPharmacyApiServiceImp
 import com.example.network.remote.pharmacy.PharmacyApiService
 import com.example.network.remote.pharmacy.PharmacyApiServiceImp
 import com.example.network.remote.prescription.PrescriptionApiService
@@ -107,7 +103,6 @@ val networkModule = module {
     singleOf(::AdminProfileApiServiceImpl) { bind<AdminProfileApiService>() }
 
     // Doctor
-    singleOf(::DoctorSignUpApiServiceImpl) { bind<DoctorSignUpApiService>() }
     singleOf(::MedicalRecordsApiServiceImpl) { bind<MedicalRecordsApiService>() }
     singleOf(::AppointmentTypeApiServiceImp) {bind<AppointmentTypeApiService>()}
     singleOf(::WorkDayApiServiceImp) {bind<WorkDayApiService>()}
@@ -119,12 +114,11 @@ val networkModule = module {
     singleOf(::AddResidentialAddressApiServiceImpl) { bind<AddResidentialAddressApiService>() }
     singleOf(::UploadEmployeeProfileImageApiImpl) { bind<UploadEmployeeProfileImageApi>() }
     singleOf(::AuthApiServiceImpl) { bind<AuthApiService>() }
-    singleOf(::BaseSignUpApiServiceImpl) { bind<BaseSignUpApiService>() }
     singleOf(::VaccineApiServiceImpl) { bind<VaccineApiService>() }
     singleOf(::UploadImageApiImpl) { bind<UploadImageApi>() }
     single<FileReader> { FileReader(androidApplication()) }
-    singleOf(::DoctorProfileApiServiceImpl) { bind<DoctorProfileApiService>() }
-    singleOf(::EmployeeProfileApiServiceImpl) { bind<EmployeeProfileApiService>() }
+    singleOf(::DoctorApiServiceImpl) { bind<DoctorApiService>() }
+    singleOf(::EmployeeApiServiceImpl) { bind<EmployeeApiService>() }
     singleOf(::PharmacyApiServiceImp) { bind<PharmacyApiService>() }
     singleOf(::EmploymentHistoryApiServiceImpl) { bind<EmploymentHistoryApiService>() }
     singleOf(::PrescriptionApiServiceImp) { bind<PrescriptionApiService>() }

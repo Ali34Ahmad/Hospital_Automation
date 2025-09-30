@@ -10,13 +10,13 @@ import com.example.model.residential_address.AddAddressRequest
 import com.example.network.remote.add_residential_address.AddResidentialAddressApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class AddResidentialAddressRepositoryImpl(
     private val addResidentialAddressApiService: AddResidentialAddressApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : AddResidentialAddressRepository {
-    override suspend fun addResidentialAddress(addAddressRequest: AddAddressRequest): Result<AddAddressResponse, rootError> =
+    override suspend fun addResidentialAddress(addAddressRequest: AddAddressRequest): Result<AddAddressResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             addResidentialAddressApiService.addResidentialAddress(
                 token,

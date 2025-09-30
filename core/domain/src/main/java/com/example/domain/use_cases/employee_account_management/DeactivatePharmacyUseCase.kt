@@ -4,7 +4,7 @@ import com.example.domain.repositories.account_management.UserAccountManagementR
 import com.example.model.account_management.DeactivateUserAccountRequest
 import com.example.model.account_management.DeactivateUserAccountResponse
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class DeactivatePharmacyUseCase(
     private val userAccountManagementRepository: UserAccountManagementRepository
@@ -12,7 +12,7 @@ class DeactivatePharmacyUseCase(
     suspend operator fun invoke(
         deactivateUserAccountRequest: DeactivateUserAccountRequest,
         pharmacyId: Int?,
-    ): Result<DeactivateUserAccountResponse, rootError> {
+    ): Result<DeactivateUserAccountResponse, NetworkError> {
         return userAccountManagementRepository.deactivatePharmacyAccount(
             pharmacyId = pharmacyId,
             deactivateUserAccountRequest = deactivateUserAccountRequest,

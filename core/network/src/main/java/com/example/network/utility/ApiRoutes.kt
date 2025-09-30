@@ -142,6 +142,7 @@ object ApiRoutes {
         const val SHOW_CURRENT_ADMIN_PROFILE = "$ADMIN/show-profile"
         const val GET_ADMIN_PROFILE_BY_ID = "$ADMIN/find-admin-by-id"
         const val GET_PHARMACY_CONTRACT_HISTORY = "$ADMIN/pharmacy-contract-history"
+        const val GET_CHILD_VACCINATION_TABLE = "$ADMIN/get-vaccination-table-for-single-child"
     }
 
     object Prescription {

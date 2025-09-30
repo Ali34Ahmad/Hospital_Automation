@@ -4,14 +4,14 @@ import com.example.domain.repositories.auth.AuthRepository
 import com.example.model.auth.verify_otp.VerifyEmailOtpRequest
 import com.example.model.auth.verify_otp.VerifyEmailOtpResponse
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class VerifyEmailUseCase(
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(
         verifyEmailOtpRequest: VerifyEmailOtpRequest
-    ): Result<VerifyEmailOtpResponse, rootError> {
+    ): Result<VerifyEmailOtpResponse, NetworkError> {
         return authRepository.verifyEmail(verifyEmailOtpRequest)
     }
 }

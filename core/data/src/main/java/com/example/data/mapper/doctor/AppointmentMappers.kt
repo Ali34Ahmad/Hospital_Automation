@@ -13,12 +13,12 @@ import com.example.model.age.Age
 import com.example.model.doctor.appointment.AppointmentTypeSummaryData
 import com.example.model.doctor.appointment.VaccineSummaryData
 import com.example.model.vaccine.VaccineData
-import com.example.network.model.dto.doctor.appointment.AppointmentDto
-import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
-import com.example.network.model.dto.doctor.clinic.ClinicDto
+import com.example.network.model.dto.appointment.AppointmentDto
+import com.example.network.model.dto.appointment.AppointmentTypeDto
+import com.example.network.model.dto.clinic.ClinicDto
 import com.example.network.model.dto.vaccine.VaccineDto
-import com.example.network.model.dto.doctor.appointment.AppointmentStatisticsDto
-import com.example.network.model.dto.doctor.appointment.AppointmentTypeSummaryDto
+import com.example.network.model.dto.appointment.AppointmentStatisticsDto
+import com.example.network.model.dto.appointment.AppointmentTypeSummaryDto
 import com.example.network.model.dto.vaccine.VaccineSummaryDto
 
 internal fun AppointmentDto.toAppointmentData() =

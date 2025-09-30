@@ -10,7 +10,7 @@ import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.admin.EmploymentStatistics
 import com.example.model.doctor.DoctorData
 import com.example.model.employee.EmployeeState
-import com.example.network.remote.admin.doctor.AdminDoctorApiService
+import com.example.network.remote.doctor.AdminDoctorApiService
 import kotlinx.coroutines.flow.Flow
 
 class AdminDoctorRepositoryImp(

@@ -65,6 +65,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(project(":core:navigation"))
 
+    implementation(libs.androidx.compose.material3.window.size.class1)
+    implementation(libs.androidx.window)
+
     //data
     implementation(project(":core:data"))
 
@@ -115,6 +118,7 @@ dependencies {
 
     implementation(project(":feature:employment_requests"))
     implementation(project(":feature:admin_profile"))
+    implementation(project(":feature:child_vaccination_table"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

@@ -1,6 +1,6 @@
 [versions]
 accompanistSystemuicontroller = "0.34.0"
-agp = "8.9.2"
+agp = "8.13.0"
 coilCompose = "3.1.0"
 composepininput = "1.0.3"
 core = "1.2.0"
@@ -29,6 +29,8 @@ materialVersion = "1.8.2"
 pagingRuntime = "3.3.6"
 uiGraphicsAndroid = "1.6.6"
 uiTooling = "1.8.3"
+material3WindowSizeClass = "1.4.0"
+window = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -92,9 +94,14 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 #DataStore
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 option = { module = "com.maxkeppeler.sheets-compose-dialogs:option", version.ref = "core" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
+
+#Adaptive Design
+androidx-compose-material3-window-size-class1 = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
+androidx-window = { module = "androidx.window:window", version.ref = "window" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

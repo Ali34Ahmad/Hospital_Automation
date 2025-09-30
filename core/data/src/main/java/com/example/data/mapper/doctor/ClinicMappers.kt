@@ -3,8 +3,8 @@ package com.example.data.mapper.doctor
 import com.example.data.mapper.day_schedule.toDaySchedule
 import com.example.model.doctor.clinic.ClinicFullData
 import com.example.model.doctor.clinic.ClinicServiceData
-import com.example.network.model.dto.doctor.clinic.ClinicFullDto
-import com.example.network.model.dto.doctor.clinic.ClinicServiceDto
+import com.example.network.model.dto.clinic.ClinicFullDto
+import com.example.network.model.dto.clinic.ClinicServiceDto
 
 fun ClinicFullDto.toClinicFullData() =
     ClinicFullData(

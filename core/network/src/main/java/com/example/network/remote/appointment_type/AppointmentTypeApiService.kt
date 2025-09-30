@@ -1,6 +1,6 @@
 package com.example.network.remote.appointment_type
 
-import com.example.network.model.dto.doctor.appointment.AppointmentTypeSummaryDto
+import com.example.network.model.dto.appointment.AppointmentTypeSummaryDto
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 

@@ -1,6 +1,6 @@
 package com.example.network.model.response.clinics
 
-import com.example.network.model.dto.doctor.clinic.ClinicFullDto
+import com.example.network.model.dto.clinic.ClinicFullDto
 import com.example.network.model.response.NetworkPagination
 import kotlinx.serialization.Serializable
 

@@ -52,6 +52,7 @@ sealed interface AppIcons {
         val edit = R.drawable.ic_edit
         val department = R.drawable.ic_department
         val checkWithBorder = R.drawable.ic_check_with_border
+        val notSpecified = R.drawable.ic_not_specified
         val note = R.drawable.ic_note
         val upcomingEvent = R.drawable.pending
         val bloodType = R.drawable.bloodtype

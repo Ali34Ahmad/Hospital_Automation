@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -41,6 +41,8 @@ import com.example.appointment_details.navigation.navigateToAppointmentDetails
 import com.example.child_profile.navigation.ChildProfileMode
 import com.example.child_profile.navigation.childProfileScreen
 import com.example.child_profile.navigation.navigateToChildProfile
+import com.example.child_vaccination_table.navigation.ChildVaccinationTableRoute
+import com.example.child_vaccination_table.navigation.childVaccinationTableScreen
 import com.example.children.navigation.childrenScreen
 import com.example.children.navigation.navigateToChildrenScreen
 import com.example.children_search.navigation.SearchType
@@ -50,11 +52,9 @@ import com.example.clinic_details.navigation.ClinicDetailsType
 import com.example.clinic_details.navigation.clinicDetailsScreen
 import com.example.clinic_details.navigation.navigateToClinicDetailsScreen
 import com.example.doctor_profile.navigation.DoctorProfileAccessType
-import com.example.doctor_profile.navigation.DoctorProfileRoute
 import com.example.doctor_profile.navigation.doctorProfileScreen
 import com.example.doctor_profile.navigation.navigateToDoctorProfileScreen
 import com.example.doctor_schedule.navigation.AppointmentSearchType
-import com.example.doctor_schedule.navigation.ScheduleRoute
 import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctors.navigation.navigateToDoctorsSearch
@@ -67,7 +67,6 @@ import com.example.employee_profile.navigation.employeeProfileScreen
 import com.example.employee_profile.navigation.navigateToEmployeeProfileScreen
 import com.example.employment_history.navigation.employmentHistoryScreen
 import com.example.employment_history.navigation.navigateToEmploymentHistoryScreen
-import com.example.employment_requests.navigation.EmploymentRequestsRoute
 import com.example.employment_requests.navigation.navigateToEmploymentRequestsScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
@@ -112,6 +111,7 @@ import com.example.vaccines.navigation.vaccinesScreen
 @Composable
 fun AdminGraph(
     modifier: Modifier = Modifier,
+    windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberNavController()
 ) {
     val context = LocalContext.current
@@ -187,37 +187,7 @@ fun AdminGraph(
         NavHost(
             modifier = Modifier.padding(padding),
             navController = navController,
-            startDestination = AuthGraphRoute
-        //child example
-//                ScheduleRoute(
-//                    id = 10,
-//                    hasAdminAccess = true,
-//                    searchType = AppointmentSearchType.CHILD,
-//                    askForPermissions = false,
-//                    name = null,
-//                    speciality = null,
-//                    imageUrl = null,
-//                )
-        // user example
-//                ScheduleRoute(
-//                    id = 128,
-//                    hasAdminAccess = true,
-//                    searchType = AppointmentSearchType.USER,
-//                    askForPermissions = false,
-//                    name = null,
-//                    speciality = null,
-//                    imageUrl = null,
-//                )
-        //doctor example
-//                ScheduleRoute(
-//                    id = 143,
-//                    hasAdminAccess = true,
-//                    searchType = AppointmentSearchType.DOCTOR,
-//                    askForPermissions = false,
-//                    name = "Ali Ahmad",
-//                    speciality = "Dentist",
-//                    imageUrl = "https://tse1.mm.bing.net/th/id/OIP.2h3mE7mZX7TFI0rzEQBYqAHaIL?rs=1&pid=ImgDetMain&o=7&rm=3",
-//                )
+            startDestination = ChildVaccinationTableRoute(1)
         ) {
             navigation<AuthGraphRoute>(
                 startDestination = LoginRoute,
@@ -608,6 +578,14 @@ fun AdminGraph(
                     )
                 }
             )
+
+            childVaccinationTableScreen(
+                windowSizeClass = windowSizeClass,
+                onNavigateToVaccineDetailsScreen = {},
+                onNavigateToAppointmentDetailsScreen = {},
+                onNavigateUp = {}
+            )
+
             pharmacyMedicines(
                 onNavigateUp = navController::navigateUp,
                 onNavigateToPharmacy = { pharmacyId ->

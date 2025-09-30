@@ -4,14 +4,14 @@ import com.example.domain.repositories.account_management.UserAccountManagementR
 import com.example.model.account_management.ReactivateUserAccountResponse
 import com.example.model.enums.Role
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class ReactivatePharmacyUseCase(
     private val userAccountManagementRepository:UserAccountManagementRepository
 ) {
     suspend operator fun invoke(
         pharmacyId: Int?,
-    ): Result<ReactivateUserAccountResponse, rootError> {
+    ): Result<ReactivateUserAccountResponse, NetworkError> {
         return userAccountManagementRepository.reactivatePharmacyAccount(pharmacyId)
     }
 }

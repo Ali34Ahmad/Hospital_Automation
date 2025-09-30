@@ -1,5 +1,8 @@
 package com.example.data.repositories.auth
 
+import com.example.data.mapper.auth.singup.toBaseRegistrationRequestDto
+import com.example.data.mapper.auth.singup.toBaseRegistrationResponse
+import com.example.data.mapper.auth.singup.toDoctorRegistrationRequestDto
 import com.example.data.mapper.auth.toLoginRequestDto
 import com.example.data.mapper.auth.toLoginResponse
 import com.example.data.mapper.auth.toLogoutResponse
@@ -23,6 +26,9 @@ import com.example.model.auth.reset_password.ResetPasswordRequest
 import com.example.model.auth.reset_password.ResetPasswordResponse
 import com.example.model.auth.send_otp.SendOtpRequest
 import com.example.model.auth.send_otp.SendOtpResponse
+import com.example.model.auth.signup.BaseRegistrationRequest
+import com.example.model.auth.signup.BaseRegistrationResponse
+import com.example.model.auth.signup.DoctorRegistrationRequest
 import com.example.model.auth.signup.RegistrationResponse
 import com.example.model.auth.signup.SignUpCredentials
 import com.example.model.auth.verify_otp.VerifyEmailOtpRequest
@@ -32,14 +38,32 @@ import com.example.network.remote.auth.AuthApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
 import com.example.utility.network.onSuccess
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 import kotlin.math.log
 
 class AuthRepositoryImpl(
     private val authApiService: AuthApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : AuthRepository {
-    override suspend fun login(loginRequest: LoginRequest): Result<LoginResponse, rootError> =
+    override suspend fun generalSignup(
+        baseRegistrationRequest: BaseRegistrationRequest
+    ): Result<BaseRegistrationResponse, NetworkError> =
+        authApiService.generalSignup(
+            baseRegistrationRequestDto = baseRegistrationRequest.toBaseRegistrationRequestDto()
+        ).map { registrationResponseDto ->
+            registrationResponseDto.toBaseRegistrationResponse()
+        }
+
+    override suspend fun doctorSignup(
+        doctorRegistrationRequest: DoctorRegistrationRequest
+    ): Result<BaseRegistrationResponse, NetworkError> =
+        authApiService.doctorSignup(
+            doctorRegistrationRequestDto = doctorRegistrationRequest.toDoctorRegistrationRequestDto()
+        ).map { registrationResponseDto ->
+            registrationResponseDto.toBaseRegistrationResponse()
+        }
+
+    override suspend fun login(loginRequest: LoginRequest): Result<LoginResponse, NetworkError> =
         authApiService.login(
             loginRequestDto = loginRequest.toLoginRequestDto(),
             role = loginRequest.role.toRoleDto(),
@@ -50,7 +74,7 @@ class AuthRepositoryImpl(
         }
 
     override suspend fun verifyEmail(verifyEmailOtpRequest: VerifyEmailOtpRequest):
-            Result<VerifyEmailOtpResponse, rootError> =
+            Result<VerifyEmailOtpResponse, NetworkError> =
         authApiService.verifyEmail(
             verifyEmailOtpRequestDto = verifyEmailOtpRequest.toVerifyEmailOtpRequestDto(),
             role = verifyEmailOtpRequest.role.toRoleDto()
@@ -58,7 +82,7 @@ class AuthRepositoryImpl(
             verifyEmailOtpResponseDto.toVerifyEmailOtpResponse()
         }
 
-    override suspend fun sendOtpCodeToEmail(sendOtpCodeRequest: SendOtpRequest): Result<SendOtpResponse, rootError> =
+    override suspend fun sendOtpCodeToEmail(sendOtpCodeRequest: SendOtpRequest): Result<SendOtpResponse, NetworkError> =
         authApiService.sendOtpCodeToEmail(
             sendOtpCodeRequest = sendOtpCodeRequest.toSendOtpRequestDto(),
             role = sendOtpCodeRequest.role.toRoleDto()
@@ -66,7 +90,7 @@ class AuthRepositoryImpl(
             sendOtpResponseDto.toSendOtpResponse()
         }
 
-    override suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Result<ResetPasswordResponse, rootError> =
+    override suspend fun resetPassword(resetPasswordRequest: ResetPasswordRequest): Result<ResetPasswordResponse, NetworkError> =
         authApiService.resetPassword(
             resetPasswordRequestDto = resetPasswordRequest.toResetPasswordRequestDto(),
             role = resetPasswordRequest.role.toRoleDto(),
@@ -76,7 +100,7 @@ class AuthRepositoryImpl(
 
     override suspend fun logout(
         logoutRequest: LogoutRequest,
-    ): Result<LogoutResponse, rootError> =
+    ): Result<LogoutResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             authApiService.logout(
                 token = token,

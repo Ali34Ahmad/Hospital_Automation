@@ -8,8 +8,6 @@ import com.example.data.repositories.admin_profile.AdminProfileRepositoryImpl
 import com.example.data.repositories.appointment.AppointmentsRepositoryImp
 import com.example.data.repositories.appointment_type.AppointmentTypeRepositoryImp
 import com.example.data.repositories.auth.AuthRepositoryImpl
-import com.example.data.repositories.auth.signup.BaseSignUpRepositoryImpl
-import com.example.data.repositories.auth.signup.DoctorSignUpRepositoryImpl
 import com.example.data.repositories.child.ChildRepositoryImp
 import com.example.data.repositories.clinic.ClinicRepositoryImp
 import com.example.data.repositories.doctor.DoctorProfileRepositoryImpl
@@ -46,8 +44,6 @@ import com.example.domain.repositories.admin.doctor.AdminDoctorRepository
 import com.example.domain.repositories.admin.employee.AdminEmployeeRepository
 import com.example.domain.repositories.admin.pharmacy.AdminPharmacyRepository
 import com.example.domain.repositories.auth.AuthRepository
-import com.example.domain.repositories.auth.singup.BaseSignUpRepository
-import com.example.domain.repositories.auth.singup.DoctorSignUpRepository
 import com.example.domain.repositories.file.DownloadFileRepository
 import com.example.domain.repositories.file.UploadChildDocumentsRepository
 import com.example.domain.repositories.file.UploadEmployeeProfileImageRepository
@@ -81,7 +77,6 @@ val dataModule = module{
     singleOf(::AdminPharmacyRepositoryImp) { bind<AdminPharmacyRepository>() }
 
     // Doctor
-    singleOf(::DoctorSignUpRepositoryImpl) { bind<DoctorSignUpRepository>() }
     singleOf(::MedicalRecordRepositoryImpl) { bind<MedicalRecordRepository>() }
 
     // Employee
@@ -89,7 +84,6 @@ val dataModule = module{
 
     // Shared Repositories
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
-    singleOf(::BaseSignUpRepositoryImpl) { bind<BaseSignUpRepository>() }
     singleOf(::AddResidentialAddressRepositoryImpl) { bind<AddResidentialAddressRepository>() }
     singleOf(::UploadEmployeeProfileImageRepositoryImpl) { bind<UploadEmployeeProfileImageRepository>() }
     singleOf(::VaccineRepositoryImpl) { bind<VaccineRepository>() }

@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.collectAsState
 import com.example.hospital_automation.main.AppViewModel
-import com.example.hospital_automation.navigation.Navigation
+import com.example.hospital_automation.navigation.EmployeeNavigation
 import com.example.ui.theme.Hospital_AutomationTheme
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.compose.koinViewModel
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             Hospital_AutomationTheme(
                 darkTheme = appUiState.value.isDarkTheme
             ) {
-                Navigation()
+                EmployeeNavigation()
             }
         }
     }

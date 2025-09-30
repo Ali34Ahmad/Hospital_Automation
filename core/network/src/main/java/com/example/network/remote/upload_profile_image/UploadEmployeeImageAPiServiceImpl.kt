@@ -7,7 +7,6 @@ import com.example.network.remote.upload_image.UploadImageApi
 import com.example.network.utility.ApiRoutes
 import kotlinx.coroutines.flow.Flow
 
-
 class UploadEmployeeProfileImageApiImpl(
     private val uploadImageApi: UploadImageApi,
 ) : UploadEmployeeProfileImageApi {

@@ -1,12 +1,13 @@
 package com.example.login.navigation
 
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.login.main.LoginNavigationUiActions
-import com.example.login.main.LoginScreen
-import com.example.login.main.LoginViewModel
+import com.example.login.presentation.LoginNavigationUiActions
+import com.example.login.presentation.LoginScreen
+import com.example.login.presentation.LoginViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -25,7 +26,7 @@ fun NavGraphBuilder.loginScreen(
 ) {
     composable<LoginRoute> {
         val viewModel = koinViewModel<LoginViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : LoginNavigationUiActions {
             override fun navigateToSignUpScreen() {

@@ -82,9 +82,9 @@ dependencies {
     implementation(project(":feature:reset_password"))
     implementation(project(":feature:upload_profile_image"))
     implementation(project(":feature:employment_history"))
+    implementation(project(":feature:employee_home"))
 
     //
-    implementation(project(":feature:home"))
     implementation(project(":feature:employee_profile"))
     implementation(project(":feature:admin_profile"))
 

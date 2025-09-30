@@ -2,14 +2,13 @@ package com.example.domain.repositories.pharmacy
 
 import com.example.model.pharmacy.PharmacyData
 import com.example.model.pharmacy.PharmacyDetailsResponse
-import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 interface PharmacyRepository {
     suspend fun getPharmacyDetailsById(
         pharmacyId:Int
-    ) : Result<PharmacyDetailsResponse, rootError>
+    ) : Result<PharmacyDetailsResponse, NetworkError>
 
     suspend fun getPharmaciesByMedicineId(
         medicineId: Int

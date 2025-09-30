@@ -4,14 +4,14 @@ import com.example.domain.repositories.auth.AuthRepository
 import com.example.model.auth.reset_password.ResetPasswordRequest
 import com.example.model.auth.reset_password.ResetPasswordResponse
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class ResetPasswordUseCase(
     private val authRepository: AuthRepository
 ) {
     suspend operator fun invoke(
         resetPasswordRequest: ResetPasswordRequest
-    ): Result<ResetPasswordResponse, rootError> {
+    ): Result<ResetPasswordResponse, NetworkError> {
         return authRepository.resetPassword(resetPasswordRequest)
     }
 }

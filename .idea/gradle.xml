@@ -44,6 +44,7 @@
             <option value="$PROJECT_DIR$/feature/appointment_details" />
             <option value="$PROJECT_DIR$/feature/appointments_schedule" />
             <option value="$PROJECT_DIR$/feature/child_profile" />
+            <option value="$PROJECT_DIR$/feature/child_vaccination_table" />
             <option value="$PROJECT_DIR$/feature/children" />
             <option value="$PROJECT_DIR$/feature/children_search" />
             <option value="$PROJECT_DIR$/feature/clinic_details" />
@@ -52,6 +53,7 @@
             <option value="$PROJECT_DIR$/feature/doctor_signup" />
             <option value="$PROJECT_DIR$/feature/doctors_search" />
             <option value="$PROJECT_DIR$/feature/email_verification" />
+            <option value="$PROJECT_DIR$/feature/employee_home" />
             <option value="$PROJECT_DIR$/feature/employee_profile" />
             <option value="$PROJECT_DIR$/feature/employees_search" />
             <option value="$PROJECT_DIR$/feature/employment_history" />
@@ -61,7 +63,6 @@
             <option value="$PROJECT_DIR$/feature/guardian_profile" />
             <option value="$PROJECT_DIR$/feature/guardians" />
             <option value="$PROJECT_DIR$/feature/guardians_search" />
-            <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/login" />
             <option value="$PROJECT_DIR$/feature/medical_diagnosis" />
             <option value="$PROJECT_DIR$/feature/medical_records" />

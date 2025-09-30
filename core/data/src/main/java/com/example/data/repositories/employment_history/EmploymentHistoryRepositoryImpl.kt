@@ -12,14 +12,14 @@ import com.example.model.role_config.RoleAppConfig
 import com.example.network.remote.employment_history.EmploymentHistoryApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class EmploymentHistoryRepositoryImpl(
     private val employmentHistoryApiService: EmploymentHistoryApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val roleAppConfig: RoleAppConfig,
 ) : EmploymentHistoryRepository {
-    override suspend fun getEmploymentHistory(id: Int?): Result<EmploymentHistoryResponse, rootError> =
+    override suspend fun getEmploymentHistory(id: Int?): Result<EmploymentHistoryResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             employmentHistoryApiService.getEmploymentHistory(
                 token = token,
@@ -31,7 +31,7 @@ class EmploymentHistoryRepositoryImpl(
                 }
         }
 
-    override suspend fun getPharmacyContract(pharmacyId: Int): Result<PharmacyContractResponse, rootError> =
+    override suspend fun getPharmacyContract(pharmacyId: Int): Result<PharmacyContractResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             employmentHistoryApiService.getPharmacyContractHistory(
                 token = token,

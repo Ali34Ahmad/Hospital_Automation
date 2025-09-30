@@ -1,12 +1,12 @@
 package com.example.email_verification.email_verified_successfully.navigation
 
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.email_verification.email_verified_successfully.main.EmailVerifiedSuccessfullyNavigationUiActions
-import com.example.email_verification.email_verified_successfully.main.EmailVerifiedSuccessfullyScreen
-import com.example.email_verification.email_verified_successfully.main.EmailVerifiedSuccessfullyViewModel
+import com.example.email_verification.email_verified_successfully.presentation.EmailVerifiedSuccessfullyNavigationUiActions
+import com.example.email_verification.email_verified_successfully.presentation.EmailVerifiedSuccessfullyScreen
+import com.example.email_verification.email_verified_successfully.presentation.EmailVerifiedSuccessfullyViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -35,7 +35,7 @@ fun NavGraphBuilder.emailVerifiedSuccessfullyScreen(
         val emailVerifiedSuccessfullyViewModel =
             koinViewModel<EmailVerifiedSuccessfullyViewModel>()
         val emailVerifiedSuccessfullyUiState =
-            emailVerifiedSuccessfullyViewModel.uiState.collectAsState()
+            emailVerifiedSuccessfullyViewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : EmailVerifiedSuccessfullyNavigationUiActions {
             override fun navigateToUploadEmployeeDocumentsScreen() {

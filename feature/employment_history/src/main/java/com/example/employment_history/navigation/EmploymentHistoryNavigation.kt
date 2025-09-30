@@ -1,12 +1,12 @@
 package com.example.employment_history.navigation
 
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.employment_history.main.EmploymentHistoryNavigationUiActions
-import com.example.employment_history.main.EmploymentHistoryScreen
-import com.example.employment_history.main.EmploymentHistoryViewModel
+import com.example.employment_history.presentation.EmploymentHistoryNavigationUiActions
+import com.example.employment_history.presentation.EmploymentHistoryScreen
+import com.example.employment_history.presentation.EmploymentHistoryViewModel
 import com.example.model.enums.Role
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
@@ -37,7 +37,7 @@ fun NavGraphBuilder.employmentHistoryScreen(
 ) {
     composable<EmploymentHistoryRoute> {
         val viewModel = koinViewModel<EmploymentHistoryViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : EmploymentHistoryNavigationUiActions {
             override fun navigateToAcceptedByAdminProfileScreen() {

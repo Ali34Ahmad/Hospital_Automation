@@ -15,14 +15,14 @@ import com.example.model.enums.Role
 import com.example.network.remote.account_management.AccountManagementApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class UserAccountManagementRepositoryImpl(
     private val accountManagementApiService: AccountManagementApiService,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : UserAccountManagementRepository {
     override suspend fun deactivateUserAccount(deactivateUserAccountRequest: DeactivateUserAccountRequest):
-            Result<DeactivateUserAccountResponse, rootError> =
+            Result<DeactivateUserAccountResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             accountManagementApiService.deactivateUserAccount(
                 deactivateUserAccountRequest.toDeactivateUserAccountRequestDto(),
@@ -37,7 +37,7 @@ class UserAccountManagementRepositoryImpl(
     override suspend fun reactivateUserAccount(
         role: Role,
         userId: Int?,
-    ): Result<ReactivateUserAccountResponse, rootError> =
+    ): Result<ReactivateUserAccountResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             accountManagementApiService.reactivateUserAccount(
                 token = token,
@@ -51,7 +51,7 @@ class UserAccountManagementRepositoryImpl(
 
     override suspend fun checkEmployeePermission(
         role: Role,
-    ): Result<CheckEmployeePermissionResponse, rootError> =
+    ): Result<CheckEmployeePermissionResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             accountManagementApiService.checkEmployeePermission(
                 token = token,
@@ -64,7 +64,7 @@ class UserAccountManagementRepositoryImpl(
 
     override suspend fun resignUser(
         userId: Int?
-    ): Result<DeactivateUserAccountResponse, rootError> =
+    ): Result<DeactivateUserAccountResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             accountManagementApiService.resignUser(
                 token = token,
@@ -77,7 +77,7 @@ class UserAccountManagementRepositoryImpl(
     override suspend fun deactivatePharmacyAccount(
         deactivateUserAccountRequest: DeactivateUserAccountRequest,
         pharmacyId:Int?,
-    ): Result<DeactivateUserAccountResponse, rootError> =
+    ): Result<DeactivateUserAccountResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             accountManagementApiService.deactivatePharmacyAccount(
                 token = token,
@@ -92,7 +92,7 @@ class UserAccountManagementRepositoryImpl(
 
     override suspend fun reactivatePharmacyAccount(
         pharmacyId:Int?,
-    ): Result<ReactivateUserAccountResponse, rootError> =
+    ): Result<ReactivateUserAccountResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             accountManagementApiService.reactivatePharmacyAccount(
                 token = token,

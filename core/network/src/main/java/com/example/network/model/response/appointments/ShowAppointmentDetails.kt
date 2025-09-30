@@ -1,6 +1,6 @@
 package com.example.network.model.response.appointments
 
-import com.example.network.model.dto.doctor.appointment.AppointmentDto
+import com.example.network.model.dto.appointment.AppointmentDto
 import kotlinx.serialization.Serializable
 
 @Serializable

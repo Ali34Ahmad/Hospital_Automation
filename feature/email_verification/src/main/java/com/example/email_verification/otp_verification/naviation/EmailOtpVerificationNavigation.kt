@@ -1,12 +1,12 @@
 package com.example.email_verification.otp_verification.naviation
 
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.email_verification.otp_verification.main.OtpVerificationNavigationUiActions
-import com.example.email_verification.otp_verification.main.OtpVerificationScreen
-import com.example.email_verification.otp_verification.main.OtpVerificationViewModel
+import com.example.email_verification.otp_verification.presentation.OtpVerificationNavigationUiActions
+import com.example.email_verification.otp_verification.presentation.OtpVerificationScreen
+import com.example.email_verification.otp_verification.presentation.OtpVerificationViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -33,7 +33,7 @@ fun NavGraphBuilder.emailOtpVerificationScreen(
         val emailOtpVerificationViewModel =
             koinViewModel<OtpVerificationViewModel>()
         val emailOtpVerificationUiState =
-            emailOtpVerificationViewModel.uiState.collectAsState()
+            emailOtpVerificationViewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : OtpVerificationNavigationUiActions {
             override fun navigateToEmailVerifiedSuccessfullyScreen() {

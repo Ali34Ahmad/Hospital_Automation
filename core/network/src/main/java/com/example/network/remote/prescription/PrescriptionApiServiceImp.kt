@@ -17,14 +17,14 @@ import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.utils.io.InternalAPI
 import kotlinx.serialization.json.Json
+import kotlin.toString
 
-const val PRESCRIPTION_TAG = "prescription api service"
+private const val PRESCRIPTION_TAG = "PrescriptionApi"
 
 class PrescriptionApiServiceImp(
     private val client: HttpClient
@@ -83,98 +83,65 @@ class PrescriptionApiServiceImp(
         childId: Int?,
         name: String?,
         doctorId: Int?,
-    ): Result<GetAllPrescriptionsResponseDto, NetworkError> = try {
-        val routeSuffix=if (doctorId!=null) "/$doctorId"
-        else ""
-        val response = client.get("${ApiRoutes.getPrescriptionsEndPointForRole(role)}$routeSuffix") {
-            url {
-                parameter("page", page)
-                parameter("limit", limit)
-                when {
-                    name != null -> {
-                        parameter("filter", "NAME")
-                        parameter("name", name)
-                    }
+    ): Result<GetAllPrescriptionsResponseDto, NetworkError> =
+        doApiCall<GetAllPrescriptionsResponseDto>(
+            tag = PRESCRIPTION_TAG
+        ) {
+            Log.d(PRESCRIPTION_TAG, "getAllPrescriptions")
 
-                    patientId != null -> {
-                        parameter("filter", "ID")
-                        parameter(
-                            "who",
-                            "patient"
-                        )
-                        parameter("id", patientId)
-                    }
+            val routeSuffix = if (doctorId != null) "/$doctorId"
+            else ""
+            client.get("${ApiRoutes.getPrescriptionsEndPointForRole(role)}$routeSuffix") {
+                url {
+                    parameter("page", page)
+                    parameter("limit", limit)
+                    when {
+                        name != null -> {
+                            parameter("filter", "NAME")
+                            parameter("name", name)
+                        }
 
-                    childId != null -> {
-                        parameter("filter", "ID")
-                        parameter(
-                            "who",
-                            "child"
-                        )
-                        parameter("id", childId)
-                    }
+                        patientId != null -> {
+                            parameter("filter", "ID")
+                            parameter(
+                                "who",
+                                "patient"
+                            )
+                            parameter("id", patientId)
+                        }
 
-                    else -> {
-                        parameter("filter","NONE")
+                        childId != null -> {
+                            parameter("filter", "ID")
+                            parameter(
+                                "who",
+                                "child"
+                            )
+                            parameter("id", childId)
+                        }
+
+                        else -> {
+                            parameter("filter", "NONE")
+                        }
                     }
                 }
-            }
-            contentType(ContentType.Application.Json)
-            bearerAuth(token)
-            Log.d("PrescriptionsURL",url.toString())
-            Log.d("PrescriptionsChildId",childId.toString())
-        }
-        when (response.status.value) {
-            in 200..299 -> {
-                val responseText = response.bodyAsText()
-                Log.v("GetAllMedicalPrescriptionsApi${response.status.value}", responseText)
-
-                val getAllPrescriptionsResponse: GetAllPrescriptionsResponseDto = response.body()
-                Log.v(
-                    "GetAllMedicalPrescriptionsApi: in of range 2xx",
-                    getAllPrescriptionsResponse.data.toString()
-                )
-                Result.Success(data = getAllPrescriptionsResponse)
-            }
-
-            else -> {
-                val errorBody = response.bodyAsText()
-                Log.e("GetAllMedicalPrescriptionsApi: Out of range 2xx", errorBody)
-                Result.Error(NetworkError.UNKNOWN)
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
             }
         }
-    } catch (e: Exception) {
-        Log.e("GetAllMedicalPrescriptionsApi Exception:", e.localizedMessage ?: "Unknown Error")
-        Result.Error(NetworkError.UNKNOWN)
-    }
 
     override suspend fun getPrescriptionDetailsById(
         token: String, id: Int,
         role: RoleDto
-    ): Result<PrescriptionDetailsWithMedicinesDto, NetworkError> = try {
-        val response = client.get("${ApiRoutes.getPrescriptionDetailsByIdEndPoint(role)}/$id") {
-            contentType(ContentType.Application.Json)
-            bearerAuth(token)
-            Log.v("PrescriptionId:", id.toString())
-        }
-        when (response.status.value) {
-            in 200..299 -> {
-                val prescriptionDetails: PrescriptionDetailsWithMedicinesDto = response.body()
-                Log.v("PrescriptionDetailsApi:In Range 2xx", prescriptionDetails.toString())
-                Result.Success(data = prescriptionDetails)
-            }
+    ): Result<PrescriptionDetailsWithMedicinesDto, NetworkError> =
+        doApiCall<PrescriptionDetailsWithMedicinesDto>(
+            tag = PRESCRIPTION_TAG
+        ) {
+            Log.d(PRESCRIPTION_TAG, "getPrescriptionDetailsById")
 
-            else -> {
-                val errorMessage: NetworkMessage = response.body()
-                Log.e("PrescriptionDetailsApi:Out of Range 2xx", errorMessage.message)
-                Result.Error(NetworkError.UNKNOWN)
+            client.get("${ApiRoutes.getPrescriptionDetailsByIdEndPoint(role)}/$id") {
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
             }
         }
-    } catch (e: Exception) {
-        Log.e("PrescriptionDetailsApi:Exception", e.message ?: "Unknown")
-        Result.Error(NetworkError.UNKNOWN)
-    }
-
-
 }
 

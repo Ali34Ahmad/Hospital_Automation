@@ -6,7 +6,7 @@ import com.example.network.model.response.profile.CheckPermissionResponseDto
 import com.example.network.model.response.profile.DeactivateUserAccountResponseDto
 import com.example.network.model.response.profile.ReactivateUserAccountResponseDto
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 interface AccountManagementApiService {
     suspend fun deactivateUserAccount(
@@ -14,33 +14,33 @@ interface AccountManagementApiService {
         token: String,
         role: RoleDto,
         userId:Int?,
-    ): Result<DeactivateUserAccountResponseDto, rootError>
+    ): Result<DeactivateUserAccountResponseDto, NetworkError>
 
     suspend fun reactivateUserAccount(
         token: String,
         role: RoleDto,
         userId:Int?,
-    ): Result<ReactivateUserAccountResponseDto, rootError>
+    ): Result<ReactivateUserAccountResponseDto, NetworkError>
 
     suspend fun checkEmployeePermission(
         token: String,
         role: RoleDto
-    ): Result<CheckPermissionResponseDto, rootError>
+    ): Result<CheckPermissionResponseDto, NetworkError>
 
     suspend fun resignUser(
         token: String,
         userId: Int?
-    ): Result<DeactivateUserAccountResponseDto, rootError>
+    ): Result<DeactivateUserAccountResponseDto, NetworkError>
 
     suspend fun deactivatePharmacyAccount(
         deactivateAccountRequestDto: DeactivateAccountRequestDto,
         token: String,
         pharmacyId:Int?,
-    ): Result<DeactivateUserAccountResponseDto, rootError>
+    ): Result<DeactivateUserAccountResponseDto, NetworkError>
 
     suspend fun reactivatePharmacyAccount(
         token: String,
         pharmacyId:Int?,
-    ): Result<ReactivateUserAccountResponseDto, rootError>
+    ): Result<ReactivateUserAccountResponseDto, NetworkError>
 
 }

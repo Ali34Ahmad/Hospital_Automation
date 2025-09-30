@@ -4,16 +4,17 @@ import android.util.Log
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.response.medical_record.GetAllMedicalRecordsResponseDto
 import com.example.network.utility.ApiRoutes
+import com.example.network.utility.doApiCall
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+
+private const val MEDICAL_RECORDS_API_TAG = "MedicalRecordsApi"
 
 class MedicalRecordsApiServiceImpl(
     private val client: HttpClient,
@@ -25,41 +26,27 @@ class MedicalRecordsApiServiceImpl(
         role: RoleDto,
         name:String?,
         doctorId:Int?,
-    ): Result<GetAllMedicalRecordsResponseDto, NetworkError> = try {
-        val routeSuffix=if (doctorId!=null) "/$doctorId" else ""
-        val response = client.get("${ApiRoutes.getMedicalRecordsEndPoint(role)}$routeSuffix") {
-            url{
-                parameter("page",page)
-                parameter("limit",limit)
-                if (name==null){
-                    parameter("filter","NONE")
-                }else{
-                    parameter("filter","NAME")
-                    parameter("name",name)
+    ): Result<GetAllMedicalRecordsResponseDto, NetworkError> =
+        doApiCall<GetAllMedicalRecordsResponseDto>(
+            tag = MEDICAL_RECORDS_API_TAG
+        ) {
+            Log.d(MEDICAL_RECORDS_API_TAG, "getAllMedicalRecordsForCurrentDoctor")
+
+            val routeSuffix=if (doctorId!=null) "/$doctorId" else ""
+            client.get("${ApiRoutes.getMedicalRecordsEndPoint(role)}$routeSuffix") {
+                url{
+                    parameter("page",page)
+                    parameter("limit",limit)
+                    if (name==null){
+                        parameter("filter","NONE")
+                    }else{
+                        parameter("filter","NAME")
+                        parameter("name",name)
+                    }
                 }
-            }
-            contentType(ContentType.Application.Json)
-            bearerAuth(token)
-        }
-        when (response.status.value) {
-            in 200..299 -> {
-                val responseText = response.bodyAsText()
-                Log.v("GetAllMedicalRecordsApi${response.status.value}", responseText)
-
-                val addVaccineResponse: GetAllMedicalRecordsResponseDto = response.body()
-                Log.v("GetAllMedicalRecordsApi: in of range 2xx", addVaccineResponse.data.toString())
-                Result.Success(data = addVaccineResponse)
-            }
-
-            else -> {
-                val errorBody = response.bodyAsText()
-                Log.e("GetAllMedicalRecordsApi: Out of range 2xx", errorBody)
-                Result.Error(NetworkError.UNKNOWN)
+                contentType(ContentType.Application.Json)
+                bearerAuth(token)
             }
         }
-    }catch (e: Exception){
-        Log.e("GetAllMedicalRecordsApi Exception:", e.localizedMessage ?: "Unknown Error")
-        Result.Error(NetworkError.UNKNOWN)
-    }
 
 }

@@ -55,7 +55,7 @@ fun IconWithBackgroundPreview(){
             IconWithBackground(
                 iconRes = R.drawable.ic_location_outlined,
                 contentDescription = null,
-                backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 iconColor = MaterialTheme.colorScheme.primary,
             )
         }

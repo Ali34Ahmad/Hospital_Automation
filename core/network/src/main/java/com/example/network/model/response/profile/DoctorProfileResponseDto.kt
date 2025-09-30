@@ -1,6 +1,6 @@
 package com.example.network.model.response.profile
 
-import com.example.network.model.dto.doctor.appointment.AppointmentTypeDto
+import com.example.network.model.dto.appointment.AppointmentTypeDto
 import com.example.network.model.enums.RoleDto
 import com.example.network.model.dto.workday.WorkDayDto
 import com.example.network.model.enums.GenderDto

@@ -1,11 +1,12 @@
 package com.example.prescription_details.navigation
 
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.prescription_details.main.PrescriptionDetailsNavigationUiActions
-import com.example.prescription_details.main.PrescriptionDetailsScreen
+import com.example.prescription_details.presentation.PrescriptionDetailsNavigationUiActions
+import com.example.prescription_details.presentation.PrescriptionDetailsScreen
 import com.example.medical_prescription_details.main.PrescriptionDetailsViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
@@ -30,7 +31,7 @@ fun NavGraphBuilder.prescriptionDetailsScreen(
 ) {
     composable<PrescriptionDetailsRoute> {
         val viewModel = koinViewModel<PrescriptionDetailsViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : PrescriptionDetailsNavigationUiActions {
             override fun navigateUp() {

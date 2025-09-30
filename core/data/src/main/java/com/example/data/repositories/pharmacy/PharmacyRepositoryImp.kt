@@ -12,7 +12,6 @@ import com.example.network.remote.pharmacy.PharmacyApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import com.example.utility.network.rootError
 
 class PharmacyRepositoryImp(
     private val pharmacyService : PharmacyApiService,
@@ -21,7 +20,7 @@ class PharmacyRepositoryImp(
 ): PharmacyRepository {
     override suspend fun getPharmacyDetailsById(
         pharmacyId: Int
-    ): Result<PharmacyDetailsResponse, rootError> =
+    ): Result<PharmacyDetailsResponse, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             pharmacyService.getPharmacyDetailsById(
                 token = token,

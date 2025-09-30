@@ -1,13 +1,13 @@
 package com.example.upload_employee_documents.navigation
 
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.navigation.extesion.navigateToScreen
-import com.example.upload_employee_documents.main.UploadEmployeeDocumentsNavigationUiActions
-import com.example.upload_employee_documents.main.UploadEmployeeDocumentsScreen
-import com.example.upload_employee_documents.main.UploadEmployeeDocumentsViewModel
+import com.example.upload_employee_documents.presentation.UploadEmployeeDocumentsNavigationUiActions
+import com.example.upload_employee_documents.presentation.UploadEmployeeDocumentsScreen
+import com.example.upload_employee_documents.presentation.UploadEmployeeDocumentsViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -26,7 +26,7 @@ fun NavGraphBuilder.uploadEmploymentDocumentsScreen(
         val uploadEmployeeDocumentsViewModel =
             koinViewModel<UploadEmployeeDocumentsViewModel>()
         val uploadEmployeeDocumentsUiState =
-            uploadEmployeeDocumentsViewModel.uiState.collectAsState()
+            uploadEmployeeDocumentsViewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : UploadEmployeeDocumentsNavigationUiActions {
             override fun navigateToAddResidentialAddressScreen() {

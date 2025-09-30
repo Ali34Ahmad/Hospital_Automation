@@ -1,11 +1,8 @@
 package com.example.login.validator
 
-import com.example.domain.use_cases.validator.ValidateConfirmPasswordUseCase
 import com.example.domain.use_cases.validator.ValidateEmailUseCase
-import com.example.domain.use_cases.validator.ValidatePasswordUseCase
-import com.example.domain.use_cases.validator.ValidatePhoneNumberUseCase
 import com.example.domain.use_cases.validator.ValidateTextUseCase
-import com.example.login.main.LoginUiState
+import com.example.login.presentation.LoginUiState
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.validation.ValidatorErrorMessage

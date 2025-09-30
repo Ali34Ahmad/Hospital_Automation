@@ -4,12 +4,12 @@ import com.example.domain.repositories.vaccine.VaccineRepository
 import com.example.model.vaccine.GenericVaccinationTable
 import com.example.model.vaccine.VaccinesIdsToVisitNumber
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class UpdateVaccinesVisitNumberUseCase(
     private val vaccineRepository: VaccineRepository
 ) {
-    suspend operator fun invoke(vaccinesIdsToVisitNumber: VaccinesIdsToVisitNumber): Result<GenericVaccinationTable, rootError> {
+    suspend operator fun invoke(vaccinesIdsToVisitNumber: VaccinesIdsToVisitNumber): Result<GenericVaccinationTable, NetworkError> {
         return vaccineRepository.updateVaccinesVisitNumber(vaccinesIdsToVisitNumber)
     }
 }

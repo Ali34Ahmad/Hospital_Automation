@@ -4,8 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.data.mapper.enums.toRoleDto
+import com.example.data.mapper.vaccine.toChildVaccinationTableData
 import com.example.data.mapper.vaccine.toGenericVaccinationTable
-import com.example.data.mapper.vaccine.toUpdateVaccinationTableRequestDto
 import com.example.data.mapper.vaccine.toVaccineData
 import com.example.data.mapper.vaccine.toVaccineDto
 import com.example.data.mapper.vaccine.toVaccineIdToVisitNumberDto
@@ -17,17 +17,16 @@ import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.domain.repositories.vaccine.VaccineRepository
 import com.example.model.enums.Role
 import com.example.model.role_config.RoleAppConfig
+import com.example.model.vaccine.ChildVaccinationTableData
 import com.example.model.vaccine.GenericVaccinationTable
-import com.example.model.vaccine.UpdateVaccinationTableRequest
 import com.example.model.vaccine.VaccineData
 import com.example.model.vaccine.VaccineIdToVisitNumber
 import com.example.model.vaccine.VaccineMainInfo
 import com.example.model.vaccine.VaccinesIdsToVisitNumber
-import com.example.network.model.dto.vaccine.VaccineMainInfoDto
 import com.example.network.remote.vaccine.VaccineApiService
 import com.example.utility.network.Result
 import com.example.utility.network.map
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 import kotlinx.coroutines.flow.Flow
 
 class VaccineRepositoryImpl(
@@ -51,7 +50,7 @@ class VaccineRepositoryImpl(
             ).flow
         }
 
-    override suspend fun getVaccinesWithNoVisitNumber(): Result<List<VaccineMainInfo>, rootError> =
+    override suspend fun getVaccinesWithNoVisitNumber(): Result<List<VaccineMainInfo>, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.getVaccinesWithNoVisitNumber(
                 token,
@@ -64,7 +63,7 @@ class VaccineRepositoryImpl(
 
     override suspend fun addNewVaccine(
         vaccineData: VaccineData
-    ): Result<VaccineData, rootError> =
+    ): Result<VaccineData, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.addNewVaccine(
                 token,
@@ -78,7 +77,7 @@ class VaccineRepositoryImpl(
     override suspend fun getVaccineById(
         id: Int,
         role: Role
-    ): Result<VaccineData, rootError> =
+    ): Result<VaccineData, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.getVaccineById(
                 token = token,
@@ -90,7 +89,7 @@ class VaccineRepositoryImpl(
         }
 
     override suspend fun getGenericVaccinationTable():
-            Result<GenericVaccinationTable, rootError> =
+            Result<GenericVaccinationTable, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.getGenericVaccinationTable(
                 token,
@@ -103,7 +102,7 @@ class VaccineRepositoryImpl(
 
     override suspend fun updateVaccineVisitNumber(
         vaccineIdToVisitNumber: VaccineIdToVisitNumber,
-    ): Result<GenericVaccinationTable, rootError> =
+    ): Result<GenericVaccinationTable, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.updateVaccineVisitNumber(
                 token,
@@ -116,7 +115,7 @@ class VaccineRepositoryImpl(
 
     override suspend fun updateVaccinesVisitNumber(
         vaccinesIdsToVisitNumber: VaccinesIdsToVisitNumber,
-    ): Result<GenericVaccinationTable, rootError> =
+    ): Result<GenericVaccinationTable, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.updateVaccinesVisitNumber(
                 token,
@@ -127,4 +126,16 @@ class VaccineRepositoryImpl(
                 }
         }
 
+    override suspend fun getChildVaccinationTable(
+        childId: Int
+    ): Result<ChildVaccinationTableData, NetworkError> =
+        userPreferencesRepository.executeWithValidToken { token ->
+            vaccineApiService.getChildVaccinationTable(
+                token,
+                childId
+            )
+                .map { childVaccinationTable ->
+                    childVaccinationTable.toChildVaccinationTableData()
+                }
+        }
 }

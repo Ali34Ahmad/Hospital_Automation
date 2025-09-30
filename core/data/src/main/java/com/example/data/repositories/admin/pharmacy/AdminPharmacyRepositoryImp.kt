@@ -10,7 +10,7 @@ import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.admin.DepartmentState
 import com.example.model.admin.DepartmentStatistics
 import com.example.model.pharmacy.PharmacyData
-import com.example.network.remote.admin.pharmacy.AdminPharmacyApiService
+import com.example.network.remote.pharmacy.AdminPharmacyApiService
 import kotlinx.coroutines.flow.Flow
 
 class AdminPharmacyRepositoryImp(

@@ -10,7 +10,7 @@ import com.example.domain.repositories.local.UserPreferencesRepository
 import com.example.model.admin.DepartmentState
 import com.example.model.admin.DepartmentStatistics
 import com.example.model.doctor.clinic.ClinicFullData
-import com.example.network.remote.admin.clinic.AdminClinicApiService
+import com.example.network.remote.clinic.AdminClinicApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import kotlinx.coroutines.flow.Flow

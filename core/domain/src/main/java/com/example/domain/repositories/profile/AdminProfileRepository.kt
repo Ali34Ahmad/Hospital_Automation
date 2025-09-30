@@ -2,8 +2,8 @@ package com.example.domain.repositories.profile
 
 import com.example.model.admin_account.AdminProfileResponse
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 interface AdminProfileRepository {
-    suspend fun getAdminInfoById(adminId: Int?): Result<AdminProfileResponse, rootError>
+    suspend fun getAdminInfoById(adminId: Int?): Result<AdminProfileResponse, NetworkError>
 }

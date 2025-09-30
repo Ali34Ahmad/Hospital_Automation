@@ -2,6 +2,7 @@ package com.example.domain.di.vaccine
 
 import com.example.domain.use_cases.vaccine.AddNewVaccineUseCase
 import com.example.domain.use_cases.vaccine.GetAllVaccinesUseCase
+import com.example.domain.use_cases.vaccine.GetChildVaccinationTableUseCase
 import com.example.domain.use_cases.vaccine.GetGenericVaccinationTableUseCase
 import com.example.domain.use_cases.vaccine.GetVaccineByIdUseCase
 import com.example.domain.use_cases.vaccine.GetVaccinesWithNoVisitNumberUserCase
@@ -21,4 +22,6 @@ val vaccinesUseCasesModule= module {
     singleOf(::GetVaccinesWithNoVisitNumberUserCase)
 
     singleOf(::GetAllVaccinesUseCase)
+
+    singleOf(::GetChildVaccinationTableUseCase)
 }

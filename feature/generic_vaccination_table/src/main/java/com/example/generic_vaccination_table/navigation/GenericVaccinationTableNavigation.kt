@@ -1,12 +1,12 @@
 package com.example.generic_vaccination_table.navigation
 
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.generic_vaccination_table.main.GenericVaccinationTableNavigationUiActions
-import com.example.generic_vaccination_table.main.GenericVaccinationTableScreen
-import com.example.generic_vaccination_table.main.GenericVaccinationTableViewModel
+import com.example.generic_vaccination_table.presentation.GenericVaccinationTableNavigationUiActions
+import com.example.generic_vaccination_table.presentation.GenericVaccinationTableScreen
+import com.example.generic_vaccination_table.presentation.GenericVaccinationTableViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -28,7 +28,7 @@ fun NavGraphBuilder.genericVaccineDetailsScreen(
 ) {
     composable<GenericVaccinationTableRoute> {
         val viewModel = koinViewModel<GenericVaccinationTableViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : GenericVaccinationTableNavigationUiActions {
             override fun navigateToVaccineDetailsScreen(vaccineId: Int) {

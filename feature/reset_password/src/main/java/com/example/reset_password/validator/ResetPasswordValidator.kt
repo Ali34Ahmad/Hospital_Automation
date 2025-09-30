@@ -1,7 +1,7 @@
 package com.example.reset_password.validator
 
 import com.example.domain.use_cases.validator.ValidatePasswordUseCase
-import com.example.reset_password.main.ResetPasswordUiState
+import com.example.reset_password.presentation.ResetPasswordUiState
 import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.validation.ValidatorErrorMessage

@@ -1,6 +1,6 @@
 package com.example.add_new_vaccine.validator
 
-import com.example.add_new_vaccine.main.AddNewVaccineUiState
+import com.example.add_new_vaccine.presentation.AddNewVaccineUiState
 import com.example.domain.use_cases.validator.ValidatePositiveNumberUseCase
 import com.example.domain.use_cases.validator.ValidateTextUseCase
 import com.example.model.enums.AgeUnit

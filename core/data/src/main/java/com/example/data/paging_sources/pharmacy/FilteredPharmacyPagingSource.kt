@@ -6,7 +6,7 @@ import com.example.data.mapper.pharmacy.toPharmacyData
 import com.example.model.admin.DepartmentState
 import com.example.model.admin.DepartmentStatistics
 import com.example.model.pharmacy.PharmacyData
-import com.example.network.remote.admin.pharmacy.AdminPharmacyApiService
+import com.example.network.remote.pharmacy.AdminPharmacyApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
 import com.example.utility.network.onError

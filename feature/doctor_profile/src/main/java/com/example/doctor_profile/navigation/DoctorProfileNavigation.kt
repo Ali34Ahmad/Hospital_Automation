@@ -1,12 +1,13 @@
 package com.example.doctor_profile.navigation
 
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.doctor_profile.main.DoctorProfileNavigationUiActions
-import com.example.doctor_profile.main.DoctorProfileScreen
-import com.example.doctor_profile.main.DoctorProfileViewModel
+import com.example.doctor_profile.presentation.DoctorProfileNavigationUiActions
+import com.example.doctor_profile.presentation.DoctorProfileScreen
+import com.example.doctor_profile.presentation.DoctorProfileViewModel
 import com.example.navigation.extesion.navigateToScreen
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -33,7 +34,7 @@ fun NavGraphBuilder.doctorProfileScreen(
 ) {
     composable<DoctorProfileRoute> {
         val viewModel = koinViewModel<DoctorProfileViewModel>()
-        val uiState = viewModel.uiState.collectAsState()
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
         val navActions = object : DoctorProfileNavigationUiActions {
             override fun navigateToAppointmentsScreen(

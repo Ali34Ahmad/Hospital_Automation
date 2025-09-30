@@ -6,7 +6,7 @@ import com.example.data.mapper.doctor.toDoctorData
 import com.example.model.admin.EmploymentStatistics
 import com.example.model.doctor.DoctorData
 import com.example.model.employee.EmployeeState
-import com.example.network.remote.admin.doctor.AdminDoctorApiService
+import com.example.network.remote.doctor.AdminDoctorApiService
 import com.example.utility.network.NetworkError
 import com.example.utility.network.NetworkException
 import com.example.utility.network.onError

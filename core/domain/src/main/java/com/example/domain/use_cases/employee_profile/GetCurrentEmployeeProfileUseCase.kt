@@ -3,12 +3,12 @@ package com.example.domain.use_cases.employee_profile
 import com.example.domain.repositories.profile.EmployeeProfileRepository
 import com.example.model.employee.EmployeeProfileResponse
 import com.example.utility.network.Result
-import com.example.utility.network.rootError
+import com.example.utility.network.NetworkError
 
 class GetCurrentEmployeeProfileUseCase(
     private val employeeProfileRepository: EmployeeProfileRepository
 ) {
-    suspend operator fun invoke(): Result<EmployeeProfileResponse, rootError> {
+    suspend operator fun invoke(): Result<EmployeeProfileResponse, NetworkError> {
         return employeeProfileRepository.getEmployeeInfo()
     }
 }

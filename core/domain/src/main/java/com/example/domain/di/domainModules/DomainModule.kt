@@ -7,8 +7,6 @@ import com.example.domain.di.admin.employee.adminEmployeeUseCases
 import com.example.domain.di.admin.pharmacy.adminPharmacyUseCases
 import com.example.domain.di.appointments.appointmentUseCasesModule
 import com.example.domain.di.auth.authUseCasesModule
-import com.example.domain.di.auth.singup.baseSignUpModule
-import com.example.domain.di.auth.singup.doctorSignUpModule
 import com.example.domain.di.basic_account_creating.addResidentialAddressUseCaseModule
 import com.example.domain.di.basic_account_creating.uploadEmploymentDocumentsUseCasesModule
 import com.example.domain.di.basic_account_creating.uploadProfileImageUseCasesModule
@@ -34,7 +32,6 @@ import org.koin.dsl.module
 
 val domainModule = module {
     includes(
-        baseSignUpModule,
         authUseCasesModule,
         validatorUseCasesModule,
         addResidentialAddressUseCaseModule,
@@ -50,7 +47,6 @@ val domainModule = module {
         pharmacyUseCasesModule,
         employmentHistoryUseCasesModule,
         prescriptionUseCasesModule,
-        doctorSignUpModule,
         getAdminProfileByIdUseCaseModule,
         uploadEmploymentDocumentsUseCasesModule,
         medicalRecordUseCasesModule,
