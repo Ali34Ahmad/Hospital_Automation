@@ -6,17 +6,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constants.icons.AppIcons
@@ -36,7 +40,9 @@ import com.example.ui_components.components.icon.IconWithBackground
 @Composable
 fun ChildVaccinationTableItem(
     visitNumberToVaccines: ChildVaccinationTableVisit,
-    onClick: (Int) -> Unit,
+    onItemClick: (vaccineId: Int) -> Unit,
+    onProviderNameClick: (doctorId: Int) -> Unit,
+    onNavigateToAppointmentClick: (appointmentId: Int) -> Unit,
     showDetails: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -77,7 +83,7 @@ fun ChildVaccinationTableItem(
         top = MaterialTheme.spacing.medium16,
         bottom = MaterialTheme.spacing.medium16,
         start = MaterialTheme.spacing.medium16,
-        end =  MaterialTheme.spacing.medium16
+        end = MaterialTheme.spacing.medium16
     )
 
     val leftStrokeModifier = Modifier
@@ -121,28 +127,48 @@ fun ChildVaccinationTableItem(
             visitNumberToVaccines.vaccinesWithVaccinationTableDetails.forEachIndexed { index, vaccineToVaccineDetails ->
                 Row(
                     modifier = innerRowModifier
-                        .clickable { onClick(vaccineToVaccineDetails.vaccineMainInfo.id) },
+                        .clickable { onItemClick(vaccineToVaccineDetails.vaccineMainInfo.id) },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = vaccineToVaccineDetails.vaccineMainInfo.name,
+                    Row(
                         modifier = Modifier
                             .weight(ChildVaccinationTableColumnWeight.VACCINE_NAME)
                             .then(textLeftBorderAndPaddingModifier),
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (vaccineToVaccineDetails.vaccinationTableItemDetails.isAvailableNow) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = MaterialTheme.spacing.extraSmall4)
+                                    .size(MaterialTheme.sizing.extraSmall4)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.additionalColorScheme.green)
+                            )
+                        }
+                        Text(
+                            text = vaccineToVaccineDetails.vaccineMainInfo.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+
+                    val vaccinationDate =
+                        vaccineToVaccineDetails.vaccinationTableItemDetails.vaccinationDate?.toAppropriateDateFormat()
+                    val vaccinationDateTextAlign = if (vaccinationDate == null)
+                        TextAlign.Center
+                    else TextAlign.Start
 
                     Text(
-                        text = vaccineToVaccineDetails.vaccinationTableItemDetails.vaccinationDate?.toAppropriateDateFormat()
-                            ?: stringResource(R.string.not_received_yet),
+                        text = vaccinationDate
+                            ?: stringResource(R.string.triple_dashes),
                         modifier = Modifier
                             .weight(ChildVaccinationTableColumnWeight.DATE)
                             .then(textLeftBorderAndPaddingModifier),
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = vaccinationDateTextAlign,
                     )
 
                     val (icon, iconColor, iconBackgroundColor) = when (vaccineToVaccineDetails.vaccinationTableItemDetails.vaccineStatus) {
@@ -171,11 +197,23 @@ fun ChildVaccinationTableItem(
                         )
                     }
 
+                    val appointmentId =
+                        vaccineToVaccineDetails.vaccinationTableItemDetails.appointmentId
+                    val stateBoxBaseModifier = Modifier
+                        .weight(ChildVaccinationTableColumnWeight.STATE)
+                        .then(leftStrokeModifier)
+                    val stateBoxModifier = if (appointmentId != null) {
+                        stateBoxBaseModifier
+                            .clickable {
+                                onNavigateToAppointmentClick(appointmentId)
+                            }
+                    } else {
+                        stateBoxBaseModifier
+                    }
+
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .weight(ChildVaccinationTableColumnWeight.STATE)
-                            .then(leftStrokeModifier)
+                        modifier = stateBoxModifier
                     ) {
                         IconWithBackground(
                             iconRes = icon,
@@ -188,24 +226,42 @@ fun ChildVaccinationTableItem(
                     }
 
                     if (showDetails) {
-                        val vaccinationDate=vaccineToVaccineDetails.vaccinationTableItemDetails.administratedBy?.fullName?.toAppropriateNameFormat()
-                        val vaccinationDateTextAlign=if(vaccinationDate==null)
+                        val vaccineProviderName =
+                            vaccineToVaccineDetails.vaccinationTableItemDetails.administratedBy?.fullName?.toAppropriateNameFormat()
+                        val vaccineProviderNameTextAlign = if (vaccineProviderName == null)
                             TextAlign.Center
                         else TextAlign.Start
 
+                        val genericProviderNameTextModifier = Modifier
+                            .weight(ChildVaccinationTableColumnWeight.VACCINE_NAME)
+                            .then(textLeftBorderAndPaddingModifier)
+
+                        val vaccineProvider =
+                            vaccineToVaccineDetails.vaccinationTableItemDetails.administratedBy
+                        val (providerNameTextStyle, providerNameTextModifier) =
+                            if (vaccineProvider?.id != null) {
+                                MaterialTheme.typography.bodyMedium.copy(
+                                    textDecoration = TextDecoration.Underline
+                                ) to
+                                        genericProviderNameTextModifier.clickable {
+                                            onProviderNameClick(vaccineProvider.id!!)
+                                        }
+                            } else {
+                                MaterialTheme.typography.bodyMedium to genericProviderNameTextModifier
+                            }
+
                         Text(
-                            text =vaccinationDate
+                            text = vaccineProviderName
                                 ?: stringResource(R.string.triple_dashes),
-                            modifier = Modifier
-                                .weight(ChildVaccinationTableColumnWeight.VACCINE_NAME)
-                                .then(textLeftBorderAndPaddingModifier),
-                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = providerNameTextModifier,
+                            style = providerNameTextStyle,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            textAlign = vaccinationDateTextAlign,
+                            textAlign = vaccineProviderNameTextAlign,
                         )
-                        val nextVisitDate=vaccineToVaccineDetails.vaccinationTableItemDetails.nextVisitDate?.toAppropriateDateFormat()
-                        val nextVisitDateTextAlign=if(nextVisitDate==null)
+                        val nextVisitDate =
+                            vaccineToVaccineDetails.vaccinationTableItemDetails.nextVisitDate?.toAppropriateDateFormat()
+                        val nextVisitDateTextAlign = if (nextVisitDate == null)
                             TextAlign.Center
                         else TextAlign.Start
 
@@ -228,15 +284,17 @@ fun ChildVaccinationTableItem(
 }
 
 
-@Preview(widthDp=300)
+@Preview(widthDp = 300)
 @Composable
 fun VaccinationTableItemTakenPreview() {
     Hospital_AutomationTheme {
         Surface {
             ChildVaccinationTableItem(
                 visitNumberToVaccines = createChildVaccinationTableDataSample().visitNumbersToVaccines[0],
-                onClick = {},
-                showDetails = false
+                onItemClick = {},
+                showDetails = false,
+                onProviderNameClick = {},
+                onNavigateToAppointmentClick = {},
             )
         }
     }
@@ -249,8 +307,10 @@ fun VaccinationTableItemNotSpecifiedPreview() {
         Surface {
             ChildVaccinationTableItem(
                 visitNumberToVaccines = createChildVaccinationTableDataSample().visitNumbersToVaccines[1],
-                onClick = {},
-                showDetails = false
+                onItemClick = {},
+                showDetails = false,
+                onProviderNameClick = {},
+                onNavigateToAppointmentClick = {}
             )
         }
     }
@@ -264,8 +324,10 @@ fun VaccinationTableItemMissedPreview() {
         Surface {
             ChildVaccinationTableItem(
                 visitNumberToVaccines = createChildVaccinationTableDataSample().visitNumbersToVaccines[2],
-                onClick = {},
-                showDetails = true
+                onItemClick = {},
+                showDetails = true,
+                onProviderNameClick = {},
+                onNavigateToAppointmentClick = {}
             )
         }
     }

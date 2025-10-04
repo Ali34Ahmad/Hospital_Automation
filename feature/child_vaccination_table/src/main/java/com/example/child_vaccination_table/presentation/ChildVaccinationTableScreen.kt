@@ -123,15 +123,20 @@ fun ChildVaccinationTableScreen(
                         ) {
                             ChildVaccinationTable(
                                 childVaccinationTable = uiState.vaccinationTable,
-
                                 onVaccineItemClick = { vaccineId ->
                                     uiActions.navigateToVaccineDetailsScreen(vaccineId)
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(MaterialTheme.spacing.medium16),
-                                showDetails = windowSizeClass.widthSizeClass== WindowWidthSizeClass.Expanded||
-                                        windowSizeClass.widthSizeClass== WindowWidthSizeClass.Medium,
+                                showDetails = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded ||
+                                        windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium,
+                                onProviderNameClick = {doctorId->
+                                    uiActions.navigateToDoctorProfileScreen(doctorId)
+                                },
+                                onNavigateToAppointmentClick = {appointmentId->
+                                    uiActions.navigateToAppointmentDetailsScreen(appointmentId)
+                                },
                             )
                         }
                     }

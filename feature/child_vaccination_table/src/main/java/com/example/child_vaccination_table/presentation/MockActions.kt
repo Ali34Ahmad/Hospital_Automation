@@ -6,6 +6,10 @@ fun mockNavigationUiActions()=object : ChildVaccinationTableNavigationUiActions 
 
     }
 
+    override fun navigateToDoctorProfileScreen(doctorId: Int) {
+
+    }
+
     override fun navigateToAppointmentDetailsScreen(appointmentId: Int) {
 
     }

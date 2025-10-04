@@ -22,7 +22,9 @@ import com.example.ui_components.components.items.ProfileActionsItem
 @Composable
 fun ChildVaccinationTable(
     childVaccinationTable: ChildVaccinationTableData,
-    onVaccineItemClick: (Int) -> Unit,
+    onVaccineItemClick: (vaccineId:Int) -> Unit,
+    onProviderNameClick: (doctorId:Int) -> Unit,
+    onNavigateToAppointmentClick: (appointmentId:Int) -> Unit,
     showDetails: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -42,8 +44,10 @@ fun ChildVaccinationTable(
                         visitNumber = visit.visitNumber,
                         vaccinesWithVaccinationTableDetails = visit.vaccinesWithVaccinationTableDetails
                     ),
-                    onClick = onVaccineItemClick,
+                    onItemClick = onVaccineItemClick,
                     showDetails = showDetails,
+                    onProviderNameClick = onProviderNameClick,
+                    onNavigateToAppointmentClick = onNavigateToAppointmentClick,
                 )
             }
         }
@@ -59,7 +63,9 @@ fun VaccinationTablePreview() {
                 childVaccinationTable = createChildVaccinationTableDataSample(),
                 onVaccineItemClick = {},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
-                showDetails = false
+                showDetails = false,
+                onProviderNameClick = {  },
+                onNavigateToAppointmentClick = {},
             )
         }
     }
@@ -75,6 +81,8 @@ fun VaccinationTableNonEditablePreview() {
                 onVaccineItemClick = {},
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
                 showDetails = true,
+                onProviderNameClick = {},
+                onNavigateToAppointmentClick = {},
             )
         }
     }

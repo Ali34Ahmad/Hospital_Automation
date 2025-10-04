@@ -15,6 +15,7 @@ interface ChildVaccinationTableBusinessUiActions {
 
 interface ChildVaccinationTableNavigationUiActions {
     fun navigateToVaccineDetailsScreen(vaccineId: Int)
+    fun navigateToDoctorProfileScreen(doctorId:Int)
     fun navigateToAppointmentDetailsScreen(appointmentId:Int)
     fun navigateUp()
 }

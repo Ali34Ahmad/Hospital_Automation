@@ -26,6 +26,7 @@ fun NavController.navigateToChildVaccinationTableScreen(childId:Int) {
 fun NavGraphBuilder.childVaccinationTableScreen(
     windowSizeClass: WindowSizeClass,
     onNavigateToVaccineDetailsScreen:(vaccineId: Int)->Unit,
+    onNavigateToDoctorProfileScreen:(doctorId: Int)->Unit,
     onNavigateToAppointmentDetailsScreen:(appointmentId: Int)->Unit,
     onNavigateUp:()->Unit,
 ) {
@@ -36,6 +37,10 @@ fun NavGraphBuilder.childVaccinationTableScreen(
         val navActions = object : ChildVaccinationTableNavigationUiActions {
             override fun navigateToVaccineDetailsScreen(vaccineId: Int) {
                 onNavigateToVaccineDetailsScreen(vaccineId)
+            }
+
+            override fun navigateToDoctorProfileScreen(doctorId: Int) {
+                onNavigateToDoctorProfileScreen(doctorId)
             }
 
             override fun navigateToAppointmentDetailsScreen(appointmentId: Int) {

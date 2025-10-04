@@ -119,8 +119,10 @@ internal fun ChildVaccinationTableVisitDto.toChildVaccinationTableVisit() =
 //        vaccinationTableItemDetails = vaccinationTableItemDetailsDto.toVaccinationTableItemDetailsDto()
 //    )
 
-internal fun VaccineWithStatusDetailsDto.toVaccineWithVaccinationTableDetails() =
-    VaccineWithVaccinationTableDetails(
+internal fun VaccineWithStatusDetailsDto.toVaccineWithVaccinationTableDetails(): VaccineWithVaccinationTableDetails {
+    val appointmentId = if (!appointments.isEmpty()) appointments[0].appointmentId
+    else null
+    return VaccineWithVaccinationTableDetails(
         vaccineMainInfo = VaccineMainInfo(
             id = id,
             name = name
@@ -130,20 +132,11 @@ internal fun VaccineWithStatusDetailsDto.toVaccineWithVaccinationTableDetails() 
             vaccinationDate = vaccinationTableDetails[0].vaccinationDate,
             administratedBy = vaccinationTableDetails[0].administratedBy?.toUserMainInfo(),
             nextVisitDate = vaccinationTableDetails[0].nextVisitDate,
-            isAvailableNow = vaccinationTableDetails[0].isAvailableNow?:false,
-            appointmentId = vaccinationTableDetails[0].appointmentId,
+            isAvailableNow = isAvailableNow==1,
+            appointmentId = appointmentId,
         )
     )
-
-internal fun VaccinationTableItemDetailsDto.toVaccinationTableItemDetailsDto() =
-    VaccinationTableItemDetails(
-        vaccineStatus = vaccineStatusDto.toVaccineStatus(),
-        vaccinationDate = vaccinationDate,
-        administratedBy = administratedBy?.toUserMainInfo(),
-        nextVisitDate = nextVisitDate,
-        isAvailableNow = isAvailableNow?:false,
-        appointmentId = appointmentId
-    )
+}
 
 internal fun VaccineStatusDto.toVaccineStatus() = when (this) {
     VaccineStatusDto.PASSED -> VaccineStatus.PASSED

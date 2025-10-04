@@ -271,7 +271,7 @@ fun AdminGraph(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToAppointmentsScreen = { doctorId,name,specialty,imageUrl, ->
+                onNavigateToAppointmentsScreen = { doctorId, name, specialty, imageUrl ->
                     navController.navigateToScheduleScreen(
                         id = doctorId,
                         hasAdminAccess = true,
@@ -581,9 +581,24 @@ fun AdminGraph(
 
             childVaccinationTableScreen(
                 windowSizeClass = windowSizeClass,
-                onNavigateToVaccineDetailsScreen = {},
-                onNavigateToAppointmentDetailsScreen = {},
-                onNavigateUp = {}
+                onNavigateToVaccineDetailsScreen = { vaccineId ->
+                    navController.navigateToVaccineDetailsScreen(
+                        vaccineId = vaccineId,
+                        vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,
+                    )
+                },
+                onNavigateToAppointmentDetailsScreen = { appointmentId ->
+                    navController.navigateToAppointmentDetails(appointmentId, false)
+                },
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onNavigateToDoctorProfileScreen = { doctorId ->
+                    navController.navigateToDoctorProfileScreen(
+                        doctorId = doctorId,
+                        doctorProfileAccessType = DoctorProfileAccessType.ADMIN_ACCESS
+                    )
+                }
             )
 
             pharmacyMedicines(

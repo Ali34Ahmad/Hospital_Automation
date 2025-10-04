@@ -33,8 +33,11 @@ data class VaccineWithStatusDetailsDto(
     @SerialName("vaccinesId")
     val id: Int,
     val name: String,
+    @SerialName("VaccineState")
+    val isAvailableNow: Int,
     @SerialName("vaccinationTables")
-    val vaccinationTableDetails:List<VaccinationTableItemDetailsDto>
+    val vaccinationTableDetails:List<VaccinationTableItemDetailsDto>,
+    val appointments:List<AppointmentIdWrapper>,
 )
 
 @Serializable
@@ -57,7 +60,12 @@ data class VaccinationTableItemDetailsDto(
     @SerialName("next_visit_date")
     val nextVisitDate: LocalDate?,
 
+    @SerialName("user")
     val administratedBy: UserMainInfoDto?=null,
-    val isAvailableNow:Boolean?=null,
-    val appointmentId:Int?=null,
+)
+
+@Serializable
+data class AppointmentIdWrapper(
+    @SerialName("appointmentsId")
+    val appointmentId:Int
 )
