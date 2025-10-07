@@ -46,7 +46,7 @@ sealed interface AppIcons {
         val fromAge =  R.drawable.line_start_circle
         val toAge =  R.drawable.line_end_circle
         val darkMode = R.drawable.ic_dark_mode
-        val vaccines = R.drawable.vaccines
+        val vaccine = R.drawable.vaccines
         val lightMode = R.drawable.ic_light_mode
         val syringe = R.drawable.ic_syringe
         val edit = R.drawable.ic_edit

@@ -7,7 +7,7 @@ import com.example.model.age.Age
 import com.example.model.enums.VaccineStatus
 import com.example.model.vaccine.ChildVaccinationTableData
 import com.example.model.vaccine.ChildVaccinationTableVisit
-import com.example.model.vaccine.GenericVaccinationTable
+import com.example.model.vaccine.GenericVaccinationTableData
 import com.example.model.vaccine.VaccinationTableItemDetails
 import com.example.model.vaccine.VaccinationTableVisit
 import com.example.model.vaccine.VaccineData
@@ -19,7 +19,6 @@ import com.example.model.vaccine.VaccinesIdsToVisitNumber
 import com.example.network.model.dto.vaccine.ChildVaccinationTableDto
 import com.example.network.model.dto.vaccine.ChildVaccinationTableVisitDto
 import com.example.network.model.dto.vaccine.GenericVaccinationTableDto
-import com.example.network.model.dto.vaccine.VaccinationTableItemDetailsDto
 import com.example.network.model.dto.vaccine.VaccinationTableVisitDto
 import com.example.network.model.dto.vaccine.VaccineDto
 import com.example.network.model.dto.vaccine.VaccineInteractionDto
@@ -73,7 +72,7 @@ internal fun VaccineInteraction.toVaccineInteractionDto() =
     )
 
 internal fun GenericVaccinationTableDto.toGenericVaccinationTable() =
-    GenericVaccinationTable(
+    GenericVaccinationTableData(
         visits = this.visits.map { it.toVaccinationTableVisit() }
     )
 

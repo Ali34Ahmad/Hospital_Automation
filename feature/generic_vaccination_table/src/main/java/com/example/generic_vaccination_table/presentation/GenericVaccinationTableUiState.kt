@@ -2,20 +2,21 @@ package com.example.generic_vaccination_table.presentation
 
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
 import com.example.model.enums.ScreenState
-import com.example.model.vaccine.GenericVaccinationTable
+import com.example.model.vaccine.GenericVaccinationTableData
 import com.example.model.vaccine.VaccineMainInfo
 import com.example.util.UiText
 
 data class GenericVaccinationTableUiState(
-    val vaccinationTable: GenericVaccinationTable? = null,
+    val vaccinationTable: GenericVaccinationTableData? = null,
     val genericVaccinationTableAccessType: GenericVaccinationTableAccessType? = null,
 
     val loadingVisitNumber: Int? = null,
 
     val visitNumberToUse: Int? = null,
     val vaccineIdToDelete: Int? = null,
+    val vaccinesIdsToDelete: List<Int> = emptyList(),
 
-//    val vaccinesIdsToDelete: List<Int> = emptyList(),
+    val selectedVaccinesIndices: List<Int> = emptyList(),
 
     val screenState: ScreenState = ScreenState.IDLE,
 

@@ -71,7 +71,6 @@ fun MessageDialog(
                             Text(text = dismissButtonText)
                         }
                     }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium16))
                     TextButton(
                         onClick = onConfirm,
                     ) {

@@ -109,7 +109,7 @@ fun RequestsScreen(
         ),
         DrawerButton(
             text = R.string.vaccines,
-            image = AppIcons.Outlined.vaccines,
+            image = AppIcons.Outlined.vaccine,
             onClick = {
                 uiActions.navigateToVaccines()
             },

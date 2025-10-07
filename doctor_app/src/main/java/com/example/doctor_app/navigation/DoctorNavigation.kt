@@ -40,7 +40,8 @@ import com.example.employment_history.navigation.navigateToEmploymentHistoryScre
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
-import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
+import com.example.generic_vaccination_table.navigation.GenericVaccinationTableRoute
+import com.example.generic_vaccination_table.navigation.genericVaccinationTableScreen
 import com.example.generic_vaccination_table.navigation.navigateToGenericVaccinationTableScreen
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.guardianProfileScreen
@@ -87,7 +88,9 @@ fun DoctorNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoute
+        startDestination = GenericVaccinationTableRoute(
+            genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
+        )
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -237,7 +240,7 @@ fun DoctorNavigation() {
             },
         )
 
-        genericVaccineDetailsScreen(
+        genericVaccinationTableScreen(
             onNavigateToVaccineDetailsScreen = { vaccineId ->
                 navController.navigateToVaccineDetailsScreen(
                     vaccinePreviousScreen = VaccinePreviousScreen.NORMAL_ACCESS,

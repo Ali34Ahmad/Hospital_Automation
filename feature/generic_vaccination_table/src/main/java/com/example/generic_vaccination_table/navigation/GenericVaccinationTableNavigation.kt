@@ -22,7 +22,7 @@ fun NavController.navigateToGenericVaccinationTableScreen(genericVaccinationTabl
     navigateToScreen(GenericVaccinationTableRoute(genericVaccinationTableAccessType))
 }
 
-fun NavGraphBuilder.genericVaccineDetailsScreen(
+fun NavGraphBuilder.genericVaccinationTableScreen(
     onNavigateToVaccineDetailsScreen:(vaccineId: Int)->Unit,
     onNavigateUp:()->Unit,
 ) {

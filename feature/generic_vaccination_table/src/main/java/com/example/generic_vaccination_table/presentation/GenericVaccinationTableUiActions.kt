@@ -11,6 +11,7 @@ class GenericVaccinationTableUiActions(
 interface GenericVaccinationTableBusinessUiActions {
     fun onAddVaccineToVisitClick(visitNumber: Int)
     fun onHideVaccinesDialog()
+    fun onCancelVaccinesFetch()
     fun onShowVaccinesDialog()
     fun onRemoveVaccineFromVisit(visitNumber: Int, vaccineIndex: Int)
     fun onSetVisitNumberAndVaccineIndex(visitNumber: Int, vaccineIndex: Int)
@@ -19,11 +20,12 @@ interface GenericVaccinationTableBusinessUiActions {
     fun onShowDeleteConfirmationDialog()
     fun onAddVaccinesToVisit(indexes: List<Int>)
     fun onAddNewVisit()
-    fun onUpdateVaccinesSelectionDialogVisibility(isVisible: Boolean)
     fun onUpdateConfirmationDialogVisibility(isVisible: Boolean)
-    fun onGetGenericVaccinationTable()
+    fun onCleanUpSelectedVaccinesIndices()
+    fun onVaccineOptionSelected(index:Int,isSelected: Boolean)
     fun onRefresh()
     fun clearToastMessage()
+    fun onRetryFetchVaccinesWithNoVisitNumber()
 }
 
 interface GenericVaccinationTableNavigationUiActions {

@@ -18,7 +18,7 @@ import com.example.domain.repositories.vaccine.VaccineRepository
 import com.example.model.enums.Role
 import com.example.model.role_config.RoleAppConfig
 import com.example.model.vaccine.ChildVaccinationTableData
-import com.example.model.vaccine.GenericVaccinationTable
+import com.example.model.vaccine.GenericVaccinationTableData
 import com.example.model.vaccine.VaccineData
 import com.example.model.vaccine.VaccineIdToVisitNumber
 import com.example.model.vaccine.VaccineMainInfo
@@ -89,7 +89,7 @@ class VaccineRepositoryImpl(
         }
 
     override suspend fun getGenericVaccinationTable():
-            Result<GenericVaccinationTable, NetworkError> =
+            Result<GenericVaccinationTableData, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.getGenericVaccinationTable(
                 token,
@@ -102,7 +102,7 @@ class VaccineRepositoryImpl(
 
     override suspend fun updateVaccineVisitNumber(
         vaccineIdToVisitNumber: VaccineIdToVisitNumber,
-    ): Result<GenericVaccinationTable, NetworkError> =
+    ): Result<GenericVaccinationTableData, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.updateVaccineVisitNumber(
                 token,
@@ -115,7 +115,7 @@ class VaccineRepositoryImpl(
 
     override suspend fun updateVaccinesVisitNumber(
         vaccinesIdsToVisitNumber: VaccinesIdsToVisitNumber,
-    ): Result<GenericVaccinationTable, NetworkError> =
+    ): Result<GenericVaccinationTableData, NetworkError> =
         userPreferencesRepository.executeWithValidToken { token ->
             vaccineApiService.updateVaccinesVisitNumber(
                 token,

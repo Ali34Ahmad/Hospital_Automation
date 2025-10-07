@@ -1,6 +1,5 @@
 package com.example.doctor_schedule.presentation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -146,7 +145,7 @@ internal fun ScheduleScreen(
         ),
         DrawerButton(
             text = R.string.vaccines,
-            image = AppIcons.Outlined.vaccines,
+            image = AppIcons.Outlined.vaccine,
             onClick = {
                 navigationActions.navigateToVaccines()
             },

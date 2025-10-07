@@ -70,7 +70,7 @@ import com.example.employment_history.navigation.navigateToEmploymentHistoryScre
 import com.example.employment_requests.navigation.navigateToEmploymentRequestsScreen
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
-import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
+import com.example.generic_vaccination_table.navigation.genericVaccinationTableScreen
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.guardianProfileScreen
 import com.example.guardian_profile.navigation.navigateToGuardianProfile
@@ -460,7 +460,7 @@ fun AdminGraph(
                 }
             )
 
-            genericVaccineDetailsScreen(
+            genericVaccinationTableScreen(
                 onNavigateToVaccineDetailsScreen = { vaccineId ->
                     navController.navigateToVaccineDetailsScreen(
                         vaccineId = vaccineId,

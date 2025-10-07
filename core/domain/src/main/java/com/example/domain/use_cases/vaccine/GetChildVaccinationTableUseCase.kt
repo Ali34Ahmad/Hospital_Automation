@@ -2,7 +2,6 @@ package com.example.domain.use_cases.vaccine
 
 import com.example.domain.repositories.vaccine.VaccineRepository
 import com.example.model.vaccine.ChildVaccinationTableData
-import com.example.model.vaccine.GenericVaccinationTable
 import com.example.utility.network.Result
 import com.example.utility.network.NetworkError
 

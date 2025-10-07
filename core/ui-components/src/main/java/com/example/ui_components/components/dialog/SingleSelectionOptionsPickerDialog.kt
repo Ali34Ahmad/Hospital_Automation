@@ -49,9 +49,9 @@ fun SingleDayOfWeekPickerDialogPreview() {
             SingleSelectionOptionsPickerDialog(
                 state = datePickerState,
                 onConfirm = {selectedDayIndex->
-                    selectedDay = DayOfWeek.entries.find { options[selectedDayIndex].titleText==it.name }
+                    selectedDay = DayOfWeek.entries.find { options[selectedDayIndex].title==it.name }
                 },
-                options = options
+                options = options.map { Option(titleText = it.title) }
             )
             Column {
                 Button(onClick = { datePickerState.show() }) {

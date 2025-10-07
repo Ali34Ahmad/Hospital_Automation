@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import com.example.constants.icons.AppIcons
 import com.example.model.vaccine.VaccineMainInfo
 import com.example.ui.fake.createFakeVaccinationData
@@ -22,8 +23,10 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground
+import com.example.ui_components.components.progress_indicator.CircularProgressIndicatorWithBackground
 import com.example.ui_components.components.tables.vaccination_table.VisitNumberColumn
 import com.example.ui_components.components.tables.vaccination_table.VisitNumberCompactColumn
+import kotlin.collections.listOf
 
 @Composable
 fun GenericVaccinationTableItem(
@@ -32,6 +35,9 @@ fun GenericVaccinationTableItem(
     onItemDelete: (visitNumber: Int, vaccineIndex: Int) -> Unit,
     onAddVaccineToVisit: (visitNumber: Int) -> Unit,
     isEditable: Boolean,
+    isLoadingVisit: Boolean,
+    isAddingEnabled: Boolean,
+    vaccinesIdsToDelete: List<Int>,
     modifier: Modifier = Modifier,
 ) {
     val surfaceColor = MaterialTheme.colorScheme.outlineVariant
@@ -67,9 +73,9 @@ fun GenericVaccinationTableItem(
             )
         }
 
-    val paddingModifierForText=if (!isEditable) Modifier.padding(
+    val paddingModifierForText = if (!isEditable) Modifier.padding(
         vertical = MaterialTheme.spacing.medium16
-    )else Modifier
+    ) else Modifier
     Row(
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
@@ -82,12 +88,16 @@ fun GenericVaccinationTableItem(
                 onAddVaccineToVisit = onAddVaccineToVisit,
                 modifier = Modifier.weight(0.15f),
                 isEditable = isEditable,
+                isLoading = isLoadingVisit,
+                isAddingEnabled = isAddingEnabled,
             )
         } else {
             VisitNumberCompactColumn(
                 visitNumber = visitNumberToVaccines.first,
                 onAddVaccineToVisit = onAddVaccineToVisit,
                 modifier = Modifier.weight(0.15f),
+                isLoading = isLoadingVisit,
+                isAddingEnabled = isAddingEnabled,
             )
         }
         Column(
@@ -105,21 +115,29 @@ fun GenericVaccinationTableItem(
                 ) {
                     Text(
                         text = vaccine.name,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
                             .then(paddingModifierForText),
                         style = MaterialTheme.typography.bodyMedium,
                     )
-                    if (isEditable){
+                    if (isEditable) {
                         IconButton(
                             onClick = { onItemDelete(visitNumberToVaccines.first, index) }
                         ) {
-                            IconWithBackground(
-                                iconRes = AppIcons.Outlined.delete,
-                                iconColor = MaterialTheme.colorScheme.error,
-                                backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(
-                                    alpha = 0.4f
+                            if (!vaccinesIdsToDelete.contains(vaccine.id)) {
+                                IconWithBackground(
+                                    iconRes = AppIcons.Outlined.delete,
+                                    iconColor = MaterialTheme.colorScheme.error,
+                                    backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(
+                                        alpha = 0.4f
+                                    )
                                 )
-                            )
+                            } else {
+                                CircularProgressIndicatorWithBackground(
+                                    indicatorStrokeWidth = MaterialTheme.sizing.extraSmall2,
+                                    indicatorSize = MaterialTheme.sizing.small18,
+                                )
+                            }
                         }
                     }
                 }
@@ -142,7 +160,10 @@ fun VaccinationTableItemPreview() {
                 onClick = {},
                 onItemDelete = { visitNumber, vaccineIndex -> },
                 onAddVaccineToVisit = {},
-                isEditable = true
+                isEditable = true,
+                isLoadingVisit = false,
+                isAddingEnabled = true,
+                vaccinesIdsToDelete = emptyList(),
             )
         }
     }
@@ -150,7 +171,7 @@ fun VaccinationTableItemPreview() {
 
 @DarkAndLightModePreview
 @Composable
-fun VaccinationTableItemOneVaccinePreview() {
+fun VaccinationTableItemOneVaccineLoadingPreview() {
     Hospital_AutomationTheme {
         Surface {
             GenericVaccinationTableItem(
@@ -160,7 +181,31 @@ fun VaccinationTableItemOneVaccinePreview() {
                 ),
                 onClick = {},
                 onItemDelete = { visitNumber, vaccineIndex -> },
-                onAddVaccineToVisit = {},true
+                onAddVaccineToVisit = {}, true,
+                isLoadingVisit = true,
+                isAddingEnabled = false,
+                vaccinesIdsToDelete = listOf(1, 3),
+            )
+        }
+    }
+}
+
+@DarkAndLightModePreview
+@Composable
+fun VaccinationTableItemOneVaccineDisabledPreview() {
+    Hospital_AutomationTheme {
+        Surface {
+            GenericVaccinationTableItem(
+                visitNumberToVaccines = Pair(
+                    createFakeVaccinationData()[1].visitNumber,
+                    createFakeVaccinationData()[0].vaccines
+                ),
+                onClick = {},
+                onItemDelete = { visitNumber, vaccineIndex -> },
+                onAddVaccineToVisit = {}, true,
+                isLoadingVisit = false,
+                isAddingEnabled = false,
+                vaccinesIdsToDelete = listOf(1, 3),
             )
         }
     }
@@ -180,7 +225,10 @@ fun VaccinationTableItemNonEditablePreview() {
                 onClick = {},
                 onItemDelete = { visitNumber, vaccineIndex -> },
                 onAddVaccineToVisit = {},
-                isEditable = false
+                isEditable = false,
+                isLoadingVisit = false,
+                isAddingEnabled = false,
+                vaccinesIdsToDelete = listOf(1, 3),
             )
         }
     }
@@ -198,7 +246,10 @@ fun VaccinationTableItemOneVaccineNonEditablePreview() {
                 ),
                 onClick = {},
                 onItemDelete = { visitNumber, vaccineIndex -> },
-                onAddVaccineToVisit = {},false
+                onAddVaccineToVisit = {}, false,
+                isLoadingVisit = true,
+                isAddingEnabled = false,
+                vaccinesIdsToDelete = emptyList(),
             )
         }
     }

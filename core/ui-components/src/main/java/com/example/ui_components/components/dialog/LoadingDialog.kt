@@ -21,6 +21,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalShapes
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +67,7 @@ fun LoadingDialog(
                     )
                 }
                 CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(MaterialTheme.sizing.circularProgressIndicatorSize),
                     color = MaterialTheme.colorScheme.primary
                 )
             }

@@ -12,7 +12,7 @@ import com.example.domain.use_cases.vaccine.UpdateVaccinesVisitNumberUseCase
 import com.example.ext.toOrdinalString
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableRoute
 import com.example.model.enums.ScreenState
-import com.example.model.vaccine.GenericVaccinationTable
+import com.example.model.vaccine.GenericVaccinationTableData
 import com.example.model.vaccine.VaccinationTableVisit
 import com.example.model.vaccine.VaccineIdToVisitNumber
 import com.example.model.vaccine.VaccineMainInfo
@@ -21,6 +21,7 @@ import com.example.ui_components.R
 import com.example.util.UiText
 import com.example.utility.network.onError
 import com.example.utility.network.onSuccess
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -42,6 +43,9 @@ class GenericVaccinationTableViewModel(
         getGenericVaccinationTable()
     }
 
+    private var vaccineFetchJob: Job? = null
+
+
     fun getUiActions(
         navActions: GenericVaccinationTableNavigationUiActions,
     ): GenericVaccinationTableUiActions = GenericVaccinationTableUiActions(
@@ -58,12 +62,17 @@ class GenericVaccinationTableViewModel(
             }
 
             override fun onHideVaccinesDialog() {
-                updateVaccinesSelectionDialogVisibility(true)
+                updateVaccinesSelectionDialogVisibility(false)
                 updateVaccinesWithNotVisitNumber(null)
+                updateGetVaccinesWithNoVisitNumberScreenState(ScreenState.IDLE)
+            }
+
+            override fun onCancelVaccinesFetch() {
+                cancelVaccinesFetch()
             }
 
             override fun onShowVaccinesDialog() {
-                updateVaccinesSelectionDialogVisibility(false)
+                updateVaccinesSelectionDialogVisibility(true)
             }
 
             override fun onRemoveVaccineFromVisit(
@@ -87,12 +96,16 @@ class GenericVaccinationTableViewModel(
                 addNewVisit()
             }
 
-            override fun onUpdateVaccinesSelectionDialogVisibility(isVisible: Boolean) {
-                TODO()
-            }
-
             override fun onUpdateConfirmationDialogVisibility(isVisible: Boolean) {
                 updateConfirmationDialogVisibility(isVisible)
+            }
+
+            override fun onCleanUpSelectedVaccinesIndices() {
+                cleanUpSelectedVaccines()
+            }
+
+            override fun onVaccineOptionSelected(index: Int, isSelected: Boolean) {
+                updateVaccineOptionSelectionState(index, isSelected)
             }
 
             override fun onShowDiscardChangesConfirmationDialog() {
@@ -107,12 +120,11 @@ class GenericVaccinationTableViewModel(
                 showDeleteConfirmationDialog()
             }
 
-            override fun onGetGenericVaccinationTable() {
-                getGenericVaccinationTable()
-            }
-
             override fun onAddVaccinesToVisit(indexes: List<Int>) {
                 addVaccineToVisit(indexes)
+                cleanUpSelectedVaccines()
+                updateGetVaccinesWithNoVisitNumberScreenState(ScreenState.IDLE)
+                updateVaccinesWithNotVisitNumber(null)
                 updateVaccinesSelectionDialogVisibility(false)
             }
 
@@ -124,7 +136,24 @@ class GenericVaccinationTableViewModel(
                 updateToastMessage(null)
             }
 
+            override fun onRetryFetchVaccinesWithNoVisitNumber() {
+                getVaccineWithNoVisitNumber()
+            }
+
         }
+
+    private fun cleanUpSelectedVaccines() {
+        _uiState.update { it.copy(selectedVaccinesIndices = emptyList()) }
+    }
+
+    private fun updateVaccineOptionSelectionState(index: Int, value: Boolean) {
+        val newList = uiState.value.selectedVaccinesIndices.toMutableList()
+        if (!value)
+            newList.add(index)
+        else
+            newList.remove(index)
+        _uiState.update { it.copy(selectedVaccinesIndices = newList) }
+    }
 
     fun updateConfirmationDialogVisibility(isVisible: Boolean) {
         _uiState.update { it.copy(isDeleteConfirmationDialogVisible = isVisible) }
@@ -135,11 +164,11 @@ class GenericVaccinationTableViewModel(
     }
 
     private fun updateVaccineIndexToDelete(vaccineIndex: Int?) {
-        _uiState.update {
+        _uiState.update { it ->
             it.copy(
                 vaccineIdToDelete =
-                    uiState.value.vaccinationTable?.visits?.find {
-                        uiState.value.visitNumberToUse == it.visitNumber
+                    uiState.value.vaccinationTable?.visits?.find { visit ->
+                        uiState.value.visitNumberToUse == visit.visitNumber
                     }
                         ?.vaccines[vaccineIndex ?: -1]?.id
             )
@@ -155,7 +184,7 @@ class GenericVaccinationTableViewModel(
             VaccinationTableVisit(visitNumber = newVisitNumber, vaccines = emptyList())
         )
 
-        updateGenericVaccinationTable(GenericVaccinationTable(visits = newVisits))
+        updateGenericVaccinationTable(GenericVaccinationTableData(visits = newVisits))
     }
 
 
@@ -167,8 +196,8 @@ class GenericVaccinationTableViewModel(
         _uiState.update { it.copy(screenState = screenState) }
     }
 
-    private fun updateGenericVaccinationTable(genericVaccinationTable: GenericVaccinationTable?) {
-        _uiState.update { it.copy(vaccinationTable = genericVaccinationTable) }
+    private fun updateGenericVaccinationTable(genericVaccinationTableData: GenericVaccinationTableData?) {
+        _uiState.update { it.copy(vaccinationTable = genericVaccinationTableData) }
     }
 
     private fun onHideConfirmationDialogVisibility() {
@@ -185,8 +214,8 @@ class GenericVaccinationTableViewModel(
                 dialogDescriptionText = UiText.StringResource(
                     R.string.are_you_sure_you_want_to_remove_vaccinename_from_visit_visitNumber,
                     args = listOf(
-                        uiState.value.vaccinationTable?.visits?.find {
-                            uiState.value.visitNumberToUse == it.visitNumber
+                        uiState.value.vaccinationTable?.visits?.find {visit->
+                            uiState.value.visitNumberToUse == visit.visitNumber
                         }
                             ?.vaccines?.find { it.id == uiState.value.vaccineIdToDelete }?.name
                             ?: "",
@@ -253,8 +282,11 @@ class GenericVaccinationTableViewModel(
         }
     }
 
+
     private fun getVaccineWithNoVisitNumber() {
-        viewModelScope.launch {
+        vaccineFetchJob?.cancel()
+
+        vaccineFetchJob = viewModelScope.launch {
             updateGetVaccinesWithNoVisitNumberScreenState(ScreenState.LOADING)
             Log.v("Fetching Generic Vaccination Table", "GenericVaccinationTableViewModel")
             getVaccinesWithNoVisitNumberUserCase()
@@ -265,6 +297,7 @@ class GenericVaccinationTableViewModel(
                     )
                     updateGetVaccinesWithNoVisitNumberScreenState(ScreenState.SUCCESS)
                     updateVaccinesWithNotVisitNumber(data)
+                    vaccineFetchJob = null
                 }.onError { error ->
                     Log.v(
                         "Failed to fetch Generic Vaccination Table",
@@ -272,8 +305,27 @@ class GenericVaccinationTableViewModel(
                     )
                     updateGetVaccinesWithNoVisitNumberScreenState(ScreenState.ERROR)
                     updateVaccinesWithNotVisitNumber(null)
+                    vaccineFetchJob = null
                 }
         }
+    }
+
+    private fun cancelVaccinesFetch() {
+        vaccineFetchJob?.cancel()
+        updateGetVaccinesWithNoVisitNumberScreenState(ScreenState.IDLE)
+        vaccineFetchJob = null
+    }
+
+    private fun pushNewVaccineToDelete(vaccineId:Int){
+        val vaccinesIdsToDelete=uiState.value.vaccinesIdsToDelete.toMutableList()
+        vaccinesIdsToDelete.add(vaccineId)
+        _uiState.update { it.copy(vaccinesIdsToDelete = vaccinesIdsToDelete) }
+    }
+
+    private fun pollVaccineToDelete(vaccineId:Int){
+        val vaccinesIdsToDelete=uiState.value.vaccinesIdsToDelete.toMutableList()
+        vaccinesIdsToDelete.remove(vaccineId)
+        _uiState.update { it.copy(vaccinesIdsToDelete = vaccinesIdsToDelete) }
     }
 
     private fun removeVaccineFromVisit() {
@@ -284,11 +336,10 @@ class GenericVaccinationTableViewModel(
         Log.v("VaccineId", vaccineIdToDelete.toString())
         if (vaccineIdToDelete == null) return
 
-        Log.v("VaccineId", vaccineIdToDelete.toString())
+        pushNewVaccineToDelete(vaccineIdToDelete)
 
         viewModelScope.launch {
             Log.v("Removing Vaccine to Visit", "GenericVaccinationTableViewModel")
-//            addToVaccinesToDelete(vaccineIdToDelete)
             updateVaccineVisitNumberUseCase(
                 VaccineIdToVisitNumber(
                     visitNumber = null,
@@ -305,28 +356,17 @@ class GenericVaccinationTableViewModel(
                     }
                     updateGenericVaccinationTable(data)
                     updateToastMessage(null)
+                    pollVaccineToDelete(vaccineIdToDelete)
                 }.onError { error ->
                     Log.v(
                         "Failed to remove vaccine",
                         "GenericVaccinationTableViewModel"
                     )
                     updateToastMessage(UiText.StringResource(R.string.something_went_wrong))
+                    pollVaccineToDelete(vaccineIdToDelete)
                 }
-//            removeFromVaccinesToDelete(vaccineId = vaccineIdToDelete)
         }
     }
-
-//    private fun addToVaccinesToDelete(vaccineId: Int) {
-//        val vaccinesToDelete = uiState.value.vaccinesIdsToDelete.toMutableList()
-//        vaccinesToDelete.add(vaccineId)
-//        _uiState.update { it.copy(vaccinesIdsToDelete = vaccinesToDelete) }
-//    }
-
-//    private fun removeFromVaccinesToDelete(vaccineId: Int) {
-//        val vaccinesToDelete = uiState.value.vaccinesIdsToDelete.toMutableList()
-//        vaccinesToDelete.remove(vaccineId)
-//        _uiState.update { it.copy(vaccinesIdsToDelete = vaccinesToDelete) }
-//    }
 
     private fun setLoadingVisitNumber(visitNumber: Int?) {
         _uiState.update { it.copy(loadingVisitNumber = visitNumber) }

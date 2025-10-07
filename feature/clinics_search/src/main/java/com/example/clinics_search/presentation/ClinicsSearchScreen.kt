@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -26,14 +25,11 @@ import com.example.clinics_search.presentation.screens.SelectionScreen
 import com.example.constants.icons.AppIcons
 import com.example.model.DrawerButton
 import com.example.model.doctor.clinic.ClinicFullData
-import com.example.model.enums.TopBarState
 import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.drawers.EmployeeDrawer
-import com.example.ui_components.components.topbars.HospitalAutomationTopBar
 import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithSearchBar
-import com.example.ui_components.components.topbars.SearchTopBar
 
 @Composable
 fun ClinicsSearchScreen(
@@ -98,7 +94,7 @@ internal fun ClinicsSearchScreen(
         ),
         DrawerButton(
             text = R.string.vaccines,
-            image = AppIcons.Outlined.vaccines,
+            image = AppIcons.Outlined.vaccine,
             onClick = {
                 navigationActions.navigateToVaccines()
             },

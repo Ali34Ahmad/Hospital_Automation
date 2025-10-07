@@ -62,7 +62,7 @@ fun VaccineDetailsCard(
                 description = "${vaccine.maxAge.value} ${vaccine.maxAge.unit.name.capitalFirstChar()}",
             )
             DetailsItem(
-                iconRes = AppIcons.Outlined.vaccines,
+                iconRes = AppIcons.Outlined.vaccine,
                 modifier = Modifier.fillMaxWidth(),
                 iconBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 title = stringResource(R.string.quantity),

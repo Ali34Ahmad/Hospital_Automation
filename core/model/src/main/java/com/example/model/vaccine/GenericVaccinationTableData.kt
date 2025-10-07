@@ -1,6 +1,6 @@
 package com.example.model.vaccine
 
-data class GenericVaccinationTable(
+data class GenericVaccinationTableData(
     val visits: List<VaccinationTableVisit>
 )
 

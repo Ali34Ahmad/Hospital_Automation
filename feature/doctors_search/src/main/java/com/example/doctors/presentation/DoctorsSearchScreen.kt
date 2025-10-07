@@ -98,7 +98,7 @@ fun DoctorSearchScreen(
         ),
         DrawerButton(
             text = R.string.vaccines,
-            image = AppIcons.Outlined.vaccines,
+            image = AppIcons.Outlined.vaccine,
             onClick = {
                 navigationActions.navigateToVaccines()
             },

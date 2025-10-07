@@ -21,6 +21,10 @@ fun mockBusinessUiActions()=object : GenericVaccinationTableBusinessUiActions {
 
     }
 
+    override fun onCancelVaccinesFetch() {
+
+    }
+
     override fun onShowVaccinesDialog() {
 
     }
@@ -56,15 +60,15 @@ fun mockBusinessUiActions()=object : GenericVaccinationTableBusinessUiActions {
 
     }
 
-    override fun onUpdateVaccinesSelectionDialogVisibility(isVisible: Boolean) {
-
-    }
-
     override fun onUpdateConfirmationDialogVisibility(isVisible: Boolean) {
 
     }
 
-    override fun onGetGenericVaccinationTable() {
+    override fun onCleanUpSelectedVaccinesIndices() {
+
+    }
+
+    override fun onVaccineOptionSelected(index: Int, isSelected: Boolean) {
 
     }
 
@@ -73,6 +77,10 @@ fun mockBusinessUiActions()=object : GenericVaccinationTableBusinessUiActions {
     }
 
     override fun clearToastMessage() {
+
+    }
+
+    override fun onRetryFetchVaccinesWithNoVisitNumber() {
 
     }
 

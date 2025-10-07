@@ -8,17 +8,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.constants.icons.AppIcons
 import com.example.ext.toOrdinalString
 import com.example.ui.theme.additionalTypography
+import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground
+import com.example.ui_components.components.progress_indicator.CircularProgressIndicatorWithBackground
 
 @Composable
 fun VisitNumberCompactColumn(
     visitNumber: Int,
     onAddVaccineToVisit: (visitNumber: Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading:Boolean,
+    isAddingEnabled:Boolean,
 ) {
     Box(
         modifier = modifier,
@@ -35,11 +40,19 @@ fun VisitNumberCompactColumn(
             )
             IconButton(
                 onClick = { onAddVaccineToVisit(visitNumber) },
+                enabled = isAddingEnabled,
             ) {
-                IconWithBackground(
-                    iconRes = AppIcons.Outlined.add,
-                    iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+                if (!isLoading) {
+                    IconWithBackground(
+                        iconRes = AppIcons.Outlined.add,
+                        iconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                } else {
+                    CircularProgressIndicatorWithBackground(
+                        indicatorStrokeWidth = MaterialTheme.sizing.extraSmall2,
+                        indicatorSize = MaterialTheme.sizing.small18,
+                    )
+                }
             }
         }
     }

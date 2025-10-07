@@ -32,7 +32,7 @@ import com.example.employment_requests.navigation.navigateToEmploymentRequestsSc
 import com.example.enter_email.navigation.enterEmailScreen
 import com.example.enter_email.navigation.navigateToEnterEmailScreen
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
-import com.example.generic_vaccination_table.navigation.genericVaccineDetailsScreen
+import com.example.generic_vaccination_table.navigation.genericVaccinationTableScreen
 import com.example.generic_vaccination_table.navigation.navigateToGenericVaccinationTableScreen
 import com.example.guardian_profile.navigation.UserProfileMode
 import com.example.guardian_profile.navigation.navigateToGuardianProfile
@@ -349,7 +349,7 @@ fun Navigation() {
             }
         )
 
-        genericVaccineDetailsScreen(
+        genericVaccinationTableScreen(
             onNavigateToVaccineDetailsScreen = {vaccineId->
                 navController.navigateToVaccineDetailsScreen(
                     vaccineId=vaccineId,

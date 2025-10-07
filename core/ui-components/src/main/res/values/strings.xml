@@ -381,4 +381,6 @@
     <string name="next_visit">Next visit</string>
     <string name="not_received_yet">Not received yet</string>
     <string name="triple_dashes">---</string>
+    <string name="choose_vaccines">Choose Vaccines</string>
+    <string name="retry">Retry</string>
 </resources>

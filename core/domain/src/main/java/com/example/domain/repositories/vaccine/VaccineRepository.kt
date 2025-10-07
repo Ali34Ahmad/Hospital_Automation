@@ -3,8 +3,7 @@ package com.example.domain.repositories.vaccine
 import androidx.paging.PagingData
 import com.example.model.enums.Role
 import com.example.model.vaccine.ChildVaccinationTableData
-import com.example.model.vaccine.GenericVaccinationTable
-import com.example.model.vaccine.UpdateVaccinationTableRequest
+import com.example.model.vaccine.GenericVaccinationTableData
 import com.example.model.vaccine.VaccineData
 import com.example.model.vaccine.VaccineIdToVisitNumber
 import com.example.model.vaccine.VaccineMainInfo
@@ -27,16 +26,16 @@ interface VaccineRepository {
         role: Role,
     ): Result<VaccineData, NetworkError>
 
-    suspend fun getGenericVaccinationTable(): Result<GenericVaccinationTable, NetworkError>
+    suspend fun getGenericVaccinationTable(): Result<GenericVaccinationTableData, NetworkError>
 
     suspend fun updateVaccineVisitNumber(
         vaccineIdToVisitNumber: VaccineIdToVisitNumber,
-    ): Result<GenericVaccinationTable, NetworkError>
+    ): Result<GenericVaccinationTableData, NetworkError>
 
 
     suspend fun updateVaccinesVisitNumber(
         vaccinesIdsToVisitNumber: VaccinesIdsToVisitNumber,
-    ): Result<GenericVaccinationTable, NetworkError>
+    ): Result<GenericVaccinationTableData, NetworkError>
 
     suspend fun getChildVaccinationTable(childId:Int): Result<ChildVaccinationTableData, NetworkError>
 }

@@ -22,8 +22,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.example.constants.icons.AppIcons
 import com.example.generic_vaccination_table.navigation.GenericVaccinationTableAccessType
+import com.example.model.dialog.DialogOption
 import com.example.model.enums.ScreenState
-import com.example.model.vaccine.GenericVaccinationTable
+import com.example.model.vaccine.GenericVaccinationTableData
 import com.example.ui.fake.createFakeVaccinationData
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
@@ -36,9 +37,6 @@ import com.example.ui_components.components.dialog.MultiSelectionsOptionsPickerD
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.tables.vaccination_table.generic.GenericVaccinationTable
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.option.models.Option
 
 
 @Composable
@@ -60,13 +58,32 @@ fun GenericVaccinationTableScreen(
         }
     }
 
-    val datePickerState: UseCaseState = rememberUseCaseState()
     MultiSelectionsOptionsPickerDialog(
-        state = datePickerState,
         onConfirm = { selectedVaccinesIndexes ->
             uiActions.onAddVaccinesToVisit(selectedVaccinesIndexes)
         },
-        options = uiState.vaccines?.map { Option(titleText = it.name) } ?: emptyList()
+        options = uiState.vaccines?.mapIndexed { index, vaccine ->
+            DialogOption(
+                title = vaccine.name,
+                isSelected = uiState.selectedVaccinesIndices.contains(index)
+            )
+        } ?: emptyList(),
+        isVisible = uiState.showVaccinesDialog,
+        title = stringResource(R.string.choose_vaccines),
+        onDismissRequest = {},
+        onCancel = {
+            uiActions.onCleanUpSelectedVaccinesIndices()
+            uiActions.onHideVaccinesDialog()
+            uiActions.onCancelVaccinesFetch()
+        },
+        onOptionClick = { index, isSelected ->
+            uiActions.onVaccineOptionSelected(index, isSelected)
+        },
+        enableConfirmButton = uiState.selectedVaccinesIndices.isNotEmpty(),
+        loadingState = uiState.getVaccinesWithNoVisitNumberScreenState,
+        onRetry = {
+            uiActions.onRetryFetchVaccinesWithNoVisitNumber()
+        }
     )
 
     val vaccineIdToDelete = uiState.vaccinationTable?.visits?.find {
@@ -152,13 +169,12 @@ fun GenericVaccinationTableScreen(
                         ) {
                             GenericVaccinationTable(
                                 isEditable = uiState.genericVaccinationTableAccessType == GenericVaccinationTableAccessType.EDITOR_ACCESS,
-                                genericVaccinationTable = uiState.vaccinationTable,
+                                genericVaccinationTableData = uiState.vaccinationTable,
                                 onAddNewVisit = {
                                     uiActions.onAddNewVisit()
                                 },
                                 onAddNewVaccineToVisit = {
                                     uiActions.onAddVaccineToVisitClick(it)
-                                    datePickerState.show()
                                 },
                                 onDeleteVaccine = { visitNumber, vaccineIndex ->
                                     uiActions.onSetVisitNumberAndVaccineIndex(
@@ -166,12 +182,14 @@ fun GenericVaccinationTableScreen(
                                         vaccineIndex
                                     )
                                 },
-                                onVaccineItemClick = {vaccineId->
+                                onVaccineItemClick = { vaccineId ->
                                     uiActions.navigateToVaccineDetailsScreen(vaccineId)
                                 },
+                                loadingVisitNumber = uiState.loadingVisitNumber,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(MaterialTheme.spacing.medium16),
+                                vaccinesIdsToDelete = uiState.vaccinesIdsToDelete,
                             )
                         }
                     }
@@ -189,7 +207,7 @@ fun GenericVaccinationTableScreenPreview() {
         Surface {
             GenericVaccinationTableScreen(
                 uiState = GenericVaccinationTableUiState(
-                    vaccinationTable = GenericVaccinationTable(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
+                    vaccinationTable = GenericVaccinationTableData(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
                     screenState = ScreenState.SUCCESS,
                 ),
                 uiActions = GenericVaccinationTableUiActions(
@@ -208,7 +226,7 @@ fun GenericVaccinationTableScreenNonEditablePreview() {
         Surface {
             GenericVaccinationTableScreen(
                 uiState = GenericVaccinationTableUiState(
-                    vaccinationTable = GenericVaccinationTable(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
+                    vaccinationTable = GenericVaccinationTableData(createFakeVaccinationData().filter { it.vaccines.isNotEmpty() }),
                     screenState = ScreenState.SUCCESS,
                 ),
                 uiActions = GenericVaccinationTableUiActions(
