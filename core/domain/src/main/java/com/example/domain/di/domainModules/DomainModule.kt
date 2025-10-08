@@ -5,6 +5,7 @@ import com.example.domain.di.admin.clinic.adminClinicUseCases
 import com.example.domain.di.admin.doctor.adminDoctorUseCases
 import com.example.domain.di.admin.employee.adminEmployeeUseCases
 import com.example.domain.di.admin.pharmacy.adminPharmacyUseCases
+import com.example.domain.di.appointment_type.appointmentTypeUseCasesModule
 import com.example.domain.di.appointments.appointmentUseCasesModule
 import com.example.domain.di.auth.authUseCasesModule
 import com.example.domain.di.basic_account_creating.addResidentialAddressUseCaseModule
@@ -25,6 +26,7 @@ import com.example.domain.di.user.userDomainModule
 import com.example.domain.di.userPreferencesUseCasesModule
 import com.example.domain.di.vaccine.vaccinesUseCasesModule
 import com.example.domain.di.validatorUseCasesModule
+import com.example.domain.di.work_day.workDayUseCasesModule
 import com.example.domain.di.work_request.workRequestUseCasesModule
 import com.example.domain.use_cases.employee_account_management.CheckEmployeePermissionUseCase
 import org.koin.core.module.dsl.singleOf
@@ -58,6 +60,8 @@ val domainModule = module {
         workRequestUseCasesModule,
         downloaderUseCaseModule,
         medicinesUseCasesModule,
+        workDayUseCasesModule,
+        appointmentTypeUseCasesModule
     )
     singleOf(::CheckEmployeePermissionUseCase)
 }

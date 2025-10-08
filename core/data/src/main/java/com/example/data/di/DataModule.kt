@@ -106,19 +106,4 @@ val dataModule = module{
     singleOf(::AppointmentTypeRepositoryImp){ bind<AppointmentTypeRepository>()}
     singleOf(::WorkDayRepositoryImp){ bind<WorkDayRepository>()}
 
-//    includes(
-//        dataStoreModule,
-//        )
-//    singleOf(::UserPreferencesRepositoryImpl) { bind<UserPreferencesRepository>() }
-//    singleOf(::EmployeeAccountManagementRepositoryImpl) { bind<EmployeeAccountManagementRepository>() }
-//    singleOf(::ChildRepositoryImp){bind<ChildRepository>()}
-//
-//    singleOf(::ClinicRepositoryImp) { bind<ClinicRepository>() }
-//    singleOf(::AppointmentsRepositoryImp){bind<AppointmentsRepository>()}
-//    singleOf(::WorkRequestRepositoryImp){bind<WorkRequestRepository>()}
-//    singleOf(::UserRepositoryImp){bind<UserRepository>()}
-//    singleOf(::EmployeeAccountManagementRepositoryImpl) { bind<EmployeeAccountManagementRepository>() }
-//    singleOf(::DownloadFileRepositoryImpl) { bind<DownloadFileRepository>() }
-//    singleOf(::MedicineRepositoryImp){bind<MedicineRepository>()}
-
 }

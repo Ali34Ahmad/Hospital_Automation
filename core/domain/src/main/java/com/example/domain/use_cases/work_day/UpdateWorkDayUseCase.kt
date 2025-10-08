@@ -12,6 +12,5 @@ class UpdateWorkDayUseCase(
     ) = repository
         .updateWorkDay(
             workDay = workDay,
-            id = id
         )
 }

@@ -11,7 +11,6 @@ interface AppointmentTypeRepository {
 
     suspend fun updateAppointment(
         appointmentType: AppointmentTypeSummaryData,
-        id: Int,
     ): Result<Unit, NetworkError>
 
     suspend fun deleteAppointment(

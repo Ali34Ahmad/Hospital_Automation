@@ -108,6 +108,7 @@ dependencies {
     implementation(project(":feature:pharmacies"))
     implementation(project(":feature:guardian_profile"))
     implementation(project(":feature:child_profile"))
+    implementation(project(":feature:edit_doctor_profile"))
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

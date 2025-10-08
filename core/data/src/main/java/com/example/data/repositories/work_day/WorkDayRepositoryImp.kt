@@ -1,6 +1,5 @@
 package com.example.data.repositories.work_day
 
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.day_schedule.toWorkDaySummaryDto
 import com.example.domain.repositories.WorkDayRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
@@ -16,26 +15,31 @@ class WorkDayRepositoryImp(
     override suspend fun createWorkDay(
         workDay: WorkDaySummaryData
     ): Result<Unit, NetworkError> =
-        apiService.createWorkDay(
-            workday = workDay.toWorkDaySummaryDto(),
-            token = FAKE_TOKEN,
-        )
+        userPreferencesRepository.executeWithValidTokenNetwork {
+            apiService.createWorkDay(
+                workday = workDay.toWorkDaySummaryDto(),
+                token = it,
+            )
+        }
 
     override suspend fun updateWorkDay(
         workDay: WorkDaySummaryData,
-        id: Int,
     ): Result<Unit, NetworkError> =
-        apiService.updateWorkDay(
-            token = FAKE_TOKEN,
-            workday = workDay.toWorkDaySummaryDto(),
-            id = id
-        )
+        userPreferencesRepository.executeWithValidTokenNetwork {
+            apiService.updateWorkDay(
+                token = it,
+                workday = workDay.toWorkDaySummaryDto(),
+                id = workDay.id
+            )
+        }
 
     override suspend fun deleteWorkDay(
         id: Int
     ): Result<Unit, NetworkError> =
-        apiService.deleteWorkDay(
-            token = FAKE_TOKEN,
-            id = id
-        )
+        userPreferencesRepository.executeWithValidTokenNetwork {
+            apiService.deleteWorkDay(
+                token = it,
+                id = id
+            )
+        }
 }

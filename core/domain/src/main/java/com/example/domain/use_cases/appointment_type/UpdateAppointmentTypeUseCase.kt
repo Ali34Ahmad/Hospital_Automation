@@ -11,6 +11,5 @@ class UpdateAppointmentTypeUseCase(
         id: Int
     ) = repository.updateAppointment(
         appointmentType = appointmentType,
-        id = id
     )
 }

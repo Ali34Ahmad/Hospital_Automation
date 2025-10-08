@@ -29,7 +29,7 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 
 @Composable
@@ -44,7 +44,7 @@ fun EnterEmailScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.sending_otp_failed),
         description = stringResource(R.string.something_went_wrong),

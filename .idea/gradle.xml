@@ -52,6 +52,7 @@
             <option value="$PROJECT_DIR$/feature/doctor_profile" />
             <option value="$PROJECT_DIR$/feature/doctor_signup" />
             <option value="$PROJECT_DIR$/feature/doctors_search" />
+            <option value="$PROJECT_DIR$/feature/edit_doctor_profile" />
             <option value="$PROJECT_DIR$/feature/email_verification" />
             <option value="$PROJECT_DIR$/feature/employee_home" />
             <option value="$PROJECT_DIR$/feature/employee_profile" />

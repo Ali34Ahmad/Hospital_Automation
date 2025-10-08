@@ -18,7 +18,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.VerifiedAccountCard
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 
 @Composable
 fun EmailVerifiedSuccessfullyScreen(
@@ -32,7 +32,7 @@ fun EmailVerifiedSuccessfullyScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.login_failed),
         description = stringResource(R.string.failed_to_login_try_again),

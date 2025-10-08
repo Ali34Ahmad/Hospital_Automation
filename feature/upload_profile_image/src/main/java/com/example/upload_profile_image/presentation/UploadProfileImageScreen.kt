@@ -29,7 +29,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.card.ImageUploaderCard
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 
 
 @Composable
@@ -47,7 +47,7 @@ fun UploadProfileImageScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.uploading_file_failed),
         description = uiState.errorDialogText?.asString()?:"",

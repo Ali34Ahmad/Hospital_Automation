@@ -13,6 +13,7 @@ import com.example.doctor_app.main.appModule
 import com.example.doctor_profile.di.doctorProfileModule
 import com.example.doctor_schedule.di.doctorScheduleModule
 import com.example.doctor_signup.di.doctorSignUpModule
+import com.example.edit_doctor_profile.di.editDoctorProfileModule
 import com.example.email_verification.di.emailVerificationModule
 import com.example.employment_history.di.employmentHistoryModule
 import com.example.enter_email.di.enterEmailModule
@@ -75,6 +76,7 @@ class DoctorApplication: Application() {
                 guardianProfileModule,
                 genericVaccinationTableModule,
                 adminProfileModule,
+                editDoctorProfileModule
             )
         }
     }

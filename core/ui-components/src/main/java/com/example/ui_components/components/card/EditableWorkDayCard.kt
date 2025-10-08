@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.constants.icons.AppIcons
 import com.example.ext.toAppropriateAddressFormat
 import com.example.model.doctor.day_scedule.DaySchedule
+import com.example.model.doctor.workday.WorkDaySummaryData
 import com.example.model.helper.ext.capitalFirstChar
 import com.example.ui.fake.createSampleWorkDayList
 import com.example.ui.helper.DarkAndLightModePreview
@@ -25,10 +26,12 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.additionalColorScheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.components.icon.IconWithBackground
+import java.time.DayOfWeek
+import java.time.LocalTime
 
 @Composable
 fun EditableWorkDayCard(
-    workDay: DaySchedule,
+    workDay: WorkDaySummaryData,
     onItemDeleteClick: (Int?) -> Unit,
     onItemEditClick: (Int?) -> Unit,
     modifier: Modifier = Modifier,
@@ -47,7 +50,7 @@ fun EditableWorkDayCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = workDay.dayOfWeek.name.capitalFirstChar(),
+            text = workDay.day.name.capitalFirstChar(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
@@ -106,7 +109,12 @@ fun WorkDayCardPreview() {
             EditableWorkDayCard(
                 onItemDeleteClick = {},
                 onItemEditClick = {},
-                workDay = createSampleWorkDayList()[0],
+                workDay = WorkDaySummaryData(
+                    id = 1,
+                    day = DayOfWeek.MONDAY,
+                    startTime = LocalTime.of(8,30),
+                    endTime = LocalTime.of(16,0)
+                ),
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
             )
         }

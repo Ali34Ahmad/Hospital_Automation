@@ -1,6 +1,5 @@
 package com.example.data.repositories.appointment_type
 
-import com.example.data.constants.FAKE_TOKEN
 import com.example.data.mapper.doctor.toAppointmentTypeSummaryDto
 import com.example.domain.repositories.AppointmentTypeRepository
 import com.example.domain.repositories.local.UserPreferencesRepository
@@ -16,26 +15,31 @@ class AppointmentTypeRepositoryImp(
     override suspend fun createAppointmentType(
         appointmentType: AppointmentTypeSummaryData
     ): Result<Unit, NetworkError> =
-        apiService.createAppointmentType(
-            token = FAKE_TOKEN,
-            appointmentType = appointmentType.toAppointmentTypeSummaryDto()
-        )
+        userPreferencesRepository.executeWithValidTokenNetwork {
+            apiService.createAppointmentType(
+                token = it,
+                appointmentType = appointmentType.toAppointmentTypeSummaryDto()
+            )
+        }
 
     override suspend fun updateAppointment(
         appointmentType: AppointmentTypeSummaryData,
-        id: Int,
     ): Result<Unit, NetworkError> =
-        apiService.updateAppointType(
-            token = FAKE_TOKEN,
-            appointmentType = appointmentType.toAppointmentTypeSummaryDto(),
-            id = id
-        )
+        userPreferencesRepository.executeWithValidTokenNetwork {
+            apiService.updateAppointType(
+                token = it,
+                appointmentType = appointmentType.toAppointmentTypeSummaryDto(),
+                id = appointmentType.id
+            )
+        }
 
     override suspend fun deleteAppointment(
         id: Int
     ): Result<Unit, NetworkError> =
-        apiService.deleteAppointmentType(
-            token = FAKE_TOKEN,
-            id = id
-        )
+        userPreferencesRepository.executeWithValidTokenNetwork {
+            apiService.deleteAppointmentType(
+                token = it,
+                id = id
+            )
+        }
 }

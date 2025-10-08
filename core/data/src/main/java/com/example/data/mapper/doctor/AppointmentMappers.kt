@@ -79,12 +79,6 @@ internal fun AppointmentStatisticsDto.toAppointmentsStatisticsData() =
         missed = missed
     )
 
-internal fun AppointmentTypeSummaryDto.toAppointmentTypeSummaryData() =
-    AppointmentTypeSummaryData(
-        name = name,
-        duration = duration,
-        description = description
-    )
 
 internal fun AppointmentTypeSummaryData.toAppointmentTypeSummaryDto() =
     AppointmentTypeSummaryDto(

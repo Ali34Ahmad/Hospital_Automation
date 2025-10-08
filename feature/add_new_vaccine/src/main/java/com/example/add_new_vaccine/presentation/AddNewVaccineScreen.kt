@@ -34,7 +34,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.bottomBars.custom.SendingDataBottomBar
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.dialog.TwoFieldsInputDialog
 import com.example.ui_components.components.tab.TabLayoutWithIcons
 import com.example.ui_components.components.tables.vaccine_interactions.EmptyVaccineInteractionsTable
@@ -56,7 +56,7 @@ fun AddNewVaccineScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.add_vaccine_error),
         description = stringResource(R.string.something_went_wrong),

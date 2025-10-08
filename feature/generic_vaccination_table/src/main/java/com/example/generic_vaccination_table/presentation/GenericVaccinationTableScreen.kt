@@ -32,7 +32,7 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.NotSpecifiedErrorCard
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.dialog.MultiSelectionsOptionsPickerDialog
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.tables.vaccination_table.generic.GenericVaccinationTable
@@ -90,7 +90,7 @@ fun GenericVaccinationTableScreen(
         uiState.visitNumberToUse == it.visitNumber
     }
         ?.vaccines?.find { it.id == uiState.vaccineIdToDelete }?.id
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.isDeleteConfirmationDialogVisible,
         title = uiState.dialogTitleText?.asString() ?: "",
         description = uiState.dialogDescriptionText?.asString() ?: "",

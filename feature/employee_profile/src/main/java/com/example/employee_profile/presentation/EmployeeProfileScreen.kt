@@ -41,7 +41,7 @@ import com.example.ui_components.components.card.EmployeeProfileAdminActionsCard
 import com.example.ui_components.components.card.EmployeeProfileOwnerActionsCard
 import com.example.ui_components.components.card.EmployeeProfileCard
 import com.example.ui_components.components.dialog.LoadingDialog
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.dialog.WarningDialogWithInputField
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
@@ -71,7 +71,7 @@ fun EmployeeProfileScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.network_error),
         description = uiState.errorDialogText?.asString() ?: "",

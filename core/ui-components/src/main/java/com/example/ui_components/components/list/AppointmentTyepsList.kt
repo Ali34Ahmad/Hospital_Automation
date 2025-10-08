@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import com.example.constants.icons.AppIcons
 import com.example.model.doctor.appointment.AppointmentTypeData
+import com.example.model.doctor.appointment.AppointmentTypeSummaryData
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -37,9 +38,9 @@ import com.example.ui_components.components.items.NoItemsText
 
 @Composable
 fun AppointmentTypesList(
-    appointmentTypes: List<AppointmentTypeData>,
-    onEdit: (Int)-> Unit,
-    onDelete: (Int)-> Unit,
+    appointmentTypes: List<AppointmentTypeSummaryData>,
+    onEdit: (AppointmentTypeSummaryData)-> Unit,
+    onDelete: (AppointmentTypeSummaryData)-> Unit,
     modifier: Modifier = Modifier,
     onAddButtonClick: ()-> Unit,
     @StringRes title: Int = R.string.appointment_types,
@@ -85,21 +86,21 @@ fun AppointmentTypesList(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }else{
-            LazyColumn(
+            Column (
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall4),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                itemsIndexed(appointmentTypes) { index,appointmentType->
+                appointmentTypes.forEachIndexed{ index,appointmentType->
                     AppointmentTypeCard(
                         index = index+1,
                         title = appointmentType.name,
-                        subtitle = "${appointmentType.standardDurationInMinutes} min",
+                        subtitle = "${appointmentType.duration} min",
                         onDelete = {
-                            onDelete(appointmentType.id)
+                            onDelete(appointmentType)
                         },
                         description = appointmentType.description,
                         onEdit = {
-                            onEdit(appointmentType.id)
+                            onEdit(appointmentType)
                         },
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -118,24 +119,21 @@ fun AppointmentTypesListPreview() {
             AppointmentTypesList(
                 modifier = Modifier.padding(MaterialTheme.spacing.medium16),
                 appointmentTypes = listOf(
-                    AppointmentTypeData(
+                    AppointmentTypeSummaryData(
                         id = 1,
                         name = "Check Up",
-                        standardDurationInMinutes =15,
+                        duration =15,
                         description ="A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside. A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside.\n",
-                        doctorId = 2
-                    ),AppointmentTypeData(
+                    ),AppointmentTypeSummaryData(
                         id = 2,
                         name = "Check Up",
-                        standardDurationInMinutes =30,
+                        duration =30,
                         description ="A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside. A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside.\n",
-                        doctorId = 2
-                    ),AppointmentTypeData(
+                    ),AppointmentTypeSummaryData(
                         id = 3,
                         name = "Check Up",
-                        standardDurationInMinutes =20,
+                        duration =20,
                         description ="A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside. A Review uses a special type of energy to create pictures of the inside of your body. It's like taking a photograph, but instead of light, it uses invisible rays to see what's happening inside.\n",
-                        doctorId = 2
                     ),
                 ),
                 onEdit = {},

@@ -29,7 +29,7 @@ import com.example.ui.theme.sizing
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.items.EmailTextWithImageItem
 import com.example.ui_components.components.text_field.OtpInputRow
 import com.example.ui_components.components.texts.ClickableText
@@ -45,7 +45,7 @@ fun OtpVerificationScreen(
             uiActions.navigateToEmailVerifiedSuccessfullyScreen()
         }
     }
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.error),
         description = uiState.errorDialogText?.asString() ?: "",

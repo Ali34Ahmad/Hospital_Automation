@@ -7,9 +7,12 @@ import com.example.utility.network.NetworkError
 import com.example.utility.network.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import kotlinx.serialization.json.Json
 
 private const val APP_TYPE_TAG = "APPOINTMENT TYPE API"
@@ -21,15 +24,24 @@ class AppointmentTypeApiServiceImp(
         appointmentType: AppointmentTypeSummaryDto,
     ): Result<Unit, NetworkError> =
         doApiCall(
-            tag = APP_TYPE_TAG
+            tag = "$APP_TYPE_TAG : create"
         ){
+            val requestObjectsJson = Json.encodeToString(
+                mapOf("request_objects" to listOf(appointmentType))
+            )
             client.post(ApiRoutes.Doctor.APPOINTMENT_TYPE_CRUD) {
                 bearerAuth(token)
                 setBody(
-                    formData {
-                        append("request_type", "create")
-                        append("request_objects", Json.encodeToString(listOf(appointmentType)))
-                    }
+                    MultiPartFormDataContent(
+                        formData {
+                            append("request_type", "create")
+                            append(
+                                "request_objects", requestObjectsJson,
+                                headers = Headers.build {
+                                    append(HttpHeaders.ContentType, "application/json")
+                                })
+                        }
+                    )
                 )
             }
         }
@@ -40,16 +52,26 @@ class AppointmentTypeApiServiceImp(
         id: Int,
     ): Result<Unit, NetworkError> =
         doApiCall(
-            tag = APP_TYPE_TAG
+            tag = "$APP_TYPE_TAG: update"
         ){
+            val idsJson = Json.encodeToString(mapOf("ids" to listOf(id)))
+            val requestObjectsJson = Json.encodeToString(mapOf("request_objects" to listOf(appointmentType)))
+
             client.post(ApiRoutes.Doctor.APPOINTMENT_TYPE_CRUD) {
                 bearerAuth(token)
                 setBody(
-                    formData {
-                        append("request_type", "update")
-                        append("request_objects", Json.encodeToString(listOf(appointmentType)))
-                        append("ids", Json.encodeToString(listOf(id)))
-                    }
+                   MultiPartFormDataContent(
+                        formData {
+                            append("request_type", "update")
+                            append("request_objects", requestObjectsJson,
+                                Headers.build {
+                                    append(HttpHeaders.ContentType, "application/json")
+                                })
+                            append("ids", idsJson,Headers.build {
+                                append(HttpHeaders.ContentType, "application/json")
+                            })
+                        }
+                    )
                 )
             }
         }
@@ -59,15 +81,20 @@ class AppointmentTypeApiServiceImp(
         id: Int,
     ): Result<Unit, NetworkError> =
         doApiCall(
-            tag = APP_TYPE_TAG
+            tag = "$APP_TYPE_TAG: delete"
         ){
+            val idsJson = Json.encodeToString(mapOf("ids" to listOf(id)))
+
             client.post(ApiRoutes.Doctor.APPOINTMENT_TYPE_CRUD) {
                 bearerAuth(token)
                 setBody(
-                    formData {
-                        append("request_type", "delete")
-                        append("ids", Json.encodeToString(listOf(id)))
-                    }
+                    MultiPartFormDataContent(
+                        formData {
+                            append("request_type", "delete")
+                            append("ids", idsJson, Headers.build {
+                                append(HttpHeaders.ContentType, "application/json")
+                            })                        }
+                    )
                 )
             }
         }

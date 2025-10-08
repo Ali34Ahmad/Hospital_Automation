@@ -40,7 +40,7 @@ import com.example.ui_components.components.card.DoctorProfileCard
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.dialog.DialogWithDescription
 import com.example.ui_components.components.dialog.LoadingDialog
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.list.DoctorProfileAdminActionsCard
 import com.example.ui_components.components.list.DoctorProfileOwnerActionsCard
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
@@ -71,7 +71,7 @@ fun DoctorProfileScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.network_error),
         description = uiState.errorDialogText?.asString() ?: "",

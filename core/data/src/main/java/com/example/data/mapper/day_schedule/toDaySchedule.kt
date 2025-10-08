@@ -18,15 +18,16 @@ fun WorkDayDto.toDaySchedule(): DaySchedule {
     )
 }
 
-internal fun WorkDaySummaryDto.toWorkDaySummaryData() =
-    WorkDaySummaryData(
-        day = day,
-        startTime = startTime,
-        endTime = endTime
-    )
 internal fun WorkDaySummaryData.toWorkDaySummaryDto() =
     WorkDaySummaryDto(
         day = day,
         startTime = startTime,
         endTime = endTime
     )
+
+internal fun DaySchedule.toWorkDaySummary() = WorkDaySummaryData(
+    id = id,
+    day = dayOfWeek,
+    startTime = startTime,
+    endTime = endTime
+)

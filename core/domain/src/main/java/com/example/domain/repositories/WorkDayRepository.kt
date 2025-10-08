@@ -11,7 +11,6 @@ interface WorkDayRepository {
 
     suspend fun updateWorkDay(
         workDay: WorkDaySummaryData,
-        id: Int
     ): Result<Unit, NetworkError>
 
     suspend fun deleteWorkDay(

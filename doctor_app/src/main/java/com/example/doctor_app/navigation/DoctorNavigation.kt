@@ -31,6 +31,9 @@ import com.example.doctor_schedule.navigation.navigateToScheduleScreen
 import com.example.doctor_schedule.navigation.scheduleScreen
 import com.example.doctor_signup.navigation.doctorSignUpScreen
 import com.example.doctor_signup.navigation.navigateToDoctorSignUpScreen
+import com.example.edit_doctor_profile.navigation.EditDoctorProfileRoute
+import com.example.edit_doctor_profile.navigation.editDoctorProfileScreen
+import com.example.edit_doctor_profile.navigation.navigateToEditDoctorProfile
 import com.example.email_verification.email_verified_successfully.navigation.emailVerifiedSuccessfullyScreen
 import com.example.email_verification.email_verified_successfully.navigation.navigateToEmailVerifiedSuccessfullyScreen
 import com.example.email_verification.otp_verification.naviation.emailOtpVerificationScreen
@@ -88,9 +91,7 @@ fun DoctorNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = GenericVaccinationTableRoute(
-            genericVaccinationTableAccessType = GenericVaccinationTableAccessType.EDITOR_ACCESS
-        )
+        startDestination = AuthGraphRoute
     ) {
         navigation<AuthGraphRoute>(
             startDestination = LoginRoute,
@@ -568,10 +569,6 @@ fun DoctorNavigation() {
                 )
             },
             onNavigateToAppointmentDetails = { appointmentId ->
-//                navController.navigateToAppointmentDetailsReplacementCurrent(
-//                    appointmentId = appointmentId,
-//                    canEdit = true
-//                )
                 val newRoute = AppointmentDetailsRoute(appointmentId, canEdit = true)
                 navController.navigate(route = newRoute) {
                     popUpTo<ScheduleRoute> {
@@ -597,6 +594,9 @@ fun DoctorNavigation() {
             onNavigateUp = navController::navigateUp
         )
 
+        editDoctorProfileScreen(
+            navController::navigateUp
+        )
 
     }
 }

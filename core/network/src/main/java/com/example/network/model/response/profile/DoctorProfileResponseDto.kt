@@ -54,7 +54,7 @@ data class DoctorProfileDto(
     @SerialName("is_suspended")
     val isSuspended: Boolean,
     @SerialName("suspending_reason")
-    val suspendingReason: String?,
+    val suspendingReason: String? = null,
     @SerialName("is_resigned")
     val isResigned: Boolean,
     @Serializable(with = LocalDateSerializer::class)

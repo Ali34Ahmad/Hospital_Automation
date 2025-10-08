@@ -1,6 +1,7 @@
 package com.example.ui.fake
 
 import com.example.model.doctor.day_scedule.DaySchedule
+import com.example.model.doctor.workday.WorkDaySummaryData
 import java.time.DayOfWeek
 import java.time.LocalTime
 
@@ -63,3 +64,36 @@ fun createSampleWorkDayList(): List<DaySchedule> {
         // You can add more DaySchedule instances as needed
     )
 }
+
+fun createWorkDaysList() = listOf(
+    WorkDaySummaryData(
+        id = 1,
+        day = DayOfWeek.SUNDAY,
+        startTime = LocalTime.of(8,0),
+        endTime = LocalTime.of(16,0)
+    ),
+    WorkDaySummaryData(
+        id = 2,
+        day = DayOfWeek.MONDAY,
+        startTime = LocalTime.of(8,0),
+        endTime = LocalTime.of(16,0)
+    ),
+    WorkDaySummaryData(
+        id = 3,
+        day = DayOfWeek.TUESDAY,
+        startTime = LocalTime.of(8,0),
+        endTime = LocalTime.of(16,0)
+    ),
+    WorkDaySummaryData(
+        id = 4,
+        day = DayOfWeek.WEDNESDAY,
+        startTime = LocalTime.of(8,0),
+        endTime = LocalTime.of(16,0)
+    ),
+    WorkDaySummaryData(
+        id = 5,
+        day = DayOfWeek.THURSDAY,
+        startTime = LocalTime.of(8,0),
+        endTime = LocalTime.of(16,0)
+    ),
+)

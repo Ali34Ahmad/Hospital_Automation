@@ -1,5 +1,6 @@
 package com.example.ui_components.components.dialog
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,8 @@ import java.time.LocalTime
 fun TimePickerDialog(
     onConfirm: (LocalTime) -> Unit,
     onDismiss: () -> Unit,
-    timePickerState: TimePickerState = rememberTimePickerState()
+    timePickerState: TimePickerState = rememberTimePickerState(),
+    @StringRes title: Int = R.string.select_start_time
 ) {
 
     Dialog(
@@ -56,7 +58,7 @@ fun TimePickerDialog(
                 ),
             ) {
                 Text(
-                    text = stringResource(R.string.select_start_time),
+                    text = stringResource(title),
                     modifier = Modifier.fillMaxWidth(),
                 )
                 TimeInput(state = timePickerState)

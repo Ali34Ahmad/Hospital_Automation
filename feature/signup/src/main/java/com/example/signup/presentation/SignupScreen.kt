@@ -32,7 +32,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
 import com.example.ui_components.components.buttons.OptionButton
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.list_items.CheckBoxWithDetails
 import com.example.ui_components.components.screen_section.SectionWithTitle
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
@@ -50,7 +50,7 @@ fun SignUpScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.signup_error),
         description = stringResource(R.string.something_went_wrong),

@@ -38,7 +38,7 @@ import com.example.ui_components.R
 import com.example.ui_components.components.card.IllustrationCard
 import com.example.ui_components.components.card.PharmacyDetailsCard
 import com.example.ui_components.components.dialog.LoadingDialog
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.list.PharmacyProfileAdminActionsCard
 import com.example.ui_components.components.pull_to_refresh.PullToRefreshBox
 import com.example.ui_components.components.topbars.HospitalAutomationTopBar
@@ -63,7 +63,7 @@ fun PharmacyDetailsScreen(
     }
 
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.network_error),
         description = uiState.errorDialogText?.asString() ?: "",

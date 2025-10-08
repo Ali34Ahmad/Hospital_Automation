@@ -25,7 +25,7 @@ import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.buttons.HospitalAutomationButton
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 import com.example.ui_components.components.list_items.CheckBoxWithDetails
 import com.example.ui_components.components.text_field.HospitalAutomationTextFiled
 import com.example.ui_components.components.topbars.HospitalAutomationTopBarWithTitle
@@ -42,7 +42,7 @@ fun AddResidentialAddressScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.error),
         description = stringResource(R.string.something_went_wrong),

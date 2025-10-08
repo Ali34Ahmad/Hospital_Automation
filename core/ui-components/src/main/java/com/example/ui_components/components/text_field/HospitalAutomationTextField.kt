@@ -2,10 +2,12 @@ package com.example.ui_components.components.text_field
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -21,13 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.example.constants.icons.AppIcons
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui_components.R
-import com.example.constants.icons.AppIcons
 
 @Composable
 fun HospitalAutomationTextFiled(
@@ -61,9 +65,11 @@ fun HospitalAutomationTextFiled(
         errorPlaceholderColor = MaterialTheme.colorScheme.error
     ),
     shape:Shape= MaterialTheme.shapes.extraSmall,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val singleLine = maxLines <= 1
     TextField(
+        interactionSource = interactionSource,
         modifier = modifier,
         readOnly = readOnly,
         keyboardOptions = keyboardOptions,

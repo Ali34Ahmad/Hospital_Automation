@@ -26,7 +26,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import com.example.constants.icons.AppIcons
-import com.example.model.doctor.day_scedule.DaySchedule
+import com.example.model.doctor.workday.WorkDaySummaryData
+import com.example.ui.fake.createWorkDaysList
 import com.example.ui.helper.DarkAndLightModePreview
 import com.example.ui.theme.Hospital_AutomationTheme
 import com.example.ui.theme.sizing
@@ -37,17 +38,17 @@ import com.example.ui_components.components.items.NoItemsText
 
 @Composable
 fun WorkDaysList(
-    workDays : List<DaySchedule>,
+    workDays : List<WorkDaySummaryData>,
     modifier: Modifier = Modifier,
-    onItemDeleteClick: (Int)-> Unit,
-    onItemEditClick: (DaySchedule)-> Unit,
+    onItemDeleteClick: (WorkDaySummaryData)-> Unit,
+    onItemEditClick: (WorkDaySummaryData)-> Unit,
     onAddButtonClick: ()-> Unit,
     @StringRes title: Int = R.string.work_days,
     @DrawableRes addIcon: Int = AppIcons.Outlined.add,
     titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
     titleColor: Color = MaterialTheme.colorScheme.onBackground,
 
-) {
+    ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium16),
@@ -85,15 +86,15 @@ fun WorkDaysList(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }else{
-            LazyColumn(
+            Column(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall4),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(workDays, key = {it.id}){workDay->
+                workDays.forEach{workDay->
                     EditableWorkDayCard(
                         workDay = workDay,
                         onItemDeleteClick = {
-                            onItemDeleteClick(workDay.id)
+                            onItemDeleteClick(workDay)
                         },
                         onItemEditClick = {
                             onItemEditClick(workDay)
@@ -112,7 +113,7 @@ fun WorDaysListPreview() {
     Hospital_AutomationTheme {
         Surface {
             WorkDaysList(
-                workDays = emptyList(),
+                workDays = createWorkDaysList(),
                 onItemEditClick = {},
                 onItemDeleteClick = {},
                 onAddButtonClick = {},

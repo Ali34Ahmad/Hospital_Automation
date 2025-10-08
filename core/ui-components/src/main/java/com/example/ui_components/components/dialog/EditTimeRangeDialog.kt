@@ -47,7 +47,7 @@ fun EditTimeRangeDialog(
     onDismissRequest: () -> Unit,
     onConfirm: ()-> Unit,
     modifier: Modifier = Modifier,
-    @StringRes title: Int = R.string.edit_time_range,
+     title: String = stringResource(R.string.edit_time_range),
     titleStyle: TextStyle = MaterialTheme.typography.titleLarge,
     paddingValues: PaddingValues = PaddingValues(MaterialTheme.spacing.large24),
     @StringRes startTimeTitle: Int = R.string.start_time,
@@ -74,7 +74,7 @@ fun EditTimeRangeDialog(
                 modifier = Modifier.padding(paddingValues)
             ) {
                 Text(
-                    text = stringResource(title),
+                    text = title,
                     style = titleStyle
                 )
                 Spacer(Modifier.height(MaterialTheme.spacing.large24))
@@ -94,7 +94,7 @@ fun EditTimeRangeDialog(
                         onEndTimeOptionClick(endTime)
                     },
                     title = stringResource(endTimeTitle),
-                    subTitle = startTime.toAppropriateTimeFormat(),
+                    subTitle = endTime.toAppropriateTimeFormat(),
                 )
             }
             Spacer(Modifier.height(MaterialTheme.spacing.large24))

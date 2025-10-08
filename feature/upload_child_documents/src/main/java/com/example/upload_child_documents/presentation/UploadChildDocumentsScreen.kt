@@ -21,7 +21,7 @@ import com.example.ui.theme.spacing
 import com.example.ui_components.R
 import com.example.ui_components.components.card.ChildAddedSuccessfullyCard
 import com.example.ui_components.components.card.FileUploadingCard
-import com.example.ui_components.components.dialog.MessageDialog
+import com.example.ui_components.components.dialog.ConfirmationDialog
 
 @Composable
 fun UploadChildDocumentsScreen(
@@ -38,7 +38,7 @@ fun UploadChildDocumentsScreen(
         }
     }
 
-    MessageDialog(
+    ConfirmationDialog(
         showDialog = uiState.showErrorDialog,
         title = stringResource(R.string.uploading_file_failed),
         description = uiState.errorDialogText?.asString()?:"",
